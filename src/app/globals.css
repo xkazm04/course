@@ -1,8 +1,220 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  /* === SURFACES === */
+  --surface-base: #F0F2F5;
+  --surface-elevated: rgba(255, 255, 255, 0.6);
+  --surface-overlay: rgba(255, 255, 255, 0.8);
+  --surface-card: rgba(255, 255, 255, 0.1);
+  --surface-inset: rgba(241, 245, 249, 0.5);
+
+  /* === TEXT === */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  /* High-contrast muted text for small text (text-xs, text-sm) - 5.5:1+ ratio on surface-base */
+  --text-muted-high: #4b5563;
+  --text-inverse: #ffffff;
+
+  /* === BORDERS === */
+  --border-subtle: rgba(255, 255, 255, 0.2);
+  --border-default: rgba(255, 255, 255, 0.5);
+  --border-strong: rgba(0, 0, 0, 0.1);
+
+  /* === ACCENTS === */
+  --accent-primary: #4f46e5;
+  --accent-primary-hover: #4338ca;
+  --accent-secondary: #a855f7;
+  --accent-tertiary: #06b6d4;
+
+  /* === SEMANTIC ACCENT COLORS (for domain-specific use) === */
+  --color-indigo: #6366f1;
+  --color-purple: #a855f7;
+  --color-emerald: #10b981;
+  --color-cyan: #06b6d4;
+  --color-orange: #f97316;
+  --color-pink: #ec4899;
+  --color-blue: #3b82f6;
+  --color-amber: #f59e0b;
+  --color-red: #ef4444;
+
+  /* === GRADIENTS === */
+  --gradient-hero-from: #0f172a;
+  --gradient-hero-via: #334155;
+  --gradient-hero-to: #0f172a;
+  --gradient-accent: linear-gradient(to right, #6366f1, #a855f7, #06b6d4);
+  --gradient-mesh-1: linear-gradient(to bottom right, rgba(199,210,254,0.3), rgba(233,213,255,0.3), rgba(191,219,254,0.3));
+  --gradient-mesh-2: linear-gradient(to top left, rgba(165,243,252,0.3), rgba(251,207,232,0.3), rgba(199,210,254,0.3));
+
+  /* === SHADOWS === */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.1);
+  --shadow-glow: 0 0 40px rgba(99,102,241,0.15);
+
+  /* === STATUS === */
+  --status-success-bg: rgba(220,252,231,0.5);
+  --status-success-text: #15803d;
+  --status-success-border: #bbf7d0;
+  --status-warning-bg: rgba(254,249,195,0.5);
+  --status-warning-text: #a16207;
+  --status-warning-border: #fde047;
+  --status-error-bg: rgba(254,226,226,0.5);
+  --status-error-text: #dc2626;
+  --status-error-border: #fecaca;
+
+  /* === GLASS EFFECT === */
+  --glass-blur: 10px;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+
+  /* === GRID PATTERN === */
+  --grid-color: rgba(0, 0, 0, 0.05);
+  --grid-size: 40px;
+
+  /* === INTERACTIVE STATES === */
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --active-overlay: rgba(0, 0, 0, 0.1);
+  --focus-ring: rgba(99, 102, 241, 0.5);
+
+  /* === BUTTON VARIANTS === */
+  --btn-primary-bg: #0f172a;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: rgba(255, 255, 255, 0.5);
+  --btn-secondary-text: #0f172a;
+  --btn-secondary-border: rgba(255, 255, 255, 0.6);
+
+  /* === BUTTON SIZING SCALE === */
+  /* Small: compact actions, inline buttons */
+  --btn-padding-sm-x: 0.75rem;  /* 12px / px-3 */
+  --btn-padding-sm-y: 0.375rem; /* 6px / py-1.5 */
+  /* Medium: standard buttons, form actions */
+  --btn-padding-md-x: 1rem;     /* 16px / px-4 */
+  --btn-padding-md-y: 0.5rem;   /* 8px / py-2 */
+  /* Large: primary CTAs, hero buttons */
+  --btn-padding-lg-x: 1.5rem;   /* 24px / px-6 */
+  --btn-padding-lg-y: 0.75rem;  /* 12px / py-3 */
+
+  /* === SLOT SPACING SCALE === */
+  /* Standardized padding tokens for slot renderers based on content importance */
+  /* sm: secondary/supporting content (key points, tips, notes) */
+  --slot-padding-sm: 1rem;      /* 16px / p-4 */
+  /* md: standard content areas (progress panels, section lists) */
+  --slot-padding-md: 1.25rem;   /* 20px / p-5 */
+  /* lg: primary/header content (chapter headers, highlighted sections) */
+  --slot-padding-lg: 1.5rem;    /* 24px / p-6 */
+
+  /* === ANIMATION TIMING TOKENS === */
+  /* Unified animation timing scale for consistent motion feel */
+  --duration-instant: 0.1s;   /* Micro-interactions: toggles, focus states */
+  --duration-fast: 0.2s;      /* Quick feedback: menu open/close, tooltips */
+  --duration-normal: 0.3s;    /* Standard transitions: expansion, reveal */
+  --duration-slow: 0.5s;      /* Deliberate animations: progress bars, onboarding */
+  --duration-decorative: 20s; /* Ambient/decorative: background gradients */
+
+  /* Easing curves (matching framer-motion conventions) */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);      /* Standard ease-out */
+  --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);   /* For symmetric animations */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy/spring-like */
+
+  /* === LEGACY COMPATIBILITY === */
+  --background: #F0F2F5;
   --foreground: #171717;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --card-border: rgba(255, 255, 255, 0.5);
+}
+
+.dark {
+  /* Button sizing scale is inherited from :root (same for both themes) */
+
+  /* === SURFACES === */
+  --surface-base: #0a0f1a;
+  --surface-elevated: rgba(30, 41, 59, 0.6);
+  --surface-overlay: rgba(30, 41, 59, 0.8);
+  --surface-card: rgba(30, 41, 59, 0.5);
+  --surface-inset: rgba(15, 23, 42, 0.5);
+
+  /* === TEXT === */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  /* High-contrast muted text for small text (text-xs, text-sm) - 5.5:1+ ratio on dark surfaces */
+  --text-muted-high: #94a3b8;
+  --text-inverse: #0f172a;
+
+  /* === BORDERS === */
+  --border-subtle: rgba(51, 65, 85, 0.3);
+  --border-default: rgba(51, 65, 85, 0.5);
+  --border-strong: rgba(255, 255, 255, 0.1);
+
+  /* === ACCENTS === */
+  --accent-primary: #818cf8;
+  --accent-primary-hover: #a5b4fc;
+  --accent-secondary: #c084fc;
+  --accent-tertiary: #22d3ee;
+
+  /* === SEMANTIC ACCENT COLORS (for domain-specific use) === */
+  --color-indigo: #818cf8;
+  --color-purple: #c084fc;
+  --color-emerald: #34d399;
+  --color-cyan: #22d3ee;
+  --color-orange: #fb923c;
+  --color-pink: #f472b6;
+  --color-blue: #60a5fa;
+  --color-amber: #fbbf24;
+  --color-red: #f87171;
+
+  /* === GRADIENTS === */
+  --gradient-hero-from: #f1f5f9;
+  --gradient-hero-via: #cbd5e1;
+  --gradient-hero-to: #94a3b8;
+  --gradient-accent: linear-gradient(to right, #818cf8, #c084fc, #22d3ee);
+  --gradient-mesh-1: linear-gradient(to bottom right, rgba(49,46,129,0.3), rgba(88,28,135,0.3), rgba(30,58,138,0.3));
+  --gradient-mesh-2: linear-gradient(to top left, rgba(22,78,99,0.3), rgba(131,24,67,0.3), rgba(49,46,129,0.3));
+
+  /* === SHADOWS === */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 40px rgba(129,140,248,0.2);
+
+  /* === STATUS === */
+  --status-success-bg: rgba(6,78,59,0.3);
+  --status-success-text: #4ade80;
+  --status-success-border: rgba(34,197,94,0.3);
+  --status-warning-bg: rgba(120,53,15,0.3);
+  --status-warning-text: #fbbf24;
+  --status-warning-border: rgba(251,191,36,0.3);
+  --status-error-bg: rgba(127,29,29,0.3);
+  --status-error-text: #f87171;
+  --status-error-border: rgba(248,113,113,0.3);
+
+  /* === GLASS EFFECT === */
+  --glass-blur: 10px;
+  --glass-bg: rgba(30, 41, 59, 0.6);
+  --glass-border: rgba(51, 65, 85, 0.5);
+
+  /* === GRID PATTERN === */
+  --grid-color: rgba(255, 255, 255, 0.03);
+  --grid-size: 40px;
+
+  /* === INTERACTIVE STATES === */
+  --hover-overlay: rgba(255, 255, 255, 0.05);
+  --active-overlay: rgba(255, 255, 255, 0.1);
+  --focus-ring: rgba(129, 140, 248, 0.5);
+
+  /* === BUTTON VARIANTS === */
+  --btn-primary-bg: #ffffff;
+  --btn-primary-text: #0f172a;
+  --btn-secondary-bg: rgba(30, 41, 59, 0.5);
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-border: rgba(51, 65, 85, 0.6);
+
+  /* === LEGACY COMPATIBILITY === */
+  --background: #0a0f1a;
+  --foreground: #f1f5f9;
+  --card-bg: rgba(30, 41, 59, 0.6);
+  --card-border: rgba(51, 65, 85, 0.5);
 }
 
 @theme inline {
@@ -12,15 +224,216 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === ANIMATIONS === */
+@keyframes scan {
+  0% { top: 0% }
+  100% { top: 100% }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) }
+  100% { transform: translateX(100%) }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) }
+  50% { transform: translateY(-10px) }
+}
+
+.animate-scan {
+  animation: scan 2s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s linear infinite;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* === SCROLLBAR === */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* === NOISE TEXTURE === */
+.noise-texture {
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.03;
+}
+
+/* === 3D GRID FLOOR === */
+.grid-floor {
+  background-size: var(--grid-size) var(--grid-size);
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+}
+
+/* === GLASS CARD UTILITY === */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+/* === SELECTION === */
+::selection {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.dark ::selection {
+  background: rgba(129, 140, 248, 0.3);
+}
+
+/* === ICON-TEXT ALIGNMENT UTILITIES === */
+/*
+ * Consistent icon-to-text alignment system
+ * Use these utilities to ensure icons align perfectly with adjacent text
+ * regardless of line-height or container sizing differences.
+ */
+
+/* Base icon-text alignment container - use with flex */
+.icon-text-align {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px default gap */
+}
+
+/* Icon container - ensures consistent optical alignment */
+.icon-text-align > svg,
+.icon-text-align > [data-icon] {
+  flex-shrink: 0;
+  /* Optical alignment adjustment - icons often need slight upward shift */
+  transform: translateY(-0.5px);
+}
+
+/* Variant with tighter gap for compact UIs */
+.icon-text-align-tight {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem; /* 4px gap */
+}
+
+.icon-text-align-tight > svg,
+.icon-text-align-tight > [data-icon] {
+  flex-shrink: 0;
+  transform: translateY(-0.5px);
+}
+
+/* Variant with wider gap for spacious layouts */
+.icon-text-align-wide {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 12px gap */
+}
+
+.icon-text-align-wide > svg,
+.icon-text-align-wide > [data-icon] {
+  flex-shrink: 0;
+  transform: translateY(-0.5px);
+}
+
+/* Icon container wrapper - for icons in sized containers (e.g., 48px boxes) */
+.icon-container-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Leading-none utility for icon containers - removes line-height impact */
+.icon-leading-none {
+  line-height: 1;
+}
+
+/* === KNOWLEDGE MAP CONNECTIONS === */
+/*
+ * Single CSS animation for all connection paths in the knowledge map.
+ * Uses strokeDasharray/strokeDashoffset for draw-in effect.
+ * This is ~95% more performant than individual Framer Motion pathLength animations.
+ */
+@keyframes km-connection-draw {
+  from {
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Container group - entry animation applied once to all connections */
+.km-connections-group {
+  animation: km-connection-draw 0.6s var(--ease-out) forwards;
+}
+
+/* Individual path styling with smooth stroke-dasharray for draw effect */
+.km-connection-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+  transition: stroke-opacity var(--duration-normal) var(--ease-out);
+}
+
+/* Reduced motion: show connections immediately without animation */
+@media (prefers-reduced-motion: reduce) {
+  .km-connections-group {
+    animation: none;
+  }
+
+  .km-connection-path {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* === REDUCED MOTION SUPPORT === */
+/* Users who prefer reduced motion (accessibility setting) */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all CSS animations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable specific landing page animations */
+  .animate-scan,
+  .animate-spin-slow,
+  .animate-shimmer,
+  .animate-float {
+    animation: none !important;
+  }
+
+  /* Remove perspective and 3D transforms for reduced motion */
+  .perspective-\[2000px\] {
+    perspective: none;
+  }
+
+  /* Simplify gradient animations - make them static */
+  .blur-\[120px\] {
+    animation: none !important;
+  }
 }

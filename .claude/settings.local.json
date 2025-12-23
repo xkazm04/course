@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(ls -1 \"C:\\Users\\kazim\\dac\\course\\src\\app\\features\\overview\"\" | grep \"Variant \")",
+      "Bash(rm:*)",
+      "Bash(del /q \"src\\\\app\\\\features\\\\overview\\\\components\\\\MorphingLayoutEngine.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\MorphingNode.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\ViewConnections.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\DetailPanel.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\ViewIndicator.tsx\")",
+      "Bash(del:*)",
+      "Bash(find:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

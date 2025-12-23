@@ -1,0 +1,345 @@
+/**
+ * Orchestration Card Component
+ *
+ * Displays AI Learning Conductor decisions and recommendations
+ * with accept/dismiss actions.
+ */
+
+"use client";
+
+import React, { useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+    Brain,
+    Sparkles,
+    BookOpen,
+    FastForward,
+    Coffee,
+    Users,
+    Zap,
+    RotateCcw,
+    Minimize2,
+    Maximize2,
+    Award,
+    X,
+    Check,
+    ChevronRight,
+} from "lucide-react";
+import { cn } from "@/app/shared/lib/utils";
+import type { OrchestrationDecision, OrchestrationAction } from "../lib/conductorTypes";
+
+// ============================================================================
+// Types
+// ============================================================================
+
+export interface OrchestrationCardProps {
+    decision: OrchestrationDecision;
+    onAccept?: () => void;
+    onDismiss?: () => void;
+    className?: string;
+}
+
+interface ActionConfig {
+    icon: React.ComponentType<{ size?: number; className?: string }>;
+    color: string;
+    bgColor: string;
+    borderColor: string;
+    title: string;
+    acceptLabel: string;
+    dismissLabel: string;
+}
+
+// ============================================================================
+// Action Configurations
+// ============================================================================
+
+const ACTION_CONFIGS: Record<OrchestrationAction, ActionConfig> = {
+    inject_remedial: {
+        icon: BookOpen,
+        color: "text-blue-400",
+        bgColor: "bg-blue-900/20",
+        borderColor: "border-blue-700/30",
+        title: "Learning Support Available",
+        acceptLabel: "Show me",
+        dismissLabel: "Skip for now",
+    },
+    skip_section: {
+        icon: FastForward,
+        color: "text-green-400",
+        bgColor: "bg-green-900/20",
+        borderColor: "border-green-700/30",
+        title: "Ready to Advance",
+        acceptLabel: "Skip ahead",
+        dismissLabel: "Stay here",
+    },
+    suggest_peer_solution: {
+        icon: Users,
+        color: "text-purple-400",
+        bgColor: "bg-purple-900/20",
+        borderColor: "border-purple-700/30",
+        title: "Peer Insights Available",
+        acceptLabel: "Show solutions",
+        dismissLabel: "Not now",
+    },
+    slow_down: {
+        icon: RotateCcw,
+        color: "text-amber-400",
+        bgColor: "bg-amber-900/20",
+        borderColor: "border-amber-700/30",
+        title: "Take Your Time",
+        acceptLabel: "Slow down",
+        dismissLabel: "Keep pace",
+    },
+    accelerate: {
+        icon: Zap,
+        color: "text-cyan-400",
+        bgColor: "bg-cyan-900/20",
+        borderColor: "border-cyan-700/30",
+        title: "You're Doing Great!",
+        acceptLabel: "Speed up",
+        dismissLabel: "Stay current",
+    },
+    reorder_sections: {
+        icon: RotateCcw,
+        color: "text-indigo-400",
+        bgColor: "bg-indigo-900/20",
+        borderColor: "border-indigo-700/30",
+        title: "Optimized Path Available",
+        acceptLabel: "Optimize",
+        dismissLabel: "Keep order",
+    },
+    add_practice: {
+        icon: Sparkles,
+        color: "text-pink-400",
+        bgColor: "bg-pink-900/20",
+        borderColor: "border-pink-700/30",
+        title: "Practice Opportunity",
+        acceptLabel: "Practice",
+        dismissLabel: "Skip",
+    },
+    reduce_content: {
+        icon: Minimize2,
+        color: "text-slate-400",
+        bgColor: "bg-slate-800/50",
+        borderColor: "border-slate-600/30",
+        title: "Simplified View",
+        acceptLabel: "Simplify",
+        dismissLabel: "Full content",
+    },
+    expand_content: {
+        icon: Maximize2,
+        color: "text-emerald-400",
+        bgColor: "bg-emerald-900/20",
+        borderColor: "border-emerald-700/30",
+        title: "Deep Dive Available",
+        acceptLabel: "Expand",
+        dismissLabel: "Standard",
+    },
+    suggest_break: {
+        icon: Coffee,
+        color: "text-orange-400",
+        bgColor: "bg-orange-900/20",
+        borderColor: "border-orange-700/30",
+        title: "Time for a Break?",
+        acceptLabel: "Take break",
+        dismissLabel: "Continue",
+    },
+    celebrate_progress: {
+        icon: Award,
+        color: "text-yellow-400",
+        bgColor: "bg-yellow-900/20",
+        borderColor: "border-yellow-700/30",
+        title: "Achievement Unlocked!",
+        acceptLabel: "Awesome!",
+        dismissLabel: "Continue",
+    },
+};
+
+// ============================================================================
+// Main Component
+// ============================================================================
+
+export function OrchestrationCard({
+    decision,
+    onAccept,
+    onDismiss,
+    className,
+}: OrchestrationCardProps) {
+    const config = ACTION_CONFIGS[decision.action];
+    const Icon = config.icon;
+
+    const handleAccept = useCallback(() => {
+        onAccept?.();
+    }, [onAccept]);
+
+    const handleDismiss = useCallback(() => {
+        onDismiss?.();
+    }, [onDismiss]);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className={cn(
+                "rounded-xl overflow-hidden",
+                config.bgColor,
+                "border",
+                config.borderColor,
+                className
+            )}
+            data-testid={`orchestration-card-${decision.id}`}
+        >
+            {/* Main Content */}
+            <div className="p-4">
+                <div className="flex items-start gap-3">
+                    {/* Icon */}
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                        className={cn(
+                            "p-2 rounded-lg",
+                            config.bgColor,
+                            "border",
+                            config.borderColor
+                        )}
+                    >
+                        <Icon size={20} className={config.color} />
+                    </motion.div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                            <Brain size={14} className="text-slate-500" />
+                            <span className="text-xs text-slate-500 font-medium">
+                                AI Learning Conductor
+                            </span>
+                        </div>
+
+                        <h4 className={cn("text-sm font-semibold mb-1", config.color)}>
+                            {config.title}
+                        </h4>
+
+                        <p className="text-sm text-slate-400 leading-relaxed">
+                            {decision.reason}
+                        </p>
+
+                        {/* Priority indicator */}
+                        {decision.priority >= 8 && (
+                            <div className="flex items-center gap-1 mt-2">
+                                <div className="flex gap-0.5">
+                                    {[...Array(3)].map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className={cn(
+                                                "w-1.5 h-1.5 rounded-full",
+                                                i < Math.min(decision.priority - 6, 3)
+                                                    ? config.color.replace("text-", "bg-")
+                                                    : "bg-slate-600"
+                                            )}
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-xs text-slate-500">High priority</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Dismiss button */}
+                    <button
+                        onClick={handleDismiss}
+                        className="p-1 text-slate-500 hover:text-slate-300 transition-colors"
+                        data-testid={`orchestration-card-dismiss-x-${decision.id}`}
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex border-t border-slate-700/50">
+                <button
+                    onClick={handleDismiss}
+                    className="flex-1 px-4 py-2.5 text-sm text-slate-400 hover:text-slate-300 hover:bg-slate-800/50 transition-colors flex items-center justify-center gap-2"
+                    data-testid={`orchestration-card-dismiss-btn-${decision.id}`}
+                >
+                    <X size={14} />
+                    {config.dismissLabel}
+                </button>
+
+                <div className="w-px bg-slate-700/50" />
+
+                <button
+                    onClick={handleAccept}
+                    className={cn(
+                        "flex-1 px-4 py-2.5 text-sm font-medium transition-colors flex items-center justify-center gap-2",
+                        config.color,
+                        "hover:bg-slate-800/50"
+                    )}
+                    data-testid={`orchestration-card-accept-btn-${decision.id}`}
+                >
+                    <Check size={14} />
+                    {config.acceptLabel}
+                    <ChevronRight size={14} />
+                </button>
+            </div>
+        </motion.div>
+    );
+}
+
+// ============================================================================
+// Compact Variant
+// ============================================================================
+
+export function OrchestrationCardCompact({
+    decision,
+    onAccept,
+    onDismiss,
+    className,
+}: OrchestrationCardProps) {
+    const config = ACTION_CONFIGS[decision.action];
+    const Icon = config.icon;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-lg",
+                config.bgColor,
+                "border",
+                config.borderColor,
+                className
+            )}
+            data-testid={`orchestration-card-compact-${decision.id}`}
+        >
+            <Icon size={16} className={config.color} />
+            <span className="flex-1 text-sm text-slate-300 truncate">
+                {config.title}
+            </span>
+            <button
+                onClick={onAccept}
+                className={cn(
+                    "px-2 py-1 text-xs rounded font-medium",
+                    config.color,
+                    "hover:bg-slate-700/50 transition-colors"
+                )}
+                data-testid={`orchestration-card-compact-accept-${decision.id}`}
+            >
+                {config.acceptLabel}
+            </button>
+            <button
+                onClick={onDismiss}
+                className="p-1 text-slate-500 hover:text-slate-300 transition-colors"
+                data-testid={`orchestration-card-compact-dismiss-${decision.id}`}
+            >
+                <X size={14} />
+            </button>
+        </motion.div>
+    );
+}
+
+export default OrchestrationCard;

@@ -1,0 +1,74 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { Clock, Check } from "lucide-react";
+import { cn } from "@/app/shared/lib/utils";
+import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
+
+interface DailyGoalSelectorProps {
+    currentGoal: number;
+    onGoalChange: (minutes: number) => void;
+    className?: string;
+}
+
+const GOAL_OPTIONS = [5, 10, 15, 30];
+
+export const DailyGoalSelector = ({
+    currentGoal,
+    onGoalChange,
+    className,
+}: DailyGoalSelectorProps) => {
+    return (
+        <div className={cn("space-y-3", className)} data-testid="daily-goal-selector">
+            <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+                <Clock size={ICON_SIZES.sm} className="text-indigo-500 dark:text-indigo-400" />
+                <span>Daily Goal</span>
+            </div>
+
+            <div className="flex gap-2">
+                {GOAL_OPTIONS.map((minutes) => {
+                    const isSelected = currentGoal === minutes;
+                    return (
+                        <motion.button
+                            key={minutes}
+                            onClick={() => onGoalChange(minutes)}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                                "relative flex-1 py-3 px-2 rounded-xl font-bold text-sm transition-all duration-200",
+                                "border-2",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                                isSelected
+                                    ? "bg-indigo-500 dark:bg-indigo-600 border-indigo-500 dark:border-indigo-600 text-white"
+                                    : "bg-white/60 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-indigo-300 dark:hover:border-indigo-700"
+                            )}
+                            data-testid={`goal-option-${minutes}`}
+                        >
+                            {isSelected && (
+                                <motion.div
+                                    layoutId="goal-selected"
+                                    className="absolute inset-0 bg-indigo-500 dark:bg-indigo-600 rounded-xl"
+                                    initial={false}
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                                />
+                            )}
+                            <span className="relative flex items-center justify-center gap-1">
+                                {isSelected && (
+                                    <motion.span
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        transition={{ delay: 0.1 }}
+                                    >
+                                        <Check size={ICON_SIZES.sm} />
+                                    </motion.span>
+                                )}
+                                {minutes} min
+                            </span>
+                        </motion.button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};

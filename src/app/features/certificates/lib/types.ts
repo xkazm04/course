@@ -1,0 +1,99 @@
+// Certificate Types and Interfaces
+
+export interface Certificate {
+    id: string;
+    uniqueCode: string;
+    learnerName: string;
+    courseTitle: string;
+    courseId: string;
+    completionDate: string;
+    issuedDate: string;
+    skills: string[];
+    issuerName: string;
+    issuerLogo?: string;
+    templateId: string;
+    verificationUrl: string;
+    metadata: CertificateMetadata;
+}
+
+export interface CertificateMetadata {
+    totalHours: number;
+    modulesCompleted: number;
+    quizScore?: number;
+    projectsCompleted?: number;
+    specializations?: string[];
+}
+
+export interface CertificateTemplate {
+    id: string;
+    name: string;
+    backgroundGradient: string;
+    accentColor: string;
+    borderStyle: string;
+    badgeIcon: string;
+}
+
+export interface CertificateGalleryItem {
+    certificate: Certificate;
+    thumbnailUrl?: string;
+    downloadedAt?: string;
+    sharedAt?: string;
+    shareCount: number;
+}
+
+export interface CertificateVerification {
+    isValid: boolean;
+    certificate?: Certificate;
+    verifiedAt: string;
+    errorMessage?: string;
+}
+
+export interface ShareOptions {
+    platform: 'linkedin' | 'twitter' | 'facebook' | 'email' | 'copy';
+    message?: string;
+    includeSkills?: boolean;
+}
+
+export interface ExportOptions {
+    format: 'pdf' | 'png' | 'jpg';
+    quality: 'standard' | 'high';
+    includeVerificationQR: boolean;
+}
+
+// Certificate Templates
+export const CERTIFICATE_TEMPLATES: CertificateTemplate[] = [
+    {
+        id: 'classic',
+        name: 'Classic',
+        backgroundGradient: 'from-slate-50 to-slate-100',
+        accentColor: 'indigo',
+        borderStyle: 'solid',
+        badgeIcon: 'award',
+    },
+    {
+        id: 'modern',
+        name: 'Modern',
+        backgroundGradient: 'from-indigo-50 to-purple-50',
+        accentColor: 'purple',
+        borderStyle: 'gradient',
+        badgeIcon: 'trophy',
+    },
+    {
+        id: 'professional',
+        name: 'Professional',
+        backgroundGradient: 'from-slate-100 to-blue-50',
+        accentColor: 'blue',
+        borderStyle: 'double',
+        badgeIcon: 'medal',
+    },
+    {
+        id: 'elegant',
+        name: 'Elegant',
+        backgroundGradient: 'from-amber-50 to-orange-50',
+        accentColor: 'orange',
+        borderStyle: 'ornate',
+        badgeIcon: 'crown',
+    },
+];
+
+export const CERTIFICATE_VERSION = '1.0.0';

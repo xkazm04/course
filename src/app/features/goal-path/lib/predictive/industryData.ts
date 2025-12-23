@@ -1,0 +1,98 @@
+/**
+ * Industry Trends Data
+ *
+ * Mock data for industry sector trends and growth rates.
+ */
+
+import type { IndustryTrend } from "../predictiveTypes";
+
+export const industryTrends: IndustryTrend[] = [
+    {
+        sector: "ai_ml",
+        name: "AI & Machine Learning",
+        growthRate: 42,
+        topSkills: ["Python", "PyTorch", "LangChain", "MLOps", "Vector Databases"],
+        salaryRange: { min: 120000, max: 280000, median: 175000, currency: "USD" },
+        jobGrowth: "rising",
+        remoteAvailability: 85,
+        entryBarrier: "high",
+        topEmployers: ["OpenAI", "Anthropic", "Google DeepMind", "Meta AI", "Microsoft"],
+    },
+    {
+        sector: "cloud_infrastructure",
+        name: "Cloud & Infrastructure",
+        growthRate: 18,
+        topSkills: ["Kubernetes", "Terraform", "AWS", "Go", "Platform Engineering"],
+        salaryRange: { min: 100000, max: 220000, median: 145000, currency: "USD" },
+        jobGrowth: "stable",
+        remoteAvailability: 90,
+        entryBarrier: "medium",
+        topEmployers: ["AWS", "Google Cloud", "Microsoft Azure", "Datadog", "HashiCorp"],
+    },
+    {
+        sector: "fintech",
+        name: "Financial Technology",
+        growthRate: 22,
+        topSkills: ["TypeScript", "Go", "Kotlin", "PostgreSQL", "Security"],
+        salaryRange: { min: 110000, max: 250000, median: 160000, currency: "USD" },
+        jobGrowth: "rising",
+        remoteAvailability: 70,
+        entryBarrier: "high",
+        topEmployers: ["Stripe", "Square", "Plaid", "Coinbase", "Robinhood"],
+    },
+    {
+        sector: "tech_startups",
+        name: "Tech Startups",
+        growthRate: 15,
+        topSkills: ["React", "TypeScript", "Node.js", "Next.js", "AWS"],
+        salaryRange: { min: 90000, max: 200000, median: 130000, currency: "USD" },
+        jobGrowth: "stable",
+        remoteAvailability: 95,
+        entryBarrier: "low",
+        topEmployers: ["Various YC Companies", "Series A-C Startups"],
+    },
+    {
+        sector: "cybersecurity",
+        name: "Cybersecurity",
+        growthRate: 28,
+        topSkills: ["Security Engineering", "Rust", "Go", "Cloud Security", "Zero Trust"],
+        salaryRange: { min: 115000, max: 240000, median: 155000, currency: "USD" },
+        jobGrowth: "rising",
+        remoteAvailability: 80,
+        entryBarrier: "high",
+        topEmployers: ["CrowdStrike", "Palo Alto Networks", "Cloudflare", "Snyk"],
+    },
+    {
+        sector: "healthcare",
+        name: "Healthcare Tech",
+        growthRate: 25,
+        topSkills: ["Python", "FHIR", "HIPAA", "React", "Data Engineering"],
+        salaryRange: { min: 100000, max: 200000, median: 140000, currency: "USD" },
+        jobGrowth: "rising",
+        remoteAvailability: 65,
+        entryBarrier: "medium",
+        topEmployers: ["Epic Systems", "Cerner", "Oscar Health", "Tempus"],
+    },
+    {
+        sector: "ecommerce",
+        name: "E-commerce & Retail Tech",
+        growthRate: 12,
+        topSkills: ["React", "Next.js", "Node.js", "Shopify", "Payment Systems"],
+        salaryRange: { min: 85000, max: 180000, median: 125000, currency: "USD" },
+        jobGrowth: "stable",
+        remoteAvailability: 85,
+        entryBarrier: "low",
+        topEmployers: ["Shopify", "Amazon", "Instacart", "DoorDash"],
+    },
+    {
+        sector: "gaming",
+        name: "Gaming & Interactive",
+        growthRate: 14,
+        topSkills: ["C++", "Unity", "Unreal Engine", "Rust", "WebGL"],
+        salaryRange: { min: 80000, max: 190000, median: 120000, currency: "USD" },
+        jobGrowth: "stable",
+        remoteAvailability: 60,
+        entryBarrier: "medium",
+        topEmployers: ["Epic Games", "Unity", "Roblox", "Riot Games"],
+    },
+];
