@@ -8,12 +8,20 @@
  * - Domain: Learning domains (Frontend, Backend, etc.)
  * - Course: Individual courses within a domain
  * - Chapter: Chapters within a course
- * - Section: Sections/lessons within a chapter
+ * - Section: Sections/lessons within a chapter (implements LearningNodeBase pattern)
  * - Concept: Individual concepts within a section
+ *
+ * Integration with LearningNode:
+ * - MapNodeBase aligns with LearningNodeBase from ./learningNode.ts
+ * - SectionNode at the "section" level corresponds to ChapterSection
+ * - This enables unified curriculum DAG integration
+ *
+ * @see ./learningNode.ts for the canonical LearningNode base types
  */
 
 import type { LearningDomainId, DomainColorKey } from "@/app/shared/lib/learningDomains";
 import type { LucideIcon } from "lucide-react";
+import type { LearningNodeStatus, LearningContentType } from "./learningNode";
 
 // ============================================================================
 // HIERARCHY & STATUS TYPES
@@ -26,8 +34,16 @@ export type NodeLevel = "domain" | "course" | "chapter" | "section" | "concept";
 
 /**
  * Node completion/availability status - determines visual styling
+ * Aligns with LearningNodeStatus from ./learningNode.ts
+ * @see LearningNodeStatus for the canonical definition
  */
 export type NodeStatus = "completed" | "in_progress" | "available" | "locked";
+
+/**
+ * Type assertion that NodeStatus is compatible with LearningNodeStatus
+ * (minus 'skipped' which is not used in map visualization)
+ */
+type _NodeStatusCheck = Exclude<LearningNodeStatus, "skipped"> extends NodeStatus ? true : never;
 
 /**
  * Difficulty level for courses
@@ -36,8 +52,15 @@ export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 
 /**
  * Section content types
+ * Aligns with LearningContentType from ./learningNode.ts
+ * @see LearningContentType for the canonical definition
  */
 export type SectionType = "video" | "lesson" | "interactive" | "exercise" | "quiz";
+
+/**
+ * Type assertion that SectionType is compatible with LearningContentType
+ */
+type _SectionTypeCheck = SectionType extends LearningContentType ? true : never;
 
 /**
  * Concept content types
@@ -50,27 +73,39 @@ export type ConceptType = "definition" | "example" | "practice" | "quiz-question
 
 /**
  * Base interface for all map nodes
+ *
+ * This interface aligns with LearningNodeBase from ./learningNode.ts:
+ * - id -> LearningNodeBase.id
+ * - name -> LearningNodeBase.title
+ * - status -> LearningNodeBase.status (NodeStatus is compatible with LearningNodeStatus)
+ * - progress -> LearningNodeBase.progress
+ * - description -> LearningNodeWithDomain.description
+ * - domainId -> LearningNodeWithDomain.domainId
+ * - color -> LearningNodeWithDomain.color
+ * - parentId/childIds -> LearningNodeWithRelations
+ *
+ * @see LearningNodeBase for the canonical learning node type
  */
 export interface MapNodeBase {
-    /** Unique identifier */
+    /** Unique identifier (maps to LearningNodeBase.id) */
     id: string;
     /** Node hierarchy level */
     level: NodeLevel;
-    /** Display name */
+    /** Display name (maps to LearningNodeBase.title) */
     name: string;
-    /** Description text */
+    /** Description text (maps to LearningNodeWithDomain.description) */
     description: string;
-    /** Completion status */
+    /** Completion status (compatible with LearningNodeStatus) */
     status: NodeStatus;
-    /** Progress percentage (0-100) */
+    /** Progress percentage (0-100) - same as LearningNodeBase.progress */
     progress: number;
-    /** Parent node ID (null for top-level domains) */
+    /** Parent node ID (null for top-level domains) - same as LearningNodeWithRelations.parentId */
     parentId: string | null;
-    /** Child node IDs */
+    /** Child node IDs - same as LearningNodeWithRelations.childIds */
     childIds: string[];
-    /** Color key for theming */
+    /** Color key for theming - same as LearningNodeWithDomain.color */
     color: DomainColorKey;
-    /** Learning domain this node belongs to */
+    /** Learning domain this node belongs to - same as LearningNodeWithDomain.domainId */
     domainId: LearningDomainId;
     /** Estimated hours to complete */
     estimatedHours?: number;
@@ -297,6 +332,8 @@ export interface KnowledgeMapProps {
     onStartLearning?: (nodeId: string) => void;
     /** Theme mode */
     theme?: "light" | "dark";
+    /** Hypothetical nodes to render on the map */
+    hypotheticalNodes?: HypotheticalMapNode[];
 }
 
 // ============================================================================
@@ -445,3 +482,136 @@ export function getChildCountLabel(node: MapNode): string {
     }
     return "";
 }
+
+// ============================================================================
+// ORACLE INTEGRATION TYPES
+// ============================================================================
+
+/**
+ * Visual mode for nodes when Oracle is active
+ */
+export type NodeVisualMode = "normal" | "recommended" | "hypothetical";
+
+/**
+ * Styling configuration for node visual modes
+ */
+export interface NodeVisualModeConfig {
+    /** Ring/glow class for recommended nodes */
+    ringClass: string;
+    /** Glow/shadow class */
+    glowClass: string;
+    /** Border class for hypothetical nodes */
+    borderClass: string;
+    /** Opacity class */
+    opacityClass: string;
+    /** Pulse animation class */
+    pulseClass?: string;
+}
+
+/**
+ * Visual mode styling configurations
+ */
+export const NODE_VISUAL_MODE_CONFIG: Record<NodeVisualMode, NodeVisualModeConfig> = {
+    normal: {
+        ringClass: "",
+        glowClass: "",
+        borderClass: "",
+        opacityClass: "",
+    },
+    recommended: {
+        ringClass: "ring-2 ring-indigo-400/60 dark:ring-indigo-500/60",
+        glowClass: "shadow-lg shadow-indigo-500/30 dark:shadow-indigo-400/20",
+        borderClass: "border-indigo-400 dark:border-indigo-500",
+        opacityClass: "",
+        pulseClass: "animate-pulse-subtle",
+    },
+    hypothetical: {
+        ringClass: "",
+        glowClass: "",
+        borderClass: "border-dashed border-2 border-slate-400 dark:border-slate-500",
+        opacityClass: "opacity-60",
+    },
+};
+
+/**
+ * A hypothetical node that doesn't exist yet in the knowledge map
+ * Generated by the Oracle for skills not covered by existing courses
+ */
+export interface HypotheticalMapNode {
+    /** Unique identifier (prefixed with 'hypothetical-') */
+    id: string;
+    /** Node hierarchy level (typically 'course' or 'chapter') */
+    level: NodeLevel;
+    /** Display name */
+    name: string;
+    /** Description text */
+    description: string;
+    /** Skills this node would teach */
+    skills: string[];
+    /** Estimated hours to complete */
+    estimatedHours: number;
+    /** Color key for theming */
+    color: DomainColorKey;
+    /** Learning domain this node belongs to */
+    domainId: LearningDomainId;
+    /** Computed position for layout */
+    position: { x: number; y: number };
+    /** Parent node ID for placement */
+    parentId: string | null;
+    /** Difficulty level */
+    difficulty?: DifficultyLevel;
+    /** Source module from Oracle path */
+    sourceModuleId?: string;
+
+}
+
+/**
+ * Connection for recommended path visualization
+ */
+export interface RecommendedPathConnection {
+    /** Unique identifier */
+    id: string;
+    /** Source node ID */
+    fromId: string;
+    /** Target node ID */
+    toId: string;
+    /** Sequence order in the path */
+    sequence: number;
+    /** Whether the target is a hypothetical node */
+    isHypothetical: boolean;
+}
+
+/**
+ * Oracle step in the bottom panel wizard
+ */
+export type OracleWizardStep = "skills" | "goal" | "preferences" | "generating" | "complete";
+
+/**
+ * State for the Oracle + Knowledge Map integration
+ */
+export interface OracleMapIntegrationState {
+    /** IDs of nodes recommended by the Oracle path */
+    recommendedNodeIds: Set<string>;
+    /** Hypothetical nodes to be created */
+    hypotheticalNodes: HypotheticalMapNode[];
+    /** Recommended path connections for visualization */
+    pathConnections: RecommendedPathConnection[];
+    /** Whether the bottom panel is expanded */
+    bottomPanelExpanded: boolean;
+    /** Whether the path preview sidebar is visible */
+    pathPreviewVisible: boolean;
+    /** Current step in the oracle wizard */
+    activeStep: OracleWizardStep;
+}
+
+/**
+ * Initial state for Oracle Map integration
+ */
+export const INITIAL_ORACLE_MAP_STATE: OracleMapIntegrationState = {
+    recommendedNodeIds: new Set(),
+    hypotheticalNodes: [],
+    pathConnections: [],
+    bottomPanelExpanded: false,
+    pathPreviewVisible: false,
+    activeStep: "skills",
+};

@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { Copy, Check, Code2 } from "lucide-react";
-import { cn } from "@/app/shared/lib/utils";
+import { cn, elevation } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 
 export interface CodeBlockProps {
@@ -49,7 +49,7 @@ export const CodeBlock = ({
     const lines = code.split("\n");
 
     return (
-        <div className={cn("relative rounded-xl overflow-hidden", className)}>
+        <div className={cn("relative rounded-xl overflow-hidden", elevation.flat, className)}>
             {/* Header Bar */}
             {showHeader && (
                 <div className="flex items-center justify-between px-4 py-2 bg-slate-800 dark:bg-slate-800">

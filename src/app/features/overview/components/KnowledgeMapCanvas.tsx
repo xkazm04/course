@@ -81,6 +81,16 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
         return data.nodes.filter(node => node.category === categoryFilter);
     }, [data.nodes, categoryFilter]);
 
+    // Pre-build stable lookup Map for O(1) node access - stabilizes callback identity
+    // and reduces per-frame work from O(n) find() to O(1) Map.get() per connection
+    const nodeMap = useMemo(() => {
+        const map = new Map<string, CurriculumNode>();
+        for (const node of filteredNodes) {
+            map.set(node.id, node);
+        }
+        return map;
+    }, [filteredNodes]);
+
     // Filter connections to only show those between visible nodes
     const filteredConnections = useMemo(() => {
         const nodeIds = new Set(filteredNodes.map(n => n.id));
@@ -151,15 +161,11 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
         container.style.setProperty(CSS_VAR_GRID_SIZE, `${gridSize}px`);
     }, []);
 
-    // Get node by ID for connection rendering
-    const getNodeById = useCallback((id: string) => {
-        return filteredNodes.find(n => n.id === id);
-    }, [filteredNodes]);
-
     // Get connection style based on type and connected nodes
+    // Uses pre-built nodeMap for O(1) lookups instead of O(n) find()
     const getConnectionStyle = useCallback((connection: CurriculumConnection) => {
-        const fromNode = getNodeById(connection.from);
-        const toNode = getNodeById(connection.to);
+        const fromNode = nodeMap.get(connection.from);
+        const toNode = nodeMap.get(connection.to);
 
         if (!fromNode || !toNode) return CONNECTION_COLORS.optional;
 
@@ -170,12 +176,13 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
         }
 
         return CONNECTION_COLORS[connection.type];
-    }, [getNodeById]);
+    }, [nodeMap]);
 
     // Generate SVG path for curved connections
+    // Uses pre-built nodeMap for O(1) lookups instead of O(n) find()
     const generateConnectionPath = useCallback((connection: CurriculumConnection) => {
-        const fromNode = getNodeById(connection.from);
-        const toNode = getNodeById(connection.to);
+        const fromNode = nodeMap.get(connection.from);
+        const toNode = nodeMap.get(connection.to);
 
         if (!fromNode || !toNode) return "";
 
@@ -190,7 +197,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
         const controlY2 = endY - (endY - midY) * 0.8;
 
         return `M ${startX} ${startY} C ${startX} ${controlY1}, ${endX} ${controlY2}, ${endX} ${endY}`;
-    }, [getNodeById]);
+    }, [nodeMap]);
 
     /**
      * Mouse event handlers for panning using ref-based tracking.

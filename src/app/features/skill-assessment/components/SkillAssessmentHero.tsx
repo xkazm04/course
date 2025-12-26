@@ -322,13 +322,36 @@ const DefaultNavigation = ({
 
             {/* Assessment CTA */}
             {!hasCompletedOnboarding && (
-                <button
-                    onClick={onStartAssessment}
-                    className="mb-4 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold text-sm hover:from-indigo-600 hover:to-purple-700 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-indigo-500/25"
-                    data-testid="start-assessment-cta"
-                >
-                    ✨ Personalize Your Path (60s)
-                </button>
+                <div className="mb-4">
+                    <button
+                        onClick={onStartAssessment}
+                        className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold text-sm hover:from-indigo-600 hover:to-purple-700 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-indigo-500/25"
+                        data-testid="start-assessment-cta"
+                    >
+                        ✨ Get Your Personalized Roadmap (60s)
+                    </button>
+                    {/* Benefit indicators */}
+                    <div className="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[10px] text-slate-500 dark:text-slate-400">
+                        <span className="flex items-center gap-1" data-testid="benefit-tailored-modules">
+                            <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Tailored modules
+                        </span>
+                        <span className="flex items-center gap-1" data-testid="benefit-custom-order">
+                            <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Custom order
+                        </span>
+                        <span className="flex items-center gap-1" data-testid="benefit-skill-matched">
+                            <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Skill-matched content
+                        </span>
+                    </div>
+                </div>
             )}
 
             {/* Module list */}

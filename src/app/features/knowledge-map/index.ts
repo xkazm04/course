@@ -13,11 +13,12 @@
  * - Reduced motion support
  */
 
-// Main component
+// Main components
 export { KnowledgeMap } from "./KnowledgeMap";
+export { KnowledgeMapWithOracle } from "./KnowledgeMapWithOracle";
 export { default } from "./KnowledgeMap";
 
-// Sub-components
+// Core sub-components
 export {
     MapNode,
     MapCanvas,
@@ -26,6 +27,20 @@ export {
     MapControls,
     MapLegend,
     NodeDetailsPanel,
+} from "./components";
+
+// Oracle integration components
+export {
+    HypotheticalNode,
+    RecommendedNodeGlow,
+    OracleBottomPanel,
+    OracleCollapsedBar,
+    OracleExpandedWizard,
+    OracleStepIndicator,
+    PathPreviewSidebar,
+    PathModuleCard,
+    PathMilestoneMarker,
+
 } from "./components";
 
 // Types - Note: MapNode type renamed to MapNodeData to avoid conflict with MapNode component
@@ -73,6 +88,34 @@ export {
 export { useMapNavigation } from "./lib/useMapNavigation";
 export { useMapViewport } from "./lib/useMapViewport";
 export { useMapLayout } from "./lib/useMapLayout";
+export { useOracleMapIntegration } from "./lib/useOracleMapIntegration";
+export type { UseOracleMapIntegrationOptions, UseOracleMapIntegrationReturn } from "./lib/useOracleMapIntegration";
 
 // Data utilities
 export { generateKnowledgeMapData, getNodeChildren, getVisibleConnections } from "./lib/mapData";
+
+// Oracle mapping utilities
+export {
+    skillToDomainId,
+    getDomainColor,
+    findMatchingNodes,
+    mapModuleToHypotheticalNode,
+    mapPathToHypotheticalNodes,
+    mapPathToConnections,
+    calculateHypotheticalPositions,
+    formatModuleDuration,
+    getSkillDemandIndicator,
+} from "./lib/oracleNodeMapping";
+
+// Oracle types
+export type {
+    NodeVisualMode,
+    NodeVisualModeConfig,
+    HypotheticalMapNode,
+    RecommendedPathConnection,
+    OracleWizardStep,
+    OracleMapIntegrationState,
+
+} from "./lib/types";
+
+export { NODE_VISUAL_MODE_CONFIG, INITIAL_ORACLE_MAP_STATE } from "./lib/types";

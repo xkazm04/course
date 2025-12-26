@@ -30,7 +30,7 @@ import {
     useVelocityPrefetch,
 } from "@/app/features/user-velocity";
 import { FloatingBadge, Button } from "@/app/shared/components";
-import { SkillAssessmentHero, assessmentStorage } from "@/app/features/skill-assessment";
+import { SkillAssessmentHeroLazy, assessmentStorage } from "@/app/features/skill-assessment";
 import { Target, Award, Rocket, Zap } from "lucide-react";
 
 // ============================================================================
@@ -364,8 +364,8 @@ export const LandingPolymorphic = ({
                             </div>
                         </motion.div>
 
-                        {/* Front Card - Interactive Skill Assessment */}
-                        <SkillAssessmentHero theme={theme} reducedMotion={!shouldAnimate} />
+                        {/* Front Card - Interactive Skill Assessment (Lazy-loaded) */}
+                        <SkillAssessmentHeroLazy theme={theme} reducedMotion={!shouldAnimate} />
                     </div>
                 </div>
             </div>

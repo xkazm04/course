@@ -89,7 +89,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mb-6">
-                <PrismaticCard glowColor="indigo" elevation="flat" className="!rounded-xl" data-testid="stats-bookmarks-card">
+                <PrismaticCard glowColor="indigo" cardElevation="flat" className="!rounded-xl" data-testid="stats-bookmarks-card">
                     <div className="p-4 text-center">
                         <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                             {stats.total}
@@ -97,7 +97,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                         <p className="text-xs text-slate-500 dark:text-slate-400">Bookmarks</p>
                     </div>
                 </PrismaticCard>
-                <PrismaticCard glowColor="purple" elevation="flat" className="!rounded-xl" data-testid="stats-courses-card">
+                <PrismaticCard glowColor="purple" cardElevation="flat" className="!rounded-xl" data-testid="stats-courses-card">
                     <div className="p-4 text-center">
                         <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                             {stats.coursesCount}
@@ -105,7 +105,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                         <p className="text-xs text-slate-500 dark:text-slate-400">Courses</p>
                     </div>
                 </PrismaticCard>
-                <PrismaticCard glowColor="cyan" elevation="flat" className="!rounded-xl" data-testid="stats-tags-card">
+                <PrismaticCard glowColor="cyan" cardElevation="flat" className="!rounded-xl" data-testid="stats-tags-card">
                     <div className="p-4 text-center">
                         <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
                             {stats.tagsCount}

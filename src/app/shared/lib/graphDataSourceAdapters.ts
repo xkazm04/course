@@ -411,7 +411,32 @@ export function createCurriculumDataSource(
 }
 
 // ============================================================================
-// SINGLETON INSTANCES
+// WEAKMAP-BASED CACHING FOR STRUCTURAL SHARING
+// ============================================================================
+
+/**
+ * WeakMap cache for CurriculumGraphDataSource instances keyed by data object.
+ *
+ * This provides true structural sharing - when the same data object is passed,
+ * the same data source instance is returned. When the data object is garbage
+ * collected, the cached data source is automatically cleaned up.
+ *
+ * Benefits:
+ * - Eliminates redundant graph construction during component remounts
+ * - Avoids iterating 123+ nodes to rebuild nodeCache Map on each mount
+ * - Automatic cleanup via WeakMap semantics (no memory leaks)
+ */
+const curriculumDataSourceCache = new WeakMap<CurriculumData, CurriculumGraphDataSource>();
+
+/**
+ * WeakMap cache for LearningPathGraphDataSource instances.
+ * Since learningPaths is a module-level constant, we use a simple key object.
+ */
+const learningPathCacheKey = { __brand: "learningPathCacheKey" } as const;
+const learningPathDataSourceCache = new WeakMap<typeof learningPathCacheKey, LearningPathGraphDataSource>();
+
+// ============================================================================
+// SINGLETON INSTANCES (LEGACY - kept for backward compatibility)
 // ============================================================================
 
 // Lazy-initialized singleton instances for common use
@@ -419,23 +444,52 @@ let learningPathDataSourceInstance: LearningPathGraphDataSource | null = null;
 let curriculumDataSourceInstance: CurriculumGraphDataSource | null = null;
 
 /**
- * Get the shared learning path data source instance
+ * Get the shared learning path data source instance.
+ * Uses WeakMap caching for structural sharing.
  */
 export function getLearningPathDataSource(): LearningPathGraphDataSource {
+    // Check WeakMap cache first
+    let cached = learningPathDataSourceCache.get(learningPathCacheKey);
+    if (cached) {
+        return cached;
+    }
+
+    // Fall back to singleton pattern for initial creation
     if (!learningPathDataSourceInstance) {
         learningPathDataSourceInstance = createLearningPathDataSource();
     }
+
+    // Store in WeakMap for consistency
+    learningPathDataSourceCache.set(learningPathCacheKey, learningPathDataSourceInstance);
     return learningPathDataSourceInstance;
 }
 
 /**
- * Get the shared curriculum data source instance
+ * Get the shared curriculum data source instance.
+ * Uses WeakMap caching keyed by data object for structural sharing.
+ *
+ * @param data - Optional curriculum data. Defaults to the module-level curriculumData.
+ *               When the same data object reference is passed, returns the cached instance.
  */
-export function getCurriculumDataSource(): CurriculumGraphDataSource {
-    if (!curriculumDataSourceInstance) {
-        curriculumDataSourceInstance = createCurriculumDataSource();
+export function getCurriculumDataSource(data: CurriculumData = curriculumData): CurriculumGraphDataSource {
+    // Check WeakMap cache for this specific data object
+    let cached = curriculumDataSourceCache.get(data);
+    if (cached) {
+        return cached;
     }
-    return curriculumDataSourceInstance;
+
+    // Create new instance for this data object
+    const instance = createCurriculumDataSource(data);
+
+    // Cache by data object reference for structural sharing
+    curriculumDataSourceCache.set(data, instance);
+
+    // Also update module-level singleton if using default data
+    if (data === curriculumData) {
+        curriculumDataSourceInstance = instance;
+    }
+
+    return instance;
 }
 
 // ============================================================================

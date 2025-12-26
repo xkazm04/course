@@ -5,7 +5,7 @@
  */
 
 import type { LearnerProfile, SkillGapAnalysis } from "../types";
-import { curriculumData, getNodeById } from "@/app/features/overview/lib/curriculumData";
+import { getNodeById, getNodesBySkill } from "@/app/features/overview/lib/curriculumData";
 import { mockJobMarketData } from "./mockData";
 
 /**
@@ -48,16 +48,16 @@ export function analyzeSkillGaps(profile: LearnerProfile): SkillGapAnalysis {
         minLevel: Math.round(s.frequency * 80),
     }));
 
-    // Calculate gaps
+    // Calculate gaps using pre-computed skill-to-node index
+    // This transforms O(skills * nodes) to O(skills) by using getNodesBySkill
     const gaps = requiredSkills.map(required => {
         const currentLevel = currentSkillsMap.get(required.skill) || 0;
         const gapSize = Math.max(0, required.minLevel - currentLevel);
 
-        // Find related curriculum nodes
-        const relatedNodes = curriculumData.nodes
-            .filter(node => node.skills.includes(required.skill))
+        // Find related curriculum nodes using pre-computed index
+        // getNodesBySkill returns nodes already sorted by tier
+        const relatedNodes = getNodesBySkill(required.skill)
             .filter(node => !profile.completedNodes.includes(node.id))
-            .sort((a, b) => a.tier - b.tier)
             .slice(0, 3)
             .map(n => n.id);
 

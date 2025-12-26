@@ -20,6 +20,46 @@ import type {
 } from "./types";
 
 // ============================================================================
+// Memoization Cache for Comprehension Insights
+// ============================================================================
+
+interface InsightsResult {
+    trend: "improving" | "stable" | "struggling";
+    recentPerformance: number;
+    strengths: string[];
+    weaknesses: string[];
+}
+
+interface InsightsCache {
+    hash: string;
+    result: InsightsResult;
+}
+
+let insightsCache: InsightsCache | null = null;
+
+/**
+ * Generate a stable hash from signal timestamps for cache invalidation
+ * Uses the last 40 signals' timestamps to create a unique fingerprint
+ */
+function generateSignalHash(signals: BehaviorSignal[]): string {
+    const last40 = signals.slice(-40);
+    if (last40.length === 0) return "empty";
+
+    // Create hash from timestamps - changes when new signals arrive or order changes
+    const timestampStr = last40.map(s => s.timestamp).join(",");
+
+    // Simple hash function for stable string comparison
+    let hash = 0;
+    for (let i = 0; i < timestampStr.length; i++) {
+        const char = timestampStr.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+
+    return `${last40.length}-${hash}`;
+}
+
+// ============================================================================
 // Signal Weights - How much each signal type contributes to comprehension
 // ============================================================================
 
@@ -344,15 +384,9 @@ export function createComprehensionModel(courseId: string, userId?: string): Com
 }
 
 /**
- * Get suggested adaptation based on comprehension
+ * Compute insights without caching (internal function)
  */
-export function getComprehensionInsights(model: ComprehensionModel): {
-    trend: "improving" | "stable" | "struggling";
-    recentPerformance: number;
-    strengths: string[];
-    weaknesses: string[];
-} {
-    const signals = model.signalHistory;
+function computeComprehensionInsights(signals: BehaviorSignal[]): InsightsResult {
     const recentSignals = signals.slice(-20);
     const olderSignals = signals.slice(-40, -20);
 
@@ -393,4 +427,31 @@ export function getComprehensionInsights(model: ComprehensionModel): {
         strengths,
         weaknesses,
     };
+}
+
+/**
+ * Get suggested adaptation based on comprehension
+ * Memoized: only recomputes when the last 40 signals' timestamps change
+ */
+export function getComprehensionInsights(model: ComprehensionModel): InsightsResult {
+    const signals = model.signalHistory;
+    const currentHash = generateSignalHash(signals);
+
+    // Return cached result if hash matches
+    if (insightsCache && insightsCache.hash === currentHash) {
+        return insightsCache.result;
+    }
+
+    // Compute new insights and cache
+    const result = computeComprehensionInsights(signals);
+    insightsCache = { hash: currentHash, result };
+
+    return result;
+}
+
+/**
+ * Clear the insights cache (useful for testing or when resetting state)
+ */
+export function clearInsightsCache(): void {
+    insightsCache = null;
 }

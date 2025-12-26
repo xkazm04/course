@@ -21,17 +21,12 @@ export {
     type LandingSocialProofProps,
 } from "./LandingSocialProof";
 
-// Re-export ThemeCompiler utilities for convenient access
+// Progressive Disclosure - Unified landing experience
+// Combines all variants into scroll-based progressive revelation:
+// Layer 1 (Hero): Minimal entry point
+// Layer 2 (Social Proof): Social validation on scroll
+// Layer 3 (Universe): Content preview on deeper engagement
 export {
-    themeCompiler,
-    ThemeCompiler,
-    type ThemeIntent,
-    type ThemePreset,
-    getPreset,
-    listPresets,
-    getPresetsByCategory,
-    useCompiledTheme,
-    useThemePresets,
-    useStaticTheme,
-    useAccessibleTheme,
-} from "@/app/shared/lib/variantMachine";
+    LandingProgressive,
+    type LandingProgressiveProps,
+} from "./LandingProgressive";

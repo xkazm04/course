@@ -30,7 +30,12 @@ import {
     markNodeCompleted,
     markNodeInProgress,
 } from "./behaviorStorage";
-import { generateRecommendations, generatePredictions, analyzeLearningData } from "./predictionEngine";
+import {
+    lazyGenerateRecommendations,
+    lazyGeneratePredictions,
+    lazyAnalyzeLearningData,
+    preloadEngine,
+} from "./lazyPredictionEngine";
 
 // ============================================================================
 // INITIAL STATE
@@ -164,6 +169,8 @@ interface AdaptiveLearningContextValue {
     getRecommendedPath: () => PathRecommendation | null;
     // Suggestion actions
     dismissSuggestion: (title: string) => void;
+    // Engine preloading (for anticipatory loading on hover, etc.)
+    preloadPredictionEngine: () => void;
 }
 
 const AdaptiveLearningContext = createContext<AdaptiveLearningContextValue | null>(null);
@@ -245,25 +252,25 @@ export function AdaptiveLearningProvider({ children }: AdaptiveLearningProviderP
         }
     }, [state.recommendations, state.profile?.completedNodes]);
 
-    // Refresh recommendations
+    // Refresh recommendations (lazy-loads prediction engine on first call)
     const refreshRecommendations = useCallback(async () => {
         if (!state.profile) return;
 
         dispatch({ type: "SET_LOADING", payload: true });
 
         try {
-            // Generate new recommendations based on profile
-            const recommendations = await generateRecommendations(state.profile);
+            // Generate new recommendations based on profile (lazy-loads engine)
+            const recommendations = await lazyGenerateRecommendations(state.profile);
             dispatch({ type: "SET_RECOMMENDATIONS", payload: recommendations });
 
             // Generate predictions for all nodes in recommendations
             const nodeIds = recommendations.flatMap(r => r.nodeIds);
             const uniqueNodeIds = [...new Set(nodeIds)];
-            const predictions = await generatePredictions(state.profile, uniqueNodeIds);
+            const predictions = await lazyGeneratePredictions(state.profile, uniqueNodeIds);
             dispatch({ type: "SET_PREDICTIONS", payload: predictions });
 
             // Analyze learning data
-            const analytics = await analyzeLearningData(state.profile);
+            const analytics = await lazyAnalyzeLearningData(state.profile);
             dispatch({ type: "SET_ANALYTICS", payload: analytics });
 
             // Check for suggestions based on analytics
@@ -300,12 +307,18 @@ export function AdaptiveLearningProvider({ children }: AdaptiveLearningProviderP
         initializeProfile();
     }, [initializeProfile]);
 
-    // Auto-refresh recommendations when profile changes significantly
+    // Preload prediction engine when user starts a session (likely to use recommendations)
     useEffect(() => {
-        if (state.profile && !state.isLoading && state.recommendations.length === 0) {
-            refreshRecommendations();
+        if (state.activeSession) {
+            preloadEngine();
         }
-    }, [state.profile, state.isLoading, state.recommendations.length, refreshRecommendations]);
+    }, [state.activeSession]);
+
+    // NOTE: Auto-refresh on mount has been removed for performance optimization.
+    // The prediction engine is now lazy-loaded and will only be fetched when:
+    // 1. User explicitly calls refreshRecommendations()
+    // 2. User starts a learning session (preloads engine)
+    // 3. Components that need recommendations call refreshRecommendations()
 
     const value: AdaptiveLearningContextValue = {
         state,
@@ -319,6 +332,7 @@ export function AdaptiveLearningProvider({ children }: AdaptiveLearningProviderP
         getPredictionForNode,
         getRecommendedPath,
         dismissSuggestion,
+        preloadPredictionEngine: preloadEngine,
     };
 
     return (

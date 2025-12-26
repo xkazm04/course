@@ -5,6 +5,8 @@
  *
  * Manages local storage of generated curriculum content for caching,
  * reuse, and offline access. Uses the storage factory pattern.
+ *
+ * Enhanced with semantic deduplication for intelligent content reuse.
  */
 
 import { createLocalStorage, createArrayStorage, generateId } from "@/app/shared/lib/storageFactory";
@@ -15,7 +17,20 @@ import type {
     CompletionData,
     ContentQualityMetrics,
     CacheStats,
+    CurriculumGenerationRequest,
+    DifficultyLevel,
 } from "./types";
+import {
+    semanticCache,
+    type SemanticLookupResult,
+    type SemanticCacheStats,
+} from "./semanticCache";
+import {
+    generateMasterySignal,
+    type MasterySignal,
+    type SkillProficiency,
+} from "./masterySignal";
+import { masteryStorage } from "./masteryStorage";
 
 // ============================================================================
 // STORAGE KEYS
@@ -259,10 +274,23 @@ const completionStorage = createArrayStorage<CompletionData>({
 });
 
 /**
- * Track content completion
+ * Extended completion tracking options for mastery signal generation
+ */
+export interface TrackCompletionOptions {
+    /** Skills associated with this content */
+    skills?: Array<{ id: string; name: string }>;
+    /** Content difficulty level */
+    contentDifficulty?: DifficultyLevel;
+    /** Whether to generate mastery signals */
+    generateMasterySignals?: boolean;
+}
+
+/**
+ * Track content completion and optionally generate mastery signals
  */
 export function trackCompletion(
-    data: Omit<CompletionData, "id">
+    data: Omit<CompletionData, "id">,
+    options?: TrackCompletionOptions
 ): CompletionData {
     // Check for existing record
     const existing = completionStorage
@@ -274,19 +302,76 @@ export function trackCompletion(
                 c.curriculumId === data.curriculumId
         );
 
+    let completionData: CompletionData;
+
     if (existing) {
         // Update existing
-        return completionStorage.updateEntity(existing.id, {
+        completionData = completionStorage.updateEntity(existing.id, {
             ...data,
             attempts: existing.attempts + 1,
         }) as CompletionData;
+    } else {
+        // Create new
+        completionData = completionStorage.add({
+            ...data,
+            id: generateId(),
+        });
     }
 
-    // Create new
-    return completionStorage.add({
-        ...data,
-        id: generateId(),
+    // Generate mastery signals if enabled and content is completed
+    if (
+        options?.generateMasterySignals !== false &&
+        data.status === "completed" &&
+        options?.skills &&
+        options.skills.length > 0
+    ) {
+        const difficulty = options.contentDifficulty || "intermediate";
+
+        for (const skill of options.skills) {
+            const signal = generateMasterySignal(
+                completionData,
+                skill.id,
+                skill.name,
+                difficulty
+            );
+
+            // Store the signal
+            masteryStorage.storeMasterySignal(signal);
+
+            // Update skill proficiency
+            masteryStorage.updateSkillProficiency(
+                data.userId,
+                skill.id,
+                skill.name
+            );
+        }
+    }
+
+    return completionData;
+}
+
+/**
+ * Track completion with automatic mastery signal generation
+ * This is a convenience wrapper that always generates signals
+ */
+export function trackCompletionWithMastery(
+    data: Omit<CompletionData, "id">,
+    skills: Array<{ id: string; name: string }>,
+    contentDifficulty: DifficultyLevel = "intermediate"
+): { completion: CompletionData; signals: MasterySignal[] } {
+    const completionData = trackCompletion(data, {
+        skills,
+        contentDifficulty,
+        generateMasterySignals: true,
     });
+
+    // Retrieve the generated signals
+    const signals = masteryStorage.getContentMasterySignals(data.contentId);
+
+    return {
+        completion: completionData,
+        signals,
+    };
 }
 
 /**
@@ -520,17 +605,135 @@ export function getFavoriteCurricula(): GeneratedCurriculum[] {
 }
 
 // ============================================================================
+// SEMANTIC CACHE INTEGRATION
+// ============================================================================
+
+/**
+ * Look up curriculum using semantic similarity matching.
+ * This enables partial cache hits where semantically similar requests
+ * can reuse cached content, reducing API calls significantly.
+ *
+ * @param request - The curriculum generation request
+ * @returns Semantic lookup result with match type and content
+ */
+export function getSemanticCachedCurriculum(
+    request: CurriculumGenerationRequest
+): SemanticLookupResult {
+    return semanticCache.lookup(request);
+}
+
+/**
+ * Store curriculum with semantic fingerprinting for similarity matching.
+ *
+ * @param request - The original generation request
+ * @param curriculum - The generated curriculum to cache
+ * @param options - Optional metadata for delta-generated content
+ * @returns Cache key for the stored entry
+ */
+export function cacheSemanticCurriculum(
+    request: CurriculumGenerationRequest,
+    curriculum: GeneratedCurriculum,
+    options?: {
+        isDeltaGenerated?: boolean;
+        parentCacheKey?: string;
+    }
+): string {
+    // Also store in traditional cache for backwards compatibility
+    const traditionalKey = `curriculum-${curriculum.id}`;
+    cacheCurriculum(traditionalKey, curriculum);
+
+    // Store with semantic metadata
+    return semanticCache.store(request, curriculum, options);
+}
+
+/**
+ * Get semantic cache statistics including hit rates and API savings.
+ */
+export function getSemanticCacheStats(): SemanticCacheStats {
+    return semanticCache.getStats();
+}
+
+/**
+ * Combined cache statistics including both traditional and semantic caches.
+ */
+export interface CombinedCacheStats extends CacheStats {
+    semantic: SemanticCacheStats;
+    totalApiCallsSaved: number;
+    effectiveHitRate: number;
+}
+
+/**
+ * Get combined statistics from both caching systems.
+ */
+export function getCombinedCacheStats(): CombinedCacheStats {
+    const traditional = getCacheStats();
+    const semantic = getSemanticCacheStats();
+
+    // Calculate effective hit rate considering semantic matches
+    const traditionalRequests = traditional.hitRate > 0
+        ? traditional.popularEntries.reduce((sum, e) => sum + e.hitCount, 0)
+        : 0;
+
+    const totalSemanticRequests =
+        semantic.exactHitRate + semantic.semanticHitRate > 0
+            ? semantic.totalEntries
+            : 0;
+
+    const totalRequests = Math.max(traditionalRequests, totalSemanticRequests, 1);
+
+    return {
+        ...traditional,
+        semantic,
+        totalApiCallsSaved: semantic.estimatedApiCallsSaved,
+        effectiveHitRate: semantic.overallHitRate,
+    };
+}
+
+/**
+ * Clear both traditional and semantic caches.
+ */
+export function clearAllCaches(): void {
+    clearCurriculumCache();
+    semanticCache.clear();
+}
+
+/**
+ * Cleanup expired entries from both caches.
+ */
+export function cleanupAllCaches(): { traditional: number; semantic: number } {
+    return {
+        traditional: cleanupExpiredCache(),
+        semantic: semanticCache.cleanup(),
+    };
+}
+
+// ============================================================================
 // EXPORT ALL STORAGE FUNCTIONS
 // ============================================================================
 
 export const curriculumStorage = {
-    // Cache
+    // Traditional Cache
     getCached: getCachedCurriculum,
     cache: cacheCurriculum,
     removeCache: removeCachedCurriculum,
     clearCache: clearCurriculumCache,
     cleanupCache: cleanupExpiredCache,
     getCacheStats,
+
+    // Semantic Cache
+    getSemanticCached: getSemanticCachedCurriculum,
+    cacheWithSemantic: cacheSemanticCurriculum,
+    getSemanticStats: getSemanticCacheStats,
+    getCombinedStats: getCombinedCacheStats,
+    clearAllCaches,
+    cleanupAllCaches,
+
+    // Delta content merging
+    mergeDeltaCurriculum: semanticCache.mergeDelta,
+
+    // Semantic thresholds
+    SEMANTIC_SIMILARITY_THRESHOLD: semanticCache.SIMILARITY_THRESHOLD,
+    FULL_REUSE_THRESHOLD: semanticCache.FULL_REUSE_THRESHOLD,
 
     // Feedback
     submitFeedback,
@@ -539,6 +742,7 @@ export const curriculumStorage = {
 
     // Completion
     trackCompletion,
+    trackCompletionWithMastery,
     getUserCompletionData,
     getCurriculumCompletionRate,
     getUserProgressStats,
@@ -554,4 +758,16 @@ export const curriculumStorage = {
     deleteUserCurriculum,
     toggleFavorite,
     getFavoriteCurricula,
+
+    // Mastery Signals (delegated to masteryStorage)
+    getMasterySignals: masteryStorage.getUserMasterySignals,
+    getSkillMasterySignals: masteryStorage.getSkillMasterySignals,
+    getSkillProficiency: masteryStorage.getSkillProficiency,
+    getUserSkillProficiencies: masteryStorage.getUserSkillProficiencies,
+    recalculateUserProficiencies: masteryStorage.recalculateUserProficiencies,
+    generatePathRecalibration: masteryStorage.generateAndStoreRecalibration,
+    getPathRecalibration: masteryStorage.getPathRecalibration,
+    getMasteryAnalytics: masteryStorage.getMasteryAnalytics,
+    getSkillsNeedingAttention: masteryStorage.getSkillsNeedingAttention,
+    getHighPerformingSkills: masteryStorage.getHighPerformingSkills,
 };

@@ -200,6 +200,8 @@ export const classicLayoutTemplate: LayoutTemplate = {
     id: "classic",
     name: "Classic",
     description: "Video player with content layout and sidebar progress",
+    dataTestId: "chapter-view-classic",
+    enableVideoControls: true,
     gridConfig: {
         columns: 3,
         mainSpan: 2,
@@ -238,6 +240,12 @@ export const expandableLayoutTemplate: LayoutTemplate = {
     id: "expandable",
     name: "Expandable",
     description: "Scrollable view with collapsible sections",
+    wrapperClass: "max-w-5xl mx-auto",
+    dataTestId: "chapter-view-expandable",
+    enableVideoControls: true,
+    responsiveConfig: {
+        mobileFullWidth: true,
+    },
     gridConfig: {
         columns: 1,
         mainSpan: 1,
@@ -265,6 +273,9 @@ export const ideLayoutTemplate: LayoutTemplate = {
     id: "ide",
     name: "IDE",
     description: "Interactive code playground with file explorer",
+    wrapperClass: "space-y-6",
+    dataTestId: "chapter-view-ide",
+    enableVideoControls: false,
     gridConfig: {
         columns: 1,
         mainSpan: 1,

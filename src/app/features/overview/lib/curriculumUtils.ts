@@ -128,6 +128,36 @@ const prerequisitesByNodeId: Map<string, string[]> = (() => {
     return map;
 })();
 
+/**
+ * Pre-computed Map for O(1) skill-to-nodes lookups.
+ * Maps each skill string to an array of nodes that contain that skill.
+ * Nodes are pre-sorted by tier (ascending) for gap analysis optimization.
+ *
+ * This transforms skill gap analysis from O(skills * nodes) to O(skills)
+ * by eliminating repeated full array scans during gap calculations.
+ */
+const nodesBySkill: Map<string, CurriculumNode[]> = (() => {
+    const map = new Map<string, CurriculumNode[]>();
+
+    for (const node of allNodes) {
+        for (const skill of node.skills) {
+            const existing = map.get(skill);
+            if (existing) {
+                existing.push(node);
+            } else {
+                map.set(skill, [node]);
+            }
+        }
+    }
+
+    // Pre-sort each skill's nodes by tier for gap analysis
+    for (const nodes of map.values()) {
+        nodes.sort((a, b) => a.tier - b.tier);
+    }
+
+    return map;
+})();
+
 // ============================================================================
 // Pre-computed Static Values
 // ============================================================================
@@ -232,6 +262,19 @@ export function hasNode(id: string): boolean {
  */
 export function getAllCategories(): string[] {
     return Array.from(nodesByCategory.keys());
+}
+
+/**
+ * Get nodes by skill - O(1) lookup.
+ * Returns nodes that contain the specified skill, pre-sorted by tier.
+ * This is the critical performance optimization for skill gap analysis:
+ * transforms O(skills * nodes) to O(skills) by using pre-computed index.
+ *
+ * @param skill - The skill to search for
+ * @returns Array of nodes containing the skill, sorted by tier (ascending)
+ */
+export function getNodesBySkill(skill: string): CurriculumNode[] {
+    return nodesBySkill.get(skill)?.slice() ?? [];
 }
 
 // ============================================================================

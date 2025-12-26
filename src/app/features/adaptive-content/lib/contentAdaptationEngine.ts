@@ -4,6 +4,10 @@
  * Generates adaptive content slots based on comprehension level.
  * This engine creates additional explanations, simplified examples,
  * or advanced challenges that can be injected into the slot-based layout.
+ *
+ * Now enhanced with collaborative filtering to recommend content that
+ * helped similar learners, transforming individual adaptation into
+ * collective intelligence.
  */
 
 import type {
@@ -11,6 +15,8 @@ import type {
     AdaptationConfig,
     AdaptiveSlot,
     AdaptiveSlotContent,
+    BehaviorSignal,
+    ComprehensionScore,
 } from "./types";
 import { DEFAULT_ADAPTATION_CONFIGS } from "./types";
 import type {
@@ -19,6 +25,22 @@ import type {
     CodeSlot,
     KeyPointsSlot,
 } from "../../chapter/lib/contentSlots";
+import type {
+    LearnerFingerprint,
+    CollaborativeRecommendation,
+} from "./collaborativeFiltering";
+import {
+    generateLearnerFingerprint,
+    generateCollaborativeRecommendations,
+    detectStrugglePattern,
+    recordContentEffectiveness,
+} from "./collaborativeFiltering";
+import {
+    loadCollectivePatterns,
+    addOrUpdateFingerprint,
+    addLearningPattern,
+    recordHelpfulContent,
+} from "./collectivePatternsStorage";
 
 // ============================================================================
 // Adaptive Slot Generators
@@ -227,6 +249,22 @@ export interface AdaptationContext {
 }
 
 /**
+ * Extended context for collaborative filtering integration
+ */
+export interface EnhancedAdaptationContext extends AdaptationContext {
+    /** Course ID for collective patterns lookup */
+    courseId: string;
+    /** User ID for fingerprint matching */
+    userId?: string;
+    /** User's behavior signals for fingerprint generation */
+    signals: BehaviorSignal[];
+    /** Section-level scores for fingerprint */
+    sectionScores: Record<string, { score: ComprehensionScore }>;
+    /** Enable collaborative filtering recommendations */
+    enableCollaborativeFiltering?: boolean;
+}
+
+/**
  * Generate adaptive slots based on comprehension context
  */
 export function generateAdaptiveSlots(context: AdaptationContext): AdaptiveSlot[] {
@@ -269,6 +307,277 @@ export function generateAdaptiveSlots(context: AdaptationContext): AdaptiveSlot[
     return adaptiveSlots
         .filter((slot) => slot.targetLevel.includes(comprehensionLevel))
         .sort((a, b) => b.priority - a.priority);
+}
+
+// ============================================================================
+// Collaborative Filtering Enhanced Adaptation
+// ============================================================================
+
+/**
+ * Generate adaptive slots with collaborative filtering recommendations
+ *
+ * This function enhances the rule-based adaptation with recommendations
+ * from similar learners, creating a true recommendation system.
+ */
+export function generateAdaptiveSlotsWithCollaborativeFiltering(
+    context: EnhancedAdaptationContext
+): AdaptiveSlot[] {
+    const {
+        sectionId,
+        topic,
+        currentSlots,
+        comprehensionLevel,
+        config,
+        courseId,
+        userId,
+        signals,
+        sectionScores,
+        enableCollaborativeFiltering = true,
+    } = context;
+
+    // Start with rule-based slots
+    const ruleBasedSlots = generateAdaptiveSlots({
+        sectionId,
+        topic,
+        currentSlots,
+        comprehensionLevel,
+        config,
+    });
+
+    // If collaborative filtering is disabled, return rule-based only
+    if (!enableCollaborativeFiltering || !userId || signals.length < 5) {
+        return ruleBasedSlots;
+    }
+
+    try {
+        // Generate learner fingerprint
+        const fingerprint = generateLearnerFingerprint(
+            userId,
+            courseId,
+            signals,
+            sectionScores,
+            comprehensionLevel
+        );
+
+        // Update fingerprint in collective patterns
+        addOrUpdateFingerprint(courseId, fingerprint);
+
+        // Detect and record any struggle patterns
+        const strugglePattern = detectStrugglePattern(sectionId, topic, signals);
+        if (strugglePattern) {
+            addLearningPattern(courseId, strugglePattern);
+        }
+
+        // Load collective patterns
+        const collectivePatterns = loadCollectivePatterns(courseId);
+
+        // Get collaborative recommendations
+        const recommendations = generateCollaborativeRecommendations(
+            fingerprint,
+            collectivePatterns,
+            sectionId,
+            topic,
+            5
+        );
+
+        // Convert recommendations to adaptive slots
+        const collaborativeSlots = recommendations.map((rec) =>
+            recommendationToAdaptiveSlot(rec, currentSlots)
+        );
+
+        // Merge and deduplicate slots
+        const mergedSlots = mergeAdaptiveSlots(ruleBasedSlots, collaborativeSlots);
+
+        return mergedSlots;
+    } catch (error) {
+        console.warn("Collaborative filtering failed, using rule-based only:", error);
+        return ruleBasedSlots;
+    }
+}
+
+/**
+ * Convert a collaborative recommendation to an adaptive slot
+ */
+function recommendationToAdaptiveSlot(
+    recommendation: CollaborativeRecommendation,
+    currentSlots: ContentSlot[]
+): AdaptiveSlot {
+    const { slotType, topic, confidence, reason, similarLearnersBenefited } = recommendation;
+
+    // Find existing content for enhancement
+    const existingText = currentSlots.find((s) => s.type === "text") as TextSlot | undefined;
+    const existingCode = currentSlots.find((s) => s.type === "code") as CodeSlot | undefined;
+
+    // Generate content based on slot type
+    switch (slotType) {
+        case "explanation":
+            return {
+                slotType: "explanation",
+                targetLevel: ["beginner", "intermediate"],
+                priority: Math.round(10 * confidence),
+                content: {
+                    title: `Recommended: Understanding ${topic}`,
+                    description: existingText
+                        ? simplifyExplanation(existingText.data.content)
+                        : `${reason}. This explanation helped ${similarLearnersBenefited} similar learners master this concept.`,
+                },
+            };
+
+        case "example":
+            return {
+                slotType: "example",
+                targetLevel: ["beginner", "intermediate"],
+                priority: Math.round(8 * confidence),
+                content: {
+                    title: `Recommended: ${topic} Example`,
+                    description: `This example helped ${similarLearnersBenefited} learners who struggled with similar concepts.`,
+                    code: existingCode ? simplifyCodeExample(existingCode.data.code) : undefined,
+                    codeLanguage: "typescript",
+                },
+            };
+
+        case "hint":
+            return {
+                slotType: "hint",
+                targetLevel: ["beginner"],
+                priority: Math.round(9 * confidence),
+                content: {
+                    title: "Tip from Similar Learners",
+                    description: `${similarLearnersBenefited} learners who had similar struggles found this helpful:`,
+                    points: [
+                        `Focus on understanding the core concept of ${topic} first`,
+                        "Try running the examples step by step",
+                        "Don't worry if it takes a few tries - that's normal!",
+                    ],
+                },
+            };
+
+        case "challenge":
+            return {
+                slotType: "challenge",
+                targetLevel: ["advanced"],
+                priority: Math.round(5 * confidence),
+                content: {
+                    title: `Challenge: ${topic}`,
+                    description: `This challenge helped ${similarLearnersBenefited} advanced learners deepen their understanding.`,
+                    points: generateChallengePoints(topic),
+                },
+            };
+
+        case "deepDive":
+        default:
+            return {
+                slotType: "deepDive",
+                targetLevel: ["advanced"],
+                priority: Math.round(3 * confidence),
+                content: {
+                    title: `Deep Dive: ${topic}`,
+                    description: `Recommended by ${similarLearnersBenefited} learners with similar expertise. ${generateDeepDiveContent(topic)}`,
+                    points: generateDeepDivePoints(topic),
+                },
+            };
+    }
+}
+
+/**
+ * Merge rule-based and collaborative slots, removing duplicates
+ */
+function mergeAdaptiveSlots(
+    ruleBasedSlots: AdaptiveSlot[],
+    collaborativeSlots: AdaptiveSlot[]
+): AdaptiveSlot[] {
+    const merged: AdaptiveSlot[] = [...ruleBasedSlots];
+    const existingTypes = new Set(ruleBasedSlots.map((s) => s.slotType));
+
+    for (const slot of collaborativeSlots) {
+        // If we already have this slot type from rules, only add if high confidence
+        if (existingTypes.has(slot.slotType)) {
+            // Only add if priority is high enough (collaborative recommendation is strong)
+            if (slot.priority >= 7) {
+                // Boost the existing rule-based slot instead
+                const existingIdx = merged.findIndex((s) => s.slotType === slot.slotType);
+                if (existingIdx >= 0) {
+                    merged[existingIdx] = {
+                        ...merged[existingIdx],
+                        priority: Math.max(merged[existingIdx].priority, slot.priority),
+                        content: {
+                            ...merged[existingIdx].content,
+                            description:
+                                merged[existingIdx].content.description +
+                                ` (Recommended by similar learners)`,
+                        },
+                    };
+                }
+            }
+        } else {
+            merged.push(slot);
+            existingTypes.add(slot.slotType);
+        }
+    }
+
+    return merged.sort((a, b) => b.priority - a.priority);
+}
+
+// ============================================================================
+// Content Effectiveness Tracking
+// ============================================================================
+
+/**
+ * Track that a learner viewed adaptive content
+ * Call this when content is displayed
+ */
+export function trackContentView(
+    courseId: string,
+    userId: string,
+    slotType: AdaptiveSlot["slotType"],
+    sectionId: string,
+    topic: string,
+    currentScore: number
+): ContentViewTracker {
+    return {
+        courseId,
+        userId,
+        slotType,
+        sectionId,
+        topic,
+        viewedAt: Date.now(),
+        scoreBefore: currentScore,
+    };
+}
+
+/**
+ * Content view tracker for measuring improvement
+ */
+export interface ContentViewTracker {
+    courseId: string;
+    userId: string;
+    slotType: AdaptiveSlot["slotType"];
+    sectionId: string;
+    topic: string;
+    viewedAt: number;
+    scoreBefore: number;
+}
+
+/**
+ * Record content effectiveness after learner improvement
+ * Call this after the learner completes more activities
+ */
+export function recordContentImpact(
+    tracker: ContentViewTracker,
+    scoreAfter: number
+): void {
+    const effectivenessData = recordContentEffectiveness(
+        tracker.userId,
+        tracker.slotType,
+        tracker.sectionId,
+        tracker.topic,
+        tracker.scoreBefore,
+        scoreAfter
+    );
+
+    if (effectivenessData) {
+        recordHelpfulContent(tracker.courseId, tracker.userId, effectivenessData);
+    }
 }
 
 /**

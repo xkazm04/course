@@ -38,10 +38,19 @@ export {
     toggleNodeBookmark,
 } from "./lib/behaviorStorage";
 
+// Lazy-loaded prediction engine functions (for code splitting)
 export {
-    generateRecommendations,
-    generatePredictions,
-    analyzeLearningData,
+    lazyGenerateRecommendations,
+    lazyGeneratePredictions,
+    lazyAnalyzeLearningData,
+    preloadEngine,
+    isEngineLoaded,
+} from "./lib/lazyPredictionEngine";
+
+// Direct engine access (for components that need synchronous access)
+// Note: These are NOT lazy-loaded and will be bundled with the initial chunk.
+// Prefer using the lazy versions above for better initial load performance.
+export {
     calculateLearningVelocity,
     analyzeSkillGaps,
 } from "./lib/predictionEngine";

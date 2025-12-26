@@ -3,7 +3,7 @@
 import React, { useMemo, memo, useState, useCallback } from "react";
 import { GitCompare, Code2 } from "lucide-react";
 import { CodeBlock } from "@/app/shared/components";
-import { cn } from "@/app/shared/lib/utils";
+import { cn, elevation } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import { DiffView } from "../components/DiffView";
 import { hasChanges as checkHasChanges } from "../lib/codeDiff";
@@ -66,7 +66,7 @@ const CodeSlotRendererComponent: React.FC<CodeSlotRendererProps> = ({ slot, clas
 
     // Show code with diff toggle
     return (
-        <div className={cn("space-y-0", className)} data-testid={`code-slot-${slot.id}`}>
+        <div className={cn("space-y-0 rounded-xl overflow-hidden", elevation.flat, className)} data-testid={`code-slot-${slot.id}`}>
             {/* Toggle Header */}
             <div className="flex items-center justify-between px-4 py-2 bg-slate-800 dark:bg-slate-800 rounded-t-xl border-b border-slate-700/50">
                 <div className="flex items-center gap-2">

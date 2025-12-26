@@ -40,3 +40,48 @@ export function getButtonSize(size: ButtonSize = "md"): string {
 export function buttonClasses(size: ButtonSize, ...additionalClasses: ClassValue[]): string {
     return cn(buttonSizeClasses[size], ...additionalClasses);
 }
+
+/**
+ * Unified elevation system for consistent shadow depths across the application.
+ * Uses CSS variables defined in globals.css for theme synchronization.
+ *
+ * Elevation levels:
+ * - flat: Surface content with minimal elevation (shadow-sm)
+ * - elevated: Standard cards with moderate elevation (shadow-md)
+ * - hoverable: Interactive cards with hover lift effect (shadow-md -> shadow-lg on hover)
+ * - modal: Modal/overlay content with high elevation (shadow-lg)
+ *
+ * @example
+ * ```tsx
+ * <div className={cn("rounded-xl", elevation.flat)}>Surface content</div>
+ * <div className={cn("rounded-xl", elevation.hoverable)}>Interactive card</div>
+ * ```
+ */
+export type ElevationLevel = "flat" | "elevated" | "hoverable" | "modal";
+
+export const elevation: Record<ElevationLevel, string> = {
+    flat: "shadow-[var(--shadow-sm)]",
+    elevated: "shadow-[var(--shadow-md)]",
+    hoverable: "shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] transition-shadow duration-300",
+    modal: "shadow-[var(--shadow-lg)]",
+};
+
+/**
+ * Get elevation classes for consistent card shadows.
+ * @param level - The elevation level (flat, elevated, hoverable, modal)
+ * @returns Tailwind CSS classes for shadow
+ */
+export function getElevation(level: ElevationLevel = "elevated"): string {
+    return elevation[level];
+}
+
+/**
+ * Compose card classes with elevation and additional classes.
+ * Useful for building card-like components with consistent shadows.
+ * @param level - The elevation level
+ * @param additionalClasses - Additional Tailwind classes
+ * @returns Merged class string
+ */
+export function cardClasses(level: ElevationLevel, ...additionalClasses: ClassValue[]): string {
+    return cn(elevation[level], ...additionalClasses);
+}

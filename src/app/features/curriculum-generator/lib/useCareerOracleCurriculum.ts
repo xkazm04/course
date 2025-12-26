@@ -5,6 +5,10 @@
  *
  * Integrates the curriculum generator with the Career Oracle system.
  * Automatically generates curriculum content when a learning path is created.
+ *
+ * Enhanced with mastery signal derivation for implicit skill validation.
+ * Completion patterns feed back to the Career Oracle to recalibrate
+ * learning path difficulty and pacing dynamically.
  */
 
 import { useState, useCallback, useMemo } from "react";
@@ -13,6 +17,7 @@ import type {
     GeneratedCurriculum,
     CurriculumGenerationRequest,
     DifficultyLevel,
+    CompletionData,
 } from "./types";
 import {
     generateCurriculum,
@@ -20,6 +25,13 @@ import {
     generateCacheKey,
 } from "./curriculumGenerator";
 import { curriculumStorage } from "./curriculumStorage";
+import type {
+    MasterySignal,
+    SkillProficiency,
+    PathRecalibration,
+    MasteryAnalytics,
+} from "./masterySignal";
+import { masteryStorage } from "./masteryStorage";
 
 // ============================================================================
 // TYPES
@@ -53,6 +65,41 @@ export interface UseCareerOracleCurriculumReturn {
 
     // Bulk operations
     preloadNextModule: (currentModuleId: string, path: PredictiveLearningPath, userProfile: OracleUserProfile) => void;
+
+    // Mastery Signal Integration
+    trackContentCompletion: (
+        contentId: string,
+        contentType: CompletionData["contentType"],
+        curriculumId: string,
+        completionDetails: ContentCompletionDetails
+    ) => MasterySignal[];
+    getSkillProficiencies: () => SkillProficiency[];
+    getPathRecalibration: (pathId: string) => PathRecalibration | null;
+    getMasteryAnalytics: () => MasteryAnalytics;
+    getSkillsNeedingAttention: () => SkillProficiency[];
+    recalibratePath: (
+        pathId: string,
+        moduleDifficulties: Record<string, DifficultyLevel>,
+        moduleEstimatedHours: Record<string, number>
+    ) => PathRecalibration;
+}
+
+/**
+ * Details for tracking content completion with mastery signals
+ */
+export interface ContentCompletionDetails {
+    /** Time spent on the content in minutes */
+    timeSpent: number;
+    /** Score if applicable (0-100) */
+    score?: number;
+    /** Number of hints used */
+    hintsUsed: number;
+    /** Number of attempts made */
+    attempts: number;
+    /** Skills covered by this content */
+    skills: Array<{ id: string; name: string }>;
+    /** Difficulty level of the content */
+    difficulty: DifficultyLevel;
 }
 
 export interface OracleUserProfile {
@@ -303,6 +350,97 @@ export function useCareerOracleCurriculum(
     }, [currentModuleId, curricula]);
 
     // ========================================================================
+    // MASTERY SIGNAL INTEGRATION
+    // ========================================================================
+
+    /**
+     * Track content completion and generate mastery signals.
+     * This is the key function that derives implicit skill proficiency
+     * from completion patterns.
+     */
+    const trackContentCompletion = useCallback(
+        (
+            contentId: string,
+            contentType: CompletionData["contentType"],
+            curriculumId: string,
+            details: ContentCompletionDetails
+        ): MasterySignal[] => {
+            // Track the completion with mastery signal generation
+            const { signals } = curriculumStorage.trackCompletionWithMastery(
+                {
+                    userId,
+                    curriculumId,
+                    contentId,
+                    contentType,
+                    status: "completed",
+                    timeSpent: details.timeSpent,
+                    score: details.score,
+                    hintsUsed: details.hintsUsed,
+                    attempts: details.attempts,
+                    completedAt: new Date().toISOString(),
+                },
+                details.skills,
+                details.difficulty
+            );
+
+            return signals;
+        },
+        [userId]
+    );
+
+    /**
+     * Get all skill proficiencies for the current user
+     */
+    const getSkillProficiencies = useCallback((): SkillProficiency[] => {
+        return masteryStorage.getUserSkillProficiencies(userId);
+    }, [userId]);
+
+    /**
+     * Get path recalibration recommendations
+     */
+    const getPathRecalibrationData = useCallback(
+        (pathId: string): PathRecalibration | null => {
+            return masteryStorage.getPathRecalibration(userId, pathId);
+        },
+        [userId]
+    );
+
+    /**
+     * Get mastery analytics for the current user
+     */
+    const getMasteryAnalyticsData = useCallback((): MasteryAnalytics => {
+        return masteryStorage.getMasteryAnalytics(userId);
+    }, [userId]);
+
+    /**
+     * Get skills that need attention (struggling or declining)
+     */
+    const getSkillsNeedingAttentionData = useCallback((): SkillProficiency[] => {
+        return masteryStorage.getSkillsNeedingAttention(userId);
+    }, [userId]);
+
+    /**
+     * Generate and store a path recalibration based on mastery signals.
+     * This feeds the derived proficiency back to the Career Oracle
+     * to adjust difficulty and pacing dynamically.
+     */
+    const recalibratePath = useCallback(
+        (
+            pathId: string,
+            moduleDifficulties: Record<string, DifficultyLevel>,
+            moduleEstimatedHours: Record<string, number>
+        ): PathRecalibration => {
+            return masteryStorage.generateAndStoreRecalibration(
+                userId,
+                pathId,
+                moduleDifficulties,
+                moduleEstimatedHours
+            );
+        },
+        [userId]
+    );
+
+    // ========================================================================
     // RETURN
     // ========================================================================
 
@@ -325,6 +463,14 @@ export function useCareerOracleCurriculum(
 
         // Bulk operations
         preloadNextModule,
+
+        // Mastery Signal Integration
+        trackContentCompletion,
+        getSkillProficiencies,
+        getPathRecalibration: getPathRecalibrationData,
+        getMasteryAnalytics: getMasteryAnalyticsData,
+        getSkillsNeedingAttention: getSkillsNeedingAttentionData,
+        recalibratePath,
     };
 }
 

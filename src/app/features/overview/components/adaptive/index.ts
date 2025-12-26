@@ -16,8 +16,5 @@ export type { NodePredictionBadgeProps } from "./NodePredictionBadge";
 export { AISuggestionsBar } from "./AISuggestionsBar";
 export type { AISuggestionsBarProps, AISuggestion } from "./AISuggestionsBar";
 
-export { FocusModeBanner } from "./FocusModeBanner";
-export type { FocusModeBannerProps } from "./FocusModeBanner";
-
 export { AIRecommendationsPanel } from "./AIRecommendationsPanel";
 export type { AIRecommendationsPanelProps } from "./AIRecommendationsPanel";

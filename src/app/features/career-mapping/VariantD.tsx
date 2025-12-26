@@ -376,10 +376,9 @@ export const VariantD = () => {
                                                             data-testid={`achievement-progress-fill-${item.id}`}
                                                         >
                                                             {!item.locked && (
-                                                                <motion.div
-                                                                    className="absolute inset-0 bg-white/30"
-                                                                    animate={{ x: ["-100%", "100%"] }}
-                                                                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                                                <div
+                                                                    className="absolute inset-0 bg-white/30 animate-progress-shimmer"
+                                                                    data-testid={`achievement-shimmer-${item.id}`}
                                                                 />
                                                             )}
                                                         </motion.div>

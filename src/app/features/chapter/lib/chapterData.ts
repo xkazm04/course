@@ -1,12 +1,35 @@
 /**
  * Shared chapter section data types and mock data
  * Consolidates duplicate section patterns from VariantA and VariantC
+ *
+ * ChapterSection is a LearningNode in the curriculum graph:
+ * - It has an id, sectionId, content with code/keyPoints, and completed status
+ * - This structure matches exactly what a LearningNode represents
+ * - By using the unified LearningNode base type, chapter progress integrates
+ *   naturally with the learning graph for cross-chapter prerequisites and
+ *   smarter path recommendations.
  */
 
+import type {
+    LearningNodeBase,
+    LearningContentType,
+} from "@/app/features/knowledge-map/lib/learningNode";
+
 // Section type for content categorization
+// Maps directly to LearningContentType for unified typing
 export type SectionType = "video" | "lesson" | "interactive" | "exercise";
 
-// Section content with optional fields based on type
+/**
+ * Section content with optional fields based on type
+ *
+ * Aligns with LearningNodeContent from the knowledge-map domain:
+ * - description: matches LearningNodeContent.description
+ * - code: matches LearningNodeContent.code
+ * - keyPoints: matches LearningNodeContent.keyPoints
+ * - screenshot: section-specific field (maps to LearningNodeContent.hasVisuals)
+ *
+ * @see LearningNodeContent for the canonical content type
+ */
 export interface SectionContent {
     description: string;
     code?: string;
@@ -14,16 +37,98 @@ export interface SectionContent {
     screenshot?: boolean;
 }
 
-// Base section interface with common fields
+/**
+ * ChapterSection - A learning node specialized for chapter content
+ *
+ * This interface implements the LearningNode pattern from the curriculum DAG
+ * while maintaining backward compatibility with existing chapter components.
+ *
+ * Mapping to LearningNodeBase:
+ * - sectionId -> LearningNodeBase.id (unique identifier)
+ * - title -> LearningNodeBase.title
+ * - type -> LearningNodeBase.contentType
+ * - duration -> LearningNodeBase.duration
+ * - completed -> derived from LearningNodeBase.status
+ *
+ * Additional section-specific fields:
+ * - id: numeric order within chapter
+ * - time: video timestamp
+ * - content: rich content descriptor
+ */
 export interface ChapterSection {
+    /**
+     * Numeric order within the chapter (1-based)
+     * Used for sequential navigation and implicit dependencies
+     */
     id: number;
+
+    /**
+     * Unique string identifier for this section
+     * This is the canonical LearningNode id
+     */
     sectionId: string;
+
+    /**
+     * Human-readable title
+     */
     title: string;
+
+    /**
+     * Estimated duration as string (e.g., "5 min")
+     */
     duration: string;
-    time: string; // Video timestamp
+
+    /**
+     * Video timestamp for this section (e.g., "0:00", "2:15")
+     */
+    time: string;
+
+    /**
+     * Content type classification
+     * Maps to LearningContentType for unified handling
+     */
     type: SectionType;
+
+    /**
+     * Whether this section has been completed
+     * Maps to LearningNodeBase.status === "completed"
+     */
     completed: boolean;
+
+    /**
+     * Rich content descriptor with code, key points, etc.
+     */
     content: SectionContent;
+}
+
+/**
+ * Convert a ChapterSection to a LearningNodeBase for graph operations
+ */
+export function chapterSectionToLearningNode(section: ChapterSection): LearningNodeBase {
+    return {
+        id: section.sectionId,
+        title: section.title,
+        status: section.completed ? "completed" : "available",
+        contentType: section.type as LearningContentType,
+        duration: section.duration,
+        progress: section.completed ? 100 : 0,
+    };
+}
+
+/**
+ * Convert a LearningNodeBase back to ChapterSection fields
+ * (partial, for updates)
+ */
+export function learningNodeToChapterSectionUpdate(
+    node: LearningNodeBase
+): Partial<ChapterSection> {
+    return {
+        sectionId: node.id,
+        title: node.title,
+        completed: node.status === "completed",
+        type: node.contentType as SectionType,
+        duration: typeof node.duration === "string" ? node.duration : `${node.duration} min`,
+    };
 }
 
 // Simplified section for sidebar display (VariantA)

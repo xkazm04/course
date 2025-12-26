@@ -2,16 +2,16 @@
 
 import React, { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { cn } from "../lib/utils";
+import { cn, elevation, type ElevationLevel } from "../lib/utils";
 
-export type ElevationType = "flat" | "hoverable" | "modal";
+export type ElevationType = ElevationLevel;
 
 interface PrismaticCardProps {
     children: React.ReactNode;
     className?: string;
     glowColor?: "indigo" | "purple" | "cyan" | "emerald" | "orange";
     intensity?: "low" | "medium" | "high";
-    elevation?: ElevationType;
+    cardElevation?: ElevationType;
     /**
      * When true, disables 3D spring animations and uses CSS-only hover effects.
      * Use this for list contexts where many cards are rendered to avoid
@@ -35,13 +35,6 @@ const intensityMap = {
     high: { rotation: 15, parallax: 15 },
 };
 
-// Shadow elevation scale using CSS variables for theme synchronization
-const elevationShadows = {
-    flat: "shadow-[var(--shadow-sm)]",
-    hoverable: "shadow-[var(--shadow-md)]",
-    modal: "shadow-[var(--shadow-lg)]",
-};
-
 /**
  * StaticPrismaticCard - CSS-only version without spring overhead.
  * Uses CSS transforms triggered by hover for list contexts.
@@ -50,7 +43,7 @@ const StaticPrismaticCard: React.FC<Omit<PrismaticCardProps, "static">> = ({
     children,
     className,
     glowColor = "indigo",
-    elevation = "hoverable",
+    cardElevation = "hoverable",
     "data-testid": testId
 }) => {
     return (
@@ -84,10 +77,7 @@ const StaticPrismaticCard: React.FC<Omit<PrismaticCardProps, "static">> = ({
                     "relative w-full h-full rounded-3xl overflow-hidden",
                     "bg-[var(--surface-elevated)] backdrop-blur-xl",
                     "border border-[var(--border-default)]",
-                    elevationShadows[elevation],
-                    // CSS transition for subtle lift on hover
-                    "transition-all duration-300 ease-out",
-                    "group-hover:shadow-lg"
+                    elevation[cardElevation]
                 )}
                 style={{ transform: "translateZ(20px)" }}
             >
@@ -118,7 +108,7 @@ const AnimatedPrismaticCard: React.FC<Omit<PrismaticCardProps, "static">> = ({
     className,
     glowColor = "indigo",
     intensity = "medium",
-    elevation = "hoverable",
+    cardElevation = "hoverable",
     "data-testid": testId
 }) => {
     const ref = useRef<HTMLDivElement>(null);
@@ -175,7 +165,7 @@ const AnimatedPrismaticCard: React.FC<Omit<PrismaticCardProps, "static">> = ({
                     "relative w-full h-full rounded-3xl overflow-hidden",
                     "bg-[var(--surface-elevated)] backdrop-blur-xl",
                     "border border-[var(--border-default)]",
-                    elevationShadows[elevation]
+                    elevation[cardElevation]
                 )}
             >
                 {/* Noise texture overlay */}

@@ -10,10 +10,12 @@
  *
  * This creates a "show don't tell" experience - rather than describing
  * the curriculum, we let users explore it directly as a cosmic journey.
+ *
+ * Performance: Uses CSS animations (animate-entrance-*) defined in globals.css
+ * instead of framer-motion to reduce JS overhead and bundle size.
  */
 
-import React, { useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -26,6 +28,7 @@ import { Button } from "@/app/shared/components";
 import { useReducedMotion } from "@/app/shared/lib/motionPrimitives";
 import { KnowledgeUniverse, KnowledgeUniversePreview } from "@/app/features/knowledge-universe";
 import type { UniverseNode } from "@/app/features/knowledge-universe";
+
 
 // ============================================================================
 // TYPES
@@ -110,30 +113,32 @@ function CompactUniverseView({
 }: CompactUniverseViewProps) {
     const router = useRouter();
 
+    // Memoize star elements to prevent recreating 100 DOM elements on every re-render.
+    // Random positions are calculated once at mount time since they're static decorations.
+    const starElements = useMemo(() => {
+        if (prefersReducedMotion) return null;
+        return Array.from({ length: 100 }).map((_, i) => (
+            <div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full animate-twinkle"
+                data-testid={`background-star-${i}`}
+                style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    opacity: 0.1 + Math.random() * 0.4,
+                    animationDelay: `${Math.random() * 2}s`,
+                    animationDuration: `${2 + Math.random() * 3}s`,
+                }}
+            />
+        ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Empty deps - star positions are random at mount time
+
     return (
         <div className="relative min-h-screen flex flex-col">
-            {/* Background Stars */}
+            {/* Background Stars - CSS animations (memoized) */}
             <div className="absolute inset-0 overflow-hidden">
-                {!prefersReducedMotion &&
-                    Array.from({ length: 100 }).map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-white rounded-full"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                opacity: 0.1 + Math.random() * 0.4,
-                            }}
-                            animate={{
-                                opacity: [0.1, 0.5, 0.1],
-                            }}
-                            transition={{
-                                duration: 2 + Math.random() * 3,
-                                repeat: Infinity,
-                                delay: Math.random() * 2,
-                            }}
-                        />
-                    ))}
+                {starElements}
             </div>
 
             {/* Nebula Gradient */}
@@ -144,61 +149,61 @@ function CompactUniverseView({
                 {/* Left: Hero Content */}
                 <div className="flex-1 space-y-8 text-center lg:text-left">
                     {/* Badge */}
-                    <motion.div
-                        initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
+                    <div
+                        className={cn(
+                            !prefersReducedMotion && "animate-entrance-fade-up"
+                        )}
                     >
                         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-sm font-medium">
                             <Globe2 size={ICON_SIZES.sm} />
                             Knowledge Universe
                         </span>
-                    </motion.div>
+                    </div>
 
                     {/* Title */}
-                    <motion.h1
-                        initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.1 }}
-                        className="text-5xl lg:text-7xl font-black tracking-tight"
+                    <h1
+                        className={cn(
+                            "text-5xl lg:text-7xl font-black tracking-tight",
+                            !prefersReducedMotion && "animate-entrance-fade-up animation-delay-100"
+                        )}
                     >
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-purple-200">
                             Your Learning
                         </span>
                         <br />
                         <span className="text-indigo-400">Cosmos</span>
-                    </motion.h1>
+                    </h1>
 
                     {/* Description */}
-                    <motion.p
-                        initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.2 }}
-                        className="text-lg text-slate-300 max-w-xl mx-auto lg:mx-0"
+                    <p
+                        className={cn(
+                            "text-lg text-slate-300 max-w-xl mx-auto lg:mx-0",
+                            !prefersReducedMotion && "animate-entrance-fade-up animation-delay-200"
+                        )}
                     >
                         Explore hundreds of interconnected lessons as a cosmic journey.
                         Zoom from galaxies of knowledge domains down to individual star systems
                         of lessons. See the full scope of your learning path at a glance.
-                    </motion.p>
+                    </p>
 
                     {/* Stats */}
-                    <motion.div
-                        initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.3 }}
-                        className="flex flex-wrap gap-8 justify-center lg:justify-start"
+                    <div
+                        className={cn(
+                            "flex flex-wrap gap-8 justify-center lg:justify-start",
+                            !prefersReducedMotion && "animate-entrance-fade-up animation-delay-300"
+                        )}
                     >
                         <StatItem icon={Sun} value="6" label="Domains" color="text-orange-400" />
                         <StatItem icon={Layers} value="60+" label="Chapters" color="text-indigo-400" />
                         <StatItem icon={Star} value="200+" label="Lessons" color="text-yellow-400" />
-                    </motion.div>
+                    </div>
 
                     {/* CTAs */}
-                    <motion.div
-                        initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.4 }}
-                        className="flex flex-wrap gap-4 justify-center lg:justify-start"
+                    <div
+                        className={cn(
+                            "flex flex-wrap gap-4 justify-center lg:justify-start",
+                            !prefersReducedMotion && "animate-entrance-fade-up animation-delay-400"
+                        )}
                     >
                         <Button
                             size="lg"
@@ -227,18 +232,18 @@ function CompactUniverseView({
                                 Set Your Goals
                             </Button>
                         </Link>
-                    </motion.div>
+                    </div>
                 </div>
 
                 {/* Right: Universe Preview */}
-                <motion.div
-                    initial={{ opacity: prefersReducedMotion ? 1 : 0, scale: prefersReducedMotion ? 1 : 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.3 }}
-                    className="flex-1 w-full max-w-2xl aspect-[4/3]"
+                <div
+                    className={cn(
+                        "flex-1 w-full max-w-2xl aspect-[4/3]",
+                        !prefersReducedMotion && "animate-entrance-fade-scale animation-delay-300"
+                    )}
                 >
                     <KnowledgeUniversePreview onEnter={onExpand} />
-                </motion.div>
+                </div>
             </div>
 
             {/* Quick Links */}
@@ -265,11 +270,11 @@ function ExpandedUniverseView({
     prefersReducedMotion,
 }: ExpandedUniverseViewProps) {
     return (
-        <motion.div
-            initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="relative h-screen"
+        <div
+            className={cn(
+                "relative h-screen",
+                !prefersReducedMotion && "animate-entrance-fade"
+            )}
         >
             {/* Universe Canvas */}
             <KnowledgeUniverse
@@ -282,17 +287,17 @@ function ExpandedUniverseView({
             />
 
             {/* Back Button */}
-            <motion.button
-                initial={{ opacity: prefersReducedMotion ? 1 : 0, x: prefersReducedMotion ? 0 : -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
+            <button
                 onClick={onCollapse}
-                className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-white/10 text-white hover:bg-slate-800/90 transition-colors"
+                className={cn(
+                    "absolute top-6 left-6 flex items-center gap-2 px-4 py-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-white/10 text-white hover:bg-slate-800/90 transition-colors",
+                    !prefersReducedMotion && "animate-entrance-fade-left animation-delay-300"
+                )}
                 data-testid="back-to-landing-btn"
             >
                 <ChevronRight size={ICON_SIZES.md} className="rotate-180" />
                 Back to Overview
-            </motion.button>
+            </button>
 
             {/* Selected Node Panel */}
             {selectedNode && (
@@ -300,11 +305,11 @@ function ExpandedUniverseView({
             )}
 
             {/* Quick Actions */}
-            <motion.div
-                initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="absolute top-6 right-6 flex gap-2"
+            <div
+                className={cn(
+                    "absolute top-6 right-6 flex gap-2",
+                    !prefersReducedMotion && "animate-entrance-fade-up animation-delay-500"
+                )}
             >
                 <Link href="/overview">
                     <button
@@ -315,8 +320,8 @@ function ExpandedUniverseView({
                         Start Learning
                     </button>
                 </Link>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     );
 }
 
@@ -357,30 +362,29 @@ function QuickLinks({ prefersReducedMotion }: QuickLinksProps) {
     ];
 
     return (
-        <motion.div
-            initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.5 }}
-            className="relative z-10 border-t border-white/10 bg-slate-900/50 backdrop-blur-sm"
+        <div
+            className={cn(
+                "relative z-10 border-t border-white/10 bg-slate-900/50 backdrop-blur-sm",
+                !prefersReducedMotion && "animate-entrance-fade-up animation-delay-500"
+            )}
         >
             <div className="container max-w-7xl mx-auto px-6 py-6">
                 <div className="flex flex-wrap justify-center gap-6">
                     {links.map((link) => (
                         <Link key={link.href} href={link.href}>
-                            <motion.div
-                                whileHover={{ y: -2 }}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors text-slate-300 hover:text-white"
+                            <div
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-200 text-slate-300 hover:text-white hover:-translate-y-0.5"
                                 data-testid={`quick-link-${link.label.toLowerCase().replace(" ", "-")}`}
                             >
                                 <link.icon size={ICON_SIZES.sm} />
                                 <span className="font-medium">{link.label}</span>
                                 <ChevronRight size={ICON_SIZES.xs} className="text-slate-500" />
-                            </motion.div>
+                            </div>
                         </Link>
                     ))}
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 }
 
@@ -390,11 +394,8 @@ interface SelectedNodePanelProps {
 
 function SelectedNodePanel({ node }: SelectedNodePanelProps) {
     return (
-        <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="absolute right-6 top-1/2 -translate-y-1/2 w-80 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl overflow-hidden"
+        <div
+            className="absolute right-6 top-1/2 -translate-y-1/2 w-80 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl overflow-hidden animate-entrance-fade-right"
             data-testid="selected-node-panel"
         >
             {/* Header */}
@@ -500,7 +501,7 @@ function SelectedNodePanel({ node }: SelectedNodePanelProps) {
                     </>
                 )}
             </div>
-        </motion.div>
+        </div>
     );
 }
 

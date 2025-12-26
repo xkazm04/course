@@ -21,7 +21,22 @@ import {
 import {
     updateComprehensionModel,
     getComprehensionInsights,
+    clearInsightsCache,
 } from "./comprehensionEngine";
+import type {
+    ComprehensionState,
+    ComprehensionStateMachineModel,
+    StateTransitionEvent,
+    TransitionMetrics,
+} from "./comprehensionStateMachine";
+import {
+    createStateMachineModel,
+    updateStateMachine,
+    getProgressToNextState,
+    detectStuckPattern,
+    stateToLegacyLevel,
+    getStateDefinition,
+} from "./comprehensionStateMachine";
 
 // ============================================================================
 // Context Types
@@ -39,6 +54,14 @@ interface AdaptiveContentContextValue {
     trend: "improving" | "stable" | "struggling";
     recentPerformance: number;
 
+    // State Machine (new)
+    stateMachineModel: ComprehensionStateMachineModel;
+    currentState: ComprehensionState;
+    stateProgress: { progress: number; nextState: ComprehensionState; requirements: string[] };
+    lastTransition: StateTransitionEvent | null;
+    isStuck: { isStuck: boolean; recommendation: string };
+    transitionHistory: StateTransitionEvent[];
+
     // Signal recording functions
     recordQuizResult: (data: Omit<QuizSignal, "type" | "timestamp">) => void;
     recordPlaygroundInteraction: (data: Omit<PlaygroundSignal, "type" | "timestamp">) => void;
@@ -52,6 +75,7 @@ interface AdaptiveContentContextValue {
     // Actions
     resetComprehension: () => void;
     setManualLevel: (level: ComprehensionLevel) => void;
+    clearLastTransition: () => void;
 
     // Section-specific helpers
     getSectionLevel: (sectionId: string) => ComprehensionLevel;
@@ -75,6 +99,31 @@ interface AdaptiveContentProviderProps {
     initialLevel?: ComprehensionLevel;
 }
 
+// State Machine Storage Key
+const STATE_MACHINE_STORAGE_KEY = "adaptive-state-machine";
+
+function loadStateMachineModel(courseId: string): ComprehensionStateMachineModel {
+    if (typeof window === "undefined") return createStateMachineModel();
+    try {
+        const stored = localStorage.getItem(`${STATE_MACHINE_STORAGE_KEY}-${courseId}`);
+        if (stored) {
+            return JSON.parse(stored) as ComprehensionStateMachineModel;
+        }
+    } catch {
+        // Ignore parse errors
+    }
+    return createStateMachineModel();
+}
+
+function saveStateMachineModel(courseId: string, model: ComprehensionStateMachineModel): void {
+    if (typeof window === "undefined") return;
+    try {
+        localStorage.setItem(`${STATE_MACHINE_STORAGE_KEY}-${courseId}`, JSON.stringify(model));
+    } catch {
+        // Ignore storage errors
+    }
+}
+
 export function AdaptiveContentProvider({
     courseId,
     userId,
@@ -82,18 +131,25 @@ export function AdaptiveContentProvider({
     initialLevel,
 }: AdaptiveContentProviderProps) {
     const [model, setModel] = useState<ComprehensionModel | null>(null);
+    const [stateMachineModel, setStateMachineModel] = useState<ComprehensionStateMachineModel>(
+        createStateMachineModel()
+    );
+    const [lastTransition, setLastTransition] = useState<StateTransitionEvent | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [manualLevel, setManualLevel] = useState<ComprehensionLevel | null>(initialLevel ?? null);
     const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const stateMachineSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Load model on mount
     useEffect(() => {
         const loaded = loadComprehensionModel(courseId, userId);
         setModel(loaded);
+        const loadedStateMachine = loadStateMachineModel(courseId);
+        setStateMachineModel(loadedStateMachine);
         setIsLoading(false);
     }, [courseId, userId]);
 
-    // Debounced save
+    // Debounced save for comprehension model
     const debouncedSave = useCallback((modelToSave: ComprehensionModel) => {
         if (saveTimeoutRef.current) {
             clearTimeout(saveTimeoutRef.current);
@@ -103,24 +159,73 @@ export function AdaptiveContentProvider({
         }, 1000);
     }, []);
 
+    // Debounced save for state machine model
+    const debouncedSaveStateMachine = useCallback(
+        (smModel: ComprehensionStateMachineModel) => {
+            if (stateMachineSaveTimeoutRef.current) {
+                clearTimeout(stateMachineSaveTimeoutRef.current);
+            }
+            stateMachineSaveTimeoutRef.current = setTimeout(() => {
+                saveStateMachineModel(courseId, smModel);
+            }, 1000);
+        },
+        [courseId]
+    );
+
     // Cleanup
     useEffect(() => {
         return () => {
             if (saveTimeoutRef.current) {
                 clearTimeout(saveTimeoutRef.current);
             }
+            if (stateMachineSaveTimeoutRef.current) {
+                clearTimeout(stateMachineSaveTimeoutRef.current);
+            }
         };
     }, []);
 
-    // Record a signal and update model
-    const recordSignal = useCallback((signal: BehaviorSignal) => {
-        setModel((prev) => {
-            if (!prev) return prev;
-            const updated = updateComprehensionModel(prev, signal);
-            debouncedSave(updated);
-            return updated;
-        });
-    }, [debouncedSave]);
+    // Clear last transition
+    const clearLastTransition = useCallback(() => {
+        setLastTransition(null);
+    }, []);
+
+    // Record a signal and update both models
+    const recordSignal = useCallback(
+        (signal: BehaviorSignal) => {
+            setModel((prev) => {
+                if (!prev) return prev;
+                const updated = updateComprehensionModel(prev, signal);
+                debouncedSave(updated);
+
+                // Update state machine with the new signal
+                setStateMachineModel((prevSM) => {
+                    const sectionId =
+                        "sectionId" in signal
+                            ? signal.sectionId
+                            : "playgroundId" in signal
+                            ? signal.playgroundId
+                            : undefined;
+
+                    const { model: newSM, transition } = updateStateMachine(
+                        prevSM,
+                        signal,
+                        updated.signalHistory,
+                        sectionId
+                    );
+
+                    if (transition) {
+                        setLastTransition(transition);
+                    }
+
+                    debouncedSaveStateMachine(newSM);
+                    return newSM;
+                });
+
+                return updated;
+            });
+        },
+        [debouncedSave, debouncedSaveStateMachine]
+    );
 
     // Convenience signal recorders
     const recordQuizResult = useCallback(
@@ -181,9 +286,15 @@ export function AdaptiveContentProvider({
     // Reset comprehension data
     const resetComprehension = useCallback(() => {
         clearComprehensionData(courseId);
+        clearInsightsCache(); // Clear memoized insights cache
         const fresh = loadComprehensionModel(courseId, userId);
         setModel(fresh);
         setManualLevel(null);
+        // Reset state machine
+        const freshStateMachine = createStateMachineModel();
+        setStateMachineModel(freshStateMachine);
+        setLastTransition(null);
+        saveStateMachineModel(courseId, freshStateMachine);
     }, [courseId, userId]);
 
     // Manual level override
@@ -216,6 +327,19 @@ export function AdaptiveContentProvider({
         [getSectionLevel]
     );
 
+    // Compute state machine values
+    const stateMachineValues = useMemo(() => {
+        const stateProgress = getProgressToNextState(stateMachineModel);
+        const isStuck = detectStuckPattern(stateMachineModel);
+
+        return {
+            currentState: stateMachineModel.currentState,
+            stateProgress,
+            isStuck,
+            transitionHistory: stateMachineModel.transitionHistory,
+        };
+    }, [stateMachineModel]);
+
     // Compute current values
     const computedValues = useMemo(() => {
         if (!model) {
@@ -228,7 +352,9 @@ export function AdaptiveContentProvider({
             };
         }
 
-        const level = manualLevel ?? model.overallScore.level;
+        // Use state machine level if no manual override
+        const stateLevel = stateToLegacyLevel(stateMachineModel.currentState);
+        const level = manualLevel ?? stateLevel;
         const insights = getComprehensionInsights(model);
 
         return {
@@ -238,7 +364,7 @@ export function AdaptiveContentProvider({
             recentPerformance: insights.recentPerformance,
             adaptationConfig: DEFAULT_ADAPTATION_CONFIGS[level],
         };
-    }, [model, manualLevel]);
+    }, [model, manualLevel, stateMachineModel.currentState]);
 
     // Default model for loading state
     const displayModel = model ?? {
@@ -259,14 +385,25 @@ export function AdaptiveContentProvider({
         model: displayModel,
         isLoading,
         ...computedValues,
+        // State Machine values
+        stateMachineModel,
+        currentState: stateMachineValues.currentState,
+        stateProgress: stateMachineValues.stateProgress,
+        lastTransition,
+        isStuck: stateMachineValues.isStuck,
+        transitionHistory: stateMachineValues.transitionHistory,
+        // Signal recorders
         recordQuizResult,
         recordPlaygroundInteraction,
         recordSectionTime,
         recordVideoInteraction,
         recordNavigation,
         recordSignal,
+        // Actions
         resetComprehension,
         setManualLevel: handleSetManualLevel,
+        clearLastTransition,
+        // Section helpers
         getSectionLevel,
         getSectionConfig,
     };

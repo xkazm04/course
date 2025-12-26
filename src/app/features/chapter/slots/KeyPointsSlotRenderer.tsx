@@ -3,6 +3,7 @@
 import React, { useMemo, memo } from "react";
 import { MessageSquare, Sparkles, CheckCircle } from "lucide-react";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
+import { elevation } from "@/app/shared/lib/utils";
 import type { KeyPointsSlot } from "../lib/contentSlots";
 import type { ChapterState } from "../lib/useChapterState";
 
@@ -38,7 +39,7 @@ const KeyPointsSlotRendererComponent: React.FC<KeyPointsSlotRendererProps> = ({ 
 
     return (
         <div
-            className={`bg-indigo-50 dark:bg-indigo-900/30 rounded-xl ${className ?? ""}`}
+            className={`bg-indigo-50 dark:bg-indigo-900/30 rounded-xl ${elevation.flat} ${className ?? ""}`}
             style={{ padding: "var(--slot-padding-sm)" }}
             data-testid={`key-points-slot-${slot.id}`}
         >

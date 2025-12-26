@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.89.0",
     "@tanstack/react-virtual": "^3.13.13",
     "@types/highlight.js": "^9.12.4",
     "clsx": "^2.1.1",

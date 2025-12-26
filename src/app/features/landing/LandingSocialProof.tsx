@@ -13,10 +13,12 @@
  * - Pulsing activity indicators showing the platform is alive
  * - Journey cards with testimonials
  * - Social proof statistics
+ *
+ * Performance: Uses CSS animations (animate-entrance-*) defined in globals.css
+ * instead of framer-motion to reduce JS overhead and bundle size.
  */
 
 import React from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -33,10 +35,9 @@ import {
   useReducedMotion,
   useMeshGradient,
   useVisibility,
-  DURATION_SLOW,
-  DURATION_ENTRANCE,
 } from "@/app/shared/lib/motionPrimitives";
 import { SocialProofVisualization } from "@/app/features/social-proof";
+
 
 export interface LandingSocialProofProps {
   className?: string;
@@ -56,7 +57,7 @@ export function LandingSocialProof({
     threshold: 0.1,
   });
 
-  // Ambient background gradients
+  // Ambient background gradients - still using useMeshGradient for complex rotate animations
   const primaryGradient = useMeshGradient({
     rotationDirection: 1,
     rotateDuration: 40,
@@ -87,8 +88,8 @@ export function LandingSocialProof({
         ref={gradientRef}
         className="absolute inset-0 overflow-hidden pointer-events-none"
       >
-        <motion.div
-          {...primaryGradient}
+        <div
+          style={primaryGradient.style}
           className={cn(
             "absolute -top-1/4 -left-1/4 w-[80vw] h-[80vw] rounded-full blur-[120px]",
             isDark
@@ -96,8 +97,8 @@ export function LandingSocialProof({
               : "bg-gradient-to-br from-indigo-200/40 via-purple-200/30 to-transparent"
           )}
         />
-        <motion.div
-          {...secondaryGradient}
+        <div
+          style={secondaryGradient.style}
           className={cn(
             "absolute top-1/3 -right-1/4 w-[70vw] h-[70vw] rounded-full blur-[120px]",
             isDark
@@ -111,14 +112,11 @@ export function LandingSocialProof({
       <header className="relative z-10 pt-16 pb-12 px-6">
         <div className="container max-w-6xl mx-auto">
           {/* Badge */}
-          <motion.div
-            initial={{
-              opacity: prefersReducedMotion ? 1 : 0,
-              y: prefersReducedMotion ? 0 : 20,
-            }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : DURATION_SLOW }}
-            className="text-center mb-6"
+          <div
+            className={cn(
+              "text-center mb-6",
+              !prefersReducedMotion && "animate-entrance-fade-up"
+            )}
           >
             <span
               className={cn(
@@ -131,41 +129,22 @@ export function LandingSocialProof({
             >
               <Users size={ICON_SIZES.sm} />
               Live Success Stories
-              <motion.span
+              <span
                 className={cn(
                   "w-2 h-2 rounded-full",
-                  isDark ? "bg-emerald-400" : "bg-emerald-500"
+                  isDark ? "bg-emerald-400" : "bg-emerald-500",
+                  !prefersReducedMotion && "animate-pulse-indicator"
                 )}
-                animate={
-                  !prefersReducedMotion
-                    ? {
-                        scale: [1, 1.3, 1],
-                        opacity: [0.8, 1, 0.8],
-                      }
-                    : {}
-                }
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                }}
               />
             </span>
-          </motion.div>
+          </div>
 
           {/* Title */}
-          <motion.h1
-            initial={{
-              opacity: prefersReducedMotion ? 1 : 0,
-              y: prefersReducedMotion ? 0 : 20,
-            }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : 0.5,
-              delay: 0.1,
-            }}
+          <h1
             className={cn(
               "text-4xl md:text-6xl font-black tracking-tight text-center mb-4",
-              isDark ? "text-white" : "text-slate-900"
+              isDark ? "text-white" : "text-slate-900",
+              !prefersReducedMotion && "animate-entrance-fade-up animation-delay-100"
             )}
           >
             Watch Careers{" "}
@@ -179,40 +158,26 @@ export function LandingSocialProof({
             >
               Transform
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
-          <motion.p
-            initial={{
-              opacity: prefersReducedMotion ? 1 : 0,
-              y: prefersReducedMotion ? 0 : 20,
-            }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : 0.5,
-              delay: 0.2,
-            }}
+          <p
             className={cn(
               "text-lg md:text-xl text-center max-w-2xl mx-auto mb-8",
-              isDark ? "text-slate-400" : "text-slate-600"
+              isDark ? "text-slate-400" : "text-slate-600",
+              !prefersReducedMotion && "animate-entrance-fade-up animation-delay-200"
             )}
           >
             See real learning paths from people who started exactly where you are.
             From complete beginners to senior engineers, career switchers to tech leads.
-          </motion.p>
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            initial={{
-              opacity: prefersReducedMotion ? 1 : 0,
-              y: prefersReducedMotion ? 0 : 20,
-            }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : 0.5,
-              delay: 0.3,
-            }}
-            className="flex flex-wrap gap-4 justify-center"
+          <div
+            className={cn(
+              "flex flex-wrap gap-4 justify-center",
+              !prefersReducedMotion && "animate-entrance-fade-up animation-delay-300"
+            )}
           >
             <Link href="/overview">
               <Button
@@ -243,43 +208,29 @@ export function LandingSocialProof({
                 Set Your Goal
               </Button>
             </Link>
-          </motion.div>
+          </div>
         </div>
       </header>
 
       {/* Main Visualization */}
       <main className="relative z-10 px-6 pb-16">
         <div className="container max-w-7xl mx-auto">
-          <motion.div
-            initial={{
-              opacity: prefersReducedMotion ? 1 : 0,
-              y: prefersReducedMotion ? 0 : 30,
-            }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : DURATION_ENTRANCE,
-              delay: 0.4,
-            }}
+          <div
+            className={cn(
+              !prefersReducedMotion && "animate-entrance-fade-up animation-delay-400"
+            )}
           >
             <SocialProofVisualization theme={theme} />
-          </motion.div>
+          </div>
         </div>
       </main>
 
       {/* Bottom CTA */}
-      <motion.footer
-        initial={{
-          opacity: prefersReducedMotion ? 1 : 0,
-          y: prefersReducedMotion ? 0 : 20,
-        }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: prefersReducedMotion ? 0 : 0.5,
-          delay: 0.6,
-        }}
+      <footer
         className={cn(
           "relative z-10 py-12 px-6 border-t",
-          isDark ? "border-white/10 bg-slate-900/50" : "border-slate-200 bg-white/50"
+          isDark ? "border-white/10 bg-slate-900/50" : "border-slate-200 bg-white/50",
+          !prefersReducedMotion && "animate-entrance-fade-up animation-delay-600"
         )}
       >
         <div className="container max-w-4xl mx-auto text-center">
@@ -319,7 +270,7 @@ export function LandingSocialProof({
             </Link>
           </div>
         </div>
-      </motion.footer>
+      </footer>
     </div>
   );
 }

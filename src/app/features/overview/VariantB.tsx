@@ -2,9 +2,10 @@
 
 import React, { useMemo, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Clock, Users, TrendingUp, GitBranch, ArrowUpRight, Check, Bookmark, Link2 } from "lucide-react";
+import { ArrowRight, Clock, Users, TrendingUp, GitBranch, ArrowUpRight, Check, Bookmark, Link2, Database, AlertCircle, Loader2 } from "lucide-react";
 import { PrismaticCard, PathCard, PathStats, PathHeader, StatCard, StatCardGrid } from "@/app/shared/components";
 import { learningPaths, type LearningPath } from "@/app/shared/lib/mockData";
+import { useLearningPaths } from "@/app/shared/hooks/useLearningPaths";
 import {
     getGlowColor,
     toDomainColor,
@@ -275,6 +276,9 @@ interface SidebarListProps {
     // View query props (for shareable URLs)
     shareableUrl?: string;
     onShareView?: () => void;
+    // Data source indicator
+    isLoadingData?: boolean;
+    isUsingMockData?: boolean;
 }
 
 const SidebarList = ({
@@ -287,6 +291,8 @@ const SidebarList = ({
     canAddMore,
     shareableUrl,
     onShareView,
+    isLoadingData,
+    isUsingMockData,
 }: SidebarListProps) => (
     <div className="lg:col-span-4 space-y-2">
         <div className="mb-6">
@@ -304,7 +310,25 @@ const SidebarList = ({
                     </button>
                 )}
             </div>
-            <p className="text-sm text-[var(--text-secondary)]">Sorted by learning progression</p>
+            <p className="text-sm text-[var(--text-secondary)] flex items-center gap-2">
+                <span>Sorted by learning progression</span>
+                {isLoadingData ? (
+                    <span className="flex items-center gap-1 text-indigo-500">
+                        <Loader2 size={12} className="animate-spin" />
+                        Loading...
+                    </span>
+                ) : isUsingMockData ? (
+                    <span className="flex items-center gap-1 text-amber-500" title="Using mock data - connect to Supabase for live data">
+                        <AlertCircle size={12} />
+                        Mock
+                    </span>
+                ) : (
+                    <span className="flex items-center gap-1 text-emerald-500" title="Connected to Supabase">
+                        <Database size={12} />
+                        Live
+                    </span>
+                )}
+            </p>
         </div>
 
         {graphNodes.map((graphNode, index) => {
@@ -349,6 +373,15 @@ const SidebarList = ({
 // - comparison selection is a JOIN of multiple paths
 // - The shareable URL encodes the complete query state
 export const VariantB = () => {
+    // Fetch learning paths from Supabase API with fallback to mock
+    const {
+        data: apiPaths,
+        isLoading: isLoadingPaths,
+        isUsingMock,
+    } = useLearningPaths({
+        debug: process.env.NODE_ENV === 'development',
+    });
+
     // Use the unified graph data source via hook
     const {
         sortedByHierarchy,
@@ -482,6 +515,8 @@ export const VariantB = () => {
                                 canAddMore={comparison.canAddMore}
                                 shareableUrl={viewQuery.getShareableUrl()}
                                 onShareView={handleShareView}
+                                isLoadingData={isLoadingPaths}
+                                isUsingMockData={isUsingMock}
                             />
                             <div className="lg:col-span-8">
                                 <PreviewPanel

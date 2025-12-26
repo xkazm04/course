@@ -7,7 +7,16 @@
       "Bash(del /q \"src\\\\app\\\\features\\\\overview\\\\components\\\\MorphingLayoutEngine.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\MorphingNode.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\ViewConnections.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\DetailPanel.tsx\" \"src\\\\app\\\\features\\\\overview\\\\components\\\\ViewIndicator.tsx\")",
       "Bash(del:*)",
       "Bash(find:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch(domain:www.classcentral.com)",
+      "WebFetch(domain:influencermarketinghub.com)",
+      "Bash(del \"C:\\\\Users\\\\kazim\\\\dac\\\\course\\\\supabase\\\\migrations\\\\002_simplify_schema.sql\")",
+      "Bash(findstr:*)",
+      "Bash(npx tsc:*)",
+      "Bash(timeout 20 npm run dev:*)"
     ]
   }
 }

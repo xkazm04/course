@@ -2,13 +2,9 @@
 
 import React, { useMemo } from "react";
 import { useChapterState } from "./lib/useChapterState";
-import { getModeConfig, VARIANT_TO_MODE } from "./lib/chapterModes";
+import { VARIANT_TO_MODE } from "./lib/chapterModes";
 import { SlotBasedLayout } from "./slots";
-import {
-    classicLayoutTemplate,
-    expandableLayoutTemplate,
-    ideLayoutTemplate,
-} from "./lib/layoutTemplates";
+import { getLayoutTemplate } from "./lib/layoutTemplates";
 import { COURSE_INFO, HOOKS_FUNDAMENTALS_COURSE_INFO, CHAPTER_SECTIONS } from "./lib/chapterData";
 import type { ChapterMode } from "./lib/chapterModes";
 import type { CourseInfo, ChapterSection } from "./lib/chapterData";
@@ -84,6 +80,15 @@ export interface ChapterViewVariantProps {
  *   sections={customSections}
  * />
  */
+/**
+ * ChapterView - Pure Interpreter Pattern
+ *
+ * This component acts as a pure interpreter of LayoutTemplate data.
+ * All mode-specific configuration (wrapperClass, dataTestId, enableVideoControls,
+ * responsiveConfig) is defined declaratively in the templates themselves.
+ *
+ * Adding a new mode requires only adding a new template - no code changes here.
+ */
 export const ChapterView: React.FC<ChapterViewProps | ChapterViewVariantProps> = (props) => {
     // Normalize props - support both 'mode' and legacy 'variant' props
     const mode: ChapterMode = useMemo(() => {
@@ -96,10 +101,10 @@ export const ChapterView: React.FC<ChapterViewProps | ChapterViewVariantProps> =
         return "classic";
     }, [props]);
 
-    // Get mode configuration
-    const modeConfig = useMemo(() => getModeConfig(mode), [mode]);
+    // Get the complete template - single source of truth for all mode configuration
+    const template: LayoutTemplate = useMemo(() => getLayoutTemplate(mode), [mode]);
 
-    // Determine course info based on mode
+    // Determine course info based on mode (still uses mode for content selection)
     const courseInfo = useMemo(() => {
         if (props.courseInfo) {
             return props.courseInfo;
@@ -114,35 +119,25 @@ export const ChapterView: React.FC<ChapterViewProps | ChapterViewVariantProps> =
     // Get sections
     const sections = props.sections ?? CHAPTER_SECTIONS;
 
-    // Initialize shared chapter state
+    // Initialize shared chapter state using template's enableVideoControls
     const chapterState = useChapterState({
         courseInfo,
         sections,
         initialSection: props.initialSection,
-        enableVideoControls: modeConfig.enableVideoControls,
+        enableVideoControls: template.enableVideoControls ?? true,
     });
 
-    // Mode to template and wrapper config mapping (inlined from separate renderer files)
-    const modeTemplates: Record<ChapterMode, { template: LayoutTemplate; wrapperClass?: string }> = {
-        classic: { template: classicLayoutTemplate },
-        expandable: { template: expandableLayoutTemplate, wrapperClass: "max-w-5xl mx-auto" },
-        ide: { template: ideLayoutTemplate, wrapperClass: "space-y-6" },
-    };
+    // Pure rendering - all configuration comes from template
+    const layout = <SlotBasedLayout template={template} state={chapterState} />;
 
-    const config = modeTemplates[mode] ?? modeTemplates.classic;
-
-    if (!modeTemplates[mode]) {
-        console.warn(`Unknown chapter mode: ${mode}, falling back to classic`);
-    }
-
-    const layout = <SlotBasedLayout template={config.template} state={chapterState} />;
-
-    return config.wrapperClass ? (
-        <div className={config.wrapperClass} data-testid={`chapter-view-${mode}`}>
+    // Render with template-defined wrapper and test id
+    return (
+        <div
+            className={template.wrapperClass}
+            data-testid={template.dataTestId ?? `chapter-view-${template.id}`}
+        >
             {layout}
         </div>
-    ) : (
-        <div data-testid={`chapter-view-${mode}`}>{layout}</div>
     );
 };
 

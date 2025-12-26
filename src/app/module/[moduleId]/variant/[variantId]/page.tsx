@@ -14,7 +14,7 @@ import {
     VariantB as OverviewB,
     VariantF as OverviewF,
 } from "@/app/features/overview";
-import { KnowledgeMap } from "@/app/features/knowledge-map";
+import { KnowledgeMap, KnowledgeMapWithOracle } from "@/app/features/knowledge-map";
 import {
     VariantD as CareerD
 } from "@/app/features/career-mapping";
@@ -68,6 +68,7 @@ const legacyVariantComponents: Record<string, Record<string, React.ReactNode>> =
     overview: {
         "split-view": <OverviewB />,
         "knowledge-map": <KnowledgeMap height="calc(100vh - 180px)" />,
+        "oracle-map": <KnowledgeMapWithOracle height="calc(100vh - 180px)" demo={true} debug={true} />,
         "skill-progress": <OverviewF />,
     },
     "career-mapping": {

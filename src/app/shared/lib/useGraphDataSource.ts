@@ -32,6 +32,7 @@ import {
     LearningPathNodeMeta,
     CurriculumNodeMeta,
 } from "./graphDataSourceAdapters";
+import type { CurriculumData } from "@/app/features/overview/lib/curriculumTypes";
 
 // ============================================================================
 // GENERIC GRAPH DATA SOURCE HOOK
@@ -234,6 +235,14 @@ export interface UseCurriculumDataOptions {
 
     /** Additional node filter */
     filter?: GraphNodeFilter;
+
+    /**
+     * Custom curriculum data to use.
+     * When the same data object reference is passed, the cached data source
+     * is returned (via WeakMap caching) - avoiding redundant graph construction.
+     * Defaults to the module-level curriculumData.
+     */
+    data?: CurriculumData;
 }
 
 /**
@@ -254,14 +263,25 @@ export interface UseCurriculumDataResult extends UseGraphDataResult<CurriculumNo
 }
 
 /**
- * Hook for working with curriculum data
+ * Hook for working with curriculum data.
+ *
+ * Uses WeakMap caching via getCurriculumDataSource - when the same data object
+ * reference is passed, the cached data source is returned. This eliminates
+ * redundant graph construction (iterating 123+ nodes) during component
+ * remounts (tab switches, modals, etc.).
  */
 export function useCurriculumData(
     options: UseCurriculumDataOptions = {}
 ): UseCurriculumDataResult {
-    const { category, filter: additionalFilter } = options;
+    const { category, filter: additionalFilter, data } = options;
 
-    const dataSource = useMemo(() => getCurriculumDataSource(), []);
+    // getCurriculumDataSource uses WeakMap caching keyed by data object.
+    // When the same data reference is passed, returns cached instance.
+    // This prevents rebuilding nodeCache Map on component remounts.
+    const dataSource = useMemo(
+        () => getCurriculumDataSource(data),
+        [data]
+    );
 
     // Combine category filter with additional filter
     const combinedFilter = useMemo((): GraphNodeFilter | undefined => {

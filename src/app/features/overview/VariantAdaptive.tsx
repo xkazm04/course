@@ -34,7 +34,7 @@ import {
 } from "./lib/curriculumTypes";
 import { calculateFitViewport } from "./lib/curriculumPositions";
 import { useGraphNavigation } from "./lib/useGraphNavigation";
-import { calculateFocusedPath } from "./lib/adaptiveHelpers";
+import { calculateFocusedPath } from "./lib/focusedPathCalculator";
 import {
     KnowledgeMapCanvas,
     KnowledgeMapControls,
@@ -42,10 +42,10 @@ import {
     CategoryNav,
     NavigationBreadcrumbs,
     ConnectionsPanel,
+    FocusModeBanner,
 } from "./components";
 import {
     AISuggestionsBar,
-    FocusModeBanner,
     AIRecommendationsPanel,
     NodePredictionBadge,
 } from "./components/adaptive";
@@ -241,7 +241,7 @@ const VariantAdaptiveInner: React.FC = () => {
             {/* Focus Mode Banner */}
             {focusMode && (
                 <FocusModeBanner
-                    selectedNode={selectedNode}
+                    selectedNodeTitle={selectedNode?.title ?? null}
                     focusedNodeCount={focusedNodeIds?.size || 0}
                     onExit={() => setFocusMode(false)}
                 />

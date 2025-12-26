@@ -233,16 +233,49 @@ export interface SlotPlacement {
 // Layout Template Interface
 // ============================================================================
 
+/**
+ * Responsive configuration for layout templates
+ */
+export interface ResponsiveConfig {
+    /** Breakpoint-specific class overrides */
+    breakpoints?: {
+        sm?: string;
+        md?: string;
+        lg?: string;
+        xl?: string;
+    };
+    /** Whether the layout should be full-width on mobile */
+    mobileFullWidth?: boolean;
+}
+
+/**
+ * Complete declarative layout template with all mode-specific metadata.
+ * This is the single source of truth for each mode - ChapterView is a pure
+ * interpreter that renders based entirely on template data.
+ */
 export interface LayoutTemplate {
+    /** Unique identifier for the template */
     id: string;
+    /** Human-readable name */
     name: string;
+    /** Description of the layout behavior */
     description: string;
+    /** Content slot placements */
     slots: SlotPlacement[];
+    /** Grid configuration */
     gridConfig?: {
         columns?: number;
         mainSpan?: number;
         sidebarSpan?: number;
     };
+    /** CSS class to apply to the wrapper element */
+    wrapperClass?: string;
+    /** Data-testid attribute for testing */
+    dataTestId?: string;
+    /** Whether video controls are enabled in this mode */
+    enableVideoControls?: boolean;
+    /** Responsive configuration */
+    responsiveConfig?: ResponsiveConfig;
 }
 
 // ============================================================================

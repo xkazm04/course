@@ -1,7 +1,7 @@
 /**
  * Chapter Graph System
  *
- * This module connects ChapterSection to the learningPathGraph.ts structure,
+ * This module connects ChapterSection to the unified LearningNode type system,
  * making chapters first-class nodes in the curriculum DAG. This enables:
  * - Cross-chapter prerequisites
  * - Suggested next chapters
@@ -10,6 +10,9 @@
  *
  * The key insight: ChapterSection already contains id, sectionId, dependencies
  * (implicit via order), duration, and completion state - exactly the fields of a graph node.
+ *
+ * By leveraging the LearningNode base type from knowledge-map, chapter progress
+ * integrates naturally with the broader curriculum graph system.
  */
 
 import type { LearningDomainId } from "@/app/shared/lib/learningDomains";
@@ -20,6 +23,12 @@ import type {
     RelationshipType,
 } from "@/app/shared/lib/learningPathGraph";
 import type { ChapterSection, CourseInfo } from "./chapterData";
+import type {
+    LearningNodeBase,
+    LearningNodeStatus,
+    LearningContentType,
+} from "@/app/features/knowledge-map/lib/learningNode";
+import { parseDurationToMinutes } from "@/app/features/knowledge-map/lib/learningNode";
 
 // ============================================================================
 // CHAPTER NODE TYPES
@@ -103,34 +112,35 @@ export interface ChapterNode {
 
 /**
  * A section within a chapter as a graph node.
+ * Extends LearningNodeBase to integrate with the unified curriculum DAG.
  * Enables fine-grained prerequisite tracking within chapters.
  */
-export interface ChapterSectionNode {
+export interface ChapterSectionNode extends LearningNodeBase {
     /** Unique identifier: `{courseId}:{chapterId}:{sectionId}` */
     id: ChapterNodeId;
 
     /** Parent chapter node ID */
     chapterNodeId: ChapterNodeId;
 
-    /** Section ID from ChapterSection */
+    /** Section ID from ChapterSection (canonical node ID) */
     sectionId: string;
 
     /** Numeric order within the chapter */
     order: number;
 
-    /** Display title */
+    /** Display title (from LearningNodeBase) */
     title: string;
 
-    /** Duration string (e.g., "5 min") */
+    /** Duration string (e.g., "5 min") - from LearningNodeBase */
     duration: string;
 
     /** Duration in minutes for calculations */
     durationMinutes: number;
 
-    /** Section type */
+    /** Section type - maps to LearningContentType */
     type: "video" | "lesson" | "interactive" | "exercise";
 
-    /** Completion status */
+    /** Completion status - derived from LearningNodeBase.status */
     completed: boolean;
 
     /** Reference to original ChapterSection data */
@@ -218,21 +228,33 @@ export function parseChapterNodeId(nodeId: ChapterNodeId): {
 
 /**
  * Convert a ChapterSection to a ChapterSectionNode
+ *
+ * This function bridges the ChapterSection (chapter domain) to ChapterSectionNode
+ * (graph domain), populating both the LearningNodeBase fields and section-specific fields.
  */
 export function sectionToNode(
     section: ChapterSection,
     courseInfo: CourseInfo
 ): ChapterSectionNode {
     const chapterNodeId = createChapterNodeId(courseInfo.courseId, courseInfo.chapterId);
-    const durationMinutes = parseInt(section.duration, 10) || 0;
+    const durationMinutes = parseDurationToMinutes(section.duration);
+
+    // Determine status from completion state
+    const status: LearningNodeStatus = section.completed ? "completed" : "available";
 
     return {
+        // LearningNodeBase fields
         id: createSectionNodeId(courseInfo.courseId, courseInfo.chapterId, section.sectionId),
+        title: section.title,
+        status,
+        contentType: section.type as LearningContentType,
+        duration: section.duration,
+        progress: section.completed ? 100 : 0,
+
+        // ChapterSectionNode-specific fields
         chapterNodeId,
         sectionId: section.sectionId,
         order: section.id,
-        title: section.title,
-        duration: section.duration,
         durationMinutes,
         type: section.type,
         completed: section.completed,

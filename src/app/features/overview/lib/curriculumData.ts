@@ -38,6 +38,7 @@ export {
     getPrerequisites,
     hasNode,
     getAllCategories,
+    getNodesBySkill,
     TOTAL_NODES,
     TOTAL_CONNECTIONS,
     NODE_COUNTS_BY_STATUS,

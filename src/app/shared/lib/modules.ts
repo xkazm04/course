@@ -52,6 +52,7 @@ export const modules: ModuleDefinition[] = [
         variants: [
             { id: "split-view", name: "Split View" },
             { id: "knowledge-map", name: "Knowledge Map" },
+            { id: "oracle-map", name: "Oracle Map" },
             { id: "skill-progress", name: "Skill Progress" },
         ],
     },

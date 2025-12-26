@@ -29,6 +29,9 @@ export {
     getSectionByNumericId,
     calculateProgress,
     getTotalDuration,
+    // LearningNode conversion functions
+    chapterSectionToLearningNode,
+    learningNodeToChapterSectionUpdate,
 } from "./chapterData";
 export type {
     SectionType,
@@ -110,6 +113,7 @@ export type {
     LayoutRegion,
     SlotPlacement,
     LayoutTemplate,
+    ResponsiveConfig,
     SlotRendererProps,
 } from "./contentSlots";
 

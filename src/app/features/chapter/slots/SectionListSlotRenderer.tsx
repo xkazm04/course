@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, useMemo, memo } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
     BookOpen, ChevronDown, ChevronUp, Code2, FileText,
     Play, CheckCircle, Clock, ArrowRight, Sparkles, Image
@@ -14,6 +14,97 @@ import { TRANSITIONS, ANIMATION_VARIANTS } from "@/app/shared/lib/animationTimin
 import { BookmarkButton, BookmarkIndicator } from "@/app/features/bookmarks";
 import type { SectionListSlot } from "../lib/contentSlots";
 import type { ChapterState } from "../lib/useChapterState";
+
+// Progressive content reveal animation variants
+const expandedContainerVariants: Variants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: {
+        opacity: 1,
+        height: "auto",
+        transition: {
+            height: { duration: 0.3, ease: "easeOut" },
+            opacity: { duration: 0.2, ease: "easeOut" },
+            staggerChildren: 0.1,
+            delayChildren: 0.15,
+        },
+    },
+    exit: {
+        opacity: 0,
+        height: 0,
+        transition: {
+            height: { duration: 0.2, ease: "easeIn" },
+            opacity: { duration: 0.1, ease: "easeIn" },
+        },
+    },
+};
+
+// Description fades in at 0ms (first child, no additional delay)
+const descriptionVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.25, ease: "easeOut" },
+    },
+    exit: { opacity: 0, y: 5, transition: { duration: 0.1 } },
+};
+
+// Code block slides up at 150ms (handled by stagger)
+const codeBlockVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.3, ease: "easeOut" },
+    },
+    exit: { opacity: 0, y: 10, transition: { duration: 0.1 } },
+};
+
+// Key points container with its own stagger for individual items
+const keyPointsContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.05,
+        },
+    },
+    exit: { opacity: 0, transition: { duration: 0.1 } },
+};
+
+// Individual key point items stagger at 200ms+50ms each
+const keyPointItemVariants: Variants = {
+    hidden: { opacity: 0, x: -15 },
+    visible: {
+        opacity: 1,
+        x: 0,
+        transition: { duration: 0.25, ease: "easeOut" },
+    },
+    exit: { opacity: 0, x: -10, transition: { duration: 0.1 } },
+};
+
+// Screenshot slides up
+const screenshotVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.3, ease: "easeOut" },
+    },
+    exit: { opacity: 0, y: 10, transition: { duration: 0.1 } },
+};
+
+// Action buttons scale in at 400ms (last items in stagger sequence)
+const actionButtonsVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 0.25, ease: "easeOut" },
+    },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.1 } },
+};
 
 export interface SectionListSlotRendererProps {
     slot: SectionListSlot;
@@ -172,62 +263,97 @@ const SectionItem: React.FC<SectionItemProps> = ({
                         )}
                     </button>
 
-                    {/* Expanded Content */}
-                    <AnimatePresence>
+                    {/* Expanded Content with Progressive Reveal */}
+                    <AnimatePresence mode="wait">
                         {expandable && isExpanded && (
                             <motion.div
-                                initial={ANIMATION_VARIANTS.expand.initial}
-                                animate={ANIMATION_VARIANTS.expand.animate}
-                                exit={ANIMATION_VARIANTS.expand.exit}
-                                transition={TRANSITIONS.expand}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                variants={expandedContainerVariants}
                                 className="overflow-hidden"
+                                data-testid={`section-expanded-content-${section.id}`}
                             >
-                                <div className="pt-2 border-t border-slate-100 dark:border-slate-700" style={{ paddingLeft: "var(--slot-padding-md)", paddingRight: "var(--slot-padding-md)", paddingBottom: "var(--slot-padding-md)" }}>
-                                    <p className="text-slate-600 dark:text-slate-400 mb-4">
+                                <div
+                                    className="pt-2 border-t border-slate-100 dark:border-slate-700"
+                                    style={{
+                                        paddingLeft: "var(--slot-padding-md)",
+                                        paddingRight: "var(--slot-padding-md)",
+                                        paddingBottom: "var(--slot-padding-md)"
+                                    }}
+                                >
+                                    {/* Description - fades in at 0ms */}
+                                    <motion.p
+                                        variants={descriptionVariants}
+                                        className="text-slate-600 dark:text-slate-400 mb-4"
+                                        data-testid={`section-description-${section.id}`}
+                                    >
                                         {section.content.description}
-                                    </p>
+                                    </motion.p>
 
-                                    {/* Code Preview */}
+                                    {/* Code Preview - slides up at 150ms */}
                                     {section.content.code && (
-                                        <CodeBlock
-                                            code={section.content.code}
-                                            language="typescript"
-                                            showLineNumbers={true}
-                                            showCopy={true}
-                                            showHeader={true}
-                                            className="mb-4"
-                                        />
+                                        <motion.div
+                                            variants={codeBlockVariants}
+                                            data-testid={`section-code-block-${section.id}`}
+                                        >
+                                            <CodeBlock
+                                                code={section.content.code}
+                                                language="typescript"
+                                                showLineNumbers={true}
+                                                showCopy={true}
+                                                showHeader={true}
+                                                className="mb-4"
+                                            />
+                                        </motion.div>
                                     )}
 
-                                    {/* Key Points */}
+                                    {/* Key Points - stagger at 200ms+50ms each */}
                                     {section.content.keyPoints && (
-                                        <div className="mb-4">
+                                        <motion.div
+                                            variants={keyPointsContainerVariants}
+                                            className="mb-4"
+                                            data-testid={`section-key-points-${section.id}`}
+                                        >
                                             <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                                                 What you&apos;ll learn:
                                             </h4>
                                             <ul className="space-y-2">
                                                 {section.content.keyPoints.map((point, j) => (
-                                                    <li key={j} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                                                    <motion.li
+                                                        key={j}
+                                                        variants={keyPointItemVariants}
+                                                        className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400"
+                                                        data-testid={`section-key-point-${section.id}-${j}`}
+                                                    >
                                                         <Sparkles size={ICON_SIZES.sm} className="text-indigo-500" />
                                                         {point}
-                                                    </li>
+                                                    </motion.li>
                                                 ))}
                                             </ul>
-                                        </div>
+                                        </motion.div>
                                     )}
 
-                                    {/* Screenshot Preview */}
+                                    {/* Screenshot Preview - slides up */}
                                     {section.content.screenshot && (
-                                        <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl mb-4 flex items-center justify-center">
+                                        <motion.div
+                                            variants={screenshotVariants}
+                                            className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl mb-4 flex items-center justify-center"
+                                            data-testid={`section-screenshot-${section.id}`}
+                                        >
                                             <div className="text-center">
                                                 <Image size={ICON_SIZES.xl} className="mx-auto text-slate-400 mb-2" aria-hidden="true" />
                                                 <span className="text-sm text-slate-500">Interactive Preview</span>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     )}
 
-                                    {/* Action Buttons */}
-                                    <div className="flex gap-3">
+                                    {/* Action Buttons - scale in at 400ms */}
+                                    <motion.div
+                                        variants={actionButtonsVariants}
+                                        className="flex gap-3"
+                                        data-testid={`section-action-buttons-${section.id}`}
+                                    >
                                         <button
                                             onClick={() => setActiveSection(section.id)}
                                             data-testid={`section-list-action-btn-${section.id}`}
@@ -260,7 +386,7 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                             sectionTitle={section.title}
                                             variant="full"
                                         />
-                                    </div>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         )}

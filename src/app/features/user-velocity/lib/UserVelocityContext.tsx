@@ -132,7 +132,7 @@ const defaultContext: UserVelocityContextType = {
     signals: defaultSignals,
     adaptations: computeAdaptations("balanced", false),
     isReady: false,
-    setVelocityOverride: () => {},
+    setVelocityOverride: () => { },
     velocityOverride: null,
 };
 
@@ -171,6 +171,10 @@ export function UserVelocityProvider({
     const navigationTimestampsRef = useRef<number[]>([]);
     const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    // Refs for rapidly-changing values (synced to state periodically)
+    const currentScrollVelocityRef = useRef<number>(0);
+    const currentMouseVelocityRef = useRef<number>(0);
+
     // Load stored override preference
     useEffect(() => {
         if (typeof window === "undefined") return;
@@ -190,7 +194,7 @@ export function UserVelocityProvider({
         setSignals((prev) => ({ ...prev, prefersReducedMotion }));
     }, [prefersReducedMotion]);
 
-    // Track scroll velocity
+    // Track scroll velocity (store in ref, not state)
     useEffect(() => {
         if (typeof window === "undefined") return;
 
@@ -202,12 +206,8 @@ export function UserVelocityProvider({
             if (timeDelta > 0) {
                 const distance = Math.abs(currentPosition - scrollPositionRef.current);
                 const velocity = (distance / timeDelta) * 1000; // px per second
-
-                setSignals((prev) => ({ ...prev, scrollVelocity: velocity }));
-
-                // Reset idle time on scroll
+                currentScrollVelocityRef.current = velocity;
                 lastActivityRef.current = now;
-                setSignals((prev) => ({ ...prev, idleTime: 0 }));
             }
 
             scrollPositionRef.current = currentPosition;
@@ -218,7 +218,7 @@ export function UserVelocityProvider({
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Track mouse velocity
+    // Track mouse velocity (store in ref, not state)
     useEffect(() => {
         if (typeof window === "undefined") return;
 
@@ -231,12 +231,8 @@ export function UserVelocityProvider({
                 const dy = e.clientY - mousePositionRef.current.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 const velocity = (distance / timeDelta) * 1000; // px per second
-
-                setSignals((prev) => ({ ...prev, mouseVelocity: velocity }));
-
-                // Reset idle time on mouse movement
+                currentMouseVelocityRef.current = velocity;
                 lastActivityRef.current = now;
-                setSignals((prev) => ({ ...prev, idleTime: 0 }));
             }
 
             mousePositionRef.current = { x: e.clientX, y: e.clientY };
@@ -253,7 +249,10 @@ export function UserVelocityProvider({
 
         const handleKeyDown = () => {
             lastActivityRef.current = Date.now();
-            setSignals((prev) => ({ ...prev, isTyping: true, idleTime: 0 }));
+            setSignals((prev) => {
+                if (prev.isTyping) return prev; // Avoid update if already typing
+                return { ...prev, isTyping: true, idleTime: 0 };
+            });
 
             // Clear previous timeout
             if (typingTimeoutRef.current) {
@@ -262,7 +261,10 @@ export function UserVelocityProvider({
 
             // Reset typing flag after 1 second of no typing
             typingTimeoutRef.current = setTimeout(() => {
-                setSignals((prev) => ({ ...prev, isTyping: false }));
+                setSignals((prev) => {
+                    if (!prev.isTyping) return prev;
+                    return { ...prev, isTyping: false };
+                });
             }, 1000);
         };
 
@@ -313,24 +315,46 @@ export function UserVelocityProvider({
         };
     }, [config.navigationTimeWindow]);
 
-    // Track idle time
+    // Periodic sync: Update state from refs (throttled to prevent render floods)
     useEffect(() => {
         if (typeof window === "undefined") return;
 
         const interval = setInterval(() => {
             const now = Date.now();
             const idleTime = now - lastActivityRef.current;
-            setSignals((prev) => ({ ...prev, idleTime }));
+            const shouldDecay = idleTime > 500;
 
-            // Decay velocities when idle
-            if (idleTime > 500) {
-                setSignals((prev) => ({
+            setSignals((prev) => {
+                const newScrollVelocity = shouldDecay
+                    ? Math.max(0, currentScrollVelocityRef.current * 0.8)
+                    : currentScrollVelocityRef.current;
+                const newMouseVelocity = shouldDecay
+                    ? Math.max(0, currentMouseVelocityRef.current * 0.8)
+                    : currentMouseVelocityRef.current;
+
+                // Update refs with decayed values
+                if (shouldDecay) {
+                    currentScrollVelocityRef.current = newScrollVelocity;
+                    currentMouseVelocityRef.current = newMouseVelocity;
+                }
+
+                // Avoid unnecessary updates
+                const idleDiff = Math.abs(prev.idleTime - idleTime);
+                const scrollDiff = Math.abs(prev.scrollVelocity - newScrollVelocity);
+                const mouseDiff = Math.abs(prev.mouseVelocity - newMouseVelocity);
+
+                if (idleDiff < 50 && scrollDiff < 10 && mouseDiff < 10) {
+                    return prev; // No meaningful change
+                }
+
+                return {
                     ...prev,
-                    scrollVelocity: Math.max(0, prev.scrollVelocity * 0.8),
-                    mouseVelocity: Math.max(0, prev.mouseVelocity * 0.8),
-                }));
-            }
-        }, 100);
+                    idleTime,
+                    scrollVelocity: newScrollVelocity,
+                    mouseVelocity: newMouseVelocity,
+                };
+            });
+        }, 200); // Sync every 200ms instead of 100ms
 
         return () => clearInterval(interval);
     }, []);

@@ -9,12 +9,13 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Search, X } from "lucide-react";
+import { Globe, Search, X, Loader2, AlertCircle, Database } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import { LEARNING_DOMAINS, type LearningDomainId } from "@/app/shared/lib/learningDomains";
 import type { KnowledgeMapProps, MapNode } from "./lib/types";
 import { generateKnowledgeMapData } from "./lib/mapData";
+import { useMapData } from "./lib/useMapData";
 import { useMapNavigation } from "./lib/useMapNavigation";
 import { useMapViewport } from "./lib/useMapViewport";
 import { MapCanvas } from "./components/MapCanvas";
@@ -29,12 +30,24 @@ export function KnowledgeMap({
     onNodeSelect,
     onStartLearning,
     theme: themeProp,
+    hypotheticalNodes = [],
 }: KnowledgeMapProps) {
     // Container ref for size measurement
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Generate map data (memoized)
-    const mapData = useMemo(() => generateKnowledgeMapData(), []);
+
+    // Fetch map data from Supabase API with fallback to mock data
+    const { data: apiData, isLoading, error, isUsingMock, refetch } = useMapData({
+        domainId: initialDomainId,
+        debug: process.env.NODE_ENV === 'development',
+    });
+
+    // Use API data if available, otherwise fall back to mock data
+    const mapData = useMemo(() => {
+        if (apiData) return apiData;
+        // Generate mock data as fallback while loading or on error
+        return generateKnowledgeMapData();
+    }, [apiData]);
 
     // Theme detection
     const [systemTheme, setSystemTheme] = useState<"light" | "dark">("light");
@@ -209,8 +222,24 @@ export function KnowledgeMap({
                         <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                             Knowledge Map
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                            {progressStats.avgProgress}% explored • {progressStats.total} domains
+                        <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                            <span>{progressStats.avgProgress}% explored • {progressStats.total} domains</span>
+                            {isLoading ? (
+                                <span className="flex items-center gap-1 text-indigo-500">
+                                    <Loader2 size={12} className="animate-spin" />
+                                    Loading...
+                                </span>
+                            ) : isUsingMock ? (
+                                <span className="flex items-center gap-1 text-amber-500" title="Using mock data - connect to Supabase for live data">
+                                    <AlertCircle size={12} />
+                                    Mock
+                                </span>
+                            ) : (
+                                <span className="flex items-center gap-1 text-emerald-500" title="Connected to Supabase">
+                                    <Database size={12} />
+                                    Live
+                                </span>
+                            )}
                         </p>
                     </div>
                 </div>
@@ -320,6 +349,7 @@ export function KnowledgeMap({
             {/* Main canvas */}
             <MapCanvas
                 nodes={visibleNodes}
+                hypotheticalNodes={hypotheticalNodes}
                 connections={visibleConnections}
                 viewport={viewport}
                 selectedNodeId={navigation.selectedNodeId}

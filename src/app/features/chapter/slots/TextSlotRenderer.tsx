@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, memo } from "react";
+import { elevation } from "@/app/shared/lib/utils";
 import type { TextSlot } from "../lib/contentSlots";
 import type { ChapterState } from "../lib/useChapterState";
 
@@ -56,7 +57,7 @@ const TextSlotRendererComponent: React.FC<TextSlotRendererProps> = ({ slot, clas
     if (variant === "highlight") {
         return (
             <div
-                className={`bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 ${className ?? ""}`}
+                className={`bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 ${elevation.flat} ${className ?? ""}`}
                 style={{ padding: "var(--slot-padding-lg)" }}
                 data-testid={`text-slot-${slot.id}`}
             >

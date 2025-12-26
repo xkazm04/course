@@ -19,6 +19,8 @@ import type { MapNode, MapConnection, ViewportState } from "../lib/types";
 import { useMapLayout, type LayoutNode } from "../lib/useMapLayout";
 import { MapNode as MapNodeComponent } from "./MapNode";
 import { MapConnections } from "./MapConnections";
+import { HypotheticalNode } from "./HypotheticalNode";
+import { HypotheticalMapNode } from "../lib/types";
 
 // Gradient configurations for mesh background
 const GRADIENT_VARIANTS = {
@@ -31,6 +33,7 @@ const GRADIENT_VARIANTS = {
 
 interface MapCanvasProps {
     nodes: MapNode[];
+    hypotheticalNodes?: HypotheticalMapNode[];
     connections: MapConnection[];
     viewport: ViewportState;
     selectedNodeId: string | null;
@@ -50,6 +53,7 @@ interface MapCanvasProps {
 
 export const MapCanvas: React.FC<MapCanvasProps> = memo(function MapCanvas({
     nodes,
+    hypotheticalNodes = [],
     connections,
     viewport,
     selectedNodeId,
@@ -244,6 +248,15 @@ export const MapCanvas: React.FC<MapCanvasProps> = memo(function MapCanvas({
                             isSelected={node.id === selectedNodeId}
                             onSelect={() => onNodeSelect(node.id)}
                             onDrillDown={() => onNodeDrillDown(node.id)}
+                        />
+                    ))}
+                    {/* Render Hypothetical Nodes */}
+                    {hypotheticalNodes?.map((node) => (
+                        <HypotheticalNode
+                            key={node.id}
+                            node={node}
+                            isSelected={node.id === selectedNodeId}
+                            onClick={() => onNodeSelect(node.id)}
                         />
                     ))}
                 </AnimatePresence>

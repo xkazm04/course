@@ -55,7 +55,7 @@ export const AssessmentStart = ({
                 transition={{ delay: 0.2 }}
                 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-3"
             >
-                Personalize Your Path
+                Get Your Personalized Roadmap
             </motion.h2>
 
             <motion.p
@@ -66,6 +66,33 @@ export const AssessmentStart = ({
             >
                 Answer 5 quick questions to unlock a curriculum tailored specifically to your goals and experience level.
             </motion.p>
+
+            {/* Benefit indicators */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.35 }}
+                className="flex flex-col items-start gap-2 mb-6 text-sm text-slate-600 dark:text-slate-300"
+            >
+                <div className="flex items-center gap-2" data-testid="assessment-benefit-tailored">
+                    <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Tailored modules based on your skill level</span>
+                </div>
+                <div className="flex items-center gap-2" data-testid="assessment-benefit-order">
+                    <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Custom learning order for faster progress</span>
+                </div>
+                <div className="flex items-center gap-2" data-testid="assessment-benefit-matched">
+                    <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Skill-matched content recommendations</span>
+                </div>
+            </motion.div>
 
             {/* Features */}
             <motion.div

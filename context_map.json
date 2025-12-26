@@ -1,0 +1,354 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-12-24",
+  "description": "Context map documenting all feature modules and their file locations in the Course Learning Platform codebase",
+  "contexts": [
+    {
+      "id": "database-schema",
+      "title": "Database Schema",
+      "summary": "Supabase PostgreSQL schema supporting hierarchical course categorization, skills taxonomy, learning paths, career goals, and user progress tracking. Job market tables removed (Career Oracle fetches externally).",
+      "filepaths": {
+        "ui": [],
+        "lib": [],
+        "api": [
+          "supabase/migrations/001_initial_schema.sql",
+          "supabase/migrations/002_simplify_schema.sql",
+          "supabase/seed.sql",
+          "supabase/README.md"
+        ]
+      },
+      "tables": {
+        "taxonomy": ["categories", "subcategories", "topics"],
+        "skills": ["skills", "skill_prerequisites", "skill_relations"],
+        "courses": ["courses", "chapters", "sections", "concepts", "course_skills", "course_prerequisites", "course_connections"],
+        "learning_paths": ["learning_paths", "learning_path_courses", "learning_path_skills", "career_goals", "career_goal_skills"],
+        "users": ["user_profiles", "user_skills", "enrollments", "section_progress", "learning_path_enrollments", "user_achievements", "user_daily_activity", "bookmarks", "user_generated_paths"],
+        "gamification": ["achievements"]
+      }
+    },
+    {
+      "id": "supabase-api",
+      "title": "Supabase API & Hooks",
+      "summary": "Supabase client utilities, Next.js API routes for database CRUD operations, AI course/path generation endpoints, and React hooks for data fetching.",
+      "filepaths": {
+        "ui": [],
+        "lib": [
+          "src/lib/supabase/client.ts",
+          "src/lib/supabase/server.ts",
+          "src/lib/supabase/types.ts",
+          "src/lib/supabase/index.ts",
+          "src/app/shared/hooks/useSupabase.ts",
+          "src/app/shared/hooks/useCourses.ts",
+          "src/app/shared/hooks/useCategories.ts",
+          "src/app/shared/hooks/useKnowledgeMap.ts"
+        ],
+        "api": [
+          "src/app/api/db/categories/route.ts",
+          "src/app/api/db/courses/route.ts",
+          "src/app/api/db/courses/[id]/route.ts",
+          "src/app/api/db/chapters/route.ts",
+          "src/app/api/db/sections/route.ts",
+          "src/app/api/db/skills/route.ts",
+          "src/app/api/db/learning-paths/route.ts",
+          "src/app/api/knowledge-map/route.ts",
+          "src/app/api/ai/generate-course/route.ts",
+          "src/app/api/ai/generate-path/route.ts"
+        ]
+      }
+    },
+    {
+      "id": "theme-system",
+      "title": "Theme System",
+      "summary": "Light/dark/system theme management with localStorage persistence, system preference detection, and CSS variable-based theming.",
+      "filepaths": {
+        "ui": [],
+        "lib": [
+          "src/app/features/theme/lib/ThemeContext.tsx",
+          "src/app/features/theme/index.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "bookmarks",
+      "title": "Bookmarks System",
+      "summary": "Course content bookmarking with notes, tags, filtering, and highlighted text capture for organizing learning materials.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/bookmarks/components/BookmarkCard.tsx",
+          "src/app/features/bookmarks/components/BookmarkIndicator.tsx",
+          "src/app/features/bookmarks/components/BookmarkButton.tsx",
+          "src/app/features/bookmarks/components/MyNotesPage.tsx",
+          "src/app/features/bookmarks/components/index.ts"
+        ],
+        "lib": [
+          "src/app/features/bookmarks/lib/types.ts",
+          "src/app/features/bookmarks/lib/useBookmarks.ts",
+          "src/app/features/bookmarks/lib/bookmarkStorage.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "progress-tracking",
+      "title": "Progress Tracking",
+      "summary": "Comprehensive learning progress management across courses, chapters, videos with resume position, quiz scores, and progress export.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/progress/components/ContinueLearningButton.tsx",
+          "src/app/features/progress/components/ContinueLearningSection.tsx",
+          "src/app/features/progress/components/CourseProgressCard.tsx",
+          "src/app/features/progress/components/ProgressExportModal.tsx",
+          "src/app/features/progress/components/index.ts"
+        ],
+        "lib": [
+          "src/app/features/progress/lib/types.ts",
+          "src/app/features/progress/lib/useProgress.ts",
+          "src/app/features/progress/lib/ProgressContext.tsx",
+          "src/app/features/progress/lib/progressStorage.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "skill-progress",
+      "title": "Skill Progress System",
+      "summary": "Duolingo-style skill progression with XP, levels, crowns, skill radar charts, and skill tree with prerequisites.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/skill-progress/components/ProgressRing.tsx",
+          "src/app/features/skill-progress/components/SkillRadarChart.tsx",
+          "src/app/features/skill-progress/components/SkillCrown.tsx",
+          "src/app/features/skill-progress/components/SkillLevelBadge.tsx",
+          "src/app/features/skill-progress/components/SkillCard.tsx",
+          "src/app/features/skill-progress/components/SkillProgressOverview.tsx",
+          "src/app/features/skill-progress/components/index.ts"
+        ],
+        "lib": [
+          "src/app/features/skill-progress/lib/types.ts",
+          "src/app/features/skill-progress/lib/mockSkillData.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "certificates",
+      "title": "Certificates System",
+      "summary": "Course completion certificates with multiple templates, verification codes, QR codes, social sharing, and PDF/PNG export.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/certificates/components/CertificateDisplay.tsx",
+          "src/app/features/certificates/components/CertificateModal.tsx",
+          "src/app/features/certificates/components/CertificateGallery.tsx",
+          "src/app/features/certificates/components/CertificateIssueModal.tsx",
+          "src/app/features/certificates/components/CertificateVerification.tsx",
+          "src/app/features/certificates/components/CertificatesPage.tsx",
+          "src/app/features/certificates/components/index.ts"
+        ],
+        "lib": [
+          "src/app/features/certificates/lib/types.ts",
+          "src/app/features/certificates/lib/useCertificates.ts",
+          "src/app/features/certificates/lib/certificateGenerator.ts",
+          "src/app/features/certificates/lib/certificateStorage.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "streaks",
+      "title": "Learning Streaks",
+      "summary": "Gamified daily learning streak system with configurable goals, streak freeze tokens, milestone celebrations, and confetti animations.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/streaks/components/DailyProgressRing.tsx",
+          "src/app/features/streaks/components/Confetti.tsx",
+          "src/app/features/streaks/components/StreakWidget.tsx",
+          "src/app/features/streaks/components/StreakDisplay.tsx",
+          "src/app/features/streaks/components/MilestoneCelebration.tsx",
+          "src/app/features/streaks/components/DailyGoalSelector.tsx",
+          "src/app/features/streaks/components/index.ts"
+        ],
+        "lib": [
+          "src/app/features/streaks/lib/useStreaks.ts",
+          "src/app/features/streaks/lib/streakStorage.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "chapter-core",
+      "title": "Chapter System Core",
+      "summary": "Core chapter viewing with section management, chapter data types, and course information structures.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/chapter/components/SpeedIndicator.tsx",
+          "src/app/features/chapter/components/PrerequisiteWarning.tsx",
+          "src/app/features/chapter/AdaptiveChapterView.tsx"
+        ],
+        "lib": [
+          "src/app/features/chapter/lib/chapterData.ts",
+          "src/app/features/chapter/lib/useChapterState.ts",
+          "src/app/features/chapter/lib/chapterModes.ts",
+          "src/app/features/chapter/lib/usePlaybackSpeed.ts",
+          "src/app/features/chapter/lib/useKeyboardShortcuts.ts",
+          "src/app/features/chapter/lib/speedStorage.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "chapter-layouts",
+      "title": "Chapter Layout Templates",
+      "summary": "Layout template system with slots for different view modes (classic, expandable, IDE) and content arrangement.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/chapter/slots/ChapterLayoutRenderer.tsx"
+        ],
+        "lib": [
+          "src/app/features/chapter/lib/layoutTemplates.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "chapter-graph",
+      "title": "Chapter Graph System",
+      "summary": "Chapter curriculum graph with prerequisites, dependencies, learning path traversal, and XP calculations.",
+      "filepaths": {
+        "ui": [],
+        "lib": [
+          "src/app/features/chapter/lib/chapterGraph.ts",
+          "src/app/features/chapter/lib/curriculumChapters.ts",
+          "src/app/features/chapter/lib/useChapterGraph.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "code-playground",
+      "title": "Code Playground",
+      "summary": "Interactive code editor with multi-language support, file explorer, real-time execution, and iframe preview.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/code-playground/components/CodeEditor.tsx",
+          "src/app/features/code-playground/components/CodePlayground.tsx",
+          "src/app/features/code-playground/components/PreviewPane.tsx"
+        ],
+        "lib": [
+          "src/app/features/code-playground/lib/types.ts",
+          "src/app/features/code-playground/lib/usePlaygroundStorage.ts",
+          "src/app/features/code-playground/lib/iframeExecutor.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "adaptive-content",
+      "title": "Adaptive Content System",
+      "summary": "AI-powered content density adjustment based on learner behavior signals including quiz performance, video patterns, and navigation.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/adaptive-content/components/ComprehensionIndicator.tsx",
+          "src/app/features/adaptive-content/components/index.ts"
+        ],
+        "lib": [
+          "src/app/features/adaptive-content/lib/types.ts",
+          "src/app/features/adaptive-content/lib/comprehensionEngine.ts",
+          "src/app/features/adaptive-content/lib/comprehensionStorage.ts",
+          "src/app/features/adaptive-content/lib/AdaptiveContentContext.tsx",
+          "src/app/features/adaptive-content/lib/signalCollectors.ts",
+          "src/app/features/adaptive-content/lib/contentAdaptationEngine.ts",
+          "src/app/features/adaptive-content/lib/useAdaptiveSlots.ts",
+          "src/app/features/adaptive-content/lib/useQuizTracker.ts",
+          "src/app/features/adaptive-content/lib/index.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "course-overview",
+      "title": "Course Overview",
+      "summary": "Curriculum visualization with knowledge map, category navigation, and lazy-loaded variant components.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/overview/components/LazyVariant.tsx",
+          "src/app/features/overview/components/VariantPlaceholder.tsx",
+          "src/app/features/overview/components/CategoryNav.tsx"
+        ],
+        "lib": [
+          "src/app/features/overview/lib/curriculumTypes.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "path-comparison",
+      "title": "Path Comparison",
+      "summary": "Side-by-side learning path comparison with visual cards, metrics comparison, and modal-based comparison view.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/path-comparison/components/PathComparisonCard.tsx",
+          "src/app/features/path-comparison/components/CompareButton.tsx"
+        ],
+        "lib": [
+          "src/app/features/path-comparison/lib/usePathComparison.ts",
+          "src/app/features/path-comparison/lib/index.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "shareable-links",
+      "title": "Shareable Links",
+      "summary": "Social sharing of learning paths with OG image generation, progress inclusion, and platform-specific sharing.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/shareable-links/components/ShareButton.tsx"
+        ],
+        "lib": [
+          "src/app/features/shareable-links/lib/types.ts",
+          "src/app/features/shareable-links/lib/shareUtils.ts",
+          "src/app/features/shareable-links/lib/useSharePath.ts",
+          "src/app/features/shareable-links/lib/index.ts"
+        ],
+        "api": []
+      }
+    },
+    {
+      "id": "goal-path",
+      "title": "Goal Path Generator",
+      "summary": "Intent-based personalized learning path generation with goal input, time commitment, focus areas, and AI-generated curriculum.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/goal-path/GoalPathWithIntentResolver.tsx"
+        ],
+        "lib": [],
+        "api": []
+      }
+    },
+    {
+      "id": "knowledge-map",
+      "title": "Knowledge Map",
+      "summary": "5-level hierarchical knowledge map (domain > course > chapter > section > concept) with drill-down navigation, viewport controls, and database integration with mock data fallback.",
+      "filepaths": {
+        "ui": [
+          "src/app/features/knowledge-map/KnowledgeMap.tsx",
+          "src/app/features/knowledge-map/components/KnowledgeMapNode.tsx",
+          "src/app/features/knowledge-map/components/KnowledgeMapConnection.tsx"
+        ],
+        "lib": [
+          "src/app/features/knowledge-map/lib/types.ts",
+          "src/app/features/knowledge-map/lib/mapData.ts",
+          "src/app/features/knowledge-map/lib/useMapData.ts",
+          "src/app/features/knowledge-map/lib/useMapNavigation.ts",
+          "src/app/features/knowledge-map/lib/useMapViewport.ts",
+          "src/app/features/knowledge-map/lib/useMapLayout.ts",
+          "src/app/features/knowledge-map/lib/index.ts"
+        ],
+        "api": [
+          "src/app/api/knowledge-map/route.ts"
+        ]
+      }
+    }
+  ]
+}
