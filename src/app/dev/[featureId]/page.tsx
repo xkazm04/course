@@ -15,6 +15,12 @@ import { SocialProofVisualization } from "@/app/features/social-proof";
 import { KnowledgeUniverse } from "@/app/features/knowledge-universe";
 import { PathExplorer } from "@/app/features/generative-content";
 
+// Experiment feature imports (Tasks 01-04)
+import { DiscoveryDashboard } from "@/app/features/open-source-discovery";
+import { SimulationWorkspace } from "@/app/features/client-simulation";
+import { ChallengeDashboard } from "@/app/features/competition";
+import { RemixWorkspace } from "@/app/features/remix-projects";
+
 // Placeholder for components that need complex props
 const FeaturePlaceholder = ({ name, description }: { name: string; description: string }) => (
     <div className="p-8 bg-[var(--surface-overlay)] rounded-2xl border border-[var(--border-default)] text-center">
@@ -74,6 +80,27 @@ const featuresMeta: Record<string, { title: string; description: string; gradien
         description: "Social sharing with OG preview cards",
         gradient: "from-sky-500 to-blue-600"
     },
+    // Experiment features (Tasks 01-04)
+    "open-source-discovery": {
+        title: "Open Source Discovery",
+        description: "Living Product Model - Real-world project discovery and contribution",
+        gradient: "from-emerald-500 to-teal-600"
+    },
+    "client-simulation": {
+        title: "Client Simulation",
+        description: "Generative Simulation Model - AI-powered client scenario practice",
+        gradient: "from-violet-500 to-purple-600"
+    },
+    "competition": {
+        title: "Competition Arena",
+        description: "Competitive Ecosystem Model - Timed challenges and leaderboards",
+        gradient: "from-orange-500 to-red-600"
+    },
+    "remix-projects": {
+        title: "Remix & Extend",
+        description: "Remix Model - Inherit and improve existing codebases",
+        gradient: "from-blue-500 to-indigo-600"
+    },
 };
 
 // Mock data for components that need props
@@ -115,6 +142,15 @@ function FeatureRenderer({ featureId }: { featureId: string }) {
             return <FeaturePlaceholder name="Path Comparison" description="Side-by-side comparison of learning paths with skill overlap visualization and combined path suggestions." />;
         case "shareable-links":
             return <FeaturePlaceholder name="Shareable Links" description="Social sharing with OG preview cards for learning paths and achievements." />;
+        // Experiment features (Tasks 01-04)
+        case "open-source-discovery":
+            return <DiscoveryDashboard />;
+        case "client-simulation":
+            return <SimulationWorkspace />;
+        case "competition":
+            return <ChallengeDashboard />;
+        case "remix-projects":
+            return <RemixWorkspace />;
         default:
             return (
                 <div className="text-center py-16">

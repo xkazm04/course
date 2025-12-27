@@ -7,7 +7,7 @@ import {
     Compass, Target, Briefcase, BookOpen, Layers, ArrowRight,
     Sparkles, GraduationCap, FileText, Award, Code2,
     Brain, Globe2, Zap, BookMarked, Share2, GitCompare,
-    Rocket, TestTube2
+    Rocket, TestTube2, Beaker, GitFork, Users, Trophy, Search
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
@@ -142,6 +142,56 @@ const devFeatures: DevFeature[] = [
     },
 ];
 
+// Experiment features (Tasks 01-04 from requirements)
+interface ExperimentFeature {
+    id: string;
+    title: string;
+    description: string;
+    icon: typeof Compass;
+    gradient: string;
+    status: "ready" | "beta" | "alpha";
+    taskNumber: string;
+}
+
+const experimentFeatures: ExperimentFeature[] = [
+    {
+        id: "open-source-discovery",
+        title: "Open Source Discovery",
+        description: "Living Product Model - Explore real GitHub projects and learn by contributing to active codebases",
+        icon: Search,
+        gradient: "from-emerald-500 to-teal-600",
+        status: "ready",
+        taskNumber: "01",
+    },
+    {
+        id: "client-simulation",
+        title: "Client Simulation",
+        description: "Generative Simulation Model - Practice client interactions with AI-powered scenario simulations",
+        icon: Users,
+        gradient: "from-violet-500 to-purple-600",
+        status: "ready",
+        taskNumber: "02",
+    },
+    {
+        id: "competition",
+        title: "Competition Arena",
+        description: "Competitive Ecosystem Model - Timed coding challenges, leaderboards, and peer reviews",
+        icon: Trophy,
+        gradient: "from-orange-500 to-red-600",
+        status: "ready",
+        taskNumber: "03",
+    },
+    {
+        id: "remix-projects",
+        title: "Remix & Extend",
+        description: "Remix Model - Inherit imperfect codebases and improve them with guided objectives",
+        icon: GitFork,
+        gradient: "from-blue-500 to-indigo-600",
+        status: "ready",
+        taskNumber: "04",
+    },
+];
+
 // Module Card for Home View
 const ModuleCard = ({ module, index, progress = 0 }: {
     module: typeof modules[0];
@@ -257,6 +307,62 @@ const DevFeatureCard = ({ feature, index }: {
                         <ArrowRight size={ICON_SIZES.sm} className="text-[var(--text-muted)] group-hover:text-[var(--accent-primary)] group-hover:translate-x-1 transition-all shrink-0" />
                     </div>
                 </div>
+            </Link>
+        </motion.div>
+    );
+};
+
+// Experiment Feature Card for new learning models
+const ExperimentCard = ({ feature, index }: {
+    feature: ExperimentFeature;
+    index: number;
+}) => {
+    const href = `/dev/${feature.id}`;
+
+    const statusConfig = {
+        ready: { label: "Ready", color: "bg-emerald-500/20 text-emerald-400" },
+        beta: { label: "Beta", color: "bg-amber-500/20 text-amber-400" },
+        alpha: { label: "Alpha", color: "bg-red-500/20 text-red-400" },
+    }[feature.status];
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+        >
+            <Link href={href} className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" data-testid={`experiment-${feature.id}`}>
+                <PrismaticCard className="h-full cursor-pointer" glowColor="purple">
+                    <div className="p-6 h-full flex flex-col">
+                        <div className="flex items-start justify-between mb-4">
+                            <div className={cn(
+                                "w-14 h-14 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br",
+                                feature.gradient
+                            )}>
+                                <feature.icon size={ICON_SIZES.xl} />
+                            </div>
+                            <div className="flex flex-col items-end gap-1">
+                                <span className="px-2 py-0.5 bg-[var(--surface-inset)] rounded-full text-[10px] font-bold text-[var(--text-muted)]">
+                                    TASK {feature.taskNumber}
+                                </span>
+                                <span className={cn("px-2 py-0.5 rounded-full text-[10px] font-bold", statusConfig.color)}>
+                                    {statusConfig.label}
+                                </span>
+                            </div>
+                        </div>
+
+                        <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">
+                            {feature.title}
+                        </h3>
+                        <p className="text-sm text-[var(--text-secondary)] mb-4 flex-grow">
+                            {feature.description}
+                        </p>
+
+                        <div className="flex items-center gap-2 text-sm font-bold text-[var(--text-secondary)] group-hover:text-[var(--accent-primary)] transition-colors">
+                            Try Experiment <ArrowRight size={ICON_SIZES.sm} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </div>
+                </PrismaticCard>
             </Link>
         </motion.div>
     );
@@ -387,6 +493,29 @@ const HomeView = ({
                     />
                 ))}
             </div>
+
+            {/* Feature Experiments Section */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mb-16"
+            >
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center">
+                        <Beaker size={ICON_SIZES.lg} className="text-white" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-bold text-[var(--text-primary)]">Feature Experiments</h2>
+                        <p className="text-sm text-[var(--text-muted)]">New learning models from requirements (Tasks 01-04)</p>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {experimentFeatures.map((feature, index) => (
+                        <ExperimentCard key={feature.id} feature={feature} index={index} />
+                    ))}
+                </div>
+            </motion.div>
 
             {/* Developer Testing Section */}
             <motion.div

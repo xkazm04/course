@@ -367,7 +367,7 @@ export {
 
 // Predictive Engine
 export {
-    findMatchingPatterns,
+    findMatchingPatterns as findMatchingPredictivePatterns,
     encodePatternSignature,
     aggregatePreStruggleSignals,
     createPredictiveModelState,

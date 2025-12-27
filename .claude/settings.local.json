@@ -16,7 +16,11 @@
       "Bash(del \"C:\\\\Users\\\\kazim\\\\dac\\\\course\\\\supabase\\\\migrations\\\\002_simplify_schema.sql\")",
       "Bash(findstr:*)",
       "Bash(npx tsc:*)",
-      "Bash(timeout 20 npm run dev:*)"
+      "Bash(timeout 20 npm run dev:*)",
+      "Bash(ls -la \"C:\\\\Users\\\\kazim\\\\dac\\\\course\\\\src\\\\app\\\\features\"\" 2>/dev/null | grep \"^d \")",
+      "Bash(dir /b \"C:\\\\Users\\\\kazim\\\\dac\\\\course\\\\src\\\\app\\\\features\"\")",
+      "Bash(mkdir:*)",
+      "Bash(timeout 15 npm run dev)"
     ]
   }
 }
