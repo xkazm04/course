@@ -185,12 +185,12 @@ export function generateComparisonData(
 export function getIndicatorColorClass(indicator: ComparisonIndicator): string {
     switch (indicator) {
         case "advantage":
-            return "text-green-500 dark:text-green-400";
+            return "text-[var(--forge-success)]";
         case "disadvantage":
-            return "text-amber-500 dark:text-amber-400";
+            return "text-[var(--forge-warning)]";
         case "neutral":
         default:
-            return "text-[var(--text-secondary)]";
+            return "text-[var(--forge-text-secondary)]";
     }
 }
 
@@ -200,12 +200,12 @@ export function getIndicatorColorClass(indicator: ComparisonIndicator): string {
 export function getIndicatorBgClass(indicator: ComparisonIndicator): string {
     switch (indicator) {
         case "advantage":
-            return "bg-green-500/10 border-green-500/20";
+            return "bg-[var(--forge-success)]/10 border-[var(--forge-success)]/20";
         case "disadvantage":
-            return "bg-amber-500/10 border-amber-500/20";
+            return "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/20";
         case "neutral":
         default:
-            return "bg-[var(--surface-inset)] border-[var(--border-default)]";
+            return "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-default)]";
     }
 }
 

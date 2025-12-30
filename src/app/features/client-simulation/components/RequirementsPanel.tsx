@@ -38,20 +38,20 @@ const PRIORITY_CONFIG: Record<RequirementPriority, {
     color: string;
     bgColor: string;
 }> = {
-    must: { label: "Must", color: "text-red-400", bgColor: "bg-red-500/20" },
-    should: { label: "Should", color: "text-amber-400", bgColor: "bg-amber-500/20" },
-    could: { label: "Could", color: "text-blue-400", bgColor: "bg-blue-500/20" },
-    wont: { label: "Won't", color: "text-slate-400", bgColor: "bg-slate-500/20" },
+    must: { label: "Must", color: "text-[var(--forge-error)]", bgColor: "bg-[var(--forge-error)]/20" },
+    should: { label: "Should", color: "text-[var(--forge-warning)]", bgColor: "bg-[var(--forge-warning)]/20" },
+    could: { label: "Could", color: "text-[var(--forge-info)]", bgColor: "bg-[var(--forge-info)]/20" },
+    wont: { label: "Won't", color: "text-[var(--forge-text-muted)]", bgColor: "bg-[var(--forge-bg-elevated)]" },
 };
 
 const STATUS_CONFIG: Record<RequirementStatus, {
     icon: React.ElementType;
     color: string;
 }> = {
-    pending: { icon: Circle, color: "text-[var(--text-muted)]" },
-    in_progress: { icon: Clock, color: "text-blue-400" },
-    completed: { icon: CheckCircle, color: "text-emerald-400" },
-    blocked: { icon: AlertCircle, color: "text-red-400" },
+    pending: { icon: Circle, color: "text-[var(--forge-text-muted)]" },
+    in_progress: { icon: Clock, color: "text-[var(--forge-info)]" },
+    completed: { icon: CheckCircle, color: "text-[var(--forge-success)]" },
+    blocked: { icon: AlertCircle, color: "text-[var(--forge-error)]" },
 };
 
 export const RequirementsPanel: React.FC<RequirementsPanelProps> = ({
@@ -78,24 +78,24 @@ export const RequirementsPanel: React.FC<RequirementsPanelProps> = ({
     return (
         <div className="h-full flex flex-col">
             {/* Header with progress */}
-            <div className="p-4 border-b border-[var(--border-subtle)]">
+            <div className="p-4 border-b border-[var(--forge-border-subtle)]">
                 <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-[var(--text-primary)]">
+                    <h3 className="font-semibold text-[var(--forge-text-primary)]">
                         Requirements
                     </h3>
-                    <span className="text-sm text-[var(--text-muted)]">
+                    <span className="text-sm text-[var(--forge-text-muted)]">
                         {completedCount}/{requirements.length}
                     </span>
                 </div>
-                <div className="h-2 bg-[var(--surface-overlay)] rounded-full overflow-hidden">
+                <div className="h-2 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
                     <motion.div
-                        className="h-full bg-emerald-500 rounded-full"
+                        className="h-full bg-[var(--forge-success)] rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.5 }}
                     />
                 </div>
-                <div className="flex items-center justify-between mt-2 text-xs text-[var(--text-muted)]">
+                <div className="flex items-center justify-between mt-2 text-xs text-[var(--forge-text-muted)]">
                     <span>Phase {currentPhase + 1} of {totalPhases}</span>
                     <span>{progress}% complete</span>
                 </div>
@@ -117,7 +117,7 @@ export const RequirementsPanel: React.FC<RequirementsPanelProps> = ({
                                 )}>
                                     {PRIORITY_CONFIG[priority].label}
                                 </span>
-                                <span className="text-xs text-[var(--text-muted)]">
+                                <span className="text-xs text-[var(--forge-text-muted)]">
                                     ({items.length})
                                 </span>
                             </div>
@@ -139,9 +139,9 @@ export const RequirementsPanel: React.FC<RequirementsPanelProps> = ({
 
             {/* Bonus objectives */}
             {bonusObjectives.length > 0 && (
-                <div className="p-4 border-t border-[var(--border-subtle)]">
-                    <h4 className="text-xs font-semibold text-[var(--text-muted)] uppercase mb-2 flex items-center gap-1">
-                        <Star size={ICON_SIZES.xs} className="text-amber-400" />
+                <div className="p-4 border-t border-[var(--forge-border-subtle)]">
+                    <h4 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase mb-2 flex items-center gap-1">
+                        <Star size={ICON_SIZES.xs} className="text-[var(--forge-warning)]" />
                         Bonus Objectives
                     </h4>
                     <div className="space-y-2">
@@ -153,27 +153,27 @@ export const RequirementsPanel: React.FC<RequirementsPanelProps> = ({
             )}
 
             {/* Budget and deadline */}
-            <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--surface-base)]">
+            <div className="p-4 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]">
                 <div className="flex gap-4">
                     {budget && (
                         <div className="flex items-center gap-2">
-                            <DollarSign size={ICON_SIZES.sm} className="text-emerald-400" />
+                            <DollarSign size={ICON_SIZES.sm} className="text-[var(--forge-success)]" />
                             <div>
-                                <span className="text-sm font-medium text-[var(--text-primary)]">
+                                <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                                     ${budget.remaining.toLocaleString()}
                                 </span>
-                                <span className="text-xs text-[var(--text-muted)]"> / ${budget.initial.toLocaleString()}</span>
+                                <span className="text-xs text-[var(--forge-text-muted)]"> / ${budget.initial.toLocaleString()}</span>
                             </div>
                         </div>
                     )}
                     {deadline && (
                         <div className="flex items-center gap-2">
-                            <Calendar size={ICON_SIZES.sm} className="text-purple-400" />
+                            <Calendar size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                             <div>
-                                <span className="text-sm font-medium text-[var(--text-primary)]">
+                                <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                                     {formatDeadline(new Date(deadline))}
                                 </span>
-                                <span className="text-xs text-[var(--text-muted)]"> deadline</span>
+                                <span className="text-xs text-[var(--forge-text-muted)]"> deadline</span>
                             </div>
                         </div>
                     )}
@@ -219,7 +219,7 @@ const RequirementItem: React.FC<RequirementItemProps> = ({
             onClick={handleClick}
             className={cn(
                 "flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-colors",
-                "bg-[var(--surface-overlay)] hover:bg-[var(--surface-elevated)]",
+                "bg-[var(--forge-bg-elevated)] hover:bg-[var(--forge-bg-anvil)]",
                 requirement.status === "completed" && "opacity-60"
             )}
         >
@@ -229,13 +229,13 @@ const RequirementItem: React.FC<RequirementItemProps> = ({
             />
             <div className="flex-1 min-w-0">
                 <p className={cn(
-                    "text-sm text-[var(--text-primary)]",
+                    "text-sm text-[var(--forge-text-primary)]",
                     requirement.status === "completed" && "line-through"
                 )}>
                     {requirement.description}
                 </p>
                 {isNew && (
-                    <span className="inline-flex items-center gap-1 mt-1 text-xs text-purple-400">
+                    <span className="inline-flex items-center gap-1 mt-1 text-xs text-[var(--ember)]">
                         <Sparkles size={ICON_SIZES.xs} />
                         Added in Phase {requirement.addedInPhase + 1}
                     </span>
@@ -243,7 +243,7 @@ const RequirementItem: React.FC<RequirementItemProps> = ({
             </div>
             <ChevronRight
                 size={ICON_SIZES.sm}
-                className="text-[var(--text-muted)] flex-shrink-0"
+                className="text-[var(--forge-text-muted)] flex-shrink-0"
             />
         </motion.div>
     );
@@ -259,23 +259,23 @@ const BonusItem: React.FC<BonusItemProps> = ({ bonus }) => {
         <div className={cn(
             "flex items-center gap-2 p-2 rounded-lg",
             bonus.completed
-                ? "bg-amber-500/10 border border-amber-500/20"
-                : "bg-[var(--surface-overlay)]"
+                ? "bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/20"
+                : "bg-[var(--forge-bg-elevated)]"
         )}>
             {bonus.completed ? (
-                <CheckCircle size={ICON_SIZES.sm} className="text-amber-400" />
+                <CheckCircle size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
             ) : (
-                <Star size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
+                <Star size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
             )}
             <span className={cn(
                 "flex-1 text-sm",
-                bonus.completed ? "text-amber-400" : "text-[var(--text-secondary)]"
+                bonus.completed ? "text-[var(--forge-warning)]" : "text-[var(--forge-text-secondary)]"
             )}>
                 {bonus.description}
             </span>
             <span className={cn(
                 "text-xs font-medium",
-                bonus.completed ? "text-amber-400" : "text-[var(--text-muted)]"
+                bonus.completed ? "text-[var(--forge-warning)]" : "text-[var(--forge-text-muted)]"
             )}>
                 +{bonus.points}pts
             </span>

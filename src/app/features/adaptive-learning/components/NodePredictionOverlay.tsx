@@ -32,11 +32,11 @@ export const NodePredictionOverlay: React.FC<NodePredictionOverlayProps> = ({
     const circumference = 2 * Math.PI * 18; // radius = 18
     const strokeDashoffset = circumference * (1 - probability);
 
-    // Color based on probability
+    // Color based on probability - using OpenForge design tokens
     const getColor = () => {
-        if (probability >= 0.7) return { stroke: "#10b981", glow: "rgba(16, 185, 129, 0.3)" };
-        if (probability >= 0.4) return { stroke: "#f59e0b", glow: "rgba(245, 158, 11, 0.3)" };
-        return { stroke: "#ef4444", glow: "rgba(239, 68, 68, 0.3)" };
+        if (probability >= 0.7) return { stroke: "var(--forge-success)", glow: "rgba(52, 211, 153, 0.3)" };
+        if (probability >= 0.4) return { stroke: "var(--forge-warning)", glow: "rgba(251, 191, 36, 0.3)" };
+        return { stroke: "var(--forge-error)", glow: "rgba(248, 113, 113, 0.3)" };
     };
 
     const color = getColor();
@@ -61,7 +61,7 @@ export const NodePredictionOverlay: React.FC<NodePredictionOverlayProps> = ({
                 />
 
                 {/* Circular progress indicator */}
-                <div className="relative w-10 h-10 bg-white dark:bg-slate-800 rounded-full shadow-lg border border-slate-200 dark:border-slate-700">
+                <div className="relative w-10 h-10 bg-[var(--forge-bg-workshop)] rounded-full shadow-lg border border-[var(--forge-border-subtle)]">
                     <svg className="w-10 h-10 -rotate-90" viewBox="0 0 40 40">
                         {/* Background circle */}
                         <circle
@@ -71,7 +71,7 @@ export const NodePredictionOverlay: React.FC<NodePredictionOverlayProps> = ({
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="3"
-                            className="text-slate-200 dark:text-slate-700"
+                            className="text-[var(--forge-border-default)]"
                         />
                         {/* Progress circle */}
                         <motion.circle
@@ -91,7 +91,7 @@ export const NodePredictionOverlay: React.FC<NodePredictionOverlayProps> = ({
 
                     {/* Percentage text */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xs font-bold text-[var(--text-primary)]">
+                        <span className="text-xs font-bold text-[var(--forge-text-primary)]">
                             {Math.round(probability * 100)}
                         </span>
                     </div>
@@ -220,9 +220,9 @@ export const RecommendedPathIndicator: React.FC<RecommendedPathIndicatorProps> =
             <div className={cn(
                 "flex items-center justify-center",
                 "w-6 h-6 rounded-full",
-                "bg-gradient-to-r from-indigo-500 to-purple-500",
+                "bg-gradient-forge",
                 "text-white text-xs font-bold",
-                "shadow-lg shadow-indigo-500/30"
+                "shadow-lg shadow-ember"
             )}>
                 {pathPosition}
             </div>
@@ -230,7 +230,7 @@ export const RecommendedPathIndicator: React.FC<RecommendedPathIndicatorProps> =
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: "auto" }}
-                    className="absolute left-full ml-1 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-white dark:bg-slate-800 rounded-full text-[10px] font-medium text-[var(--text-secondary)] shadow-sm border border-slate-200 dark:border-slate-700 whitespace-nowrap"
+                    className="absolute left-full ml-1 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-[var(--forge-bg-workshop)] rounded-full text-[10px] font-medium text-[var(--forge-text-secondary)] shadow-sm border border-[var(--forge-border-subtle)] whitespace-nowrap"
                 >
                     of {totalPathLength}
                 </motion.div>

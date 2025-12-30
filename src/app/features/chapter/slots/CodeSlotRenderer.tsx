@@ -68,20 +68,20 @@ const CodeSlotRendererComponent: React.FC<CodeSlotRendererProps> = ({ slot, clas
     return (
         <div className={cn("space-y-0 rounded-xl overflow-hidden", elevation.flat, className)} data-testid={`code-slot-${slot.id}`}>
             {/* Toggle Header */}
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-800 dark:bg-slate-800 rounded-t-xl border-b border-slate-700/50">
+            <div className="flex items-center justify-between px-4 py-2 bg-[var(--forge-bg-anvil)] rounded-t-xl border-b border-[var(--forge-border-subtle)]">
                 <div className="flex items-center gap-2">
                     {showDiff ? (
-                        <GitCompare size={ICON_SIZES.sm} className="text-amber-400" />
+                        <GitCompare size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                     ) : (
-                        <Code2 size={ICON_SIZES.sm} className="text-slate-400" />
+                        <Code2 size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                     )}
                     {data.filename && (
-                        <span className="text-xs font-medium text-slate-400">
+                        <span className="text-xs font-medium text-[var(--forge-text-muted)]">
                             {data.filename}
                         </span>
                     )}
                     {!data.filename && data.language && (
-                        <span className="text-xs font-medium text-slate-400 uppercase">
+                        <span className="text-xs font-medium text-[var(--forge-text-muted)] uppercase">
                             {data.language}
                         </span>
                     )}
@@ -93,8 +93,8 @@ const CodeSlotRendererComponent: React.FC<CodeSlotRendererProps> = ({ slot, clas
                     className={cn(
                         "flex items-center gap-2 px-3 py-1 rounded-md text-xs font-medium transition-colors",
                         showDiff
-                            ? "bg-amber-500/20 text-amber-400 hover:bg-amber-500/30"
-                            : "bg-slate-700/50 text-slate-400 hover:bg-slate-600/50 hover:text-slate-300"
+                            ? "bg-[var(--ember)]/20 text-[var(--ember)] hover:bg-[var(--ember)]/30"
+                            : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-anvil)] hover:text-[var(--forge-text-secondary)]"
                     )}
                     data-testid="code-show-changes-toggle"
                     aria-pressed={showDiff}

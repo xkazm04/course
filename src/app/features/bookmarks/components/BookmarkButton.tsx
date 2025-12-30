@@ -101,15 +101,15 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
                 className={cn(
                     "transition-all duration-200",
                     variant === "icon"
-                        ? "p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+                        ? "p-2 rounded-lg hover:bg-[var(--forge-bg-bench)]"
                         : cn(buttonSizeClasses.md, "flex items-center gap-2 rounded-xl font-medium text-sm"),
                     isBookmarked
                         ? variant === "icon"
-                            ? "text-indigo-600 dark:text-indigo-400"
-                            : "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-700"
+                            ? "text-[var(--ember)]"
+                            : "bg-[var(--ember-dim)]/10 text-[var(--ember)] border border-[var(--ember)]/30"
                         : variant === "icon"
-                        ? "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
-                        : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700",
+                        ? "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
+                        : "bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-bench)]",
                     className
                 )}
                 data-testid={`bookmark-btn-${sectionId}`}
@@ -141,59 +141,59 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden"
+                            className="w-full max-w-md bg-[var(--forge-bg-workshop)] rounded-2xl shadow-2xl overflow-hidden"
                             data-testid="bookmark-modal"
                         >
-                            <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                            <div className="p-6 border-b border-[var(--forge-border-subtle)]">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                                    <h3 className="text-lg font-bold text-[var(--forge-text-primary)]">
                                         Add Bookmark
                                     </h3>
                                     <button
                                         onClick={() => setShowModal(false)}
-                                        className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                                        className="p-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] rounded-lg hover:bg-[var(--forge-bg-bench)] transition-colors"
                                         data-testid="bookmark-modal-close"
                                     >
                                         <X size={ICON_SIZES.md} />
                                     </button>
                                 </div>
-                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                                <p className="text-sm text-[var(--forge-text-muted)] mt-1">
                                     {chapterTitle} - {sectionTitle}
                                 </p>
                             </div>
 
                             <div className="p-6 space-y-4">
                                 {highlightedText && (
-                                    <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border-l-4 border-indigo-500">
-                                        <p className="text-sm text-indigo-800 dark:text-indigo-200 italic">
+                                    <div className="p-3 bg-[var(--ember-dim)]/10 rounded-xl border-l-4 border-[var(--ember)]">
+                                        <p className="text-sm text-[var(--forge-text-primary)] italic">
                                             "{highlightedText}"
                                         </p>
                                     </div>
                                 )}
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                         Personal Note
                                     </label>
                                     <textarea
                                         value={note}
                                         onChange={(e) => setNote(e.target.value)}
                                         placeholder="Add your thoughts or notes..."
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                                        className="w-full px-4 py-3 rounded-xl border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ember)] focus:border-transparent resize-none"
                                         rows={4}
                                         data-testid="bookmark-note-input"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                         Tags
                                     </label>
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="relative flex-1">
                                             <Tag
                                                 size={ICON_SIZES.sm}
-                                                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                                                className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                                             />
                                             <input
                                                 type="text"
@@ -201,13 +201,13 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
                                                 onChange={(e) => setTagInput(e.target.value)}
                                                 onKeyDown={handleKeyDown}
                                                 placeholder="Add a tag..."
-                                                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                                                className="w-full pl-9 pr-4 py-2 rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ember)] focus:border-transparent text-sm"
                                                 data-testid="bookmark-tag-input"
                                             />
                                         </div>
                                         <button
                                             onClick={handleAddTag}
-                                            className="p-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+                                            className="p-2 bg-[var(--ember)] text-[var(--forge-text-primary)] rounded-lg hover:opacity-90 transition-colors"
                                             data-testid="bookmark-add-tag-btn"
                                         >
                                             <Plus size={ICON_SIZES.sm} />
@@ -218,12 +218,12 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
                                             {tags.map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300"
+                                                    className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--forge-bg-anvil)] rounded-lg text-xs font-medium text-[var(--forge-text-secondary)]"
                                                 >
                                                     #{tag}
                                                     <button
                                                         onClick={() => handleRemoveTag(tag)}
-                                                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                                                        className="text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                                                         data-testid={`bookmark-remove-tag-${tag}`}
                                                     >
                                                         <X size={ICON_SIZES.xs} />
@@ -235,12 +235,12 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
                                 </div>
                             </div>
 
-                            <div className="p-6 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-end gap-3">
+                            <div className="p-6 bg-[var(--forge-bg-bench)] flex items-center justify-end gap-3">
                                 <button
                                     onClick={() => setShowModal(false)}
                                     className={cn(
                                         buttonSizeClasses.md,
-                                        "text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                        "text-sm font-medium text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                     )}
                                     data-testid="bookmark-cancel-btn"
                                 >
@@ -250,7 +250,7 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
                                     onClick={handleSave}
                                     className={cn(
                                         buttonSizeClasses.md,
-                                        "text-sm font-medium bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+                                        "text-sm font-medium bg-[var(--ember)] text-[var(--forge-text-primary)] rounded-lg hover:opacity-90 transition-colors"
                                     )}
                                     data-testid="bookmark-save-btn"
                                 >

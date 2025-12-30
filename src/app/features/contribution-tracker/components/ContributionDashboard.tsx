@@ -40,7 +40,7 @@ export const ContributionDashboard: React.FC = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 >
-                    <GitPullRequest size={ICON_SIZES.xl} className="text-[var(--accent-primary)]" />
+                    <GitPullRequest size={ICON_SIZES.xl} className="text-[var(--ember)]" />
                 </motion.div>
             </div>
         );
@@ -51,21 +51,21 @@ export const ContributionDashboard: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+                    <h2 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         Your Contributions
                     </h2>
-                    <p className="text-[var(--text-muted)] mt-1">
+                    <p className="text-[var(--forge-text-muted)] mt-1">
                         Track your open-source journey
                     </p>
                 </div>
-                <div className="flex rounded-lg bg-[var(--surface-elevated)] p-1">
+                <div className="flex rounded-lg bg-[var(--forge-bg-elevated)] p-1">
                     <button
                         onClick={() => setViewMode("active")}
                         className={cn(
                             "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                             viewMode === "active"
-                                ? "bg-[var(--accent-primary)] text-white"
-                                : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                ? "bg-[var(--ember)] text-white"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                         )}
                     >
                         <GitPullRequest size={ICON_SIZES.sm} />
@@ -76,8 +76,8 @@ export const ContributionDashboard: React.FC = () => {
                         className={cn(
                             "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                             viewMode === "history"
-                                ? "bg-[var(--accent-primary)] text-white"
-                                : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                ? "bg-[var(--ember)] text-white"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                         )}
                     >
                         <History size={ICON_SIZES.sm} />
@@ -158,13 +158,13 @@ export const ContributionDashboard: React.FC = () => {
             {/* Skills gained section */}
             {stats.skillsGained.length > 0 && (
                 <section className={cn(
-                    "rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] p-4",
+                    "rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] p-4",
                     elevation.elevated
                 )}>
                     <div className="flex items-center gap-2 mb-3">
-                        <Award size={ICON_SIZES.md} className="text-amber-400" />
-                        <h3 className="font-semibold text-[var(--text-primary)]">
+                        <Award size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />
+                        <h3 className="font-semibold text-[var(--forge-text-primary)]">
                             Skills Gained
                         </h3>
                     </div>
@@ -172,7 +172,7 @@ export const ContributionDashboard: React.FC = () => {
                         {stats.skillsGained.map(({ skill, count }) => (
                             <span
                                 key={skill}
-                                className="px-3 py-1.5 rounded-lg text-sm bg-amber-500/20 text-amber-400"
+                                className="px-3 py-1.5 rounded-lg text-sm bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]"
                             >
                                 {skill}
                                 {count > 1 && <span className="ml-1 opacity-60">×{count}</span>}
@@ -195,18 +195,18 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ icon, label, value, color }) => {
     const colorClasses = {
-        indigo: "bg-indigo-500/20 text-indigo-400",
-        emerald: "bg-emerald-500/20 text-emerald-400",
-        amber: "bg-amber-500/20 text-amber-400",
-        purple: "bg-purple-500/20 text-purple-400",
+        indigo: "bg-[var(--ember)]/20 text-[var(--ember)]",
+        emerald: "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+        amber: "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+        purple: "bg-[var(--ember)]/20 text-[var(--ember)]",
     };
 
     return (
         <motion.div
             whileHover={{ scale: 1.02 }}
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] p-4",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] p-4",
                 elevation.elevated
             )}
         >
@@ -216,8 +216,8 @@ const StatCard: React.FC<StatCardProps> = ({ icon, label, value, color }) => {
             )}>
                 {icon}
             </div>
-            <div className="text-2xl font-bold text-[var(--text-primary)]">{value}</div>
-            <div className="text-xs text-[var(--text-muted)]">{label}</div>
+            <div className="text-2xl font-bold text-[var(--forge-text-primary)]">{value}</div>
+            <div className="text-xs text-[var(--forge-text-muted)]">{label}</div>
         </motion.div>
     );
 };
@@ -231,11 +231,11 @@ interface EmptyStateProps {
 const EmptyState: React.FC<EmptyStateProps> = ({ title, description }) => {
     return (
         <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--surface-elevated)] mb-4">
-                <GitPullRequest size={ICON_SIZES.xl} className="text-[var(--text-muted)]" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--forge-bg-elevated)] mb-4">
+                <GitPullRequest size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)]" />
             </div>
-            <h3 className="text-lg font-medium text-[var(--text-primary)]">{title}</h3>
-            <p className="text-[var(--text-muted)] mt-1">{description}</p>
+            <h3 className="text-lg font-medium text-[var(--forge-text-primary)]">{title}</h3>
+            <p className="text-[var(--forge-text-muted)] mt-1">{description}</p>
         </div>
     );
 };

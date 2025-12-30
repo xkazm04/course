@@ -28,24 +28,24 @@ import {
 
 // Challenge type configuration
 const TYPE_CONFIG = {
-    bug: { icon: Bug, color: "text-red-400", bg: "bg-red-500/10", label: "Bug" },
-    smell: { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-500/10", label: "Code Smell" },
-    missing_feature: { icon: Sparkles, color: "text-purple-400", bg: "bg-purple-500/10", label: "Missing Feature" },
-    security: { icon: Shield, color: "text-red-500", bg: "bg-red-500/20", label: "Security" },
-    performance: { icon: Zap, color: "text-yellow-400", bg: "bg-yellow-500/10", label: "Performance" },
+    bug: { icon: Bug, color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/10", label: "Bug" },
+    smell: { icon: AlertTriangle, color: "text-[var(--forge-warning)]", bg: "bg-[var(--forge-warning)]/10", label: "Code Smell" },
+    missing_feature: { icon: Sparkles, color: "text-[var(--ember)]", bg: "bg-[var(--ember)]/10", label: "Missing Feature" },
+    security: { icon: Shield, color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/20", label: "Security" },
+    performance: { icon: Zap, color: "text-[var(--forge-warning)]", bg: "bg-[var(--forge-warning)]/10", label: "Performance" },
 };
 
 const SEVERITY_CONFIG = {
-    low: { color: "text-blue-400", bg: "bg-blue-500/10" },
-    medium: { color: "text-amber-400", bg: "bg-amber-500/10" },
-    high: { color: "text-orange-400", bg: "bg-orange-500/10" },
-    critical: { color: "text-red-400", bg: "bg-red-500/10" },
+    low: { color: "text-[var(--forge-info)]", bg: "bg-[var(--forge-info)]/10" },
+    medium: { color: "text-[var(--forge-warning)]", bg: "bg-[var(--forge-warning)]/10" },
+    high: { color: "text-[var(--ember)]", bg: "bg-[var(--ember)]/10" },
+    critical: { color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/10" },
 };
 
 const DIFFICULTY_CONFIG = {
-    beginner: { color: "text-emerald-400", bg: "bg-emerald-500/10", label: "Beginner" },
-    intermediate: { color: "text-amber-400", bg: "bg-amber-500/10", label: "Intermediate" },
-    advanced: { color: "text-red-400", bg: "bg-red-500/10", label: "Advanced" },
+    beginner: { color: "text-[var(--forge-success)]", bg: "bg-[var(--forge-success)]/10", label: "Beginner" },
+    intermediate: { color: "text-[var(--forge-warning)]", bg: "bg-[var(--forge-warning)]/10", label: "Intermediate" },
+    advanced: { color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/10", label: "Advanced" },
 };
 
 interface ScannedProjectsProps {
@@ -114,14 +114,14 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[var(--accent-primary)]/10">
-                        <Scan size={ICON_SIZES.lg} className="text-[var(--accent-primary)]" />
+                    <div className="p-2 rounded-lg bg-[var(--ember)]/10">
+                        <Scan size={ICON_SIZES.lg} className="text-[var(--ember)]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-[var(--text-primary)]">
+                        <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                             Scanned Challenges
                         </h2>
-                        <p className="text-sm text-[var(--text-muted)]">
+                        <p className="text-sm text-[var(--forge-text-muted)]">
                             Real-world issues discovered through automated scanning
                         </p>
                     </div>
@@ -130,7 +130,7 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                 <button
                     onClick={fetchChallenges}
                     disabled={isLoading}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--surface-overlay)] text-[var(--text-secondary)] hover:bg-[var(--surface-base)] transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-workshop)] transition-colors disabled:opacity-50"
                 >
                     <RefreshCw size={ICON_SIZES.sm} className={cn(isLoading && "animate-spin")} />
                     Refresh
@@ -142,14 +142,14 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                 <div className="flex-1 relative">
                     <Search
                         size={ICON_SIZES.sm}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                     />
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search challenges..."
-                        className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--surface-base)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)]"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-default)] text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)] focus:outline-none focus:border-[var(--ember)]"
                     />
                 </div>
 
@@ -157,7 +157,7 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                 <select
                     value={filters.type || ""}
                     onChange={(e) => setFilters({ ...filters, type: e.target.value as ScannedChallenge["type"] || undefined })}
-                    className="px-4 py-2 rounded-lg bg-[var(--surface-base)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]"
+                    className="px-4 py-2 rounded-lg bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-default)] text-[var(--forge-text-primary)] focus:outline-none focus:border-[var(--ember)]"
                 >
                     <option value="">All Types</option>
                     <option value="bug">Bugs</option>
@@ -171,7 +171,7 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                 <select
                     value={filters.difficulty || ""}
                     onChange={(e) => setFilters({ ...filters, difficulty: e.target.value as ScannedChallenge["difficulty"] || undefined })}
-                    className="px-4 py-2 rounded-lg bg-[var(--surface-base)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]"
+                    className="px-4 py-2 rounded-lg bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-default)] text-[var(--forge-text-primary)] focus:outline-none focus:border-[var(--ember)]"
                 >
                     <option value="">All Difficulties</option>
                     <option value="beginner">Beginner</option>
@@ -185,12 +185,12 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 rounded-lg bg-red-500/10 border border-red-500/20"
+                    className="p-4 rounded-lg bg-[var(--forge-error)]/10 border border-[var(--forge-error)]/20"
                 >
-                    <p className="text-red-400">{error}</p>
+                    <p className="text-[var(--forge-error)]">{error}</p>
                     <button
                         onClick={fetchChallenges}
-                        className="mt-2 text-sm text-red-400 hover:text-red-300 underline"
+                        className="mt-2 text-sm text-[var(--forge-error)] hover:opacity-80 underline"
                     >
                         Try again
                     </button>
@@ -200,7 +200,7 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
             {/* Loading State */}
             {isLoading && (
                 <div className="flex items-center justify-center py-12">
-                    <RefreshCw size={ICON_SIZES.lg} className="animate-spin text-[var(--text-muted)]" />
+                    <RefreshCw size={ICON_SIZES.lg} className="animate-spin text-[var(--forge-text-muted)]" />
                 </div>
             )}
 
@@ -211,13 +211,13 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                     animate={{ opacity: 1 }}
                     className="text-center py-12"
                 >
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--surface-overlay)] flex items-center justify-center">
-                        <Database size={ICON_SIZES.lg} className="text-[var(--text-muted)]" />
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--forge-bg-anvil)] flex items-center justify-center">
+                        <Database size={ICON_SIZES.lg} className="text-[var(--forge-text-muted)]" />
                     </div>
-                    <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">
+                    <h3 className="text-lg font-medium text-[var(--forge-text-primary)] mb-2">
                         No challenges available
                     </h3>
-                    <p className="text-[var(--text-muted)] max-w-md mx-auto">
+                    <p className="text-[var(--forge-text-muted)] max-w-md mx-auto">
                         {searchQuery
                             ? "No challenges match your search. Try different keywords."
                             : "Scan a codebase with the /remix-scanner skill to generate new challenges."}
@@ -233,20 +233,20 @@ export const ScannedProjects: React.FC<ScannedProjectsProps> = ({ onSelectChalle
                             {/* Project Header */}
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <FileCode size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
-                                    <h3 className="font-medium text-[var(--text-primary)]">{projectName}</h3>
+                                    <FileCode size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                                    <h3 className="font-medium text-[var(--forge-text-primary)]">{projectName}</h3>
                                     {project?.language && (
-                                        <span className="px-2 py-0.5 rounded text-xs bg-[var(--surface-overlay)] text-[var(--text-muted)]">
+                                        <span className="px-2 py-0.5 rounded text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]">
                                             {project.language}
                                         </span>
                                     )}
                                     {project?.framework && (
-                                        <span className="px-2 py-0.5 rounded text-xs bg-[var(--surface-overlay)] text-[var(--text-muted)]">
+                                        <span className="px-2 py-0.5 rounded text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]">
                                             {project.framework}
                                         </span>
                                     )}
                                 </div>
-                                <span className="text-sm text-[var(--text-muted)]">
+                                <span className="text-sm text-[var(--forge-text-muted)]">
                                     {challenges.length} challenge{challenges.length !== 1 ? "s" : ""}
                                 </span>
                             </div>

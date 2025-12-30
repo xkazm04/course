@@ -67,7 +67,7 @@ export const DailyProgressRing = ({
                     r={radius}
                     fill="none"
                     strokeWidth={stroke}
-                    className="stroke-slate-200 dark:stroke-slate-700"
+                    className="stroke-[var(--forge-border-subtle)]"
                 />
 
                 {/* Progress circle */}
@@ -97,13 +97,13 @@ export const DailyProgressRing = ({
                         className="flex flex-col items-center"
                     >
                         <div className="relative">
-                            <div className="absolute inset-0 bg-emerald-500/20 dark:bg-emerald-400/20 rounded-full blur-md" />
+                            <div className="absolute inset-0 bg-[var(--forge-success)]/20 rounded-full blur-md" />
                             <Check
                                 size={config.iconSize}
-                                className="relative text-emerald-500 dark:text-emerald-400"
+                                className="relative text-[var(--forge-success)]"
                             />
                         </div>
-                        <span className={cn("font-bold text-emerald-600 dark:text-emerald-400 mt-1", config.fontSize)}>
+                        <span className={cn("font-bold text-[var(--forge-success)] mt-1", config.fontSize)}>
                             Done!
                         </span>
                     </motion.div>
@@ -116,12 +116,12 @@ export const DailyProgressRing = ({
                     >
                         <Flame
                             size={config.iconSize}
-                            className="text-orange-500 dark:text-orange-400"
+                            className="text-[var(--ember)]"
                         />
-                        <span className={cn("font-bold text-slate-700 dark:text-slate-300 mt-1", config.fontSize)}>
+                        <span className={cn("font-bold text-[var(--forge-text-secondary)] mt-1", config.fontSize)}>
                             {currentMinutes}/{goalMinutes}
                         </span>
-                        <span className="text-xs text-slate-500 dark:text-slate-400">min</span>
+                        <span className="text-xs text-[var(--forge-text-muted)]">min</span>
                     </motion.div>
                 )}
             </div>

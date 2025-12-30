@@ -191,8 +191,8 @@ export function KnowledgeMapWithOracle({
             ref={containerRef}
             className={cn(
                 "relative w-full overflow-hidden",
-                "bg-slate-50 dark:bg-slate-900",
-                "rounded-2xl border border-slate-200 dark:border-slate-700"
+                "bg-[var(--forge-bg-workshop)]",
+                "rounded-2xl border border-[var(--forge-border-subtle)]"
             )}
             style={{ height }}
             variants={containerVariants}
@@ -221,20 +221,20 @@ export function KnowledgeMapWithOracle({
                 {/* Recommended/Hypothetical nodes overlay indicator */}
                 {(recommendedNodeCount > 0 || hypotheticalNodeCount > 0) && (
                     <div className="absolute top-20 right-4 z-30">
-                        <div className="px-3 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-lg border border-slate-200 dark:border-slate-700 shadow-lg">
+                        <div className="px-3 py-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-lg border border-[var(--forge-border-subtle)] shadow-lg">
                             <div className="flex items-center gap-3 text-xs">
                                 {recommendedNodeCount > 0 && (
                                     <div className="flex items-center gap-1.5">
-                                        <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-                                        <span className="text-indigo-600 dark:text-indigo-400">
+                                        <div className="w-2 h-2 rounded-full bg-[var(--ember)] animate-pulse" />
+                                        <span className="text-[var(--ember)]">
                                             {recommendedNodeCount} recommended
                                         </span>
                                     </div>
                                 )}
                                 {hypotheticalNodeCount > 0 && (
                                     <div className="flex items-center gap-1.5">
-                                        <div className="w-2 h-2 rounded-full border-2 border-dashed border-slate-400" />
-                                        <span className="text-slate-500 dark:text-slate-400">
+                                        <div className="w-2 h-2 rounded-full border-2 border-dashed border-[var(--forge-text-muted)]" />
+                                        <span className="text-[var(--forge-text-secondary)]">
                                             {hypotheticalNodeCount} to create
                                         </span>
                                     </div>

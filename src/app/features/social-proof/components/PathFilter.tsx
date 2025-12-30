@@ -10,7 +10,6 @@ interface PathFilterProps {
   selectedFilter: LearnerStartingPoint | null;
   onFilterChange: (filter: LearnerStartingPoint | null) => void;
   reducedMotion: boolean;
-  theme?: "light" | "dark";
 }
 
 /**
@@ -20,10 +19,7 @@ export function PathFilter({
   selectedFilter,
   onFilterChange,
   reducedMotion,
-  theme = "dark",
 }: PathFilterProps) {
-  const isDark = theme === "dark";
-
   return (
     <div
       className="flex flex-wrap gap-2 justify-center"
@@ -44,12 +40,8 @@ export function PathFilter({
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all border",
               isSelected
-                ? isDark
-                  ? "bg-indigo-500 text-white border-indigo-400"
-                  : "bg-indigo-600 text-white border-indigo-500"
-                : isDark
-                ? "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
-                : "bg-white/50 text-slate-700 border-slate-200 hover:bg-white/80"
+                ? "bg-[var(--forge-accent-ember)] text-[var(--forge-text-primary)] border-[var(--forge-accent-ember)]"
+                : "bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-secondary)] border-[var(--forge-border-subtle)] hover:bg-[var(--forge-bg-elevated)]"
             )}
             initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -67,12 +59,8 @@ export function PathFilter({
               className={cn(
                 "px-1.5 py-0.5 rounded-full text-xs",
                 isSelected
-                  ? isDark
-                    ? "bg-white/20 text-white"
-                    : "bg-white/30 text-white"
-                  : isDark
-                  ? "bg-white/10 text-slate-400"
-                  : "bg-slate-200 text-slate-600"
+                  ? "bg-[var(--forge-bg-anvil)]/30 text-[var(--forge-text-primary)]"
+                  : "bg-[var(--forge-bg-anvil)]/50 text-[var(--forge-text-muted)]"
               )}
             >
               {filter.count}
@@ -118,8 +106,8 @@ export function PathFilterCompact({
             className={cn(
               "flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border",
               isSelected
-                ? "bg-indigo-500 text-white border-indigo-400"
-                : "bg-white/5 text-slate-300 border-white/10"
+                ? "bg-[var(--forge-accent-ember)] text-[var(--forge-text-primary)] border-[var(--forge-accent-ember)]"
+                : "bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-secondary)] border-[var(--forge-border-subtle)]"
             )}
             initial={{ opacity: reducedMotion ? 1 : 0 }}
             animate={{ opacity: 1 }}

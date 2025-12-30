@@ -31,8 +31,8 @@ export const LeaderboardEntry: React.FC<LeaderboardEntryProps> = ({
             onClick={() => onClick?.(entry)}
             className={cn(
                 "flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors",
-                isCurrentUser && "bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/30",
-                !isCurrentUser && "hover:bg-[var(--surface-overlay)]"
+                isCurrentUser && "bg-[var(--ember)]/10 border border-[var(--ember)]/30",
+                !isCurrentUser && "hover:bg-[var(--forge-bg-anvil)]"
             )}
         >
             {/* Rank */}
@@ -40,7 +40,7 @@ export const LeaderboardEntry: React.FC<LeaderboardEntryProps> = ({
                 {isTopThree ? (
                     <RankMedal rank={entry.rank} />
                 ) : (
-                    <span className="text-lg font-bold text-[var(--text-muted)]">
+                    <span className="text-lg font-bold text-[var(--forge-text-muted)]">
                         {entry.rank}
                     </span>
                 )}
@@ -61,7 +61,7 @@ export const LeaderboardEntry: React.FC<LeaderboardEntryProps> = ({
                         className="w-8 h-8 rounded-full"
                     />
                 ) : (
-                    <div className="w-8 h-8 rounded-full bg-[var(--surface-overlay)] flex items-center justify-center text-sm font-medium text-[var(--text-muted)]">
+                    <div className="w-8 h-8 rounded-full bg-[var(--forge-bg-anvil)] flex items-center justify-center text-sm font-medium text-[var(--forge-text-muted)]">
                         {entry.displayName.charAt(0).toUpperCase()}
                     </div>
                 )}
@@ -72,18 +72,18 @@ export const LeaderboardEntry: React.FC<LeaderboardEntryProps> = ({
                         <span
                             className={cn(
                                 "font-medium truncate",
-                                isCurrentUser ? "text-[var(--accent-primary)]" : "text-[var(--text-primary)]"
+                                isCurrentUser ? "text-[var(--ember)]" : "text-[var(--forge-text-primary)]"
                             )}
                         >
                             @{entry.displayName}
                         </span>
                         {isCurrentUser && (
-                            <Star size={ICON_SIZES.xs} className="text-amber-400 flex-shrink-0" />
+                            <Star size={ICON_SIZES.xs} className="text-[var(--forge-warning)] flex-shrink-0" />
                         )}
                     </div>
                     <div className="flex items-center gap-1">
                         <TierIcon tier={entry.tier} size={12} />
-                        <span className="text-xs text-[var(--text-muted)] capitalize">
+                        <span className="text-xs text-[var(--forge-text-muted)] capitalize">
                             {entry.tier}
                         </span>
                     </div>
@@ -92,29 +92,29 @@ export const LeaderboardEntry: React.FC<LeaderboardEntryProps> = ({
 
             {/* Score */}
             <div className="text-right">
-                <span className="text-lg font-bold text-[var(--text-primary)]">
+                <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                     {entry.score.toFixed(1)}
                 </span>
-                <span className="text-xs text-[var(--text-muted)] block">pts</span>
+                <span className="text-xs text-[var(--forge-text-muted)] block">pts</span>
             </div>
 
             {/* Metrics (optional) */}
             {showMetrics && (
-                <div className="hidden md:flex items-center gap-4 text-xs text-[var(--text-muted)]">
+                <div className="hidden md:flex items-center gap-4 text-xs text-[var(--forge-text-muted)]">
                     <div className="text-center">
-                        <span className="font-medium text-[var(--text-secondary)]">
+                        <span className="font-medium text-[var(--forge-text-secondary)]">
                             {entry.metrics.responseTimeP50.toFixed(0)}ms
                         </span>
                         <span className="block">P50</span>
                     </div>
                     <div className="text-center">
-                        <span className="font-medium text-[var(--text-secondary)]">
+                        <span className="font-medium text-[var(--forge-text-secondary)]">
                             {entry.metrics.uptime.toFixed(1)}%
                         </span>
                         <span className="block">Uptime</span>
                     </div>
                     <div className="text-center">
-                        <span className="font-medium text-[var(--text-secondary)]">
+                        <span className="font-medium text-[var(--forge-text-secondary)]">
                             {entry.metrics.throughput.toFixed(0)}
                         </span>
                         <span className="block">RPS</span>
@@ -132,9 +132,9 @@ interface RankMedalProps {
 
 const RankMedal: React.FC<RankMedalProps> = ({ rank }) => {
     const config = {
-        1: { emoji: "🥇", color: "text-amber-400" },
-        2: { emoji: "🥈", color: "text-slate-300" },
-        3: { emoji: "🥉", color: "text-amber-600" },
+        1: { emoji: "🥇", color: "text-[var(--forge-warning)]" },
+        2: { emoji: "🥈", color: "text-[var(--forge-text-muted)]" },
+        3: { emoji: "🥉", color: "text-[var(--ember)]" },
     }[rank as 1 | 2 | 3];
 
     if (!config) return null;
@@ -159,7 +159,7 @@ interface TrendIndicatorProps {
 const TrendIndicator: React.FC<TrendIndicatorProps> = ({ trend, previousRank }) => {
     if (trend === "new") {
         return (
-            <span className="text-xs font-medium text-emerald-400 bg-emerald-500/20 px-1.5 py-0.5 rounded">
+            <span className="text-xs font-medium text-[var(--forge-success)] bg-[var(--forge-success)]/20 px-1.5 py-0.5 rounded">
                 NEW
             </span>
         );
@@ -167,7 +167,7 @@ const TrendIndicator: React.FC<TrendIndicatorProps> = ({ trend, previousRank }) 
 
     if (trend === "up") {
         return (
-            <div className="flex items-center text-emerald-400">
+            <div className="flex items-center text-[var(--forge-success)]">
                 <TrendingUp size={ICON_SIZES.sm} />
             </div>
         );
@@ -175,14 +175,14 @@ const TrendIndicator: React.FC<TrendIndicatorProps> = ({ trend, previousRank }) 
 
     if (trend === "down") {
         return (
-            <div className="flex items-center text-red-400">
+            <div className="flex items-center text-[var(--forge-error)]">
                 <TrendingDown size={ICON_SIZES.sm} />
             </div>
         );
     }
 
     return (
-        <div className="flex items-center text-[var(--text-muted)]">
+        <div className="flex items-center text-[var(--forge-text-muted)]">
             <Minus size={ICON_SIZES.sm} />
         </div>
     );
@@ -205,7 +205,7 @@ export const CompactLeaderboardEntry: React.FC<CompactLeaderboardEntryProps> = (
                 isCurrentUser && "font-medium"
             )}
         >
-            <span className="w-6 text-right text-sm text-[var(--text-muted)]">
+            <span className="w-6 text-right text-sm text-[var(--forge-text-muted)]">
                 {entry.rank <= 3 ? (
                     { 1: "🥇", 2: "🥈", 3: "🥉" }[entry.rank as 1 | 2 | 3]
                 ) : (
@@ -215,12 +215,12 @@ export const CompactLeaderboardEntry: React.FC<CompactLeaderboardEntryProps> = (
             <span
                 className={cn(
                     "flex-1 truncate text-sm",
-                    isCurrentUser ? "text-[var(--accent-primary)]" : "text-[var(--text-secondary)]"
+                    isCurrentUser ? "text-[var(--ember)]" : "text-[var(--forge-text-secondary)]"
                 )}
             >
                 @{entry.displayName}
             </span>
-            <span className="text-sm font-medium text-[var(--text-primary)]">
+            <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                 {entry.score.toFixed(1)}
             </span>
         </div>

@@ -127,15 +127,15 @@ export const ProjectDiscovery = ({
                 <div className="flex items-start justify-between mb-4">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
-                            <Sparkles size={ICON_SIZES.md} className="text-indigo-500" />
-                            <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                            <Sparkles size={ICON_SIZES.md} className="text-[var(--ember)]" />
+                            <span className="text-sm font-medium text-[var(--ember)]">
                                 Live Projects
                             </span>
                         </div>
-                        <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 mb-1">
+                        <h1 className="text-2xl font-black text-[var(--forge-text-primary)] mb-1">
                             Contribute to Real Open Source
                         </h1>
-                        <p className="text-slate-600 dark:text-slate-300">
+                        <p className="text-[var(--forge-text-secondary)]">
                             Build your portfolio with real GitHub contributions
                         </p>
                     </div>
@@ -145,8 +145,8 @@ export const ProjectDiscovery = ({
                         className={cn(
                             "p-2 rounded-xl transition-colors",
                             showFilters
-                                ? "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                ? "bg-[var(--ember)]/10 text-[var(--ember)]"
+                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] hover:bg-[var(--ember)]/10"
                         )}
                     >
                         <Filter size={ICON_SIZES.md} />
@@ -164,8 +164,8 @@ export const ProjectDiscovery = ({
                         className={cn(
                             "px-4 py-2 rounded-xl font-medium transition-all",
                             activeTab === "recommended"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                ? "bg-gradient-forge text-white shadow-ember-sm"
+                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] hover:bg-[var(--ember)]/10"
                         )}
                     >
                         For You
@@ -176,8 +176,8 @@ export const ProjectDiscovery = ({
                         className={cn(
                             "px-4 py-2 rounded-xl font-medium transition-all",
                             activeTab === "search"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                ? "bg-gradient-forge text-white shadow-ember-sm"
+                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] hover:bg-[var(--ember)]/10"
                         )}
                     >
                         Search
@@ -190,11 +190,11 @@ export const ProjectDiscovery = ({
                         initial={prefersReducedMotion ? false : { opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4"
+                        className="border-t border-[var(--forge-border-subtle)] pt-4 space-y-4"
                     >
                         {/* Role Selection */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                 Target Role
                             </label>
                             <select
@@ -203,7 +203,7 @@ export const ProjectDiscovery = ({
                                     setFilters((prev) => ({ ...prev, targetRole: e.target.value }))
                                 }
                                 data-testid="role-select"
-                                className="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
+                                className="w-full px-3 py-2 bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] rounded-xl text-[var(--forge-text-primary)]"
                             >
                                 {ROLES.map((role) => (
                                     <option key={role.value} value={role.value}>
@@ -215,7 +215,7 @@ export const ProjectDiscovery = ({
 
                         {/* Languages */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                 Preferred Languages
                             </label>
                             <div className="flex flex-wrap gap-2">
@@ -227,8 +227,8 @@ export const ProjectDiscovery = ({
                                         className={cn(
                                             "px-3 py-1.5 rounded-lg font-medium text-sm transition-all",
                                             filters.preferredLanguages.includes(lang)
-                                                ? "bg-indigo-600 text-white"
-                                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                                ? "bg-[var(--ember)] text-white"
+                                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:bg-[var(--ember)]/10"
                                         )}
                                     >
                                         {lang}
@@ -239,7 +239,7 @@ export const ProjectDiscovery = ({
 
                         {/* Time Available */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                 Weekly Hours Available: {filters.weeklyHoursAvailable}h
                             </label>
                             <input
@@ -260,7 +260,7 @@ export const ProjectDiscovery = ({
 
                         {/* Difficulty */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                 Difficulty
                             </label>
                             <div className="flex gap-2">
@@ -280,8 +280,8 @@ export const ProjectDiscovery = ({
                                         className={cn(
                                             "px-3 py-1.5 rounded-lg font-medium text-sm capitalize transition-all",
                                             filters.preferredDifficulty === diff
-                                                ? "bg-indigo-600 text-white"
-                                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                                ? "bg-[var(--ember)] text-white"
+                                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:bg-[var(--ember)]/10"
                                         )}
                                     >
                                         {diff}
@@ -303,8 +303,8 @@ export const ProjectDiscovery = ({
                                 className={cn(
                                     "w-12 h-6 rounded-full transition-colors relative",
                                     filters.preferPartnerCompanies
-                                        ? "bg-indigo-600"
-                                        : "bg-slate-300 dark:bg-slate-600"
+                                        ? "bg-[var(--ember)]"
+                                        : "bg-[var(--forge-bg-anvil)]"
                                 )}
                             >
                                 <div
@@ -316,7 +316,7 @@ export const ProjectDiscovery = ({
                                     )}
                                 />
                             </button>
-                            <span className="text-sm text-slate-600 dark:text-slate-400">
+                            <span className="text-sm text-[var(--forge-text-muted)]">
                                 Show partner companies only (hiring opportunities)
                             </span>
                         </div>
@@ -326,7 +326,7 @@ export const ProjectDiscovery = ({
                             onClick={handleSearch}
                             disabled={isLoading}
                             data-testid="search-projects-btn"
-                            className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+                            className="w-full py-3 bg-gradient-forge text-white font-bold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 shadow-ember"
                         >
                             {isLoading ? (
                                 <>
@@ -347,8 +347,8 @@ export const ProjectDiscovery = ({
             {/* Loading State */}
             {isLoading && (
                 <div className="text-center py-12">
-                    <Loader2 size={ICON_SIZES.xl} className="mx-auto animate-spin text-indigo-500 mb-4" />
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <Loader2 size={ICON_SIZES.xl} className="mx-auto animate-spin text-[var(--ember)] mb-4" />
+                    <p className="text-[var(--forge-text-muted)]">
                         Analyzing projects for the best matches...
                     </p>
                 </div>
@@ -363,7 +363,7 @@ export const ProjectDiscovery = ({
                             title="Ready for You"
                             subtitle="Projects matching your current skills"
                             icon={Target}
-                            iconColor="text-emerald-500"
+                            iconColor="text-[var(--forge-success)]"
                             items={recommendations.nextSteps}
                             onSelect={onSelectProject}
                         />
@@ -375,7 +375,7 @@ export const ProjectDiscovery = ({
                             title="Stretch Goals"
                             subtitle="Level up with these challenges"
                             icon={TrendingUp}
-                            iconColor="text-amber-500"
+                            iconColor="text-[var(--gold)]"
                             items={recommendations.stretchGoals}
                             onSelect={onSelectProject}
                         />
@@ -387,7 +387,7 @@ export const ProjectDiscovery = ({
                             title="Hiring Partners"
                             subtitle="Companies actively hiring contributors"
                             icon={Building2}
-                            iconColor="text-purple-500"
+                            iconColor="text-[var(--ember-glow)]"
                             items={recommendations.partnerOpportunities}
                             onSelect={onSelectProject}
                         />
@@ -398,7 +398,7 @@ export const ProjectDiscovery = ({
             {/* Search Results */}
             {activeTab === "search" && matches.length > 0 && !isLoading && (
                 <div className="space-y-4">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {matches.length} Matching Projects
                     </h2>
                     {matches.map((match) => (
@@ -414,11 +414,11 @@ export const ProjectDiscovery = ({
             {/* Empty State */}
             {!isLoading && activeTab === "search" && matches.length === 0 && (
                 <PrismaticCard className="p-8 text-center">
-                    <Search size={ICON_SIZES.xl} className="mx-auto text-slate-400 mb-4" />
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                    <Search size={ICON_SIZES.xl} className="mx-auto text-[var(--forge-text-muted)] mb-4" />
+                    <h3 className="text-lg font-bold text-[var(--forge-text-primary)] mb-2">
                         No Projects Found
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="text-[var(--forge-text-muted)]">
                         Try adjusting your filters or search for different languages.
                     </p>
                 </PrismaticCard>
@@ -452,9 +452,9 @@ const RecommendationSection = ({
         <PrismaticCard className="p-6">
             <div className="flex items-center gap-2 mb-1">
                 <Icon size={ICON_SIZES.md} className={iconColor} />
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{title}</h2>
+                <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">{title}</h2>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{subtitle}</p>
+            <p className="text-sm text-[var(--forge-text-muted)] mb-4">{subtitle}</p>
 
             <div className="space-y-3">
                 {items.map((issue) => (
@@ -481,35 +481,35 @@ const IssueCard = ({ analyzedIssue, onSelect }: IssueCardProps) => {
         <button
             onClick={onSelect}
             data-testid={`issue-card-${issue.id}`}
-            className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all text-left group"
+            className="w-full p-4 rounded-xl bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] hover:border-[var(--ember)]/50 transition-all text-left group"
         >
             <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                     {/* Repo Info */}
                     <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
+                        <span className="text-xs font-medium text-[var(--ember)]">
                             {issue.repository.fullName}
                         </span>
-                        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)]">
                             <Star size={ICON_SIZES.xs} />
                             {issue.repository.stars.toLocaleString()}
                         </div>
                         {issue.repository.isPartner && (
-                            <span className="px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-medium rounded">
+                            <span className="px-1.5 py-0.5 bg-[var(--ember)]/10 text-[var(--ember)] text-xs font-medium rounded">
                                 Partner
                             </span>
                         )}
                     </div>
 
                     {/* Issue Title */}
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <h3 className="font-semibold text-[var(--forge-text-primary)] truncate group-hover:text-[var(--ember)] transition-colors">
                         {issue.title}
                     </h3>
 
                     {/* Labels */}
                     <div className="flex items-center gap-2 mt-2 flex-wrap">
                         {issue.isGoodFirstIssue && (
-                            <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-medium rounded-full">
+                            <span className="px-2 py-0.5 bg-[var(--forge-success)]/10 text-[var(--forge-success)] text-xs font-medium rounded-full">
                                 Good First Issue
                             </span>
                         )}
@@ -517,15 +517,15 @@ const IssueCard = ({ analyzedIssue, onSelect }: IssueCardProps) => {
                             className={cn(
                                 "px-2 py-0.5 text-xs font-medium rounded-full",
                                 difficulty.overall === "beginner"
-                                    ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                                    ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                     : difficulty.overall === "intermediate"
-                                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                                    : "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+                                    ? "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]"
+                                    : "bg-[var(--forge-error)]/10 text-[var(--forge-error)]"
                             )}
                         >
                             {difficulty.overall}
                         </span>
-                        <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+                        <span className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)]">
                             <Clock size={ICON_SIZES.xs} />
                             {estimatedHours}h
                         </span>
@@ -538,15 +538,15 @@ const IssueCard = ({ analyzedIssue, onSelect }: IssueCardProps) => {
                         className={cn(
                             "w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold",
                             matchScore >= 80
-                                ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                                ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                 : matchScore >= 60
-                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                                ? "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]"
+                                : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]"
                         )}
                     >
                         {matchScore}
                     </div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 mt-1">Match</span>
+                    <span className="text-xs text-[var(--forge-text-muted)] mt-1">Match</span>
                 </div>
             </div>
         </button>
@@ -577,12 +577,12 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             data-testid={`repo-link-${issue.id}`}
-                            className="flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
+                            className="flex items-center gap-1 text-sm font-medium text-[var(--ember)] hover:underline"
                         >
                             {issue.repository.fullName}
                             <ExternalLink size={ICON_SIZES.xs} />
                         </a>
-                        <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-3 text-xs text-[var(--forge-text-muted)]">
                             <span className="flex items-center gap-1">
                                 <Star size={ICON_SIZES.xs} />
                                 {issue.repository.stars.toLocaleString()}
@@ -591,21 +591,21 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
                                 <GitFork size={ICON_SIZES.xs} />
                                 {issue.repository.forks.toLocaleString()}
                             </span>
-                            <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">
+                            <span className="px-1.5 py-0.5 bg-[var(--forge-bg-anvil)] rounded">
                                 {issue.repository.language}
                             </span>
                         </div>
                     </div>
 
                     {/* Issue Title */}
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                    <h3 className="text-lg font-bold text-[var(--forge-text-primary)] mb-2">
                         {issue.title}
                     </h3>
 
                     {/* Labels */}
                     <div className="flex items-center gap-2 flex-wrap">
                         {issue.isGoodFirstIssue && (
-                            <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-medium rounded-full flex items-center gap-1">
+                            <span className="px-2 py-1 bg-[var(--forge-success)]/10 text-[var(--forge-success)] text-xs font-medium rounded-full flex items-center gap-1">
                                 <CheckCircle2 size={ICON_SIZES.xs} />
                                 Good First Issue
                             </span>
@@ -614,15 +614,15 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
                             className={cn(
                                 "px-2 py-1 text-xs font-medium rounded-full capitalize",
                                 difficulty.overall === "beginner"
-                                    ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                                    ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                     : difficulty.overall === "intermediate"
-                                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                                    : "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+                                    ? "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]"
+                                    : "bg-[var(--forge-error)]/10 text-[var(--forge-error)]"
                             )}
                         >
                             {difficulty.overall}
                         </span>
-                        <span className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-medium rounded-full">
+                        <span className="flex items-center gap-1 px-2 py-1 bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] text-xs font-medium rounded-full">
                             <Clock size={ICON_SIZES.xs} />
                             ~{estimatedHours}h
                         </span>
@@ -635,28 +635,28 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
                         className={cn(
                             "w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-black",
                             score >= 80
-                                ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                                ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                 : score >= 60
-                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                                ? "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]"
+                                : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]"
                         )}
                     >
                         {score}%
                     </div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 mt-1">Match</span>
+                    <span className="text-xs text-[var(--forge-text-muted)] mt-1">Match</span>
                 </div>
             </div>
 
             {/* Match Reasons */}
             {reasons.length > 0 && (
                 <div className="mb-4">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                    <h4 className="text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                         Why this matches:
                     </h4>
                     <ul className="space-y-1">
                         {reasons.map((reason, i) => (
-                            <li key={i} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                                <CheckCircle2 size={ICON_SIZES.sm} className="text-emerald-500 flex-shrink-0" />
+                            <li key={i} className="flex items-center gap-2 text-sm text-[var(--forge-text-muted)]">
+                                <CheckCircle2 size={ICON_SIZES.sm} className="text-[var(--forge-success)] flex-shrink-0" />
                                 {reason.description}
                             </li>
                         ))}
@@ -666,8 +666,8 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
 
             {/* Skill Gaps */}
             {skillGaps.length > 0 && (
-                <div className="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800">
-                    <h4 className="flex items-center gap-2 text-sm font-medium text-amber-700 dark:text-amber-400 mb-2">
+                <div className="mb-4 p-3 rounded-xl bg-[var(--forge-warning)]/5 border border-[var(--forge-warning)]/20">
+                    <h4 className="flex items-center gap-2 text-sm font-medium text-[var(--forge-warning)] mb-2">
                         <AlertCircle size={ICON_SIZES.sm} />
                         Skills to develop (+{gapLearningHours}h learning)
                     </h4>
@@ -675,7 +675,7 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
                         {skillGaps.map((gap, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-medium rounded-full"
+                                className="px-2 py-1 bg-[var(--forge-warning)]/10 text-[var(--forge-warning)] text-xs font-medium rounded-full"
                             >
                                 {gap.skill}: {gap.userLevel} → {gap.requiredLevel}
                             </span>
@@ -688,7 +688,7 @@ const ProjectMatchCard = ({ match, onSelect }: ProjectMatchCardProps) => {
             <button
                 onClick={onSelect}
                 data-testid={`start-project-${issue.id}-btn`}
-                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                className="w-full py-3 bg-gradient-forge text-white font-bold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-ember"
             >
                 <Code size={ICON_SIZES.md} />
                 Start Contributing

@@ -168,7 +168,7 @@ const PreviewPanel = ({
                                                         key={p.id}
                                                         data-testid={`prerequisite-${p.id}-btn`}
                                                         onClick={() => onSelectPath(p)}
-                                                        className="flex items-center gap-1 py-2 min-h-[44px] text-sm text-[var(--accent-primary)] hover:underline"
+                                                        className="flex items-center gap-1 py-2 min-h-[44px] text-sm text-[var(--ember)] hover:underline"
                                                     >
                                                         <ArrowUpRight size={ICON_SIZES.xs} className="rotate-180" />
                                                         {p.name.split(' ')[0]}
@@ -186,7 +186,7 @@ const PreviewPanel = ({
                                                         key={p.id}
                                                         data-testid={`leads-to-${p.id}-btn`}
                                                         onClick={() => onSelectPath(p)}
-                                                        className="flex items-center gap-1 py-2 min-h-[44px] text-sm text-[var(--accent-primary)] hover:underline"
+                                                        className="flex items-center gap-1 py-2 min-h-[44px] text-sm text-[var(--ember)] hover:underline"
                                                     >
                                                         <ArrowUpRight size={ICON_SIZES.xs} />
                                                         {p.name.split(' ')[0]}
@@ -204,7 +204,7 @@ const PreviewPanel = ({
                             <div className="mb-4">
                                 <div className="flex items-center justify-between mb-2">
                                     <span className="text-sm font-medium text-[var(--text-secondary)]">Your Progress</span>
-                                    <span className="text-sm font-bold text-[var(--accent-primary)]">{pathProgress}%</span>
+                                    <span className="text-sm font-bold text-[var(--ember)]">{pathProgress}%</span>
                                 </div>
                                 <PathProgressIndicator
                                     pathId={selectedPath.id}
@@ -223,8 +223,8 @@ const PreviewPanel = ({
                                 className={cn(
                                     "flex-1 py-4 rounded-2xl font-bold transition-all icon-text-align justify-center",
                                     isPathStarted
-                                        ? "bg-emerald-500 text-white"
-                                        : "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] hover:opacity-90"
+                                        ? "bg-[var(--forge-success)] text-[var(--forge-text-primary)]"
+                                        : "bg-[var(--ember)] text-[var(--forge-text-primary)] hover:opacity-90"
                                 )}
                             >
                                 {isPathStarted ? (
@@ -245,8 +245,8 @@ const PreviewPanel = ({
                                 className={cn(
                                     "px-6 py-4 rounded-2xl font-bold transition-colors",
                                     isPathBookmarked
-                                        ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border border-amber-300 dark:border-amber-700"
-                                        : "bg-[var(--btn-secondary-bg)] border border-[var(--btn-secondary-border)] text-[var(--btn-secondary-text)] hover:bg-[var(--surface-overlay)]"
+                                        ? "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)] border border-[var(--forge-warning)]/50"
+                                        : "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-workshop)]"
                                 )}
                                 title={isPathBookmarked ? "Remove bookmark" : "Bookmark for later"}
                             >
@@ -301,7 +301,7 @@ const SidebarList = ({
                 {shareableUrl && (
                     <button
                         onClick={onShareView}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] hover:border-[var(--accent-primary)] transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:text-[var(--ember)] hover:border-[var(--ember)] transition-colors"
                         title="Copy shareable URL for current view"
                         data-testid="share-view-btn"
                     >
@@ -313,17 +313,17 @@ const SidebarList = ({
             <p className="text-sm text-[var(--text-secondary)] flex items-center gap-2">
                 <span>Sorted by learning progression</span>
                 {isLoadingData ? (
-                    <span className="flex items-center gap-1 text-indigo-500">
+                    <span className="flex items-center gap-1 text-[var(--ember)]">
                         <Loader2 size={12} className="animate-spin" />
                         Loading...
                     </span>
                 ) : isUsingMockData ? (
-                    <span className="flex items-center gap-1 text-amber-500" title="Using mock data - connect to Supabase for live data">
+                    <span className="flex items-center gap-1 text-[var(--forge-warning)]" title="Using mock data - connect to Supabase for live data">
                         <AlertCircle size={12} />
                         Mock
                     </span>
                 ) : (
-                    <span className="flex items-center gap-1 text-emerald-500" title="Connected to Supabase">
+                    <span className="flex items-center gap-1 text-[var(--forge-success)]" title="Connected to Supabase">
                         <Database size={12} />
                         Live
                     </span>

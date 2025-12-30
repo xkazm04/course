@@ -10,6 +10,17 @@ export type { AdaptiveChapterViewProps } from "./AdaptiveChapterView";
 export { ConductorChapterView } from "./ConductorChapterView";
 export type { ConductorChapterViewProps } from "./ConductorChapterView";
 
+// Chapter View Component
+export {
+  ChapterClassicVariants,
+  ChapterElegant,
+  ElegantVariant,
+} from "./variants";
+export type {
+  ChapterClassicVariantsProps,
+  ChapterVariantProps,
+} from "./variants";
+
 // Mode templates are now inlined in ChapterView - use layout templates directly
 // Import from ./lib for classicLayoutTemplate, expandableLayoutTemplate, ideLayoutTemplate
 

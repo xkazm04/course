@@ -159,9 +159,8 @@ export function OracleExpandedWizard({
                     onClick={onCollapse}
                     className={cn(
                         "p-2 rounded-lg",
-                        "text-slate-400 hover:text-slate-600",
-                        "dark:text-slate-500 dark:hover:text-slate-300",
-                        "hover:bg-slate-100 dark:hover:bg-slate-700/50",
+                        "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]",
+                        "hover:bg-[var(--forge-bg-anvil)]",
                         "transition-colors"
                     )}
                 >
@@ -210,16 +209,16 @@ export function OracleExpandedWizard({
                             <div className="flex items-center justify-center h-full">
                                 <div className="text-center">
                                     <motion.div
-                                        className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-indigo-500 flex items-center justify-center"
+                                        className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-[var(--ember)] flex items-center justify-center"
                                         animate={{ rotate: 360 }}
                                         transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                                     >
                                         <Sparkles size={24} className="text-white" />
                                     </motion.div>
-                                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                                    <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                                         Analyzing your profile...
                                     </p>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    <p className="text-xs text-[var(--forge-text-secondary)] mt-1">
                                         Generating personalized learning path
                                     </p>
                                 </div>
@@ -230,17 +229,17 @@ export function OracleExpandedWizard({
                             <div className="flex items-center justify-center h-full">
                                 <div className="text-center">
                                     <motion.div
-                                        className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-emerald-500 flex items-center justify-center"
+                                        className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-[var(--forge-success)] flex items-center justify-center"
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
                                         transition={{ type: "spring", damping: 15 }}
                                     >
                                         <Sparkles size={24} className="text-white" />
                                     </motion.div>
-                                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                                    <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                                         Your path is ready!
                                     </p>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    <p className="text-xs text-[var(--forge-text-secondary)] mt-1">
                                         Click "View Path" to see your personalized learning journey
                                     </p>
                                 </div>
@@ -251,7 +250,7 @@ export function OracleExpandedWizard({
             </div>
 
             {/* Navigation buttons */}
-            <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex items-center justify-between pt-3 border-t border-[var(--forge-border-subtle)]">
                 <button
                     onClick={handlePrev}
                     disabled={!canGoBack}
@@ -259,8 +258,8 @@ export function OracleExpandedWizard({
                         "flex items-center gap-2 px-3 py-1.5 rounded-lg",
                         "text-xs font-medium transition-colors",
                         canGoBack
-                            ? "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
-                            : "text-slate-300 dark:text-slate-600 cursor-not-allowed"
+                            ? "text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-anvil)]"
+                            : "text-[var(--forge-text-muted)] cursor-not-allowed"
                     )}
                 >
                     <ArrowLeft size={14} />
@@ -274,7 +273,7 @@ export function OracleExpandedWizard({
                             "flex items-center gap-2 px-6 py-2 rounded-lg",
                             "text-sm font-medium",
                             "transition-all duration-200",
-                            "bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90"
+                            "bg-[var(--ember)] text-white hover:opacity-90"
                         )}
                     >
                         <Sparkles size={16} />
@@ -288,8 +287,8 @@ export function OracleExpandedWizard({
                             "flex items-center gap-2 px-6 py-2 rounded-lg",
                             "text-sm font-medium transition-all duration-200",
                             canProceedToNext && activeStep !== "generating"
-                                ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90"
-                                : "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed"
+                                ? "bg-[var(--ember)] text-white hover:opacity-90"
+                                : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] cursor-not-allowed"
                         )}
                     >
                         {nextButtonLabel}

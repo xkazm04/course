@@ -25,37 +25,37 @@ import { cn } from "@/app/shared/lib/utils";
 
 const SLOT_STYLES = {
     explanation: {
-        bgColor: "bg-blue-500/10",
-        borderColor: "border-blue-500/30",
-        iconColor: "text-blue-400",
+        bgColor: "bg-[var(--forge-info)]/10",
+        borderColor: "border-[var(--forge-info)]/30",
+        iconColor: "text-[var(--forge-info)]",
         icon: Lightbulb,
         label: "Simplified Explanation",
     },
     example: {
-        bgColor: "bg-emerald-500/10",
-        borderColor: "border-emerald-500/30",
-        iconColor: "text-emerald-400",
+        bgColor: "bg-[var(--forge-success)]/10",
+        borderColor: "border-[var(--forge-success)]/30",
+        iconColor: "text-[var(--forge-success)]",
         icon: Code2,
         label: "Simpler Example",
     },
     challenge: {
-        bgColor: "bg-amber-500/10",
-        borderColor: "border-amber-500/30",
-        iconColor: "text-amber-400",
+        bgColor: "bg-[var(--forge-warning)]/10",
+        borderColor: "border-[var(--forge-warning)]/30",
+        iconColor: "text-[var(--forge-warning)]",
         icon: Trophy,
         label: "Advanced Challenge",
     },
     hint: {
-        bgColor: "bg-purple-500/10",
-        borderColor: "border-purple-500/30",
-        iconColor: "text-purple-400",
+        bgColor: "bg-[var(--ember-glow)]/10",
+        borderColor: "border-[var(--ember-glow)]/30",
+        iconColor: "text-[var(--ember-glow)]",
         icon: Sparkles,
         label: "Helpful Hint",
     },
     deepDive: {
-        bgColor: "bg-cyan-500/10",
-        borderColor: "border-cyan-500/30",
-        iconColor: "text-cyan-400",
+        bgColor: "bg-[var(--forge-info)]/10",
+        borderColor: "border-[var(--forge-info)]/30",
+        iconColor: "text-[var(--forge-info)]",
         icon: BookOpen,
         label: "Deep Dive",
     },
@@ -114,7 +114,7 @@ export function AdaptiveContentCard({
                             {style.label}
                         </span>
                         {title && (
-                            <h4 className="text-sm font-semibold text-slate-200">
+                            <h4 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                                 {title}
                             </h4>
                         )}
@@ -123,13 +123,13 @@ export function AdaptiveContentCard({
                 {onToggle && (
                     <button
                         onClick={onToggle}
-                        className="p-1 rounded-lg hover:bg-slate-700/50 transition-colors"
+                        className="p-1 rounded-lg hover:bg-[var(--forge-bg-elevated)] transition-colors"
                         data-testid={`adaptive-content-toggle-${slotType}`}
                     >
                         {isExpanded ? (
-                            <ChevronUp className="w-4 h-4 text-slate-400" />
+                            <ChevronUp className="w-4 h-4 text-[var(--forge-text-muted)]" />
                         ) : (
-                            <ChevronDown className="w-4 h-4 text-slate-400" />
+                            <ChevronDown className="w-4 h-4 text-[var(--forge-text-muted)]" />
                         )}
                     </button>
                 )}
@@ -146,7 +146,7 @@ export function AdaptiveContentCard({
                         className="space-y-3"
                     >
                         {content && (
-                            <p className="text-sm text-slate-300 leading-relaxed">
+                            <p className="text-sm text-[var(--forge-text-secondary)] leading-relaxed">
                                 {content}
                             </p>
                         )}
@@ -154,7 +154,7 @@ export function AdaptiveContentCard({
                         {points && points.length > 0 && (
                             <ul className="space-y-1.5">
                                 {points.map((point, idx) => (
-                                    <li key={idx} className="flex items-start gap-2 text-sm text-slate-300">
+                                    <li key={idx} className="flex items-start gap-2 text-sm text-[var(--forge-text-secondary)]">
                                         <span className={cn("mt-1.5 w-1.5 h-1.5 rounded-full", style.iconColor.replace("text-", "bg-"))} />
                                         {point}
                                     </li>
@@ -163,7 +163,7 @@ export function AdaptiveContentCard({
                         )}
 
                         {code && (
-                            <pre className="p-3 rounded-lg bg-slate-900/50 text-xs text-slate-300 overflow-x-auto font-mono">
+                            <pre className="p-3 rounded-lg bg-[var(--forge-bg-void)]/50 text-xs text-[var(--forge-text-secondary)] overflow-x-auto font-mono">
                                 <code>{code}</code>
                             </pre>
                         )}
@@ -223,9 +223,9 @@ export function AdaptiveSectionWrapper({
                     animate={{ opacity: 1, x: 0 }}
                     className="absolute -left-2 top-4 z-10"
                 >
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-800/80 border border-slate-700/50 backdrop-blur-sm">
-                        <Brain className="w-3 h-3 text-purple-400" />
-                        <span className="text-xs text-slate-400">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[var(--forge-bg-anvil)]/80 border border-[var(--forge-border-subtle)] backdrop-blur-sm">
+                        <Brain className="w-3 h-3 text-[var(--ember-glow)]" />
+                        <span className="text-xs text-[var(--forge-text-muted)]">
                             Adapting
                         </span>
                     </div>
@@ -240,13 +240,13 @@ export function AdaptiveSectionWrapper({
                     className={cn(
                         "mb-4 p-3 rounded-lg border flex items-center gap-3",
                         config.paceRecommendation === "slower"
-                            ? "bg-blue-500/10 border-blue-500/30"
-                            : "bg-amber-500/10 border-amber-500/30"
+                            ? "bg-[var(--forge-info)]/10 border-[var(--forge-info)]/30"
+                            : "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/30"
                     )}
                     data-testid="pace-recommendation-banner"
                 >
                     <span className="text-xl">{paceRecommendation.icon}</span>
-                    <span className="text-sm text-slate-300">
+                    <span className="text-sm text-[var(--forge-text-secondary)]">
                         {paceRecommendation.message}
                     </span>
                 </motion.div>
@@ -372,29 +372,29 @@ export function LevelProgress({ className }: LevelProgressProps) {
     const { comprehensionLevel, confidence, recentPerformance, trend } = context;
 
     const levelColors: Record<ComprehensionLevel, string> = {
-        beginner: "from-blue-500 to-blue-600",
-        intermediate: "from-emerald-500 to-emerald-600",
-        advanced: "from-purple-500 to-purple-600",
+        beginner: "from-[var(--forge-info)] to-[var(--forge-info)]",
+        intermediate: "from-[var(--forge-success)] to-[var(--forge-success)]",
+        advanced: "from-[var(--ember-glow)] to-[var(--ember)]",
     };
 
     const trendIcons = {
-        improving: { icon: "📈", color: "text-green-400" },
-        stable: { icon: "➡️", color: "text-slate-400" },
-        struggling: { icon: "📉", color: "text-amber-400" },
+        improving: { icon: "📈", color: "text-[var(--forge-success)]" },
+        stable: { icon: "➡️", color: "text-[var(--forge-text-muted)]" },
+        struggling: { icon: "📉", color: "text-[var(--forge-warning)]" },
     };
 
     return (
         <div
             className={cn(
-                "p-4 rounded-xl bg-slate-800/50 border border-slate-700/50",
+                "p-4 rounded-xl bg-[var(--forge-bg-anvil)]/50 border border-[var(--forge-border-subtle)]",
                 className
             )}
             data-testid="level-progress"
         >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-yellow-400" />
-                    <span className="text-sm font-medium text-slate-300">
+                    <Zap className="w-4 h-4 text-[var(--forge-warning)]" />
+                    <span className="text-sm font-medium text-[var(--forge-text-secondary)]">
                         Learning Progress
                     </span>
                 </div>
@@ -405,7 +405,7 @@ export function LevelProgress({ className }: LevelProgressProps) {
             </div>
 
             {/* Level Progress Bar */}
-            <div className="relative h-2 bg-slate-700 rounded-full overflow-hidden mb-3">
+            <div className="relative h-2 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden mb-3">
                 <motion.div
                     className={cn(
                         "absolute h-full rounded-full bg-gradient-to-r",
@@ -418,27 +418,27 @@ export function LevelProgress({ className }: LevelProgressProps) {
             </div>
 
             {/* Level Labels */}
-            <div className="flex justify-between text-xs text-slate-500">
-                <span className={comprehensionLevel === "beginner" ? "text-blue-400 font-medium" : ""}>
+            <div className="flex justify-between text-xs text-[var(--forge-text-muted)]">
+                <span className={comprehensionLevel === "beginner" ? "text-[var(--forge-info)] font-medium" : ""}>
                     Beginner
                 </span>
-                <span className={comprehensionLevel === "intermediate" ? "text-emerald-400 font-medium" : ""}>
+                <span className={comprehensionLevel === "intermediate" ? "text-[var(--forge-success)] font-medium" : ""}>
                     Intermediate
                 </span>
-                <span className={comprehensionLevel === "advanced" ? "text-purple-400 font-medium" : ""}>
+                <span className={comprehensionLevel === "advanced" ? "text-[var(--ember-glow)] font-medium" : ""}>
                     Advanced
                 </span>
             </div>
 
             {/* Confidence Indicator */}
-            <div className="mt-4 pt-3 border-t border-slate-700/50">
+            <div className="mt-4 pt-3 border-t border-[var(--forge-border-subtle)]">
                 <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Assessment Confidence</span>
-                    <span className="text-slate-300">{Math.round(confidence * 100)}%</span>
+                    <span className="text-[var(--forge-text-muted)]">Assessment Confidence</span>
+                    <span className="text-[var(--forge-text-secondary)]">{Math.round(confidence * 100)}%</span>
                 </div>
-                <div className="mt-1.5 h-1 bg-slate-700 rounded-full overflow-hidden">
+                <div className="mt-1.5 h-1 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
                     <motion.div
-                        className="h-full bg-slate-400 rounded-full"
+                        className="h-full bg-[var(--forge-text-muted)] rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${confidence * 100}%` }}
                         transition={{ duration: 0.5 }}

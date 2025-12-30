@@ -38,7 +38,7 @@ export const MapLegend: React.FC<MapLegendProps> = memo(function MapLegend({
     return (
         <div
             className={cn(
-                "flex flex-wrap gap-3 px-3 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-lg border border-slate-200 dark:border-slate-700 shadow-md",
+                "flex flex-wrap gap-3 px-3 py-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-lg border border-[var(--forge-border-subtle)] shadow-md",
                 className
             )}
         >
@@ -54,10 +54,10 @@ export const MapLegend: React.FC<MapLegendProps> = memo(function MapLegend({
                         <div
                             className={cn(
                                 "w-5 h-5 rounded-full flex items-center justify-center",
-                                status === "completed" && "bg-emerald-500",
-                                status === "in_progress" && "bg-indigo-500",
-                                status === "available" && "bg-slate-200 dark:bg-slate-600",
-                                status === "locked" && "bg-slate-200 dark:bg-slate-700"
+                                status === "completed" && "bg-[var(--forge-success)]",
+                                status === "in_progress" && "bg-[var(--ember)]",
+                                status === "available" && "bg-[var(--forge-bg-anvil)]",
+                                status === "locked" && "bg-[var(--forge-border-subtle)]"
                             )}
                         >
                             <Icon
@@ -65,12 +65,12 @@ export const MapLegend: React.FC<MapLegendProps> = memo(function MapLegend({
                                 className={cn(
                                     status === "completed" && "text-white",
                                     status === "in_progress" && "text-white",
-                                    status === "available" && "text-slate-500",
-                                    status === "locked" && "text-slate-400"
+                                    status === "available" && "text-[var(--forge-text-secondary)]",
+                                    status === "locked" && "text-[var(--forge-text-muted)]"
                                 )}
                             />
                         </div>
-                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                        <span className="text-xs text-[var(--forge-text-secondary)]">
                             {STATUS_LABELS[status]}
                         </span>
                     </div>

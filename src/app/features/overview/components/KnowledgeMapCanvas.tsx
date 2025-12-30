@@ -336,8 +336,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
             aria-label={`Knowledge map with ${filteredNodes.length} nodes and ${filteredConnections.length} connections. Use mouse to pan and scroll to zoom.`}
             className={cn(
                 "relative w-full h-full overflow-hidden rounded-2xl",
-                "bg-gradient-to-br from-slate-50 via-white to-slate-100",
-                "dark:from-slate-900 dark:via-slate-800 dark:to-slate-900",
+                "bg-[var(--forge-bg-void)]",
                 isDragging ? "cursor-grabbing" : "cursor-grab"
             )}
             onMouseDown={handleMouseDown}
@@ -359,7 +358,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
             {/* Grid Background - uses CSS variables for GPU-accelerated updates */}
             <div
                 ref={gridBackgroundRef}
-                className="absolute inset-0 opacity-40 dark:opacity-20 pointer-events-none"
+                className="absolute inset-0 opacity-20 pointer-events-none"
                 style={{
                     backgroundSize: `var(${CSS_VAR_GRID_SIZE}) var(${CSS_VAR_GRID_SIZE})`,
                     backgroundImage: `
@@ -372,7 +371,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
             />
 
             {/* Radial gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-radial from-indigo-50/30 via-transparent to-transparent dark:from-indigo-950/20 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-radial from-[var(--ember)]/10 via-transparent to-transparent pointer-events-none" />
 
             {/* Transformable Container - uses CSS variables for zero-React-render transforms */}
             <div
@@ -534,7 +533,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
 
             {/* Zoom indicator - aria-live announces zoom changes to screen readers */}
             <div
-                className="absolute bottom-4 left-4 px-3 py-1.5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 pointer-events-none"
+                className="absolute bottom-4 left-4 px-3 py-1.5 bg-[var(--forge-bg-elevated)] backdrop-blur-sm rounded-lg text-xs font-medium text-[var(--forge-text-secondary)] border border-[var(--forge-border-subtle)] pointer-events-none"
                 data-testid="knowledge-map-zoom-indicator"
                 aria-live="polite"
                 aria-atomic="true"
@@ -545,7 +544,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
 
             {/* Node and connection count - aria-live announces count changes to screen readers */}
             <div
-                className="absolute bottom-4 right-4 px-3 py-1.5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 pointer-events-none"
+                className="absolute bottom-4 right-4 px-3 py-1.5 bg-[var(--forge-bg-elevated)] backdrop-blur-sm rounded-lg text-xs font-medium text-[var(--forge-text-secondary)] border border-[var(--forge-border-subtle)] pointer-events-none"
                 data-testid="knowledge-map-stats-indicator"
                 aria-live="polite"
                 aria-atomic="true"
@@ -554,7 +553,7 @@ export const KnowledgeMapCanvas: React.FC<KnowledgeMapCanvasProps> = ({
                 <span data-testid="knowledge-map-node-count">
                     <span className="sr-only">Showing </span>{visibleNodes.length}/{filteredNodes.length} nodes
                 </span>
-                <span className="mx-1.5 text-slate-400 dark:text-slate-500" aria-hidden="true">|</span>
+                <span className="mx-1.5 text-[var(--forge-text-muted)]" aria-hidden="true">|</span>
                 <span data-testid="knowledge-map-connection-count">
                     <span className="sr-only"> and </span>{visibleConnections.length}/{filteredConnections.length} connections
                 </span>

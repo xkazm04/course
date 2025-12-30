@@ -45,7 +45,7 @@ export const StreakWidget = ({
             <motion.div
                 layout
                 className={cn(
-                    "bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden",
+                    "bg-[var(--forge-bg-elevated)]/80 backdrop-blur-xl rounded-2xl border border-[var(--forge-border-subtle)] shadow-lg overflow-hidden",
                     className
                 )}
                 data-testid="streak-widget"
@@ -53,7 +53,7 @@ export const StreakWidget = ({
                 {/* Collapsed View */}
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="w-full p-4 flex items-center justify-between focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 rounded-t-2xl"
+                    className="w-full p-4 flex items-center justify-between focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--forge-accent)] rounded-t-2xl"
                     data-testid="streak-widget-toggle"
                 >
                     <div className="flex items-center gap-4">
@@ -70,13 +70,13 @@ export const StreakWidget = ({
                                     animate={{ scale: [1, 1.1, 1] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}
                                 >
-                                    <Flame className="w-5 h-5 text-orange-500" />
+                                    <Flame className="w-5 h-5 text-[var(--ember)]" />
                                 </motion.div>
-                                <span className="font-bold text-slate-900 dark:text-slate-100">
+                                <span className="font-bold text-[var(--forge-text-primary)]">
                                     {streakData.currentStreak} day streak
                                 </span>
                             </div>
-                            <p className="text-sm text-slate-500 dark:text-slate-400">
+                            <p className="text-sm text-[var(--forge-text-secondary)]">
                                 {isGoalMet
                                     ? "Daily goal completed!"
                                     : `${streakData.todayMinutes}/${streakData.dailyGoalMinutes} min today`}
@@ -87,7 +87,7 @@ export const StreakWidget = ({
                         animate={{ rotate: isExpanded ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <ChevronDown className="w-5 h-5 text-slate-400" />
+                        <ChevronDown className="w-5 h-5 text-[var(--forge-text-muted)]" />
                     </motion.div>
                 </button>
 
@@ -101,14 +101,14 @@ export const StreakWidget = ({
                             transition={{ duration: 0.3 }}
                             className="overflow-hidden"
                         >
-                            <div className="px-4 pb-4 space-y-6 border-t border-slate-200 dark:border-slate-700 pt-4">
+                            <div className="px-4 pb-4 space-y-6 border-t border-[var(--forge-border-subtle)] pt-4">
                                 {/* Streak Display */}
                                 <StreakDisplay streakData={streakData} size="full" />
 
                                 {/* Quick Add Buttons */}
                                 <div className="space-y-2">
-                                    <p className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                        <Plus size={ICON_SIZES.sm} className="text-indigo-500" />
+                                    <p className="text-sm font-medium text-[var(--forge-text-secondary)] flex items-center gap-2">
+                                        <Plus size={ICON_SIZES.sm} className="text-[var(--forge-accent)]" />
                                         Add Learning Time
                                     </p>
                                     <div className="grid grid-cols-4 gap-2">
@@ -118,7 +118,7 @@ export const StreakWidget = ({
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={() => handleAddTime(mins)}
-                                                className="py-2 px-3 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/30 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-bold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                                className="py-2 px-3 rounded-lg bg-[var(--forge-accent)]/10 hover:bg-[var(--forge-accent)]/20 border border-[var(--forge-border-subtle)] text-[var(--forge-accent)] font-bold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--forge-accent)] focus-visible:ring-offset-2"
                                                 data-testid={`add-time-${mins}`}
                                             >
                                                 +{mins} min

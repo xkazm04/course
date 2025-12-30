@@ -197,11 +197,11 @@ export function AdaptiveModeRenderer({
             {/* Pace recommendation banner */}
             {paceRecommendation.message && (
                 <div
-                    className="mb-4 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center gap-3"
+                    className="mb-4 p-3 rounded-lg bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] flex items-center gap-3"
                     data-testid="adaptive-pace-banner"
                 >
                     <span className="text-xl">{paceRecommendation.icon}</span>
-                    <span className="text-sm text-slate-300">
+                    <span className="text-sm text-[var(--forge-text-secondary)]">
                         {paceRecommendation.message}
                     </span>
                 </div>

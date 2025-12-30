@@ -41,29 +41,29 @@ export const AISuggestionsBar: React.FC<AISuggestionsBarProps> = ({
                     className={cn(
                         "flex items-center justify-between p-4 rounded-xl border",
                         suggestion.severity === "recommendation"
-                            ? "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800"
+                            ? "bg-[var(--forge-accent)]/10 border-[var(--forge-accent)]/30"
                             : suggestion.severity === "urgent"
-                                ? "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800"
-                                : "bg-indigo-50 dark:bg-indigo-950/30 border-indigo-200 dark:border-indigo-800"
+                                ? "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/30"
+                                : "bg-[var(--ember)]/10 border-[var(--ember)]/30"
                     )}
                     data-testid={`ai-suggestion-${index}`}
                 >
                     <div className="flex items-center gap-3">
                         <Zap className={cn(
                             "w-5 h-5",
-                            suggestion.severity === "recommendation" ? "text-purple-500" :
-                                suggestion.severity === "urgent" ? "text-amber-500" : "text-indigo-500"
+                            suggestion.severity === "recommendation" ? "text-[var(--forge-accent)]" :
+                                suggestion.severity === "urgent" ? "text-[var(--forge-warning)]" : "text-[var(--ember)]"
                         )} />
                         <div>
-                            <p className="font-medium text-[var(--text-primary)]">{suggestion.title}</p>
-                            <p className="text-sm text-[var(--text-secondary)]">{suggestion.message}</p>
+                            <p className="font-medium text-[var(--forge-text-primary)]">{suggestion.title}</p>
+                            <p className="text-sm text-[var(--forge-text-secondary)]">{suggestion.message}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         {suggestion.action.targetNodeId && (
                             <button
                                 onClick={() => onNavigate(suggestion.action.targetNodeId!)}
-                                className="px-3 py-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+                                className="px-3 py-1.5 text-sm font-medium text-[var(--ember)] hover:bg-[var(--ember)]/20 rounded-lg transition-colors"
                                 data-testid="go-to-suggestion-btn"
                             >
                                 Go
@@ -71,7 +71,7 @@ export const AISuggestionsBar: React.FC<AISuggestionsBarProps> = ({
                         )}
                         <button
                             onClick={() => onDismiss(suggestion.title)}
-                            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                            className="p-1.5 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             data-testid="dismiss-suggestion-btn"
                         >
                             <X className="w-4 h-4" />

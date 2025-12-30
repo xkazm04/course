@@ -1,34 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
     Search,
-    Filter,
-    Target,
-    Clock,
     ChevronDown,
+    ChevronUp,
     X,
-    Zap,
+    ArrowUpDown,
     ArrowRight,
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { mockChallenges, mockProjects } from "../lib/mockData";
-import type { ChallengeType, ChallengeDifficulty } from "../lib/types";
+import type { ChallengeType, ChallengeDifficulty, Challenge } from "../lib/types";
+import { DemoBanner } from "../components";
 
 // ============================================================================
 // CONSTANTS
 // ============================================================================
 
 const typeOptions: { value: ChallengeType | "all"; label: string; emoji: string }[] = [
-    { value: "all", label: "All Types", emoji: "🎯" },
-    { value: "bug", label: "Bug Fix", emoji: "🐛" },
+    { value: "all", label: "All", emoji: "🎯" },
+    { value: "bug", label: "Bug", emoji: "🐛" },
     { value: "feature", label: "Feature", emoji: "✨" },
     { value: "refactor", label: "Refactor", emoji: "🔧" },
-    { value: "test", label: "Testing", emoji: "🧪" },
-    { value: "docs", label: "Documentation", emoji: "📚" },
-    { value: "performance", label: "Performance", emoji: "⚡" },
+    { value: "test", label: "Test", emoji: "🧪" },
+    { value: "docs", label: "Docs", emoji: "📚" },
+    { value: "performance", label: "Perf", emoji: "⚡" },
     { value: "security", label: "Security", emoji: "🔒" },
 ];
 
@@ -39,18 +38,15 @@ const difficultyOptions: { value: ChallengeDifficulty | "all"; label: string }[]
     { value: "advanced", label: "Advanced" },
 ];
 
-const sortOptions = [
-    { value: "newest", label: "Newest First" },
-    { value: "xp_high", label: "Highest XP" },
-    { value: "xp_low", label: "Lowest XP" },
-    { value: "time_short", label: "Quickest" },
-    { value: "time_long", label: "Longest" },
-];
+type SortKey = "title" | "xpReward" | "estimatedMinutes" | "difficulty" | "successRate" | "timesCompleted";
+type SortDir = "asc" | "desc";
+
+const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
 
 const difficultyColors = {
-    beginner: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    intermediate: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-    advanced: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+    beginner: "bg-[var(--forge-success)]/10 text-[var(--forge-success)] border-[var(--forge-success)]/20",
+    intermediate: "bg-[var(--gold)]/10 text-[var(--gold)] border-[var(--gold)]/20",
+    advanced: "bg-[var(--forge-error)]/10 text-[var(--forge-error)] border-[var(--forge-error)]/20",
 };
 
 const typeEmojis: Record<ChallengeType, string> = {
@@ -64,67 +60,116 @@ const typeEmojis: Record<ChallengeType, string> = {
 };
 
 // ============================================================================
-// CHALLENGE CARD
+// TABLE HEADER CELL
 // ============================================================================
 
-function ChallengeCard({ challenge }: { challenge: typeof mockChallenges[0] }) {
+function SortableHeader({
+    label,
+    sortKey,
+    currentSort,
+    currentDir,
+    onSort,
+    align = "left",
+}: {
+    label: string;
+    sortKey: SortKey;
+    currentSort: SortKey;
+    currentDir: SortDir;
+    onSort: (key: SortKey) => void;
+    align?: "left" | "center" | "right";
+}) {
+    const isActive = currentSort === sortKey;
+    const alignClass = align === "right" ? "justify-end" : align === "center" ? "justify-center" : "justify-start";
+
+    return (
+        <button
+            onClick={() => onSort(sortKey)}
+            className={cn(
+                "flex items-center gap-1 text-xs font-medium uppercase tracking-wider transition-colors w-full",
+                alignClass,
+                isActive ? "text-[var(--ember)]" : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
+            )}
+        >
+            {label}
+            {isActive ? (
+                currentDir === "asc" ? (
+                    <ChevronUp size={14} />
+                ) : (
+                    <ChevronDown size={14} />
+                )
+            ) : (
+                <ArrowUpDown size={12} className="opacity-40" />
+            )}
+        </button>
+    );
+}
+
+// ============================================================================
+// TABLE ROW
+// ============================================================================
+
+function ChallengeRow({ challenge, index }: { challenge: Challenge; index: number }) {
     return (
         <Link
             href={`/forge/challenges/${challenge.id}`}
-            className="group flex flex-col bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] overflow-hidden hover:border-[var(--accent-primary)] transition-all"
+            className={cn(
+                "group grid grid-cols-[2fr_100px_80px_100px_80px_70px_70px_60px] gap-4 px-4 py-3 items-center hover:bg-[var(--ember)]/5 transition-colors",
+                index % 2 === 0 ? "bg-[var(--forge-bg-daylight)]/40" : "bg-[var(--forge-bg-daylight)]/60"
+            )}
         >
-            {/* Header */}
-            <div className="p-5">
-                <div className="flex items-start gap-4">
-                    <div className="text-3xl">{typeEmojis[challenge.type]}</div>
-                    <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                            <span
-                                className={cn(
-                                    "px-2 py-0.5 rounded text-xs font-medium capitalize border",
-                                    difficultyColors[challenge.difficulty]
-                                )}
-                            >
-                                {challenge.difficulty}
-                            </span>
-                            <span className="text-xs text-[var(--text-muted)] capitalize">
-                                {challenge.type}
-                            </span>
-                        </div>
-                        <h3 className="font-semibold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-primary)] transition-colors line-clamp-2">
-                            {challenge.title}
-                        </h3>
-                        <p className="text-sm text-[var(--text-secondary)] line-clamp-2">
-                            {challenge.description}
-                        </p>
+            {/* Title & Project */}
+            <div className="flex items-center gap-3 min-w-0">
+                <span className="text-lg flex-shrink-0">{typeEmojis[challenge.type]}</span>
+                <div className="min-w-0">
+                    <div className="font-medium text-[var(--forge-text-primary)] group-hover:text-[var(--ember)] transition-colors truncate">
+                        {challenge.title}
                     </div>
+                    <div className="text-xs text-[var(--forge-text-muted)] truncate">{challenge.projectName}</div>
                 </div>
             </div>
 
-            {/* Meta */}
-            <div className="px-5 py-3 mt-auto bg-[var(--surface-overlay)] border-t border-[var(--border-subtle)]">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 text-sm">
-                        <span className="flex items-center gap-1 text-amber-500 font-medium">
-                            <Zap size={14} />
-                            +{challenge.xpReward} XP
-                        </span>
-                        <span className="flex items-center gap-1 text-[var(--text-muted)]">
-                            <Clock size={14} />
-                            ~{challenge.estimatedMinutes}min
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[var(--text-muted)] group-hover:text-[var(--accent-primary)]">
-                        <span className="text-xs">Start</span>
-                        <ArrowRight size={14} />
-                    </div>
-                </div>
+            {/* Difficulty */}
+            <div>
+                <span className={cn("px-2 py-0.5 rounded text-xs font-medium capitalize border", difficultyColors[challenge.difficulty])}>
+                    {challenge.difficulty}
+                </span>
             </div>
 
-            {/* Project */}
-            <div className="px-5 py-2 bg-[var(--surface-base)] border-t border-[var(--border-subtle)]">
-                <span className="text-xs text-[var(--text-muted)]">
-                    Project: <span className="text-[var(--text-secondary)]">{challenge.projectName}</span>
+            {/* Type */}
+            <div className="text-xs text-[var(--forge-text-secondary)] capitalize">{challenge.type}</div>
+
+            {/* XP */}
+            <div className="text-right">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-gradient-to-r from-[var(--ember)]/5 to-[var(--ember-glow)]/5 text-[var(--ember)] text-sm font-semibold">
+                    +{challenge.xpReward}
+                </span>
+            </div>
+
+            {/* Time */}
+            <div className="text-sm text-[var(--forge-text-secondary)] text-right">
+                {challenge.estimatedMinutes}min
+            </div>
+
+            {/* Completed */}
+            <div className="text-sm text-[var(--forge-text-secondary)] text-center">
+                {challenge.timesCompleted}
+            </div>
+
+            {/* Success */}
+            <div className="text-sm text-center">
+                <span className={cn(
+                    "font-medium",
+                    (challenge.successRate || 0) >= 0.8 ? "text-[var(--forge-success)]" :
+                        (challenge.successRate || 0) >= 0.5 ? "text-[var(--gold)]" : "text-[var(--forge-error)]"
+                )}>
+                    {Math.round((challenge.successRate || 0) * 100)}%
+                </span>
+            </div>
+
+            {/* Action */}
+            <div className="flex justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[var(--ember)]">
+                    <ArrowRight size={16} />
                 </span>
             </div>
         </Link>
@@ -132,42 +177,32 @@ function ChallengeCard({ challenge }: { challenge: typeof mockChallenges[0] }) {
 }
 
 // ============================================================================
-// RECOMMENDED SECTION
+// STATS ROW
 // ============================================================================
 
-function RecommendedSection() {
-    const recommended = mockChallenges.filter((c) => c.difficulty === "beginner").slice(0, 3);
+function StatsRow({ challenges }: { challenges: Challenge[] }) {
+    const totalXP = challenges.reduce((sum, c) => sum + c.xpReward, 0);
+    const avgTime = Math.round(challenges.reduce((sum, c) => sum + c.estimatedMinutes, 0) / (challenges.length || 1));
+    const avgSuccess = Math.round(
+        (challenges.reduce((sum, c) => sum + (c.successRate || 0), 0) / (challenges.length || 1)) * 100
+    );
+
+    const stats = [
+        { label: "Challenges", value: challenges.length, icon: "🎯" },
+        { label: "Total XP", value: totalXP.toLocaleString(), icon: "⚡" },
+        { label: "Avg Time", value: `${avgTime}min`, icon: "⏱️" },
+        { label: "Avg Success", value: `${avgSuccess}%`, icon: "📈" },
+    ];
 
     return (
-        <div className="mb-8 p-6 bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-transparent rounded-xl border border-orange-500/20">
-            <div className="flex items-center gap-2 mb-4">
-                <Target size={20} className="text-orange-500" />
-                <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-                    Recommended for You
-                </h2>
-            </div>
-            <p className="text-sm text-[var(--text-secondary)] mb-4">
-                Based on your skill level and interests, we think you'd enjoy these challenges.
-            </p>
-            <div className="grid sm:grid-cols-3 gap-4">
-                {recommended.map((challenge) => (
-                    <Link
-                        key={challenge.id}
-                        href={`/forge/challenges/${challenge.id}`}
-                        className="group flex items-center gap-3 p-3 bg-[var(--surface-elevated)] rounded-lg border border-[var(--border-default)] hover:border-[var(--accent-primary)] transition-colors"
-                    >
-                        <span className="text-2xl">{typeEmojis[challenge.type]}</span>
-                        <div className="flex-1 min-w-0">
-                            <h3 className="text-sm font-medium text-[var(--text-primary)] truncate group-hover:text-[var(--accent-primary)]">
-                                {challenge.title}
-                            </h3>
-                            <p className="text-xs text-[var(--text-muted)]">
-                                +{challenge.xpReward} XP • ~{challenge.estimatedMinutes}min
-                            </p>
-                        </div>
-                    </Link>
-                ))}
-            </div>
+        <div className="flex items-center gap-6 px-4 py-3 bg-gradient-to-r from-[var(--ember)]/5 to-[var(--ember-glow)]/5 border-b border-[var(--ember)]/10">
+            {stats.map((stat, i) => (
+                <div key={i} className="flex items-center gap-2">
+                    <span>{stat.icon}</span>
+                    <span className="text-sm text-[var(--forge-text-secondary)]">{stat.label}:</span>
+                    <span className="text-sm font-semibold text-[var(--forge-text-primary)]">{stat.value}</span>
+                </div>
+            ))}
         </div>
     );
 }
@@ -184,247 +219,278 @@ export default function ChallengesPage() {
     const [type, setType] = useState<ChallengeType | "all">("all");
     const [difficulty, setDifficulty] = useState<ChallengeDifficulty | "all">("all");
     const [project, setProject] = useState<string>(projectFilter || "all");
-    const [sort, setSort] = useState("newest");
+    const [sortKey, setSortKey] = useState<SortKey>("xpReward");
+    const [sortDir, setSortDir] = useState<SortDir>("desc");
     const [showFilters, setShowFilters] = useState(false);
 
-    // Filter challenges
-    const filteredChallenges = mockChallenges.filter((challenge) => {
-        if (searchQuery && !challenge.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-            !challenge.description.toLowerCase().includes(searchQuery.toLowerCase())) {
-            return false;
+    // Handle sort
+    const handleSort = (key: SortKey) => {
+        if (sortKey === key) {
+            setSortDir(sortDir === "asc" ? "desc" : "asc");
+        } else {
+            setSortKey(key);
+            setSortDir("desc");
         }
-        if (type !== "all" && challenge.type !== type) return false;
-        if (difficulty !== "all" && challenge.difficulty !== difficulty) return false;
-        if (project !== "all") {
-            const proj = mockProjects.find((p) => p.slug === project);
-            if (proj && challenge.projectId !== proj.id) return false;
-        }
-        return true;
-    });
+    };
 
-    // Sort challenges
-    const sortedChallenges = [...filteredChallenges].sort((a, b) => {
-        switch (sort) {
-            case "xp_high":
-                return b.xpReward - a.xpReward;
-            case "xp_low":
-                return a.xpReward - b.xpReward;
-            case "time_short":
-                return a.estimatedMinutes - b.estimatedMinutes;
-            case "time_long":
-                return b.estimatedMinutes - a.estimatedMinutes;
-            default:
-                return 0;
-        }
-    });
+    // Filter and sort challenges
+    const filteredAndSorted = useMemo(() => {
+        let result = mockChallenges.filter((challenge) => {
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
+                if (!challenge.title.toLowerCase().includes(query) &&
+                    !challenge.description.toLowerCase().includes(query) &&
+                    !challenge.projectName.toLowerCase().includes(query)) {
+                    return false;
+                }
+            }
+            if (type !== "all" && challenge.type !== type) return false;
+            if (difficulty !== "all" && challenge.difficulty !== difficulty) return false;
+            if (project !== "all") {
+                const proj = mockProjects.find((p) => p.slug === project || p.id === project);
+                if (proj && challenge.projectId !== proj.id) return false;
+            }
+            return true;
+        });
+
+        result.sort((a, b) => {
+            let comparison = 0;
+            switch (sortKey) {
+                case "title":
+                    comparison = a.title.localeCompare(b.title);
+                    break;
+                case "xpReward":
+                    comparison = a.xpReward - b.xpReward;
+                    break;
+                case "estimatedMinutes":
+                    comparison = a.estimatedMinutes - b.estimatedMinutes;
+                    break;
+                case "difficulty":
+                    comparison = difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+                    break;
+                case "successRate":
+                    comparison = (a.successRate || 0) - (b.successRate || 0);
+                    break;
+                case "timesCompleted":
+                    comparison = a.timesCompleted - b.timesCompleted;
+                    break;
+            }
+            return sortDir === "asc" ? comparison : -comparison;
+        });
+
+        return result;
+    }, [searchQuery, type, difficulty, project, sortKey, sortDir]);
 
     const activeFilters = [
-        type !== "all" && { key: "type", value: type },
+        type !== "all" && { key: "type", value: type, label: typeOptions.find(t => t.value === type)?.label || type },
         difficulty !== "all" && { key: "difficulty", value: difficulty },
         project !== "all" && { key: "project", value: project },
-    ].filter(Boolean) as { key: string; value: string }[];
+    ].filter(Boolean) as { key: string; value: string; label?: string }[];
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
             {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">
-                    Challenges
-                </h1>
-                <p className="text-[var(--text-secondary)]">
-                    Find a task that matches your skills. Each challenge is a real contribution to an open-source project.
+            <div className="mb-6">
+                <div className="flex items-center gap-3 mb-2">
+                    <h1 className="text-3xl font-bold text-[var(--forge-text-primary)]">Challenges</h1>
+                    <DemoBanner />
+                </div>
+                <p className="text-[var(--forge-text-secondary)]">
+                    Browse and filter all available challenges. Each is a real contribution to an open-source project.
                 </p>
             </div>
 
-            {/* Recommended */}
-            <RecommendedSection />
+            {/* Filter Bar */}
+            <div className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] shadow-sm mb-6">
+                {/* Main filter row */}
+                <div className="flex flex-wrap items-center gap-3 p-4 border-b border-[var(--forge-border-subtle)]">
+                    {/* Search */}
+                    <div className="relative flex-1 min-w-[200px]">
+                        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]" />
+                        <input
+                            type="text"
+                            placeholder="Search challenges..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-9 pr-4 py-2 rounded-lg bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-sm text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] focus:outline-none focus:border-[var(--ember)]/50 focus:ring-2 focus:ring-[var(--ember)]/10"
+                        />
+                    </div>
 
-            {/* Search & Filters Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                {/* Search */}
-                <div className="relative flex-1">
-                    <Search
-                        size={18}
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--text-muted)]"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Search challenges..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)]"
-                    />
-                </div>
-
-                {/* Quick Filters */}
-                <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
-                    {difficultyOptions.map((opt) => (
-                        <button
-                            key={opt.value}
-                            onClick={() => setDifficulty(opt.value)}
-                            className={cn(
-                                "px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors",
-                                difficulty === opt.value
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "bg-[var(--surface-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)]"
-                            )}
-                        >
-                            {opt.label}
-                        </button>
-                    ))}
-                </div>
-
-                {/* More Filters */}
-                <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className={cn(
-                        "flex items-center gap-2 px-4 py-2.5 rounded-lg border transition-colors",
-                        showFilters
-                            ? "bg-[var(--accent-primary)]/10 border-[var(--accent-primary)] text-[var(--accent-primary)]"
-                            : "bg-[var(--surface-elevated)] border-[var(--border-default)] text-[var(--text-secondary)] hover:border-[var(--border-strong)]"
-                    )}
-                >
-                    <Filter size={18} />
-                    More
-                </button>
-
-                {/* Sort */}
-                <div className="relative">
-                    <select
-                        value={sort}
-                        onChange={(e) => setSort(e.target.value)}
-                        className="appearance-none px-4 py-2.5 pr-10 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]"
-                    >
-                        {sortOptions.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
+                    {/* Difficulty pills */}
+                    <div className="flex items-center gap-1 p-1 bg-[var(--forge-bg-elevated)] rounded-lg">
+                        {difficultyOptions.map((opt) => (
+                            <button
+                                key={opt.value}
+                                onClick={() => setDifficulty(opt.value)}
+                                className={cn(
+                                    "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
+                                    difficulty === opt.value
+                                        ? "bg-[var(--forge-bg-daylight)] text-[var(--forge-text-primary)] shadow-sm"
+                                        : "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)]"
+                                )}
+                            >
                                 {opt.label}
-                            </option>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Type pills */}
+                    <div className="flex items-center gap-1 overflow-x-auto">
+                        {typeOptions.map((opt) => (
+                            <button
+                                key={opt.value}
+                                onClick={() => setType(opt.value)}
+                                className={cn(
+                                    "flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all",
+                                    type === opt.value
+                                        ? "bg-[var(--ember)]/10 text-[var(--ember)] border border-[var(--ember)]/20"
+                                        : "text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
+                                )}
+                            >
+                                <span>{opt.emoji}</span>
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Project filter */}
+                    <select
+                        value={project}
+                        onChange={(e) => setProject(e.target.value)}
+                        className="px-3 py-2 rounded-lg bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-sm text-[var(--forge-text-secondary)] focus:outline-none focus:border-[var(--ember)]/50"
+                    >
+                        <option value="all">All Projects</option>
+                        {mockProjects.map((p) => (
+                            <option key={p.id} value={p.id}>{p.name}</option>
                         ))}
                     </select>
-                    <ChevronDown
-                        size={16}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
-                    />
-                </div>
-            </div>
 
-            {/* Expanded Filters */}
-            {showFilters && (
-                <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] p-4 mb-6">
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {/* Type */}
-                        <div>
-                            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                Challenge Type
-                            </label>
-                            <div className="flex flex-wrap gap-2">
-                                {typeOptions.map((opt) => (
-                                    <button
-                                        key={opt.value}
-                                        onClick={() => setType(opt.value)}
-                                        className={cn(
-                                            "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
-                                            type === opt.value
-                                                ? "bg-[var(--accent-primary)] text-white"
-                                                : "bg-[var(--surface-overlay)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                                        )}
-                                    >
-                                        <span>{opt.emoji}</span>
-                                        {opt.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Project */}
-                        <div>
-                            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                Project
-                            </label>
-                            <select
-                                value={project}
-                                onChange={(e) => setProject(e.target.value)}
-                                className="w-full px-3 py-2 rounded-lg bg-[var(--surface-overlay)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]"
-                            >
-                                <option value="all">All Projects</option>
-                                {mockProjects.map((p) => (
-                                    <option key={p.id} value={p.slug}>
-                                        {p.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Active Filters */}
-            {activeFilters.length > 0 && (
-                <div className="flex items-center gap-2 mb-6 flex-wrap">
-                    <span className="text-sm text-[var(--text-muted)]">Active filters:</span>
-                    {activeFilters.map((filter) => (
+                    {/* Clear filters */}
+                    {activeFilters.length > 0 && (
                         <button
-                            key={`${filter.key}-${filter.value}`}
                             onClick={() => {
-                                if (filter.key === "type") setType("all");
-                                if (filter.key === "difficulty") setDifficulty("all");
-                                if (filter.key === "project") setProject("all");
+                                setType("all");
+                                setDifficulty("all");
+                                setProject("all");
+                                setSearchQuery("");
                             }}
-                            className="flex items-center gap-1 px-2 py-1 rounded bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] text-sm"
+                            className="flex items-center gap-1 px-3 py-2 text-xs font-medium text-[var(--forge-error)] hover:bg-[var(--forge-error)]/5 rounded-lg transition-colors"
                         >
-                            <span className="capitalize">{filter.value.replace("_", " ")}</span>
                             <X size={14} />
+                            Clear all
                         </button>
-                    ))}
-                    <button
-                        onClick={() => {
-                            setType("all");
-                            setDifficulty("all");
-                            setProject("all");
-                        }}
-                        className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                    >
-                        Clear all
-                    </button>
+                    )}
                 </div>
-            )}
 
-            {/* Results count */}
-            <div className="text-sm text-[var(--text-muted)] mb-4">
-                Showing {sortedChallenges.length} challenge{sortedChallenges.length !== 1 ? "s" : ""}
+                {/* Stats row */}
+                <StatsRow challenges={filteredAndSorted} />
             </div>
 
-            {/* Challenges Grid */}
-            {sortedChallenges.length > 0 ? (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {sortedChallenges.map((challenge) => (
-                        <ChallengeCard key={challenge.id} challenge={challenge} />
-                    ))}
+            {/* Table */}
+            <div className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] shadow-sm overflow-hidden">
+                {/* Table header */}
+                <div className="grid grid-cols-[2fr_100px_80px_100px_80px_70px_70px_60px] gap-4 px-4 py-3 bg-[var(--forge-bg-elevated)] border-b border-[var(--forge-border-subtle)]">
+                    <SortableHeader
+                        label="Challenge"
+                        sortKey="title"
+                        currentSort={sortKey}
+                        currentDir={sortDir}
+                        onSort={handleSort}
+                    />
+                    <SortableHeader
+                        label="Difficulty"
+                        sortKey="difficulty"
+                        currentSort={sortKey}
+                        currentDir={sortDir}
+                        onSort={handleSort}
+                    />
+                    <div className="text-xs font-medium uppercase tracking-wider text-[var(--forge-text-muted)]">Type</div>
+                    <SortableHeader
+                        label="XP"
+                        sortKey="xpReward"
+                        currentSort={sortKey}
+                        currentDir={sortDir}
+                        onSort={handleSort}
+                        align="right"
+                    />
+                    <SortableHeader
+                        label="Time"
+                        sortKey="estimatedMinutes"
+                        currentSort={sortKey}
+                        currentDir={sortDir}
+                        onSort={handleSort}
+                        align="right"
+                    />
+                    <SortableHeader
+                        label="Done"
+                        sortKey="timesCompleted"
+                        currentSort={sortKey}
+                        currentDir={sortDir}
+                        onSort={handleSort}
+                        align="center"
+                    />
+                    <SortableHeader
+                        label="Success"
+                        sortKey="successRate"
+                        currentSort={sortKey}
+                        currentDir={sortDir}
+                        onSort={handleSort}
+                        align="center"
+                    />
+                    <div></div>
                 </div>
-            ) : (
-                <div className="text-center py-16">
-                    <div className="w-16 h-16 rounded-full bg-[var(--surface-elevated)] flex items-center justify-center mx-auto mb-4">
-                        <Search size={24} className="text-[var(--text-muted)]" />
+
+                {/* Table body */}
+                <div className="divide-y divide-[var(--forge-border-subtle)]">
+                    {filteredAndSorted.length > 0 ? (
+                        filteredAndSorted.map((challenge, index) => (
+                            <ChallengeRow key={challenge.id} challenge={challenge} index={index} />
+                        ))
+                    ) : (
+                        <div className="text-center py-16">
+                            <div className="w-12 h-12 rounded-full bg-[var(--forge-bg-elevated)] flex items-center justify-center mx-auto mb-3">
+                                <Search size={20} className="text-[var(--forge-text-muted)]" />
+                            </div>
+                            <h3 className="font-medium text-[var(--forge-text-primary)] mb-1">No challenges found</h3>
+                            <p className="text-sm text-[var(--forge-text-muted)] mb-4">Try adjusting your filters</p>
+                            <button
+                                onClick={() => {
+                                    setSearchQuery("");
+                                    setType("all");
+                                    setDifficulty("all");
+                                    setProject("all");
+                                }}
+                                className="text-sm text-[var(--ember)] hover:underline"
+                            >
+                                Clear all filters
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Table footer */}
+                {filteredAndSorted.length > 0 && (
+                    <div className="px-4 py-3 bg-[var(--forge-bg-elevated)] border-t border-[var(--forge-border-subtle)] text-sm text-[var(--forge-text-secondary)]">
+                        Showing {filteredAndSorted.length} of {mockChallenges.length} challenges
                     </div>
-                    <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">
-                        No challenges found
-                    </h3>
-                    <p className="text-[var(--text-secondary)] mb-4">
-                        Try adjusting your search or filters
-                    </p>
-                    <button
-                        onClick={() => {
-                            setSearchQuery("");
-                            setType("all");
-                            setDifficulty("all");
-                            setProject("all");
-                        }}
-                        className="text-[var(--accent-primary)] hover:underline"
-                    >
-                        Clear all filters
-                    </button>
+                )}
+            </div>
+
+            {/* Quick legend */}
+            <div className="flex items-center justify-center gap-6 mt-6 text-xs text-[var(--forge-text-muted)]">
+                <div className="flex items-center gap-1">
+                    <span className={cn("px-2 py-0.5 rounded border", difficultyColors.beginner)}>Beginner</span>
+                    <span>= Good first issue</span>
                 </div>
-            )}
+                <div className="flex items-center gap-1">
+                    <span className={cn("px-2 py-0.5 rounded border", difficultyColors.intermediate)}>Intermediate</span>
+                    <span>= Some experience</span>
+                </div>
+                <div className="flex items-center gap-1">
+                    <span className={cn("px-2 py-0.5 rounded border", difficultyColors.advanced)}>Advanced</span>
+                    <span>= Expert level</span>
+                </div>
+            </div>
         </div>
     );
 }

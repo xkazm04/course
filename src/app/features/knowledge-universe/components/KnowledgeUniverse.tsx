@@ -203,7 +203,7 @@ export function KnowledgeUniverse({
         <div
             ref={containerRef}
             className={cn(
-                "relative w-full h-full overflow-hidden bg-slate-950",
+                "relative w-full h-full overflow-hidden bg-[var(--forge-bg-workshop)]",
                 interactive && "cursor-grab active:cursor-grabbing",
                 className
             )}
@@ -275,7 +275,7 @@ export function KnowledgeUniverse({
                 transition={{ delay: 3, duration: 1 }}
                 className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center pointer-events-none"
             >
-                <p className="text-slate-400 text-sm">
+                <p className="text-[var(--forge-text-muted)] text-sm">
                     Scroll to zoom • Drag to pan • Click a planet to explore
                 </p>
             </motion.div>
@@ -342,7 +342,7 @@ export function KnowledgeUniversePreview({
         <motion.div
             ref={containerRef}
             className={cn(
-                "relative w-full h-full overflow-hidden rounded-2xl bg-slate-950 border border-white/10 cursor-pointer group",
+                "relative w-full h-full overflow-hidden rounded-2xl bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-subtle)] cursor-pointer group",
                 className
             )}
             onClick={onEnter}
@@ -366,16 +366,16 @@ export function KnowledgeUniversePreview({
             />
 
             {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--forge-bg-workshop)] via-transparent to-transparent pointer-events-none" />
 
             {/* Call to action */}
             <motion.div
-                className="absolute inset-0 flex items-center justify-center bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute inset-0 flex items-center justify-center bg-[var(--forge-bg-workshop)]/60 opacity-0 group-hover:opacity-100 transition-opacity"
                 initial={false}
             >
                 <div className="text-center">
-                    <p className="text-white font-bold text-lg">Explore the Knowledge Universe</p>
-                    <p className="text-slate-400 text-sm">
+                    <p className="text-[var(--forge-text-primary)] font-bold text-lg">Explore the Knowledge Universe</p>
+                    <p className="text-[var(--forge-text-muted)] text-sm">
                         {universeData.nodeCount.total} lessons across {universeData.nodeCount.planets} domains
                     </p>
                 </div>

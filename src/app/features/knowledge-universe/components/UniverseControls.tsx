@@ -65,7 +65,7 @@ export function UniverseControls({
             data-testid="universe-controls"
         >
             {/* Zoom Level Selector */}
-            <div className="flex items-center gap-1 bg-slate-900/90 backdrop-blur-sm rounded-full px-2 py-1.5 border border-white/10 shadow-xl">
+            <div className="flex items-center gap-1 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-sm rounded-full px-2 py-1.5 border border-[var(--forge-border-subtle)] shadow-xl">
                 {ZOOM_LEVEL_CONFIGS.map((config) => {
                     const Icon = ZOOM_LEVEL_ICONS[config.level];
                     const isActive = currentZoomLevel === config.level;
@@ -79,8 +79,8 @@ export function UniverseControls({
                             className={cn(
                                 "relative p-2 rounded-full transition-colors",
                                 isActive
-                                    ? "bg-indigo-500 text-white"
-                                    : "text-slate-400 hover:text-white hover:bg-white/10"
+                                    ? "bg-[var(--ember)] text-[var(--forge-text-primary)]"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] hover:bg-white/10"
                             )}
                             title={`${config.label}: ${config.description}`}
                             data-testid={`zoom-level-${config.level}`}
@@ -89,7 +89,7 @@ export function UniverseControls({
                             {isActive && (
                                 <motion.div
                                     layoutId="activeZoomIndicator"
-                                    className="absolute inset-0 bg-indigo-500 rounded-full -z-10"
+                                    className="absolute inset-0 bg-[var(--ember)] rounded-full -z-10"
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                 />
                             )}
@@ -99,21 +99,21 @@ export function UniverseControls({
             </div>
 
             {/* Zoom Buttons */}
-            <div className="flex items-center gap-1 bg-slate-900/90 backdrop-blur-sm rounded-full px-2 py-1.5 border border-white/10 shadow-xl">
+            <div className="flex items-center gap-1 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-sm rounded-full px-2 py-1.5 border border-[var(--forge-border-subtle)] shadow-xl">
                 <motion.button
                     onClick={onZoomOut}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                    className="p-2 rounded-full text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] hover:bg-white/10 transition-colors"
                     title="Zoom Out"
                     data-testid="zoom-out-btn"
                 >
                     <ZoomOut size={ICON_SIZES.md} />
                 </motion.button>
 
-                <div className="w-16 h-1 bg-slate-700 rounded-full overflow-hidden">
+                <div className="w-16 h-1 bg-[var(--forge-border-default)] rounded-full overflow-hidden">
                     <motion.div
-                        className="h-full bg-indigo-500"
+                        className="h-full bg-[var(--ember)]"
                         style={{
                             width: `${Math.min(100, ((scale - 0.1) / (4 - 0.1)) * 100)}%`,
                         }}
@@ -124,7 +124,7 @@ export function UniverseControls({
                     onClick={onZoomIn}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                    className="p-2 rounded-full text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] hover:bg-white/10 transition-colors"
                     title="Zoom In"
                     data-testid="zoom-in-btn"
                 >
@@ -137,7 +137,7 @@ export function UniverseControls({
                 onClick={onReset}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-full bg-slate-900/90 backdrop-blur-sm border border-white/10 shadow-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="p-2 rounded-full bg-[var(--forge-bg-elevated)]/90 backdrop-blur-sm border border-[var(--forge-border-subtle)] shadow-xl text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] hover:bg-white/10 transition-colors"
                 title="Reset View"
                 data-testid="reset-view-btn"
             >
@@ -167,15 +167,15 @@ export function ZoomLevelIndicator({ level, className }: ZoomLevelIndicatorProps
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-                "absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-slate-900/90 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-xl",
+                "absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-sm rounded-full px-4 py-2 border border-[var(--forge-border-subtle)] shadow-xl",
                 className
             )}
             data-testid="zoom-level-indicator"
         >
-            <Icon size={ICON_SIZES.sm} className="text-indigo-400" />
+            <Icon size={ICON_SIZES.sm} className="text-[var(--ember)]" />
             <div>
-                <div className="text-white text-sm font-medium">{config.label}</div>
-                <div className="text-slate-400 text-xs">{config.description}</div>
+                <div className="text-[var(--forge-text-primary)] text-sm font-medium">{config.label}</div>
+                <div className="text-[var(--forge-text-muted)] text-xs">{config.description}</div>
             </div>
         </motion.div>
     );
@@ -201,18 +201,18 @@ export function NavigationBreadcrumb({
     return (
         <div
             className={cn(
-                "absolute top-6 left-6 flex items-center gap-2 bg-slate-900/90 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/10 shadow-xl",
+                "absolute top-6 left-6 flex items-center gap-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-sm rounded-lg px-3 py-2 border border-[var(--forge-border-subtle)] shadow-xl",
                 className
             )}
             data-testid="navigation-breadcrumb"
         >
-            <Compass size={ICON_SIZES.sm} className="text-slate-400" />
+            <Compass size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
             {path.map((item, index) => (
                 <React.Fragment key={item.id}>
-                    {index > 0 && <span className="text-slate-600">/</span>}
+                    {index > 0 && <span className="text-[var(--forge-text-muted)]">/</span>}
                     <button
                         onClick={() => onNavigate(item.id)}
-                        className="text-sm text-slate-300 hover:text-white transition-colors"
+                        className="text-sm text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] transition-colors"
                         data-testid={`breadcrumb-${item.id}`}
                     >
                         {item.name}
@@ -248,32 +248,32 @@ export function StatsDisplay({
     return (
         <div
             className={cn(
-                "absolute bottom-6 right-6 flex flex-col gap-1 bg-slate-900/90 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/10 shadow-xl text-xs",
+                "absolute bottom-6 right-6 flex flex-col gap-1 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-sm rounded-lg px-3 py-2 border border-[var(--forge-border-subtle)] shadow-xl text-xs",
                 className
             )}
             data-testid="universe-stats"
         >
             <div className="flex items-center justify-between gap-4">
-                <span className="text-slate-400">Domains</span>
-                <span className="text-white font-mono">{nodeCount.planets}</span>
+                <span className="text-[var(--forge-text-muted)]">Domains</span>
+                <span className="text-[var(--forge-text-primary)] font-mono">{nodeCount.planets}</span>
             </div>
             <div className="flex items-center justify-between gap-4">
-                <span className="text-slate-400">Chapters</span>
-                <span className="text-white font-mono">{nodeCount.moons}</span>
+                <span className="text-[var(--forge-text-muted)]">Chapters</span>
+                <span className="text-[var(--forge-text-primary)] font-mono">{nodeCount.moons}</span>
             </div>
             <div className="flex items-center justify-between gap-4">
-                <span className="text-slate-400">Lessons</span>
-                <span className="text-white font-mono">{nodeCount.stars}</span>
+                <span className="text-[var(--forge-text-muted)]">Lessons</span>
+                <span className="text-[var(--forge-text-primary)] font-mono">{nodeCount.stars}</span>
             </div>
-            <div className="border-t border-white/10 my-1" />
+            <div className="border-t border-[var(--forge-border-subtle)] my-1" />
             <div className="flex items-center justify-between gap-4">
-                <span className="text-slate-400">Visible</span>
-                <span className="text-indigo-400 font-mono">{visibleCount}</span>
+                <span className="text-[var(--forge-text-muted)]">Visible</span>
+                <span className="text-[var(--ember)] font-mono">{visibleCount}</span>
             </div>
             {fps !== undefined && (
                 <div className="flex items-center justify-between gap-4">
-                    <span className="text-slate-400">FPS</span>
-                    <span className={cn("font-mono", fps >= 55 ? "text-green-400" : fps >= 30 ? "text-yellow-400" : "text-red-400")}>
+                    <span className="text-[var(--forge-text-muted)]">FPS</span>
+                    <span className={cn("font-mono", fps >= 55 ? "text-[var(--forge-success)]" : fps >= 30 ? "text-[var(--forge-warning)]" : "text-[var(--forge-error)]")}>
                         {fps}
                     </span>
                 </div>

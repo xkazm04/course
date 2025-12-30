@@ -41,13 +41,13 @@ interface CodePlaygroundProps {
 }
 
 const FILE_ICONS: Record<SupportedLanguage, string> = {
-    javascript: "text-amber-400",
-    jsx: "text-amber-400",
-    typescript: "text-blue-400",
-    tsx: "text-blue-400",
-    css: "text-purple-400",
-    html: "text-orange-400",
-    json: "text-yellow-400",
+    javascript: "text-[var(--forge-warning)]",
+    jsx: "text-[var(--forge-warning)]",
+    typescript: "text-[var(--forge-info)]",
+    tsx: "text-[var(--forge-info)]",
+    css: "text-[var(--molten)]",
+    html: "text-[var(--ember)]",
+    json: "text-[var(--gold)]",
 };
 
 export function CodePlayground({
@@ -137,18 +137,18 @@ export function CodePlayground({
     }, []);
 
     // Get file icon color
-    const getFileIconColor = (lang: SupportedLanguage) => FILE_ICONS[lang] || "text-neutral-400";
+    const getFileIconColor = (lang: SupportedLanguage) => FILE_ICONS[lang] || "text-[var(--forge-text-muted)]";
 
     return (
         <div
             className={cn(
-                "bg-[#1e1e1e] rounded-2xl overflow-hidden shadow-2xl border border-white/10",
+                "bg-[var(--forge-bg-void)] rounded-2xl overflow-hidden shadow-2xl border border-[var(--forge-border-subtle)]",
                 isFullscreen ? "fixed inset-4 z-50" : ""
             )}
             style={{ height: isFullscreen ? "auto" : height }}
             data-testid="code-playground"
         >
-            <div className="h-full flex text-neutral-300 font-mono text-sm">
+            <div className="h-full flex text-[var(--forge-text-secondary)] font-mono text-sm">
                 {/* Sidebar - File Explorer */}
                 <AnimatePresence>
                     {sidebarOpen && (
@@ -156,12 +156,12 @@ export function CodePlayground({
                             initial={{ width: 0, opacity: 0 }}
                             animate={{ width: 200, opacity: 1 }}
                             exit={{ width: 0, opacity: 0 }}
-                            className="bg-[#252526] border-r border-[#3e3e42] flex flex-col shrink-0"
+                            className="bg-[var(--forge-bg-forge)] border-r border-[var(--forge-border-subtle)] flex flex-col shrink-0"
                             data-testid="file-explorer"
                         >
-                            <div className="p-3 text-xs font-bold uppercase tracking-wider text-neutral-500 flex justify-between items-center border-b border-[#3e3e42]">
+                            <div className="p-3 text-xs font-bold uppercase tracking-wider text-[var(--forge-text-muted)] flex justify-between items-center border-b border-[var(--forge-border-subtle)]">
                                 <span className="flex items-center gap-2">
-                                    <FolderOpen size={ICON_SIZES.sm} className="text-amber-400" />
+                                    <FolderOpen size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                                     Explorer
                                 </span>
                                 <button
@@ -174,7 +174,7 @@ export function CodePlayground({
                             </div>
 
                             <div className="p-2 space-y-0.5 flex-1 overflow-auto">
-                                <div className="text-xs text-neutral-500 px-2 py-1 uppercase tracking-wider flex items-center gap-1">
+                                <div className="text-xs text-[var(--forge-text-muted)] px-2 py-1 uppercase tracking-wider flex items-center gap-1">
                                     <ChevronDown size={ICON_SIZES.xs} />
                                     src
                                 </div>
@@ -185,15 +185,15 @@ export function CodePlayground({
                                         className={cn(
                                             "w-full flex items-center gap-2 px-3 py-1.5 rounded text-sm transition-colors",
                                             activeFileId === file.id
-                                                ? "bg-[#37373d] text-white"
-                                                : "text-neutral-400 hover:bg-[#2a2a2b] hover:text-neutral-200"
+                                                ? "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-bright)]"
+                                                : "text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-anvil)] hover:text-[var(--forge-text-primary)]"
                                         )}
                                         data-testid={`file-item-${file.name}`}
                                     >
                                         <FileCode size={ICON_SIZES.sm} className={getFileIconColor(file.language)} />
                                         <span className="truncate">{file.name}</span>
                                         {file.isEntry && (
-                                            <span className="text-[10px] px-1 py-0.5 bg-emerald-500/20 text-emerald-400 rounded">
+                                            <span className="text-[10px] px-1 py-0.5 bg-[var(--forge-success)]/20 text-[var(--forge-success)] rounded">
                                                 entry
                                             </span>
                                         )}
@@ -203,7 +203,7 @@ export function CodePlayground({
 
                             {/* Unsaved changes indicator */}
                             {hasUnsavedChanges && (
-                                <div className="p-3 border-t border-[#3e3e42] text-xs text-amber-400 flex items-center gap-2">
+                                <div className="p-3 border-t border-[var(--forge-border-subtle)] text-xs text-[var(--forge-warning)] flex items-center gap-2">
                                     <AlertCircle size={ICON_SIZES.xs} />
                                     Modified from original
                                 </div>
@@ -215,26 +215,26 @@ export function CodePlayground({
                 {/* Main Content */}
                 <div className="flex-1 flex flex-col min-w-0">
                     {/* Top Bar */}
-                    <div className="h-10 bg-[#1e1e1e] border-b border-[#3e3e42] flex items-center px-4 gap-2">
+                    <div className="h-10 bg-[var(--forge-bg-void)] border-b border-[var(--forge-border-subtle)] flex items-center px-4 gap-2">
                         {!sidebarOpen && (
                             <button
                                 onClick={() => setSidebarOpen(true)}
-                                className="mr-2 p-1 hover:bg-[#3e3e42] rounded transition-colors"
+                                className="mr-2 p-1 hover:bg-[var(--forge-bg-elevated)] rounded transition-colors"
                                 data-testid="open-explorer-btn"
                             >
                                 <FolderOpen size={ICON_SIZES.sm} />
                             </button>
                         )}
 
-                        <span className="text-neutral-500">src</span>
-                        <ChevronRight size={ICON_SIZES.sm} className="text-neutral-600" />
-                        <span className="text-white">{activeFile?.name}</span>
+                        <span className="text-[var(--forge-text-muted)]">src</span>
+                        <ChevronRight size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                        <span className="text-[var(--forge-text-bright)]">{activeFile?.name}</span>
 
                         {hasUnsavedChanges && (
-                            <span className="w-2 h-2 rounded-full bg-amber-400" title="Modified" />
+                            <span className="w-2 h-2 rounded-full bg-[var(--forge-warning)]" title="Modified" />
                         )}
 
-                        <div className="ml-auto flex items-center gap-2 text-xs text-neutral-500">
+                        <div className="ml-auto flex items-center gap-2 text-xs text-[var(--forge-text-muted)]">
                             {/* Reset Button */}
                             <button
                                 onClick={handleReset}
@@ -242,8 +242,8 @@ export function CodePlayground({
                                 className={cn(
                                     "px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors",
                                     hasUnsavedChanges
-                                        ? "text-amber-400 hover:bg-amber-400/10"
-                                        : "text-neutral-600 cursor-not-allowed"
+                                        ? "text-[var(--forge-warning)] hover:bg-[var(--forge-warning)]/10"
+                                        : "text-[var(--forge-text-muted)] cursor-not-allowed"
                                 )}
                                 title="Reset to Original"
                                 data-testid="reset-code-btn"
@@ -255,12 +255,12 @@ export function CodePlayground({
                             {/* Copy Button */}
                             <button
                                 onClick={handleCopy}
-                                className="px-3 py-1.5 rounded flex items-center gap-1.5 text-neutral-400 hover:text-white hover:bg-[#3e3e42] transition-colors"
+                                className="px-3 py-1.5 rounded flex items-center gap-1.5 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-bright)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
                                 data-testid="copy-code-btn"
                             >
                                 {isCopied ? (
                                     <>
-                                        <Check size={ICON_SIZES.xs} className="text-emerald-400" />
+                                        <Check size={ICON_SIZES.xs} className="text-[var(--forge-success)]" />
                                         Copied
                                     </>
                                 ) : (
@@ -275,7 +275,7 @@ export function CodePlayground({
                             <button
                                 onClick={handleRun}
                                 disabled={isRunning}
-                                className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg flex items-center gap-2 font-bold transition-all"
+                                className="px-4 py-1.5 bg-gradient-forge hover:shadow-ember disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg flex items-center gap-2 font-bold transition-all"
                                 data-testid="run-code-btn"
                             >
                                 {isRunning ? (
@@ -294,7 +294,7 @@ export function CodePlayground({
                             {/* Fullscreen Toggle */}
                             <button
                                 onClick={() => setIsFullscreen(!isFullscreen)}
-                                className="p-1.5 hover:bg-[#3e3e42] rounded transition-colors"
+                                className="p-1.5 hover:bg-[var(--forge-bg-elevated)] rounded transition-colors"
                                 data-testid="fullscreen-toggle-btn"
                             >
                                 {isFullscreen ? (
@@ -309,9 +309,9 @@ export function CodePlayground({
                     {/* Editor and Preview Split */}
                     <div className="flex-1 flex flex-col md:flex-row min-h-0">
                         {/* Editor Pane */}
-                        <div className="flex-1 flex flex-col min-w-0 border-r border-[#3e3e42]">
+                        <div className="flex-1 flex flex-col min-w-0 border-r border-[var(--forge-border-subtle)]">
                             {/* Editor Tab Bar */}
-                            <div className="flex bg-[#252526] overflow-x-auto">
+                            <div className="flex bg-[var(--forge-bg-forge)] overflow-x-auto">
                                 {files.map((file) => (
                                     <button
                                         key={file.id}
@@ -319,8 +319,8 @@ export function CodePlayground({
                                         className={cn(
                                             "px-4 py-2 flex items-center gap-2 transition-colors",
                                             activeFileId === file.id
-                                                ? "bg-[#1e1e1e] text-white border-t-2 border-t-indigo-500"
-                                                : "text-neutral-500 hover:bg-[#1e1e1e] hover:text-neutral-300"
+                                                ? "bg-[var(--forge-bg-void)] text-[var(--forge-text-bright)] border-t-2 border-t-[var(--ember)]"
+                                                : "text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-void)] hover:text-[var(--forge-text-secondary)]"
                                         )}
                                         data-testid={`editor-tab-${file.name}`}
                                     >
@@ -344,7 +344,7 @@ export function CodePlayground({
                         </div>
 
                         {/* Preview Pane */}
-                        <div className="w-full md:w-[400px] flex flex-col bg-[#1e1e1e]">
+                        <div className="w-full md:w-[400px] flex flex-col bg-[var(--forge-bg-void)]">
                             <PreviewPane
                                 html={previewHtml}
                                 isRunning={isRunning}

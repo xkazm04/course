@@ -87,7 +87,7 @@ export const PlaybackSpeedControl: React.FC<PlaybackSpeedControlProps> = ({
                     title={`Playback speed: ${formatSpeed(speed)}${skipSilence ? " (Skip silence on)" : ""}`}
                 >
                     <span>{speed}x</span>
-                    {skipSilence && <Zap size={ICON_SIZES.xs} className="text-yellow-400" />}
+                    {skipSilence && <Zap size={ICON_SIZES.xs} className="text-[var(--gold)]" />}
                 </button>
                 <AnimatePresence>
                     {isOpen && (
@@ -122,7 +122,7 @@ export const PlaybackSpeedControl: React.FC<PlaybackSpeedControlProps> = ({
             >
                 <Gauge size={ICON_SIZES.sm} className="text-white/80" />
                 <span className="text-sm font-medium text-white">{formatSpeed(speed)}</span>
-                {skipSilence && <Zap size={ICON_SIZES.xs} className="text-yellow-400" />}
+                {skipSilence && <Zap size={ICON_SIZES.xs} className="text-[var(--gold)]" />}
                 <ChevronDown
                     size={ICON_SIZES.sm}
                     className={cn(
@@ -195,7 +195,7 @@ const SpeedMenu: React.FC<SpeedMenuProps> = ({
             animate={ANIMATION_VARIANTS.fadeInDown.animate}
             exit={ANIMATION_VARIANTS.fadeInDown.exit}
             transition={TRANSITIONS.fast}
-            className="absolute bottom-full mb-2 right-0 min-w-[180px] bg-slate-900/95 backdrop-blur-xl rounded-xl border border-white/10 shadow-xl overflow-hidden z-50"
+            className="absolute bottom-full mb-2 right-0 min-w-[180px] bg-[var(--forge-bg-void)]/95 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] shadow-xl overflow-hidden z-50"
         >
             <div className="p-2">
                 <div className="text-xs font-medium text-white/50 px-2 py-1 mb-1">
@@ -214,7 +214,7 @@ const SpeedMenu: React.FC<SpeedMenuProps> = ({
                             className={cn(
                                 "px-2 py-1.5 text-xs font-medium rounded-lg transition-colors",
                                 speed === presetSpeed
-                                    ? "bg-indigo-500 text-white"
+                                    ? "bg-[var(--ember)] text-white"
                                     : "text-white/70 hover:bg-white/10 hover:text-white"
                             )}
                             data-testid={`speed-preset-${presetSpeed}`}
@@ -236,12 +236,12 @@ const SpeedMenu: React.FC<SpeedMenuProps> = ({
                             value={customValue}
                             onChange={(e) => setCustomValue(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            className="flex-1 px-2 py-1 text-xs bg-white/10 border border-white/20 rounded-lg text-white outline-none focus:border-indigo-500"
+                            className="flex-1 px-2 py-1 text-xs bg-white/10 border border-white/20 rounded-lg text-white outline-none focus:border-[var(--ember)]"
                             data-testid="custom-speed-input"
                         />
                         <button
                             onClick={handleCustomSpeedSubmit}
-                            className="p-1.5 bg-indigo-500 hover:bg-indigo-600 rounded-lg transition-colors"
+                            className="p-1.5 bg-[var(--ember)] hover:bg-[var(--ember-glow)] rounded-lg transition-colors"
                             data-testid="custom-speed-submit-btn"
                         >
                             <Check size={ICON_SIZES.xs} className="text-white" />
@@ -266,7 +266,7 @@ const SpeedMenu: React.FC<SpeedMenuProps> = ({
                         className={cn(
                             "w-full px-2 py-1.5 text-xs font-medium text-left rounded-lg transition-colors mb-2",
                             isCustomSpeed
-                                ? "bg-indigo-500/20 text-indigo-300"
+                                ? "bg-[var(--ember)]/20 text-[var(--ember)]"
                                 : "text-white/70 hover:bg-white/10 hover:text-white"
                         )}
                         data-testid="custom-speed-btn"
@@ -287,14 +287,14 @@ const SpeedMenu: React.FC<SpeedMenuProps> = ({
                     <div className="flex items-center gap-2">
                         <Zap
                             size={ICON_SIZES.sm}
-                            className={skipSilence ? "text-yellow-400" : "text-white/50"}
+                            className={skipSilence ? "text-[var(--gold)]" : "text-white/50"}
                         />
                         <span className="text-xs font-medium text-white/80">Skip Silence</span>
                     </div>
                     <div
                         className={cn(
                             "w-8 h-4 rounded-full transition-colors relative",
-                            skipSilence ? "bg-indigo-500" : "bg-white/20"
+                            skipSilence ? "bg-[var(--ember)]" : "bg-white/20"
                         )}
                     >
                         <motion.div

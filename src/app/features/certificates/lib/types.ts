@@ -65,7 +65,7 @@ export const CERTIFICATE_TEMPLATES: CertificateTemplate[] = [
     {
         id: 'classic',
         name: 'Classic',
-        backgroundGradient: 'from-slate-50 to-slate-100',
+        backgroundGradient: 'from-[var(--forge-bg-daylight)] to-[var(--forge-bg-workshop)]',
         accentColor: 'indigo',
         borderStyle: 'solid',
         badgeIcon: 'award',
@@ -73,7 +73,7 @@ export const CERTIFICATE_TEMPLATES: CertificateTemplate[] = [
     {
         id: 'modern',
         name: 'Modern',
-        backgroundGradient: 'from-indigo-50 to-purple-50',
+        backgroundGradient: 'from-[var(--ember)]/10 to-[var(--ember-glow)]/10',
         accentColor: 'purple',
         borderStyle: 'gradient',
         badgeIcon: 'trophy',
@@ -81,7 +81,7 @@ export const CERTIFICATE_TEMPLATES: CertificateTemplate[] = [
     {
         id: 'professional',
         name: 'Professional',
-        backgroundGradient: 'from-slate-100 to-blue-50',
+        backgroundGradient: 'from-[var(--forge-bg-daylight)] to-[var(--forge-info)]/10',
         accentColor: 'blue',
         borderStyle: 'double',
         badgeIcon: 'medal',
@@ -89,7 +89,7 @@ export const CERTIFICATE_TEMPLATES: CertificateTemplate[] = [
     {
         id: 'elegant',
         name: 'Elegant',
-        backgroundGradient: 'from-amber-50 to-orange-50',
+        backgroundGradient: 'from-[var(--gold)]/10 to-[var(--ember)]/10',
         accentColor: 'orange',
         borderStyle: 'ornate',
         badgeIcon: 'crown',

@@ -39,15 +39,15 @@ const STRATEGY_ICONS: Record<TeachingStrategy, React.ReactNode> = {
     hybrid: <Lightbulb className="w-4 h-4" />,
 };
 
-const STRATEGY_COLORS: Record<TeachingStrategy, string> = {
-    "breadth-first": "emerald",
-    "depth-first": "indigo",
-    spiral: "purple",
-    "mastery-based": "blue",
-    exploratory: "amber",
-    convergent: "teal",
-    divergent: "rose",
-    hybrid: "slate",
+const STRATEGY_COLORS: Record<TeachingStrategy, { bg: string; text: string }> = {
+    "breadth-first": { bg: "bg-[var(--forge-success)]/20", text: "text-[var(--forge-success)]" },
+    "depth-first": { bg: "bg-[var(--ember)]/20", text: "text-[var(--ember)]" },
+    spiral: { bg: "bg-[var(--forge-accent)]/20", text: "text-[var(--forge-accent)]" },
+    "mastery-based": { bg: "bg-[var(--forge-accent)]/20", text: "text-[var(--forge-accent)]" },
+    exploratory: { bg: "bg-[var(--forge-warning)]/20", text: "text-[var(--forge-warning)]" },
+    convergent: { bg: "bg-[var(--forge-success)]/20", text: "text-[var(--forge-success)]" },
+    divergent: { bg: "bg-[var(--forge-error)]/20", text: "text-[var(--forge-error)]" },
+    hybrid: { bg: "bg-[var(--forge-bg-workshop)]", text: "text-[var(--forge-text-secondary)]" },
 };
 
 const INSIGHT_ICONS: Record<string, React.ReactNode> = {
@@ -69,7 +69,7 @@ interface StrategyBadgeProps {
 }
 
 function StrategyBadge({ strategy, confidence, className }: StrategyBadgeProps) {
-    const color = STRATEGY_COLORS[strategy];
+    const colorStyles = STRATEGY_COLORS[strategy];
     const displayName = strategy
         .split("-")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -79,8 +79,8 @@ function StrategyBadge({ strategy, confidence, className }: StrategyBadgeProps) 
         <div
             className={cn(
                 "inline-flex items-center gap-2 px-3 py-1.5 rounded-full",
-                `bg-${color}-100 dark:bg-${color}-900/30`,
-                `text-${color}-700 dark:text-${color}-300`,
+                colorStyles.bg,
+                colorStyles.text,
                 "text-sm font-medium",
                 className
             )}
@@ -113,8 +113,8 @@ function CharacteristicTag({ characteristic }: CharacteristicTagProps) {
         <span
             className={cn(
                 "inline-flex px-2 py-0.5 rounded text-xs",
-                "bg-slate-100 dark:bg-slate-800",
-                "text-slate-600 dark:text-slate-400"
+                "bg-[var(--forge-bg-workshop)]",
+                "text-[var(--forge-text-secondary)]"
             )}
             data-testid={`characteristic-tag-${characteristic}`}
         >
@@ -140,13 +140,13 @@ function InsightCard({ insight, compact = false }: InsightCardProps) {
             <div
                 className={cn(
                     "flex items-start gap-2 p-2 rounded-lg",
-                    "bg-slate-50 dark:bg-slate-800/50"
+                    "bg-[var(--forge-bg-workshop)]"
                 )}
                 data-testid={`insight-card-${insight.category}`}
             >
-                <span className="text-slate-400 mt-0.5">{icon}</span>
+                <span className="text-[var(--forge-text-muted)] mt-0.5">{icon}</span>
                 <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">
+                    <p className="text-xs font-medium text-[var(--forge-text-primary)] truncate">
                         {insight.title}
                     </p>
                 </div>
@@ -160,8 +160,8 @@ function InsightCard({ insight, compact = false }: InsightCardProps) {
             animate={{ opacity: 1, y: 0 }}
             className={cn(
                 "p-3 rounded-xl",
-                "bg-slate-50 dark:bg-slate-800/50",
-                "border border-slate-100 dark:border-slate-700"
+                "bg-[var(--forge-bg-workshop)]",
+                "border border-[var(--forge-border-subtle)]"
             )}
             data-testid={`insight-card-${insight.category}`}
         >
@@ -169,28 +169,28 @@ function InsightCard({ insight, compact = false }: InsightCardProps) {
                 <div
                     className={cn(
                         "p-2 rounded-lg flex-shrink-0",
-                        "bg-slate-100 dark:bg-slate-700",
-                        "text-slate-500 dark:text-slate-400"
+                        "bg-[var(--forge-bg-elevated)]",
+                        "text-[var(--forge-text-muted)]"
                     )}
                 >
                     {icon}
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                        <h4 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                             {insight.title}
                         </h4>
                         <span
                             className={cn(
                                 "px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wide",
-                                "bg-slate-200 dark:bg-slate-600",
-                                "text-slate-500 dark:text-slate-400"
+                                "bg-[var(--forge-bg-elevated)]",
+                                "text-[var(--forge-text-muted)]"
                             )}
                         >
                             {insight.category}
                         </span>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-[var(--forge-text-secondary)] leading-relaxed">
                         {insight.description}
                     </p>
                     {insight.relatedStrategy && (
@@ -249,8 +249,8 @@ export function PedagogicalInsightsPanel({
                 {/* Strategy Summary */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <Lightbulb className="w-4 h-4 text-amber-500" />
-                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                        <Lightbulb className="w-4 h-4 text-[var(--forge-warning)]" />
+                        <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Teaching Strategy
                         </span>
                     </div>
@@ -284,14 +284,14 @@ export function PedagogicalInsightsPanel({
         >
             {/* Header */}
             <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-xl">
-                    <Lightbulb className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                <div className="p-2 bg-[var(--forge-warning)]/20 rounded-xl">
+                    <Lightbulb className="w-5 h-5 text-[var(--forge-warning)]" />
                 </div>
                 <div>
-                    <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
+                    <h3 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         Curriculum Pedagogy
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-[var(--forge-text-muted)]">
                         Teaching strategy analysis
                     </p>
                 </div>
@@ -301,13 +301,12 @@ export function PedagogicalInsightsPanel({
             <div
                 className={cn(
                     "p-4 rounded-xl",
-                    "bg-gradient-to-br from-slate-50 to-slate-100",
-                    "dark:from-slate-800/50 dark:to-slate-800"
+                    "bg-[var(--forge-bg-workshop)]"
                 )}
                 data-testid="primary-strategy-section"
             >
                 <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    <span className="text-sm font-medium text-[var(--forge-text-secondary)]">
                         Primary Strategy
                     </span>
                     <StrategyBadge
@@ -315,7 +314,7 @@ export function PedagogicalInsightsPanel({
                         confidence={analysis.confidence}
                     />
                 </div>
-                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                <p className="text-sm text-[var(--forge-text-primary)] leading-relaxed">
                     {analysis.pedagogicalDescription}
                 </p>
             </div>
@@ -323,7 +322,7 @@ export function PedagogicalInsightsPanel({
             {/* Structure Characteristics */}
             {analysis.characteristics.length > 0 && (
                 <div data-testid="characteristics-section">
-                    <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                    <h4 className="text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                         Detected Characteristics
                     </h4>
                     <div className="flex flex-wrap gap-2">
@@ -337,7 +336,7 @@ export function PedagogicalInsightsPanel({
             {/* Path-Specific Insights */}
             {selectedPath && topInsights.length > 0 && (
                 <div data-testid="path-insights-section">
-                    <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">
+                    <h4 className="text-sm font-medium text-[var(--forge-text-secondary)] mb-3">
                         Path Insights: {selectedPath}
                     </h4>
                     <div className="space-y-3">
@@ -358,12 +357,12 @@ export function PedagogicalInsightsPanel({
                 <div
                     className={cn(
                         "p-3 rounded-xl",
-                        "bg-emerald-50 dark:bg-emerald-900/20",
-                        "border border-emerald-100 dark:border-emerald-800"
+                        "bg-[var(--forge-success)]/10",
+                        "border border-[var(--forge-success)]/30"
                     )}
                     data-testid="recommendations-section"
                 >
-                    <h4 className="text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-[var(--forge-success)] mb-2 flex items-center gap-2">
                         <Target className="w-4 h-4" />
                         Recommendations
                     </h4>
@@ -371,7 +370,7 @@ export function PedagogicalInsightsPanel({
                         {analysis.recommendations.map((rec, idx) => (
                             <li
                                 key={idx}
-                                className="flex items-start gap-2 text-sm text-emerald-700 dark:text-emerald-300"
+                                className="flex items-start gap-2 text-sm text-[var(--forge-success)]"
                             >
                                 <ChevronRight className="w-4 h-4 flex-shrink-0 mt-0.5" />
                                 <span>{rec}</span>
@@ -385,29 +384,29 @@ export function PedagogicalInsightsPanel({
             <div
                 className={cn(
                     "grid grid-cols-3 gap-3 p-3 rounded-xl",
-                    "bg-slate-50 dark:bg-slate-800/50"
+                    "bg-[var(--forge-bg-workshop)]"
                 )}
                 data-testid="metrics-summary"
             >
                 <div className="text-center">
-                    <p className="text-lg font-bold text-slate-800 dark:text-slate-200">
+                    <p className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {analysis.metrics.totalNodes}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Topics</p>
+                    <p className="text-xs text-[var(--forge-text-muted)]">Topics</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-lg font-bold text-slate-800 dark:text-slate-200">
+                    <p className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {analysis.metrics.totalEdges}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-[var(--forge-text-muted)]">
                         Connections
                     </p>
                 </div>
                 <div className="text-center">
-                    <p className="text-lg font-bold text-slate-800 dark:text-slate-200">
+                    <p className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {analysis.pathCharacteristics.depth}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-[var(--forge-text-muted)]">
                         Tier Depth
                     </p>
                 </div>

@@ -37,8 +37,8 @@ const ControlButton: React.FC<{
             className={cn(
                 "w-9 h-9 flex items-center justify-center rounded-lg transition-colors",
                 disabled
-                    ? "text-slate-300 dark:text-slate-600 cursor-not-allowed"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    ? "text-[var(--forge-text-muted)] cursor-not-allowed"
+                    : "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-anvil)]"
             )}
             whileHover={!disabled ? { scale: 1.05 } : {}}
             whileTap={!disabled ? { scale: 0.95 } : {}}
@@ -65,7 +65,7 @@ export const MapControls: React.FC<MapControlsProps> = memo(function MapControls
     return (
         <div
             className={cn(
-                "flex flex-col gap-1 p-1 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-xl border border-slate-200 dark:border-slate-700 shadow-md",
+                "flex flex-col gap-1 p-1 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-xl border border-[var(--forge-border-subtle)] shadow-md",
                 className
             )}
         >
@@ -79,7 +79,7 @@ export const MapControls: React.FC<MapControlsProps> = memo(function MapControls
             </ControlButton>
 
             {/* Scale indicator */}
-            <div className="flex items-center justify-center h-9 text-xs font-medium text-slate-600 dark:text-slate-400">
+            <div className="flex items-center justify-center h-9 text-xs font-medium text-[var(--forge-text-secondary)]">
                 {scalePercent}%
             </div>
 
@@ -93,7 +93,7 @@ export const MapControls: React.FC<MapControlsProps> = memo(function MapControls
             </ControlButton>
 
             {/* Divider */}
-            <div className="h-px bg-slate-200 dark:bg-slate-700 mx-1" />
+            <div className="h-px bg-[var(--forge-border-subtle)] mx-1" />
 
             {/* Reset */}
             <ControlButton

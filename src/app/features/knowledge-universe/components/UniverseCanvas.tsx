@@ -488,7 +488,7 @@ export function NodeTooltip({ node, x, y }: NodeTooltipProps) {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="absolute pointer-events-none z-50 bg-slate-900/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-xl border border-white/10"
+                className="absolute pointer-events-none z-50 bg-[var(--forge-bg-elevated)]/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-xl border border-[var(--forge-border-subtle)]"
                 style={{
                     left: x + 15,
                     top: y + 15,
@@ -496,19 +496,19 @@ export function NodeTooltip({ node, x, y }: NodeTooltipProps) {
                 }}
                 data-testid="universe-tooltip"
             >
-                <div className="text-white font-medium text-sm">{node.name}</div>
-                <div className="text-slate-400 text-xs capitalize">
+                <div className="text-[var(--forge-text-primary)] font-medium text-sm">{node.name}</div>
+                <div className="text-[var(--forge-text-muted)] text-xs capitalize">
                     {node.type === "planet" && "Learning Domain"}
                     {node.type === "moon" && "Chapter"}
                     {node.type === "star" && (node as { lessonType: string }).lessonType}
                 </div>
                 {node.type === "star" && (
                     <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-[var(--forge-text-muted)]">
                             {(node as { duration: string }).duration}
                         </span>
                         {(node as { completed: boolean }).completed && (
-                            <span className="text-xs text-green-400">Completed</span>
+                            <span className="text-xs text-[var(--forge-success)]">Completed</span>
                         )}
                     </div>
                 )}

@@ -29,22 +29,22 @@ const STATUS_CONFIG = {
     completed: {
         label: "Completed",
         icon: CheckCircle2,
-        className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+        className: "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
     },
     in_progress: {
         label: "In Progress",
         icon: PlayCircle,
-        className: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400",
+        className: "bg-[var(--ember)]/20 text-[var(--ember)]",
     },
     available: {
         label: "Available",
         icon: ChevronRight,
-        className: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400",
+        className: "bg-[var(--forge-bg-workshop)] text-[var(--forge-text-secondary)]",
     },
     locked: {
         label: "Locked",
         icon: Lock,
-        className: "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-500",
+        className: "bg-[var(--forge-bg-workshop)] text-[var(--forge-text-muted)]",
     },
 };
 
@@ -90,21 +90,21 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                                         className="w-3 h-3 rounded-full"
                                         style={{ backgroundColor: categoryMeta.color }}
                                     />
-                                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                                    <span className="text-xs font-medium text-[var(--forge-text-muted)]">
                                         {categoryMeta.name}
                                     </span>
                                 </div>
-                                <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                                <h3 className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     {node.title}
                                 </h3>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                className="p-1 hover:bg-[var(--forge-bg-workshop)] rounded-lg transition-colors"
                                 aria-label="Close details panel"
                                 data-testid="knowledge-map-details-close-btn"
                             >
-                                <X className="w-5 h-5 text-slate-400" />
+                                <X className="w-5 h-5 text-[var(--forge-text-muted)]" />
                             </button>
                         </div>
 
@@ -118,31 +118,31 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                         </div>
 
                         {/* Description */}
-                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                        <p className="text-sm text-[var(--forge-text-secondary)] leading-relaxed">
                             {node.description}
                         </p>
 
                         {/* Stats */}
                         <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-400 mb-1">
+                            <div className="bg-[var(--forge-bg-workshop)] rounded-lg p-3 text-center">
+                                <div className="flex items-center justify-center gap-1 text-[var(--forge-text-muted)] mb-1">
                                     <Clock className="w-4 h-4" />
                                     <span className="text-xs">Duration</span>
                                 </div>
-                                <span className="text-lg font-bold text-[var(--text-primary)]">
+                                <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     {node.estimatedHours}h
                                 </span>
                             </div>
-                            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                            <div className="bg-[var(--forge-bg-workshop)] rounded-lg p-3 text-center">
+                                <div className="text-xs text-[var(--forge-text-muted)] mb-1">
                                     Difficulty
                                 </div>
                                 <span className={cn(
                                     "text-sm font-semibold",
-                                    node.difficulty === "beginner" && "text-green-600 dark:text-green-400",
-                                    node.difficulty === "intermediate" && "text-yellow-600 dark:text-yellow-400",
-                                    node.difficulty === "advanced" && "text-orange-600 dark:text-orange-400",
-                                    node.difficulty === "expert" && "text-red-600 dark:text-red-400",
+                                    node.difficulty === "beginner" && "text-[var(--forge-success)]",
+                                    node.difficulty === "intermediate" && "text-[var(--forge-warning)]",
+                                    node.difficulty === "advanced" && "text-[var(--ember)]",
+                                    node.difficulty === "expert" && "text-[var(--forge-error)]",
                                 )}>
                                     {node.difficulty.charAt(0).toUpperCase() + node.difficulty.slice(1)}
                                 </span>
@@ -151,14 +151,14 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
 
                         {/* Skills */}
                         <div>
-                            <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+                            <h4 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase tracking-wide mb-2">
                                 Skills You'll Learn
                             </h4>
                             <div className="flex flex-wrap gap-1.5">
                                 {node.skills.map((skill, i) => (
                                     <span
                                         key={i}
-                                        className="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300"
+                                        className="px-2 py-0.5 text-xs font-medium rounded-full bg-[var(--ember)]/20 text-[var(--ember)]"
                                     >
                                         {skill}
                                     </span>
@@ -169,7 +169,7 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                         {/* Prerequisites */}
                         {prerequisites.length > 0 && (
                             <div>
-                                <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+                                <h4 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase tracking-wide mb-2">
                                     Prerequisites
                                 </h4>
                                 <div className="space-y-1.5">
@@ -179,21 +179,21 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                                             onClick={() => onSelectNode(prereq)}
                                             className={cn(
                                                 "w-full flex items-center gap-2 p-2 rounded-lg text-left transition-colors",
-                                                "hover:bg-slate-100 dark:hover:bg-slate-700",
-                                                prereq.status === "completed" && "bg-emerald-50 dark:bg-emerald-900/20"
+                                                "hover:bg-[var(--forge-bg-workshop)]",
+                                                prereq.status === "completed" && "bg-[var(--forge-success)]/10"
                                             )}
                                             aria-label={`Prerequisite: ${prereq.title}, ${prereq.status === "completed" ? "completed" : "not completed"}`}
                                             data-testid={`prerequisite-${prereq.id}-btn`}
                                         >
                                             {prereq.status === "completed" ? (
-                                                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                                                <CheckCircle2 className="w-4 h-4 text-[var(--forge-success)]" />
                                             ) : (
-                                                <Clock className="w-4 h-4 text-slate-400" />
+                                                <Clock className="w-4 h-4 text-[var(--forge-text-muted)]" />
                                             )}
-                                            <span className="text-sm text-[var(--text-primary)] flex-1">
+                                            <span className="text-sm text-[var(--forge-text-primary)] flex-1">
                                                 {prereq.title}
                                             </span>
-                                            <ArrowRight className="w-4 h-4 text-slate-400" />
+                                            <ArrowRight className="w-4 h-4 text-[var(--forge-text-muted)]" />
                                         </button>
                                     ))}
                                 </div>
@@ -203,7 +203,7 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                         {/* Leads To */}
                         {leadsTo.length > 0 && (
                             <div>
-                                <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+                                <h4 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase tracking-wide mb-2">
                                     Unlocks
                                 </h4>
                                 <div className="space-y-1.5">
@@ -211,19 +211,19 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                                         <button
                                             key={next.id}
                                             onClick={() => onSelectNode(next)}
-                                            className="w-full flex items-center gap-2 p-2 rounded-lg text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                                            className="w-full flex items-center gap-2 p-2 rounded-lg text-left hover:bg-[var(--forge-bg-workshop)] transition-colors"
                                             aria-label={`Unlocks: ${next.title}`}
                                             data-testid={`unlocks-${next.id}-btn`}
                                         >
-                                            <ChevronRight className="w-4 h-4 text-indigo-500" />
-                                            <span className="text-sm text-[var(--text-primary)] flex-1">
+                                            <ChevronRight className="w-4 h-4 text-[var(--ember)]" />
+                                            <span className="text-sm text-[var(--forge-text-primary)] flex-1">
                                                 {next.title}
                                             </span>
-                                            <ArrowRight className="w-4 h-4 text-slate-400" />
+                                            <ArrowRight className="w-4 h-4 text-[var(--forge-text-muted)]" />
                                         </button>
                                     ))}
                                     {leadsTo.length > 3 && (
-                                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                                        <span className="text-xs text-[var(--forge-text-muted)]">
                                             +{leadsTo.length - 3} more
                                         </span>
                                     )}
@@ -234,7 +234,7 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                         {/* Resources */}
                         {node.resources.length > 0 && (
                             <div>
-                                <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+                                <h4 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase tracking-wide mb-2">
                                     Learning Resources
                                 </h4>
                                 <div className="space-y-2">
@@ -243,13 +243,13 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                                         return (
                                             <div
                                                 key={i}
-                                                className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50"
+                                                className="flex items-center gap-2 p-2 rounded-lg bg-[var(--forge-bg-workshop)]"
                                             >
-                                                <ResourceIcon className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-                                                <span className="text-sm text-[var(--text-primary)] flex-1">
+                                                <ResourceIcon className="w-4 h-4 text-[var(--forge-text-muted)]" />
+                                                <span className="text-sm text-[var(--forge-text-primary)] flex-1">
                                                     {resource.title}
                                                 </span>
-                                                <span className="text-xs text-slate-400 capitalize">
+                                                <span className="text-xs text-[var(--forge-text-muted)] capitalize">
                                                     {resource.type}
                                                 </span>
                                             </div>
@@ -267,10 +267,10 @@ export const KnowledgeMapDetails: React.FC<KnowledgeMapDetailsProps> = ({
                                 className={cn(
                                     "w-full py-2.5 rounded-xl font-medium text-sm transition-colors",
                                     node.status === "completed"
-                                        ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400"
+                                        ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)] hover:bg-[var(--forge-success)]/30"
                                         : node.status === "in_progress"
-                                            ? "bg-indigo-500 text-white hover:bg-indigo-600"
-                                            : "bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-400"
+                                            ? "bg-[var(--ember)] text-[var(--forge-text-primary)] hover:opacity-90"
+                                            : "bg-[var(--ember)]/20 text-[var(--ember)] hover:bg-[var(--ember)]/30"
                                 )}
                                 data-testid={`knowledge-map-action-${node.status}-btn`}
                             >

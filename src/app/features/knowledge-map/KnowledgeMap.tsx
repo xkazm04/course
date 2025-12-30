@@ -208,34 +208,34 @@ export function KnowledgeMap({
     return (
         <div
             ref={containerRef}
-            className="relative w-full bg-slate-50 dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700"
+            className="relative w-full bg-[var(--forge-bg-workshop)] rounded-2xl overflow-hidden border border-[var(--forge-border-subtle)]"
             style={{ height }}
             data-testid="knowledge-map"
         >
             {/* Header */}
             <div className="absolute top-0 left-0 right-0 z-20 p-4 flex items-center justify-between pointer-events-none">
                 <div className="flex items-center gap-3 pointer-events-auto">
-                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-                        <Globe size={ICON_SIZES.md} className="text-white" />
+                    <div className="w-10 h-10 bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)] rounded-xl flex items-center justify-center shadow-lg">
+                        <Globe size={ICON_SIZES.md} className="text-[var(--forge-text-primary)]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                        <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                             Knowledge Map
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                        <p className="text-xs text-[var(--forge-text-secondary)] flex items-center gap-2">
                             <span>{progressStats.avgProgress}% explored • {progressStats.total} domains</span>
                             {isLoading ? (
-                                <span className="flex items-center gap-1 text-indigo-500">
+                                <span className="flex items-center gap-1 text-[var(--ember)]">
                                     <Loader2 size={12} className="animate-spin" />
                                     Loading...
                                 </span>
                             ) : isUsingMock ? (
-                                <span className="flex items-center gap-1 text-amber-500" title="Using mock data - connect to Supabase for live data">
+                                <span className="flex items-center gap-1 text-[var(--forge-warning)]" title="Using mock data - connect to Supabase for live data">
                                     <AlertCircle size={12} />
                                     Mock
                                 </span>
                             ) : (
-                                <span className="flex items-center gap-1 text-emerald-500" title="Connected to Supabase">
+                                <span className="flex items-center gap-1 text-[var(--forge-success)]" title="Connected to Supabase">
                                     <Database size={12} />
                                     Live
                                 </span>
@@ -248,10 +248,10 @@ export function KnowledgeMap({
                     {/* Search button */}
                     <button
                         onClick={() => setShowSearch(true)}
-                        className="p-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-lg border border-slate-200 dark:border-slate-700 shadow-md hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                        className="p-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-lg border border-[var(--forge-border-subtle)] shadow-md hover:bg-[var(--forge-bg-elevated)] transition-colors"
                         data-testid="search-btn"
                     >
-                        <Search size={ICON_SIZES.sm} className="text-slate-600 dark:text-slate-400" />
+                        <Search size={ICON_SIZES.sm} className="text-[var(--forge-text-secondary)]" />
                     </button>
                 </div>
             </div>
@@ -278,27 +278,27 @@ export function KnowledgeMap({
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
-                            className="w-full max-w-md mx-4 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden"
+                            className="w-full max-w-md mx-4 bg-[var(--forge-bg-elevated)] rounded-2xl shadow-2xl overflow-hidden"
                             onClick={(e) => e.stopPropagation()}
                             data-testid="search-modal"
                         >
-                            <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+                            <div className="p-4 border-b border-[var(--forge-border-subtle)]">
                                 <div className="flex items-center gap-3">
-                                    <Search size={ICON_SIZES.md} className="text-slate-400" />
+                                    <Search size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                                     <input
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Search topics, courses, chapters..."
-                                        className="flex-1 bg-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-none"
+                                        className="flex-1 bg-transparent text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] outline-none"
                                         autoFocus
                                         data-testid="search-input"
                                     />
                                     <button
                                         onClick={() => setShowSearch(false)}
-                                        className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                        className="p-1 hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                     >
-                                        <X size={ICON_SIZES.sm} className="text-slate-400" />
+                                        <X size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                                     </button>
                                 </div>
                             </div>
@@ -313,7 +313,7 @@ export function KnowledgeMap({
                                             <button
                                                 key={node.id}
                                                 onClick={() => handleSearchResultClick(node)}
-                                                className="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors text-left"
+                                                className="w-full flex items-center gap-3 p-3 hover:bg-[var(--forge-bg-anvil)] transition-colors text-left"
                                                 data-testid={`search-result-${index}`}
                                             >
                                                 <div className={cn(
@@ -323,10 +323,10 @@ export function KnowledgeMap({
                                                     <DomainIcon size={16} className={`text-${node.color}-600 dark:text-${node.color}-400`} />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="font-medium text-slate-900 dark:text-slate-100 truncate">
+                                                    <p className="font-medium text-[var(--forge-text-primary)] truncate">
                                                         {node.name}
                                                     </p>
-                                                    <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">
+                                                    <p className="text-xs text-[var(--forge-text-secondary)] capitalize">
                                                         {node.level} • {domain?.name || "Unknown"}
                                                     </p>
                                                 </div>
@@ -337,7 +337,7 @@ export function KnowledgeMap({
                             )}
 
                             {searchQuery && searchResults.length === 0 && (
-                                <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                                <div className="p-8 text-center text-[var(--forge-text-secondary)]">
                                     No results found for "{searchQuery}"
                                 </div>
                             )}
@@ -392,8 +392,8 @@ export function KnowledgeMap({
 
             {/* Instructions hint (bottom center) */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
-                <div className="px-4 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-full border border-slate-200 dark:border-slate-700 shadow-lg">
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="px-4 py-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-full border border-[var(--forge-border-subtle)] shadow-lg">
+                    <p className="text-xs text-[var(--forge-text-secondary)]">
                         <span className="hidden sm:inline">
                             Click to select • Double-click to drill down • Drag to pan • Scroll to zoom
                         </span>

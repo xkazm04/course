@@ -70,8 +70,8 @@ export function OracleCollapsedBar({
                 <motion.div
                     className={cn(
                         "w-8 h-8 rounded-lg flex items-center justify-center",
-                        "bg-gradient-to-br from-indigo-500 to-purple-600",
-                        "shadow-lg shadow-indigo-500/25"
+                        "bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)]",
+                        "shadow-lg shadow-[var(--ember)]/25"
                     )}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -80,12 +80,12 @@ export function OracleCollapsedBar({
                 </motion.div>
 
                 <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    <span className="text-sm font-semibold text-[var(--forge-text-primary)]">
                         Career Oracle
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                    <span className="text-xs text-[var(--forge-text-secondary)]">
                         {hasGeneratedPath ? (
-                            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                            <span className="flex items-center gap-1 text-[var(--forge-success)]">
                                 <Sparkles size={10} />
                                 Path generated - click to view
                             </span>
@@ -108,9 +108,9 @@ export function OracleCollapsedBar({
                         className={cn(
                             "px-3 py-1.5 rounded-lg",
                             "text-xs font-medium",
-                            "bg-indigo-100 dark:bg-indigo-900/40",
-                            "text-indigo-700 dark:text-indigo-300",
-                            "hover:bg-indigo-200 dark:hover:bg-indigo-900/60",
+                            "bg-[var(--ember)]/20",
+                            "text-[var(--ember)]",
+                            "hover:bg-[var(--ember)]/30",
                             "transition-colors",
                             "flex items-center gap-1.5"
                         )}
@@ -125,9 +125,9 @@ export function OracleCollapsedBar({
                 <motion.div
                     className={cn(
                         "p-2 rounded-lg",
-                        "text-slate-400 dark:text-slate-500",
-                        "group-hover:text-slate-600 dark:group-hover:text-slate-300",
-                        "group-hover:bg-slate-100 dark:group-hover:bg-slate-700/50",
+                        "text-[var(--forge-text-muted)]",
+                        "group-hover:text-[var(--forge-text-primary)]",
+                        "group-hover:bg-[var(--forge-bg-anvil)]",
                         "transition-colors"
                     )}
                     animate={{ rotate: isExpanded ? 180 : 0 }}

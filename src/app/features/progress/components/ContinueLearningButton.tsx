@@ -31,9 +31,9 @@ export function ContinueLearningButton({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                    "flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-indigo-500 to-purple-600",
-                    "text-white rounded-xl shadow-lg hover:shadow-xl transition-all",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                    "flex items-center gap-3 px-4 py-3 bg-[var(--ember)]",
+                    "text-[var(--forge-text-primary)] rounded-xl shadow-lg hover:shadow-xl transition-all",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2",
                     className
                 )}
                 data-testid="continue-learning-btn-compact"
@@ -51,9 +51,9 @@ export function ContinueLearningButton({
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             className={cn(
-                "w-full text-left p-5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600",
-                "text-white rounded-2xl shadow-lg hover:shadow-xl transition-all relative overflow-hidden",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                "w-full text-left p-5 bg-[var(--ember)]",
+                "text-[var(--forge-text-primary)] rounded-2xl shadow-lg hover:shadow-xl transition-all relative overflow-hidden",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2",
                 className
             )}
             data-testid="continue-learning-btn-full"
@@ -62,22 +62,22 @@ export function ContinueLearningButton({
             <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-[var(--forge-bg-workshop)]/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
                             <Play size={ICON_SIZES.md} className="fill-current" />
                         </div>
                         <div>
-                            <span className="text-xs font-medium text-white/80">Continue Learning</span>
+                            <span className="text-xs font-medium text-[var(--forge-text-primary)]/80">Continue Learning</span>
                             <h3 className="font-bold text-lg">{item.courseName}</h3>
                         </div>
                     </div>
                     <ArrowRight size={ICON_SIZES.lg} className="opacity-80" />
                 </div>
 
-                <div className="flex items-center gap-4 text-sm text-white/80 mb-3">
+                <div className="flex items-center gap-4 text-sm text-[var(--forge-text-primary)]/80 mb-3">
                     <span>{item.chapterTitle}</span>
                     {item.sectionTitle && (
                         <>
-                            <span className="w-1 h-1 bg-white/50 rounded-full" />
+                            <span className="w-1 h-1 bg-[var(--forge-text-primary)]/50 rounded-full" />
                             <span>{item.sectionTitle}</span>
                         </>
                     )}
@@ -85,17 +85,17 @@ export function ContinueLearningButton({
 
                 <div className="flex items-center gap-4 mb-3">
                     {item.lastPosition > 0 && (
-                        <span className="flex items-center gap-1 text-xs text-white/70">
+                        <span className="flex items-center gap-1 text-xs text-[var(--forge-text-primary)]/70">
                             <Clock size={ICON_SIZES.xs} />
                             Resume at {formatWatchTime(item.lastPosition)}
                         </span>
                     )}
-                    <span className="text-xs text-white/70">{item.progress}% complete</span>
+                    <span className="text-xs text-[var(--forge-text-primary)]/70">{item.progress}% complete</span>
                 </div>
 
-                <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-[var(--forge-bg-workshop)]/20 rounded-full overflow-hidden">
                     <div
-                        className="h-full bg-white/80 rounded-full transition-all"
+                        className="h-full bg-[var(--forge-bg-workshop)]/80 rounded-full transition-all"
                         style={{ width: `${item.progress}%` }}
                     />
                 </div>

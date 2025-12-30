@@ -214,10 +214,10 @@ const SectionItem: React.FC<SectionItemProps> = ({
                         <div className={cn(
                             "w-10 h-10 rounded-xl flex items-center justify-center",
                             section.completed
-                                ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                                ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                 : isActive
-                                ? "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-                                : "bg-slate-100 dark:bg-slate-700 text-slate-400"
+                                ? "bg-[var(--ember)]/10 text-[var(--ember)]"
+                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
                         )}>
                             {section.completed ? (
                                 <CheckCircle size={ICON_SIZES.md} />
@@ -235,19 +235,19 @@ const SectionItem: React.FC<SectionItemProps> = ({
                         {/* Section Info */}
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-bold text-slate-900 dark:text-white">{section.title}</h3>
+                                <h3 className="font-bold text-[var(--forge-text-primary)]">{section.title}</h3>
                                 <BookmarkIndicator
                                     courseId={courseInfo.courseId}
                                     chapterId={courseInfo.chapterId}
                                     sectionId={section.sectionId}
                                 />
                                 {isActive && !section.completed && (
-                                    <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full">
+                                    <span className="px-2 py-0.5 bg-[var(--ember)]/10 text-[var(--ember)] text-xs font-bold rounded-full">
                                         Current
                                     </span>
                                 )}
                             </div>
-                            <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                            <div className="flex items-center gap-3 text-sm text-[var(--forge-text-muted)]">
                                 <span className="flex items-center gap-1">
                                     <Clock size={ICON_SIZES.xs} /> {section.duration}
                                 </span>
@@ -257,7 +257,7 @@ const SectionItem: React.FC<SectionItemProps> = ({
 
                         {/* Expand Icon */}
                         {expandable && (
-                            <div className="text-slate-400">
+                            <div className="text-[var(--forge-text-muted)]">
                                 {isExpanded ? <ChevronUp size={ICON_SIZES.md} /> : <ChevronDown size={ICON_SIZES.md} />}
                             </div>
                         )}
@@ -275,7 +275,7 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                 data-testid={`section-expanded-content-${section.id}`}
                             >
                                 <div
-                                    className="pt-2 border-t border-slate-100 dark:border-slate-700"
+                                    className="pt-2 border-t border-[var(--forge-border-subtle)]"
                                     style={{
                                         paddingLeft: "var(--slot-padding-md)",
                                         paddingRight: "var(--slot-padding-md)",
@@ -285,7 +285,7 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                     {/* Description - fades in at 0ms */}
                                     <motion.p
                                         variants={descriptionVariants}
-                                        className="text-slate-600 dark:text-slate-400 mb-4"
+                                        className="text-[var(--forge-text-secondary)] mb-4"
                                         data-testid={`section-description-${section.id}`}
                                     >
                                         {section.content.description}
@@ -315,7 +315,7 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                             className="mb-4"
                                             data-testid={`section-key-points-${section.id}`}
                                         >
-                                            <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                                            <h4 className="text-sm font-bold text-[var(--forge-text-secondary)] mb-2">
                                                 What you&apos;ll learn:
                                             </h4>
                                             <ul className="space-y-2">
@@ -323,10 +323,10 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                                     <motion.li
                                                         key={j}
                                                         variants={keyPointItemVariants}
-                                                        className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400"
+                                                        className="flex items-center gap-2 text-sm text-[var(--forge-text-secondary)]"
                                                         data-testid={`section-key-point-${section.id}-${j}`}
                                                     >
-                                                        <Sparkles size={ICON_SIZES.sm} className="text-indigo-500" />
+                                                        <Sparkles size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                                                         {point}
                                                     </motion.li>
                                                 ))}
@@ -338,12 +338,12 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                     {section.content.screenshot && (
                                         <motion.div
                                             variants={screenshotVariants}
-                                            className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl mb-4 flex items-center justify-center"
+                                            className="aspect-video bg-gradient-to-br from-[var(--forge-bg-elevated)] to-[var(--forge-bg-anvil)] rounded-xl mb-4 flex items-center justify-center"
                                             data-testid={`section-screenshot-${section.id}`}
                                         >
                                             <div className="text-center">
-                                                <Image size={ICON_SIZES.xl} className="mx-auto text-slate-400 mb-2" aria-hidden="true" />
-                                                <span className="text-sm text-slate-500">Interactive Preview</span>
+                                                <Image size={ICON_SIZES.xl} className="mx-auto text-[var(--forge-text-muted)] mb-2" aria-hidden="true" />
+                                                <span className="text-sm text-[var(--forge-text-muted)]">Interactive Preview</span>
                                             </div>
                                         </motion.div>
                                     )}
@@ -361,8 +361,8 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                                 buttonSizeClasses.lg,
                                                 "flex-1 rounded-xl font-bold transition-colors flex items-center justify-center gap-2",
                                                 section.completed
-                                                    ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
-                                                    : "bg-slate-900 dark:bg-indigo-600 text-white hover:bg-slate-800 dark:hover:bg-indigo-500"
+                                                    ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)] hover:bg-[var(--forge-success)]/20"
+                                                    : "bg-[var(--ember)] text-white hover:bg-[var(--ember-glow)]"
                                             )}
                                         >
                                             {section.completed ? (

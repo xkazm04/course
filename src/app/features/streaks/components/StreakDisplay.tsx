@@ -27,8 +27,8 @@ export const StreakDisplay = ({
                 animate={{ opacity: 1, scale: 1 }}
                 className={cn(
                     "inline-flex items-center gap-2 px-4 py-2 rounded-full",
-                    "bg-gradient-to-r from-orange-500/10 to-amber-500/10 dark:from-orange-500/20 dark:to-amber-500/20",
-                    "border border-orange-200 dark:border-orange-800/50",
+                    "bg-gradient-to-r from-[var(--ember)]/10 to-[var(--forge-warning)]/10",
+                    "border border-[var(--ember)]/30",
                     className
                 )}
                 data-testid="streak-display-compact"
@@ -37,13 +37,13 @@ export const StreakDisplay = ({
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <Flame className="w-5 h-5 text-orange-500 dark:text-orange-400" />
+                    <Flame className="w-5 h-5 text-[var(--ember)]" />
                 </motion.div>
-                <span className="font-bold text-orange-700 dark:text-orange-300">
+                <span className="font-bold text-[var(--ember)]">
                     {currentStreak} day{currentStreak !== 1 ? "s" : ""}
                 </span>
                 {streakFreezeTokens > 0 && (
-                    <div className="flex items-center gap-1 ml-1 text-cyan-600 dark:text-cyan-400">
+                    <div className="flex items-center gap-1 ml-1 text-[var(--forge-info)]">
                         <Snowflake className="w-4 h-4" />
                         <span className="text-xs font-medium">{streakFreezeTokens}</span>
                     </div>
@@ -63,9 +63,9 @@ export const StreakDisplay = ({
                     className="relative"
                 >
                     {/* Glow effect */}
-                    <div className="absolute inset-0 bg-orange-500/30 rounded-full blur-2xl" />
+                    <div className="absolute inset-0 bg-[var(--ember)]/30 rounded-full blur-2xl" />
 
-                    <div className="relative flex flex-col items-center p-6 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30">
+                    <div className="relative flex flex-col items-center p-6 rounded-2xl bg-gradient-to-br from-[var(--ember)] to-[var(--forge-warning)] text-white shadow-lg shadow-[var(--ember)]/30">
                         <motion.div
                             animate={{
                                 scale: [1, 1.1, 1],
@@ -90,14 +90,14 @@ export const StreakDisplay = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="flex flex-col items-center p-3 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"
+                    className="flex flex-col items-center p-3 rounded-xl bg-[var(--forge-bg-elevated)]/60 border border-[var(--forge-border-subtle)]"
                     data-testid="longest-streak-stat"
                 >
-                    <Trophy className="w-5 h-5 text-amber-500 dark:text-amber-400 mb-1" />
-                    <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <Trophy className="w-5 h-5 text-[var(--forge-warning)] mb-1" />
+                    <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {longestStreak}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Best</span>
+                    <span className="text-xs text-[var(--forge-text-muted)]">Best</span>
                 </motion.div>
 
                 {/* Total Active Days */}
@@ -105,14 +105,14 @@ export const StreakDisplay = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="flex flex-col items-center p-3 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"
+                    className="flex flex-col items-center p-3 rounded-xl bg-[var(--forge-bg-elevated)]/60 border border-[var(--forge-border-subtle)]"
                     data-testid="total-days-stat"
                 >
-                    <Calendar className="w-5 h-5 text-indigo-500 dark:text-indigo-400 mb-1" />
-                    <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <Calendar className="w-5 h-5 text-[var(--forge-accent)] mb-1" />
+                    <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {totalActiveDays}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Total</span>
+                    <span className="text-xs text-[var(--forge-text-muted)]">Total</span>
                 </motion.div>
 
                 {/* Streak Freeze Tokens */}
@@ -120,14 +120,14 @@ export const StreakDisplay = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="flex flex-col items-center p-3 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"
+                    className="flex flex-col items-center p-3 rounded-xl bg-[var(--forge-bg-elevated)]/60 border border-[var(--forge-border-subtle)]"
                     data-testid="freeze-tokens-stat"
                 >
-                    <Snowflake className="w-5 h-5 text-cyan-500 dark:text-cyan-400 mb-1" />
-                    <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <Snowflake className="w-5 h-5 text-[var(--forge-info)] mb-1" />
+                    <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {streakFreezeTokens}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Freezes</span>
+                    <span className="text-xs text-[var(--forge-text-muted)]">Freezes</span>
                 </motion.div>
             </div>
 
@@ -139,7 +139,7 @@ export const StreakDisplay = ({
                     transition={{ delay: 0.4 }}
                     className="text-center"
                 >
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-[var(--forge-text-muted)]">
                         <Snowflake className="inline w-3 h-3 mr-1" />
                         Streak freezes protect your streak if you miss a day
                     </p>

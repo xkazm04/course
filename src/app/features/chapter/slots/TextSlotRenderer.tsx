@@ -47,9 +47,9 @@ const TextSlotRendererComponent: React.FC<TextSlotRendererProps> = ({ slot, clas
         return (
             <div className={className} data-testid={`text-slot-${slot.id}`}>
                 {title && (
-                    <h3 className="font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
+                    <h3 className="font-bold text-[var(--forge-text-primary)] mb-2">{title}</h3>
                 )}
-                <p className="text-slate-600 dark:text-slate-400">{content}</p>
+                <p className="text-[var(--forge-text-secondary)]">{content}</p>
             </div>
         );
     }
@@ -57,14 +57,14 @@ const TextSlotRendererComponent: React.FC<TextSlotRendererProps> = ({ slot, clas
     if (variant === "highlight") {
         return (
             <div
-                className={`bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 ${elevation.flat} ${className ?? ""}`}
+                className={`bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] ${elevation.flat} ${className ?? ""}`}
                 style={{ padding: "var(--slot-padding-lg)" }}
                 data-testid={`text-slot-${slot.id}`}
             >
                 {title && (
-                    <h3 className="font-semibold text-slate-800 dark:text-white mb-3">{title}</h3>
+                    <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3">{title}</h3>
                 )}
-                <p className="text-slate-600 dark:text-slate-400">{content}</p>
+                <p className="text-[var(--forge-text-secondary)]">{content}</p>
             </div>
         );
     }

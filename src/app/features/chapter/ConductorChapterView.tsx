@@ -279,7 +279,7 @@ function ConductorChapterViewInner({
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-4 px-4 py-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg flex items-center justify-between"
+                    className="mb-4 px-4 py-2 bg-[var(--forge-bg-anvil)] backdrop-blur-sm border border-[var(--forge-border-subtle)] rounded-lg flex items-center justify-between"
                     data-testid="conductor-status-bar"
                 >
                     <div className="flex items-center gap-3">
@@ -290,17 +290,17 @@ function ConductorChapterViewInner({
                                     opacity: [0.5, 1, 0.5],
                                 }}
                                 transition={{ duration: 2, repeat: Infinity }}
-                                className="w-2 h-2 rounded-full bg-green-400"
+                                className="w-2 h-2 rounded-full bg-[var(--forge-success)]"
                             />
-                            <Brain size={16} className="text-purple-400" />
-                            <span className="text-sm font-medium text-slate-300">
+                            <Brain size={16} className="text-[var(--ember)]" />
+                            <span className="text-sm font-medium text-[var(--forge-text-secondary)]">
                                 AI Conductor Active
                             </span>
                         </div>
 
                         {/* Pace indicator */}
                         {paceRec.message && (
-                            <span className="text-xs text-slate-500 hidden sm:inline">
+                            <span className="text-xs text-[var(--forge-text-muted)] hidden sm:inline">
                                 {paceRec.message}
                             </span>
                         )}
@@ -313,8 +313,8 @@ function ConductorChapterViewInner({
                             className={cn(
                                 "p-1.5 rounded-lg transition-colors",
                                 showStats
-                                    ? "bg-purple-900/30 text-purple-400"
-                                    : "text-slate-500 hover:text-slate-300 hover:bg-slate-700/50"
+                                    ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
                             )}
                             data-testid="conductor-stats-toggle"
                         >
@@ -328,8 +328,8 @@ function ConductorChapterViewInner({
                                 className={cn(
                                     "p-1.5 rounded-lg transition-colors",
                                     peerSolutionsOpen
-                                        ? "bg-purple-900/30 text-purple-400"
-                                        : "text-slate-500 hover:text-slate-300 hover:bg-slate-700/50"
+                                        ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                        : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
                                 )}
                                 data-testid="conductor-peer-solutions-toggle"
                             >
@@ -343,8 +343,8 @@ function ConductorChapterViewInner({
                             className={cn(
                                 "p-1.5 rounded-lg transition-colors",
                                 showSettings
-                                    ? "bg-purple-900/30 text-purple-400"
-                                    : "text-slate-500 hover:text-slate-300 hover:bg-slate-700/50"
+                                    ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
                             )}
                             data-testid="conductor-settings-toggle"
                         >
@@ -445,9 +445,9 @@ function ConductorChapterViewInner({
 
 function ConductorStatsPanel({ profile }: { profile: LearnerProfile }) {
     return (
-        <div className="p-4 bg-slate-800/50 border border-slate-700/50 rounded-lg">
-            <h4 className="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-2">
-                <BarChart2 size={16} className="text-purple-400" />
+        <div className="p-4 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg">
+            <h4 className="text-sm font-semibold text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                <BarChart2 size={16} className="text-[var(--ember)]" />
                 Your Learning Profile
             </h4>
 
@@ -464,8 +464,8 @@ function ConductorStatsPanel({ profile }: { profile: LearnerProfile }) {
                 />
             </div>
 
-            <div className="mt-4 pt-4 border-t border-slate-700/50">
-                <h5 className="text-xs text-slate-500 mb-2">Learning Style</h5>
+            <div className="mt-4 pt-4 border-t border-[var(--forge-border-subtle)]">
+                <h5 className="text-xs text-[var(--forge-text-muted)] mb-2">Learning Style</h5>
                 <div className="flex gap-2 flex-wrap">
                     <StyleBadge
                         label="Video"
@@ -492,8 +492,8 @@ function ConductorStatsPanel({ profile }: { profile: LearnerProfile }) {
 function StatItem({ label, value }: { label: string; value: string }) {
     return (
         <div>
-            <div className="text-xs text-slate-500">{label}</div>
-            <div className="text-sm font-medium text-slate-200 capitalize">{value}</div>
+            <div className="text-xs text-[var(--forge-text-muted)]">{label}</div>
+            <div className="text-sm font-medium text-[var(--forge-text-primary)] capitalize">{value}</div>
         </div>
     );
 }
@@ -501,9 +501,9 @@ function StatItem({ label, value }: { label: string; value: string }) {
 function StyleBadge({ label, value }: { label: string; value: number }) {
     const percentage = Math.round(value * 100);
     return (
-        <div className="px-2.5 py-1 bg-slate-700/50 rounded-lg">
-            <div className="text-xs text-slate-400">{label}</div>
-            <div className="text-sm font-medium text-slate-200">{percentage}%</div>
+        <div className="px-2.5 py-1 bg-[var(--forge-bg-elevated)] rounded-lg">
+            <div className="text-xs text-[var(--forge-text-muted)]">{label}</div>
+            <div className="text-sm font-medium text-[var(--forge-text-primary)]">{percentage}%</div>
         </div>
     );
 }
@@ -520,9 +520,9 @@ function ConductorSettingsPanel({
     onConfigChange: (updates: Partial<ConductorConfig>) => void;
 }) {
     return (
-        <div className="p-4 bg-slate-800/50 border border-slate-700/50 rounded-lg">
-            <h4 className="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-2">
-                <Settings size={16} className="text-purple-400" />
+        <div className="p-4 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg">
+            <h4 className="text-sm font-semibold text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                <Settings size={16} className="text-[var(--ember)]" />
                 Conductor Settings
             </h4>
 
@@ -583,14 +583,14 @@ function SettingToggle({
     return (
         <div className="flex items-center justify-between gap-4">
             <div>
-                <div className="text-sm font-medium text-slate-200">{label}</div>
-                <div className="text-xs text-slate-500">{description}</div>
+                <div className="text-sm font-medium text-[var(--forge-text-primary)]">{label}</div>
+                <div className="text-xs text-[var(--forge-text-muted)]">{description}</div>
             </div>
             <button
                 onClick={() => onChange(!enabled)}
                 className={cn(
                     "relative w-10 h-5 rounded-full transition-colors",
-                    enabled ? "bg-purple-600" : "bg-slate-600"
+                    enabled ? "bg-[var(--ember)]" : "bg-[var(--forge-bg-elevated)]"
                 )}
                 data-testid={testId}
             >

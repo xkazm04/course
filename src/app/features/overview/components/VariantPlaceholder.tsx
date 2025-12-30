@@ -45,7 +45,7 @@ export const VariantPlaceholder: React.FC<VariantPlaceholderProps> = ({
                     />
 
                     {/* Radial Gradient */}
-                    <div className="absolute inset-0 bg-gradient-radial from-indigo-50/30 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-radial from-[var(--ember)]/10 via-transparent to-transparent" />
 
                     {/* Loading Animation */}
                     <motion.div
@@ -103,13 +103,13 @@ export const VariantPlaceholder: React.FC<VariantPlaceholderProps> = ({
                         {/* Loading Text */}
                         <div className="text-center">
                             <motion.p
-                                className="text-sm font-medium text-[var(--text-secondary)]"
+                                className="text-sm font-medium text-[var(--forge-text-secondary)]"
                                 animate={{ opacity: [0.5, 1, 0.5] }}
                                 transition={{ duration: 2, repeat: Infinity }}
                             >
                                 Loading Knowledge Map...
                             </motion.p>
-                            <p className="text-xs text-[var(--text-muted)] mt-1">
+                            <p className="text-xs text-[var(--forge-text-muted)] mt-1">
                                 Preparing interactive visualization
                             </p>
                         </div>

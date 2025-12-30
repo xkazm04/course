@@ -42,7 +42,7 @@ export interface PeerSolutionCardProps {
 // ============================================================================
 
 const SolutionTypeIcon: React.FC<{ type: PeerSolution["solutionType"] }> = ({ type }) => {
-    const iconProps = { size: 16, className: "text-slate-400" };
+    const iconProps = { size: 16, className: "text-[var(--forge-text-muted)]" };
 
     switch (type) {
         case "code":
@@ -60,10 +60,10 @@ const SolutionTypeIcon: React.FC<{ type: PeerSolution["solutionType"] }> = ({ ty
 
 const ConfidenceBadge: React.FC<{ level: LearnerConfidence }> = ({ level }) => {
     const styles: Record<LearnerConfidence, { bg: string; text: string; label: string }> = {
-        low: { bg: "bg-slate-700", text: "text-slate-300", label: "Beginner" },
-        moderate: { bg: "bg-blue-900/50", text: "text-blue-300", label: "Intermediate" },
-        high: { bg: "bg-purple-900/50", text: "text-purple-300", label: "Advanced" },
-        expert: { bg: "bg-amber-900/50", text: "text-amber-300", label: "Expert" },
+        low: { bg: "bg-[var(--forge-bg-elevated)]", text: "text-[var(--forge-text-secondary)]", label: "Beginner" },
+        moderate: { bg: "bg-[var(--forge-info)]/20", text: "text-[var(--forge-info)]", label: "Intermediate" },
+        high: { bg: "bg-[var(--ember-glow)]/20", text: "text-[var(--ember-glow)]", label: "Advanced" },
+        expert: { bg: "bg-[var(--ember)]/30", text: "text-[var(--ember)]", label: "Expert" },
     };
 
     const style = styles[level];
@@ -126,8 +126,8 @@ export function PeerSolutionCard({
         <motion.div
             layout
             className={cn(
-                "bg-slate-800/50 border border-slate-700/50 rounded-lg overflow-hidden",
-                "hover:border-slate-600/50 transition-colors",
+                "bg-[var(--forge-bg-anvil)]/50 border border-[var(--forge-border-subtle)] rounded-lg overflow-hidden",
+                "hover:border-[var(--forge-border-default)] transition-colors",
                 className
             )}
             data-testid={`peer-solution-card-${solution.id}`}
@@ -139,19 +139,19 @@ export function PeerSolutionCard({
                 data-testid={`peer-solution-expand-btn-${solution.id}`}
             >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="p-2 bg-slate-700/50 rounded-lg">
+                    <div className="p-2 bg-[var(--forge-bg-elevated)]/50 rounded-lg">
                         <SolutionTypeIcon type={solution.solutionType} />
                     </div>
 
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm font-medium text-slate-200 truncate">
+                            <span className="text-sm font-medium text-[var(--forge-text-secondary)] truncate">
                                 {getSolutionTitle(solution)}
                             </span>
                             <ConfidenceBadge level={solution.authorLevel} />
                         </div>
 
-                        <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                        <div className="flex items-center gap-2 text-xs text-[var(--forge-text-muted)] mt-0.5">
                             <User size={12} />
                             <span>Anonymous Learner</span>
                             <span>•</span>
@@ -170,13 +170,13 @@ export function PeerSolutionCard({
                             className={cn(
                                 "w-2 h-2 rounded-full",
                                 solution.helpfulnessScore >= 0.8
-                                    ? "bg-green-400"
+                                    ? "bg-[var(--forge-success)]"
                                     : solution.helpfulnessScore >= 0.5
-                                    ? "bg-yellow-400"
-                                    : "bg-slate-500"
+                                    ? "bg-[var(--forge-warning)]"
+                                    : "bg-[var(--forge-text-muted)]"
                             )}
                         />
-                        <span className="text-slate-400">
+                        <span className="text-[var(--forge-text-muted)]">
                             {Math.round(solution.helpfulnessScore * 100)}% helpful
                         </span>
                     </div>
@@ -186,7 +186,7 @@ export function PeerSolutionCard({
                         animate={{ rotate: isExpanded ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <ChevronDown size={18} className="text-slate-500" />
+                        <ChevronDown size={18} className="text-[var(--forge-text-muted)]" />
                     </motion.div>
                 </div>
             </button>
@@ -206,8 +206,8 @@ export function PeerSolutionCard({
                                 className={cn(
                                     "p-3 rounded-lg text-sm",
                                     solution.solutionType === "code"
-                                        ? "bg-slate-900 font-mono text-slate-300"
-                                        : "bg-slate-700/30 text-slate-300"
+                                        ? "bg-[var(--forge-bg-void)] font-mono text-[var(--forge-text-secondary)]"
+                                        : "bg-[var(--forge-bg-elevated)]/30 text-[var(--forge-text-secondary)]"
                                 )}
                                 data-testid={`peer-solution-content-${solution.id}`}
                             >
@@ -222,7 +222,7 @@ export function PeerSolutionCard({
                                     {solution.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="px-2 py-0.5 text-xs bg-slate-700/50 text-slate-400 rounded"
+                                            className="px-2 py-0.5 text-xs bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] rounded"
                                         >
                                             #{tag}
                                         </span>
@@ -231,15 +231,15 @@ export function PeerSolutionCard({
                             )}
 
                             {/* Actions */}
-                            <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-700/50">
+                            <div className="flex items-center justify-between mt-4 pt-3 border-t border-[var(--forge-border-subtle)]">
                                 <button
                                     onClick={handleUpvote}
                                     disabled={hasUpvoted}
                                     className={cn(
                                         "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
                                         hasUpvoted
-                                            ? "bg-green-900/30 text-green-400"
-                                            : "bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
+                                            ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)]"
+                                            : "bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-elevated)] hover:text-[var(--forge-text-secondary)]"
                                     )}
                                     data-testid={`peer-solution-upvote-btn-${solution.id}`}
                                 >
@@ -250,7 +250,7 @@ export function PeerSolutionCard({
 
                                 <button
                                     onClick={handleCopy}
-                                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300 transition-colors"
+                                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-elevated)] hover:text-[var(--forge-text-secondary)] transition-colors"
                                     data-testid={`peer-solution-copy-btn-${solution.id}`}
                                 >
                                     {copied ? (

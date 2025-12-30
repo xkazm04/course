@@ -49,7 +49,7 @@ export const ChallengeDetail: React.FC<ChallengeDetailProps> = ({
                 {onBack && (
                     <button
                         onClick={onBack}
-                        className="p-2 rounded-lg hover:bg-[var(--surface-overlay)] text-[var(--text-muted)] transition-colors"
+                        className="p-2 rounded-lg hover:bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] transition-colors"
                     >
                         <ArrowLeft size={ICON_SIZES.lg} />
                     </button>
@@ -69,34 +69,34 @@ export const ChallengeDetail: React.FC<ChallengeDetailProps> = ({
                             <TierBadge tier={challenge.skillTierRestriction} size="sm" />
                         )}
                     </div>
-                    <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+                    <h1 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         {challenge.title}
                     </h1>
-                    <p className="text-[var(--text-muted)] mt-2">{challenge.description}</p>
+                    <p className="text-[var(--forge-text-muted)] mt-2">{challenge.description}</p>
                 </div>
             </div>
 
             {/* Time and participants */}
             <div
                 className={cn(
-                    "rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] p-4",
+                    "rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] p-4",
                     elevation.elevated
                 )}
             >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-6">
                         <div>
-                            <span className="text-xs text-[var(--text-muted)]">Time Remaining</span>
+                            <span className="text-xs text-[var(--forge-text-muted)]">Time Remaining</span>
                             <CountdownTimer endDate={challenge.endDate} variant="default" />
                         </div>
                         <div className="flex items-center gap-2">
-                            <Users size={ICON_SIZES.md} className="text-[var(--text-muted)]" />
+                            <Users size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                             <div>
-                                <span className="text-lg font-bold text-[var(--text-primary)]">
+                                <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     {challenge.participantCount}
                                 </span>
-                                <span className="text-xs text-[var(--text-muted)] block">
+                                <span className="text-xs text-[var(--forge-text-muted)] block">
                                     participants
                                 </span>
                             </div>
@@ -106,14 +106,14 @@ export const ChallengeDetail: React.FC<ChallengeDetailProps> = ({
                         hasJoined ? (
                             <button
                                 onClick={onStartSubmission}
-                                className="px-6 py-2 rounded-lg bg-[var(--accent-primary)] text-white font-medium hover:bg-[var(--accent-primary-hover)] transition-colors"
+                                className="px-6 py-2 rounded-lg bg-[var(--ember)] text-white font-medium hover:bg-[var(--ember-intense)] transition-colors shadow-ember-sm"
                             >
                                 Start Coding
                             </button>
                         ) : (
                             <button
                                 onClick={onJoin}
-                                className="px-6 py-2 rounded-lg bg-emerald-500 text-white font-medium hover:bg-emerald-600 transition-colors"
+                                className="px-6 py-2 rounded-lg bg-[var(--forge-success)] text-white font-medium hover:bg-[var(--forge-success)]/80 transition-colors"
                             >
                                 Join Challenge
                             </button>
@@ -128,26 +128,26 @@ export const ChallengeDetail: React.FC<ChallengeDetailProps> = ({
             {/* Specification */}
             <div
                 className={cn(
-                    "rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] p-6",
+                    "rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] p-6",
                     elevation.elevated
                 )}
             >
-                <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 flex items-center gap-2">
                     <FileText size={ICON_SIZES.md} />
                     Challenge Specification
                 </h2>
-                <p className="text-[var(--text-secondary)] mb-4">
+                <p className="text-[var(--forge-text-secondary)] mb-4">
                     {challenge.specification.overview}
                 </p>
 
-                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-2">
+                <h3 className="text-sm font-semibold text-[var(--forge-text-primary)] mb-2">
                     Technical Requirements
                 </h3>
                 <ul className="space-y-2 mb-4">
                     {challenge.specification.technicalRequirements.map((req, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                            <CheckCircle size={ICON_SIZES.sm} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <li key={i} className="flex items-start gap-2 text-sm text-[var(--forge-text-secondary)]">
+                            <CheckCircle size={ICON_SIZES.sm} className="text-[var(--forge-success)] mt-0.5 flex-shrink-0" />
                             {req}
                         </li>
                     ))}
@@ -155,13 +155,13 @@ export const ChallengeDetail: React.FC<ChallengeDetailProps> = ({
 
                 {challenge.specification.constraints.length > 0 && (
                     <>
-                        <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-2">
+                        <h3 className="text-sm font-semibold text-[var(--forge-text-primary)] mb-2">
                             Constraints
                         </h3>
                         <ul className="space-y-2">
                             {challenge.specification.constraints.map((constraint, i) => (
-                                <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                                    <AlertTriangle size={ICON_SIZES.sm} className="text-amber-400 mt-0.5 flex-shrink-0" />
+                                <li key={i} className="flex items-start gap-2 text-sm text-[var(--forge-text-secondary)]">
+                                    <AlertTriangle size={ICON_SIZES.sm} className="text-[var(--forge-warning)] mt-0.5 flex-shrink-0" />
                                     {constraint}
                                 </li>
                             ))}
@@ -190,27 +190,27 @@ interface RequiredFeaturesListProps {
 const RequiredFeaturesList: React.FC<RequiredFeaturesListProps> = ({ features }) => (
     <div
         className={cn(
-            "rounded-xl border border-[var(--border-default)]",
-            "bg-[var(--surface-elevated)] p-6",
+            "rounded-xl border border-[var(--forge-border-default)]",
+            "bg-[var(--forge-bg-elevated)] p-6",
             elevation.elevated
         )}
     >
-        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-            <CheckCircle size={ICON_SIZES.md} className="text-emerald-400" />
+        <h2 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 flex items-center gap-2">
+            <CheckCircle size={ICON_SIZES.md} className="text-[var(--forge-success)]" />
             Required Features
         </h2>
         <ul className="space-y-3">
             {features.map((feature) => (
                 <li key={feature.id} className="flex items-start gap-3">
-                    <Circle size={ICON_SIZES.sm} className="text-[var(--text-muted)] mt-0.5" />
+                    <Circle size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)] mt-0.5" />
                     <div>
-                        <p className="text-sm font-medium text-[var(--text-primary)]">
+                        <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                             {feature.name}
-                            <span className="ml-2 text-xs text-[var(--text-muted)]">
+                            <span className="ml-2 text-xs text-[var(--forge-text-muted)]">
                                 ({feature.weight}%)
                             </span>
                         </p>
-                        <p className="text-xs text-[var(--text-muted)]">{feature.description}</p>
+                        <p className="text-xs text-[var(--forge-text-muted)]">{feature.description}</p>
                     </div>
                 </li>
             ))}
@@ -226,26 +226,26 @@ interface BonusObjectivesListProps {
 const BonusObjectivesList: React.FC<BonusObjectivesListProps> = ({ objectives }) => (
     <div
         className={cn(
-            "rounded-xl border border-[var(--border-default)]",
-            "bg-[var(--surface-elevated)] p-6",
+            "rounded-xl border border-[var(--forge-border-default)]",
+            "bg-[var(--forge-bg-elevated)] p-6",
             elevation.elevated
         )}
     >
-        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-            <Star size={ICON_SIZES.md} className="text-amber-400" />
+        <h2 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 flex items-center gap-2">
+            <Star size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />
             Bonus Objectives
         </h2>
         <ul className="space-y-3">
             {objectives.map((objective) => (
                 <li key={objective.id} className="flex items-start gap-3">
-                    <Star size={ICON_SIZES.sm} className="text-amber-400 mt-0.5" />
+                    <Star size={ICON_SIZES.sm} className="text-[var(--forge-warning)] mt-0.5" />
                     <div className="flex-1">
-                        <p className="text-sm font-medium text-[var(--text-primary)]">
+                        <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                             {objective.name}
                         </p>
-                        <p className="text-xs text-[var(--text-muted)]">{objective.description}</p>
+                        <p className="text-xs text-[var(--forge-text-muted)]">{objective.description}</p>
                     </div>
-                    <span className="text-sm font-medium text-amber-400">+{objective.points}pts</span>
+                    <span className="text-sm font-medium text-[var(--forge-warning)]">+{objective.points}pts</span>
                 </li>
             ))}
         </ul>
@@ -260,34 +260,34 @@ interface EvaluationCriteriaListProps {
 const EvaluationCriteriaList: React.FC<EvaluationCriteriaListProps> = ({ criteria }) => (
     <div
         className={cn(
-            "rounded-xl border border-[var(--border-default)]",
-            "bg-[var(--surface-elevated)] p-6",
+            "rounded-xl border border-[var(--forge-border-default)]",
+            "bg-[var(--forge-bg-elevated)] p-6",
             elevation.elevated
         )}
     >
-        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-            <Code size={ICON_SIZES.md} className="text-purple-400" />
+        <h2 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 flex items-center gap-2">
+            <Code size={ICON_SIZES.md} className="text-[var(--ember)]" />
             Evaluation Criteria
         </h2>
         <div className="space-y-4">
             {criteria.map((criterion) => (
                 <div key={criterion.id} className="flex items-center gap-4">
                     <div className="flex-1">
-                        <p className="text-sm font-medium text-[var(--text-primary)]">
+                        <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                             {criterion.name}
                         </p>
-                        <p className="text-xs text-[var(--text-muted)]">{criterion.description}</p>
+                        <p className="text-xs text-[var(--forge-text-muted)]">{criterion.description}</p>
                     </div>
                     <div className="text-right">
-                        <span className="text-lg font-bold text-[var(--text-primary)]">
+                        <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                             {criterion.weight}%
                         </span>
                         <span
                             className={cn(
                                 "block text-xs px-2 py-0.5 rounded",
-                                criterion.type === "automated" && "bg-blue-500/20 text-blue-400",
-                                criterion.type === "peer_review" && "bg-purple-500/20 text-purple-400",
-                                criterion.type === "code_quality" && "bg-emerald-500/20 text-emerald-400"
+                                criterion.type === "automated" && "bg-[var(--forge-info)]/20 text-[var(--forge-info)]",
+                                criterion.type === "peer_review" && "bg-[var(--ember)]/10 text-[var(--ember)]",
+                                criterion.type === "code_quality" && "bg-[var(--forge-success)]/20 text-[var(--forge-success)]"
                             )}
                         >
                             {criterion.type.replace("_", " ")}

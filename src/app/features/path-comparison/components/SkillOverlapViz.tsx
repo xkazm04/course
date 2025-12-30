@@ -38,10 +38,10 @@ const SkillBadge: React.FC<{
         className={cn(
             "inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium",
             variant === "shared"
-                ? "bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/20"
+                ? "bg-[var(--ember)]/10 text-[var(--ember)] border border-[var(--ember)]/20"
                 : pathColor
-                  ? `${BG_COLORS[pathColor as keyof typeof BG_COLORS] || "bg-slate-500"} text-white`
-                  : "bg-[var(--surface-inset)] text-[var(--text-secondary)]"
+                  ? `${BG_COLORS[pathColor as keyof typeof BG_COLORS] || "bg-[var(--forge-text-muted)]"} text-white`
+                  : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
         )}
     >
         {variant === "shared" && <Sparkles size={ICON_SIZES.xs} />}
@@ -57,18 +57,18 @@ export const SkillOverlapViz: React.FC<SkillOverlapVizProps> = ({
 
     return (
         <div
-            className="space-y-6 p-4 bg-[var(--surface-inset)] rounded-xl"
+            className="space-y-6 p-4 bg-[var(--forge-bg-anvil)] rounded-xl"
             data-testid="skill-overlap-viz"
         >
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Target size={ICON_SIZES.md} className="text-[var(--accent-primary)]" />
-                    <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                    <Target size={ICON_SIZES.md} className="text-[var(--ember)]" />
+                    <h3 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         Skill Overlap Analysis
                     </h3>
                 </div>
-                <div className="text-sm text-[var(--text-muted)]">
+                <div className="text-sm text-[var(--forge-text-muted)]">
                     {totalUniqueSkills.length} total unique skills
                 </div>
             </div>
@@ -77,11 +77,11 @@ export const SkillOverlapViz: React.FC<SkillOverlapVizProps> = ({
             {overlappingSkills.length > 0 && (
                 <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                        <Sparkles size={ICON_SIZES.sm} className="text-purple-500" />
-                        <span className="text-sm font-semibold text-[var(--text-secondary)]">
+                        <Sparkles size={ICON_SIZES.sm} className="text-[var(--ember)]" />
+                        <span className="text-sm font-semibold text-[var(--forge-text-secondary)]">
                             Shared Skills ({overlappingSkills.length})
                         </span>
-                        <span className="text-xs text-[var(--text-muted)]">
+                        <span className="text-xs text-[var(--forge-text-muted)]">
                             - Skills that transfer between paths
                         </span>
                     </div>
@@ -115,10 +115,10 @@ export const SkillOverlapViz: React.FC<SkillOverlapVizProps> = ({
                                         BG_COLORS[pathColor]
                                     )}
                                 />
-                                <span className="text-sm font-semibold text-[var(--text-primary)]">
+                                <span className="text-sm font-semibold text-[var(--forge-text-primary)]">
                                     {data.path.name.split(' ')[0]}
                                 </span>
-                                <span className="text-xs text-[var(--text-muted)]">
+                                <span className="text-xs text-[var(--forge-text-muted)]">
                                     ({data.skillAnalysis.uniqueSkills.length} unique)
                                 </span>
                             </div>
@@ -133,7 +133,7 @@ export const SkillOverlapViz: React.FC<SkillOverlapVizProps> = ({
                                     />
                                 ))}
                                 {data.skillAnalysis.uniqueSkills.length === 0 && (
-                                    <span className="text-xs text-[var(--text-muted)] italic">
+                                    <span className="text-xs text-[var(--forge-text-muted)] italic">
                                         All skills shared with other paths
                                     </span>
                                 )}
@@ -144,18 +144,18 @@ export const SkillOverlapViz: React.FC<SkillOverlapVizProps> = ({
             </div>
 
             {/* Legend */}
-            <div className="flex items-center gap-4 pt-3 border-t border-[var(--border-default)] text-xs">
+            <div className="flex items-center gap-4 pt-3 border-t border-[var(--forge-border-default)] text-xs">
                 <div className="flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/20 rounded text-purple-600 dark:text-purple-300">
+                    <span className="px-2 py-0.5 bg-[var(--ember)]/10 border border-[var(--ember)]/20 rounded text-[var(--ember)]">
                         Shared
                     </span>
-                    <span className="text-[var(--text-muted)]">= Transferable between paths</span>
+                    <span className="text-[var(--forge-text-muted)]">= Transferable between paths</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 bg-indigo-500 text-white rounded">
+                    <span className="px-2 py-0.5 bg-gradient-forge text-white rounded">
                         Unique
                     </span>
-                    <span className="text-[var(--text-muted)]">= Path-specific skill</span>
+                    <span className="text-[var(--forge-text-muted)]">= Path-specific skill</span>
                 </div>
             </div>
         </div>

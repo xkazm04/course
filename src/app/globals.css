@@ -1,6 +1,38 @@
 @import "tailwindcss";
 
 :root {
+  /* === OPENFORGE DESIGN SYSTEM === */
+  /* Light Mode - "Daylight Workshop" - Warm, professional tones */
+  --forge-bg-daylight: #FAFAF8;
+  --forge-bg-workshop: #FFFFFF;
+  --forge-bg-bench: #F7F5F3;
+  --forge-bg-elevated: #FFFFFF;
+  --forge-bg-void: #F0EEEC;
+  --forge-bg-forge: #FAFAF8;
+  --forge-bg-anvil: #FFFFFF;
+  --forge-border-subtle: #E8E4E0;
+  --forge-border-default: #D4CFC9;
+  --forge-text-muted: #8C857D;
+  --forge-text-secondary: #5C564E;
+  --forge-text-primary: #1A1816;
+  --forge-text-bright: #0D0C0B;
+  --forge-ember: #C2410C;
+
+  /* Ember Spectrum - Adjusted for light mode visibility */
+  --ember-dim: #9A3600;
+  --ember: #C2410C;
+  --ember-bright: #DC5A1A;
+  --ember-glow: #E86F35;
+  --molten: #F59E5E;
+  --gold: #D4A853;
+  --spark: #E8C88A;
+
+  /* Semantic - High contrast for light mode */
+  --forge-success: #0D7A4F;
+  --forge-warning: #B45309;
+  --forge-error: #B91C1C;
+  --forge-info: #1D4ED8;
+
   /* === SURFACES === */
   --surface-base: #F0F2F5;
   --surface-elevated: rgba(255, 255, 255, 0.6);
@@ -126,6 +158,38 @@
 
 .dark {
   /* Button sizing scale is inherited from :root (same for both themes) */
+
+  /* === OPENFORGE DESIGN SYSTEM - Dark Mode "The Forge" === */
+  /* Very dark, near-black backgrounds for proper contrast */
+  --forge-bg-void: #09090A;
+  --forge-bg-forge: #0D0D0E;
+  --forge-bg-anvil: #141416;
+  --forge-bg-elevated: #1C1C1F;
+  --forge-bg-daylight: #0D0D0E;
+  --forge-bg-workshop: #141416;
+  --forge-bg-bench: #1C1C1F;
+  --forge-border-subtle: #252528;
+  --forge-border-default: #32323A;
+  --forge-text-muted: #71717A;
+  --forge-text-secondary: #A1A1AA;
+  --forge-text-primary: #FAFAFA;
+  --forge-text-bright: #FFFFFF;
+  --forge-ember: #F97316;
+
+  /* Ember Spectrum - Deep lava orange for dark backgrounds */
+  --ember-dim: #451A03;
+  --ember: #7C2D12;
+  --ember-bright: #9A3412;
+  --ember-glow: #B45309;
+  --molten: #C2410C;
+  --gold: #D97706;
+  --spark: #EA580C;
+
+  /* Semantic - Vibrant for dark backgrounds */
+  --forge-success: #4ADE80;
+  --forge-warning: #FBBF24;
+  --forge-error: #F87171;
+  --forge-info: #60A5FA;
 
   /* === SURFACES === */
   --surface-base: #0a0f1a;
@@ -522,6 +586,108 @@ body {
     stroke-dashoffset: 0;
     opacity: 1;
   }
+}
+
+/* === OPENFORGE DESIGN SYSTEM UTILITIES === */
+
+/* Ember shadows - Light mode */
+.shadow-ember-sm { box-shadow: 0 2px 8px -2px rgba(194, 65, 12, 0.2); }
+.shadow-ember { box-shadow: 0 4px 16px -4px rgba(194, 65, 12, 0.25); }
+.shadow-ember-glow { box-shadow: 0 0 24px -4px rgba(194, 65, 12, 0.3); }
+.shadow-ember-intense { box-shadow: 0 0 40px -4px rgba(194, 65, 12, 0.4); }
+
+/* Dark mode shadows - More vibrant */
+.dark .shadow-ember-sm { box-shadow: 0 2px 8px -2px rgba(249, 115, 22, 0.25); }
+.dark .shadow-ember { box-shadow: 0 4px 16px -4px rgba(249, 115, 22, 0.3); }
+.dark .shadow-ember-glow { box-shadow: 0 0 24px -4px rgba(249, 115, 22, 0.4); }
+.dark .shadow-ember-intense { box-shadow: 0 0 40px -4px rgba(249, 115, 22, 0.5); }
+
+/* Forge gradients - Light mode (deeper, richer) */
+.bg-gradient-forge { background: linear-gradient(135deg, #C2410C 0%, #DC5A1A 50%, #E86F35 100%); }
+.bg-gradient-gold { background: linear-gradient(135deg, #D4A853 0%, #E8C88A 50%, #F5DEB3 100%); }
+.bg-gradient-ambient { background: radial-gradient(ellipse at 50% 0%, rgba(194, 65, 12, 0.08) 0%, transparent 60%); }
+.text-gradient-forge { background: linear-gradient(135deg, #C2410C 0%, #DC5A1A 50%, #E86F35 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* Dark mode gradients - Deep lava orange */
+.dark .bg-gradient-forge { background: linear-gradient(135deg, #7C2D12 0%, #9A3412 50%, #B45309 100%); }
+.dark .bg-gradient-gold { background: linear-gradient(135deg, #92400E 0%, #B45309 50%, #D97706 100%); }
+.dark .bg-gradient-ambient { background: radial-gradient(ellipse at 50% 0%, rgba(154, 52, 18, 0.15) 0%, transparent 60%); }
+.dark .text-gradient-forge { background: linear-gradient(135deg, #B45309 0%, #C2410C 50%, #EA580C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* Glow effects */
+.glow-ember { filter: drop-shadow(0 0 6px rgba(194, 65, 12, 0.4)); }
+.glow-gold { filter: drop-shadow(0 0 6px rgba(212, 168, 83, 0.4)); }
+.dark .glow-ember { filter: drop-shadow(0 0 8px rgba(180, 83, 9, 0.6)); }
+.dark .glow-gold { filter: drop-shadow(0 0 8px rgba(217, 119, 6, 0.5)); }
+
+/* Forge animations */
+@keyframes ember-rise {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-20px) scale(0); opacity: 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(232, 90, 0, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(232, 90, 0, 0.6); }
+}
+
+@keyframes forge-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.animate-ember-rise { animation: ember-rise 2s ease-out infinite; }
+.animate-glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+.animate-forge-shimmer { animation: forge-shimmer 2s infinite; }
+
+/* Molten progress bar */
+.molten-progress {
+  background: linear-gradient(90deg, #C2410C, #DC5A1A, #E86F35);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark .molten-progress {
+  background: linear-gradient(90deg, #7C2D12, #9A3412, #B45309);
+}
+
+.molten-progress::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: forge-shimmer 2s infinite;
+}
+
+/* Forge card - refined hover effects */
+.forge-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.forge-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ember), transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.forge-card:hover::before {
+  opacity: 0.6;
+}
+
+.forge-card:hover {
+  border-color: var(--forge-border-default);
+}
+
+.dark .forge-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
 }
 
 /* === REDUCED MOTION SUPPORT === */

@@ -80,13 +80,13 @@ export function CertificateGallery({
     if (certificates.length === 0) {
         return (
             <div className={cn("text-center py-16", className)}>
-                <div className="w-20 h-20 mx-auto mb-4 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
-                    <Award size={ICON_SIZES.xl} className="text-slate-400 dark:text-slate-500" />
+                <div className="w-20 h-20 mx-auto mb-4 bg-[var(--forge-bg-elevated)] rounded-full flex items-center justify-center">
+                    <Award size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)]" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300 mb-2">
+                <h3 className="text-lg font-bold text-[var(--forge-text-secondary)] mb-2">
                     No Certificates Yet
                 </h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                <p className="text-[var(--forge-text-muted)] max-w-sm mx-auto">
                     Complete courses to earn certificates that you can share on LinkedIn and add to your resume.
                 </p>
             </div>
@@ -101,14 +101,14 @@ export function CertificateGallery({
                 <div className="relative flex-1 max-w-md w-full">
                     <Search
                         size={ICON_SIZES.sm}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                     />
                     <input
                         type="text"
                         placeholder="Search certificates..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 text-slate-900 dark:text-slate-100 placeholder-slate-400"
+                        className="w-full pl-10 pr-4 py-2 bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)]"
                         data-testid="certificate-search-input"
                     />
                 </div>
@@ -120,7 +120,7 @@ export function CertificateGallery({
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value as SortBy)}
-                            className="appearance-none pl-8 pr-10 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 dark:text-slate-200"
+                            className="appearance-none pl-8 pr-10 py-2 bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)]"
                             data-testid="certificate-sort-select"
                         >
                             <option value="date">Sort by Date</option>
@@ -129,19 +129,19 @@ export function CertificateGallery({
                         </select>
                         <Filter
                             size={ICON_SIZES.sm}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                         />
                     </div>
 
                     {/* View Toggle */}
-                    <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+                    <div className="flex bg-[var(--forge-bg-elevated)] rounded-lg p-1">
                         <button
                             onClick={() => setViewMode("grid")}
                             className={cn(
                                 "p-2 rounded-md transition-colors",
                                 viewMode === "grid"
-                                    ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100"
-                                    : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                                    ? "bg-[var(--forge-bg-anvil)] shadow-sm text-[var(--forge-text-primary)]"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                             data-testid="view-grid-btn"
                         >
@@ -152,8 +152,8 @@ export function CertificateGallery({
                             className={cn(
                                 "p-2 rounded-md transition-colors",
                                 viewMode === "list"
-                                    ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100"
-                                    : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                                    ? "bg-[var(--forge-bg-anvil)] shadow-sm text-[var(--forge-text-primary)]"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                             data-testid="view-list-btn"
                         >
@@ -165,29 +165,29 @@ export function CertificateGallery({
 
             {/* Stats Banner */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50">
-                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                <div className="p-4 bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)]">
+                    <p className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         {certificates.length}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Total Certificates</p>
+                    <p className="text-xs text-[var(--forge-text-muted)]">Total Certificates</p>
                 </div>
-                <div className="p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50">
-                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                <div className="p-4 bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)]">
+                    <p className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         {certificates.reduce((sum, c) => sum + c.shareCount, 0)}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Total Shares</p>
+                    <p className="text-xs text-[var(--forge-text-muted)]">Total Shares</p>
                 </div>
-                <div className="p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50">
-                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                <div className="p-4 bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)]">
+                    <p className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         {certificates.reduce((sum, c) => sum + c.certificate.metadata.totalHours, 0)}h
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Total Learning Hours</p>
+                    <p className="text-xs text-[var(--forge-text-muted)]">Total Learning Hours</p>
                 </div>
-                <div className="p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50">
-                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                <div className="p-4 bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)]">
+                    <p className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         {new Set(certificates.flatMap((c) => c.certificate.skills)).size}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Skills Acquired</p>
+                    <p className="text-xs text-[var(--forge-text-muted)]">Skills Acquired</p>
                 </div>
             </div>
 
@@ -239,29 +239,23 @@ export function CertificateGallery({
                                     transition={{ delay: index * 0.03 }}
                                 >
                                     <div
-                                        className="flex items-center gap-4 p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow cursor-pointer"
+                                        className="flex items-center gap-4 p-4 bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)] hover:shadow-md transition-shadow cursor-pointer"
                                         onClick={() => setSelectedCertificate(item)}
                                         data-testid={`certificate-list-item-${item.certificate.id}`}
                                     >
                                         {/* Icon */}
                                         <div
-                                            className={cn(
-                                                "w-12 h-12 rounded-xl flex items-center justify-center text-white bg-gradient-to-br",
-                                                template.accentColor === "indigo" && "from-indigo-500 to-indigo-600",
-                                                template.accentColor === "purple" && "from-purple-500 to-purple-600",
-                                                template.accentColor === "blue" && "from-blue-500 to-blue-600",
-                                                template.accentColor === "orange" && "from-orange-500 to-orange-600"
-                                            )}
+                                            className="w-12 h-12 rounded-xl flex items-center justify-center text-[var(--forge-text-primary)] bg-gradient-forge"
                                         >
                                             <Award size={ICON_SIZES.lg} />
                                         </div>
 
                                         {/* Info */}
                                         <div className="flex-1 min-w-0">
-                                            <h4 className="font-bold text-slate-900 dark:text-slate-100 truncate">
+                                            <h4 className="font-bold text-[var(--forge-text-primary)] truncate">
                                                 {item.certificate.courseTitle}
                                             </h4>
-                                            <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                            <div className="flex items-center gap-4 text-xs text-[var(--forge-text-muted)] mt-1">
                                                 <span className="flex items-center gap-1">
                                                     <Calendar size={ICON_SIZES.xs} />
                                                     {formatCertificateDate(item.certificate.completionDate)}
@@ -284,20 +278,20 @@ export function CertificateGallery({
                                                     e.stopPropagation();
                                                     onDownload(item.certificate.id, "png");
                                                 }}
-                                                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                                className="p-2 hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                                 data-testid={`download-btn-${item.certificate.id}`}
                                             >
-                                                <Download size={ICON_SIZES.sm} className="text-slate-500" />
+                                                <Download size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                                             </button>
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     onShare(item.certificate.id, "linkedin");
                                                 }}
-                                                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                                className="p-2 hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                                 data-testid={`share-btn-${item.certificate.id}`}
                                             >
-                                                <Share2 size={ICON_SIZES.sm} className="text-slate-500" />
+                                                <Share2 size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                                             </button>
                                             {onDelete && (
                                                 <button
@@ -307,10 +301,10 @@ export function CertificateGallery({
                                                             onDelete(item.certificate.id);
                                                         }
                                                     }}
-                                                    className="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                                                    className="p-2 hover:bg-[var(--forge-error)]/20 rounded-lg transition-colors"
                                                     data-testid={`delete-btn-${item.certificate.id}`}
                                                 >
-                                                    <Trash2 size={ICON_SIZES.sm} className="text-red-500" />
+                                                    <Trash2 size={ICON_SIZES.sm} className="text-[var(--forge-error)]" />
                                                 </button>
                                             )}
                                         </div>
@@ -325,7 +319,7 @@ export function CertificateGallery({
             {/* No Results */}
             {filteredCertificates.length === 0 && searchQuery && (
                 <div className="text-center py-12">
-                    <p className="text-slate-500 dark:text-slate-400">
+                    <p className="text-[var(--forge-text-muted)]">
                         No certificates found for "{searchQuery}"
                     </p>
                 </div>

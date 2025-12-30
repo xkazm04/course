@@ -92,11 +92,11 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="w-[380px] h-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-l border-slate-200 dark:border-slate-700 overflow-y-auto"
+                className="w-[380px] h-full bg-[var(--forge-bg-elevated)]/95 backdrop-blur-xl border-l border-[var(--forge-border-subtle)] overflow-y-auto"
                 data-testid="node-details-panel"
             >
                 {/* Header */}
-                <div className="sticky top-0 z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 p-4">
+                <div className="sticky top-0 z-10 bg-[var(--forge-bg-elevated)]/95 backdrop-blur-xl border-b border-[var(--forge-border-subtle)] p-4">
                     <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3 flex-1 min-w-0">
                             <div
@@ -108,44 +108,44 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                                 <DomainIcon size={ICON_SIZES.md} className="text-white" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-slate-900 dark:text-slate-100 truncate">
+                                <h3 className="font-semibold text-[var(--forge-text-primary)] truncate">
                                     {node.name}
                                 </h3>
-                                <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">
+                                <p className="text-xs text-[var(--forge-text-secondary)] capitalize">
                                     {getLevelLabel(node.level)} • {domain?.name || "Unknown Domain"}
                                 </p>
                             </div>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                            className="p-2 hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                             data-testid="node-details-close-btn"
                         >
-                            <X size={ICON_SIZES.sm} className="text-slate-500" />
+                            <X size={ICON_SIZES.sm} className="text-[var(--forge-text-secondary)]" />
                         </button>
                     </div>
 
                     {/* Status badges */}
                     <div className="flex items-center gap-2 mt-3">
                         {node.status === "locked" && (
-                            <span className="px-2 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full flex items-center gap-1">
+                            <span className="px-2 py-1 text-xs font-medium bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] rounded-full flex items-center gap-1">
                                 <Lock size={12} />
                                 Locked
                             </span>
                         )}
                         {node.status === "completed" && (
-                            <span className="px-2 py-1 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full flex items-center gap-1">
+                            <span className="px-2 py-1 text-xs font-medium bg-[var(--forge-success)]/20 text-[var(--forge-success)] rounded-full flex items-center gap-1">
                                 <CheckCircle size={12} />
                                 Completed
                             </span>
                         )}
                         {node.status === "in_progress" && (
-                            <span className="px-2 py-1 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full">
+                            <span className="px-2 py-1 text-xs font-medium bg-[var(--ember)]/20 text-[var(--ember)] rounded-full">
                                 {node.progress}% Complete
                             </span>
                         )}
                         {node.status === "available" && (
-                            <span className="px-2 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full">
+                            <span className="px-2 py-1 text-xs font-medium bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] rounded-full">
                                 Available
                             </span>
                         )}
@@ -155,16 +155,16 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                 {/* Content */}
                 <div className="p-4 space-y-4">
                     {/* Description */}
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{node.description}</p>
+                    <p className="text-sm text-[var(--forge-text-secondary)]">{node.description}</p>
 
                     {/* Progress bar */}
                     {node.progress > 0 && node.progress < 100 && (
                         <div className="space-y-1">
-                            <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+                            <div className="flex justify-between text-xs text-[var(--forge-text-secondary)]">
                                 <span>Progress</span>
                                 <span>{node.progress}%</span>
                             </div>
-                            <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div className="h-2 bg-[var(--forge-bg-anvil)] rounded-full overflow-hidden">
                                 <motion.div
                                     className={cn(
                                         "h-full",
@@ -187,7 +187,7 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                     {/* Children list */}
                     {hasChildren && nextLevel && (
                         <div className="space-y-2">
-                            <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            <h4 className="text-sm font-medium text-[var(--forge-text-primary)]">
                                 {getLevelLabel(nextLevel, true)} ({node.childIds.length})
                             </h4>
                             <div className="space-y-1 max-h-48 overflow-y-auto">
@@ -195,7 +195,7 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                                     <button
                                         key={childId}
                                         onClick={() => onDrillDown(childId)}
-                                        className="w-full flex items-center justify-between p-2 text-left text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors group"
+                                        className="w-full flex items-center justify-between p-2 text-left text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors group"
                                         data-testid={`child-node-${index}`}
                                     >
                                         <span className="truncate flex items-center gap-2">
@@ -205,12 +205,12 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                                         </span>
                                         <ChevronRight
                                             size={14}
-                                            className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors flex-shrink-0"
+                                            className="text-[var(--forge-text-muted)] group-hover:text-[var(--forge-text-primary)] transition-colors flex-shrink-0"
                                         />
                                     </button>
                                 ))}
                                 {node.childIds.length > 5 && (
-                                    <p className="text-xs text-slate-400 dark:text-slate-500 pl-2">
+                                    <p className="text-xs text-[var(--forge-text-muted)] pl-2">
                                         +{node.childIds.length - 5} more
                                     </p>
                                 )}
@@ -220,11 +220,11 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                 </div>
 
                 {/* Action buttons */}
-                <div className="sticky bottom-0 p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-700">
+                <div className="sticky bottom-0 p-4 bg-[var(--forge-bg-elevated)]/95 backdrop-blur-xl border-t border-[var(--forge-border-subtle)]">
                     {node.status === "locked" ? (
                         <button
                             disabled
-                            className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-xl font-medium flex items-center justify-center gap-2 cursor-not-allowed"
+                            className="w-full px-4 py-3 bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] rounded-xl font-medium flex items-center justify-center gap-2 cursor-not-allowed"
                             data-testid="locked-btn"
                         >
                             <Lock size={ICON_SIZES.sm} />
@@ -233,7 +233,7 @@ export const NodeDetailsPanel: React.FC<NodeDetailsPanelProps> = memo(function N
                     ) : node.status === "completed" ? (
                         <button
                             onClick={() => onStartLearning(node.id)}
-                            className="w-full px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition-colors"
+                            className="w-full px-4 py-3 bg-[var(--forge-success)] hover:bg-[var(--forge-success)]/90 text-[var(--forge-text-primary)] rounded-xl font-medium flex items-center justify-center gap-2 transition-colors"
                             data-testid="review-btn"
                         >
                             <BookOpen size={ICON_SIZES.sm} />
@@ -295,9 +295,9 @@ function DomainDetails({ node }: { node: DomainNode }) {
 
 function CourseDetails({ node }: { node: CourseNode }) {
     const difficultyColors = {
-        beginner: "text-emerald-600 dark:text-emerald-400",
-        intermediate: "text-amber-600 dark:text-amber-400",
-        advanced: "text-red-600 dark:text-red-400",
+        beginner: "text-[var(--forge-success)]",
+        intermediate: "text-[var(--forge-warning)]",
+        advanced: "text-[var(--forge-error)]",
     };
 
     return (
@@ -316,15 +316,15 @@ function CourseDetails({ node }: { node: CourseNode }) {
                     color={node.color}
                 />
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Difficulty:</span>
+            <div className="flex items-center gap-2 px-3 py-2 bg-[var(--forge-bg-anvil)] rounded-lg">
+                <span className="text-xs text-[var(--forge-text-secondary)]">Difficulty:</span>
                 <span className={cn("text-sm font-medium capitalize", difficultyColors[node.difficulty])}>
                     {node.difficulty}
                 </span>
             </div>
             {node.skills && node.skills.length > 0 && (
                 <div className="space-y-2">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Skills:</span>
+                    <span className="text-xs text-[var(--forge-text-secondary)]">Skills:</span>
                     <div className="flex flex-wrap gap-1">
                         {node.skills.map((skill) => (
                             <span
@@ -374,7 +374,7 @@ function SectionDetails({ node }: { node: SectionNode }) {
 
     return (
         <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-[var(--forge-bg-anvil)] rounded-lg">
                 <div className={cn(
                     "w-8 h-8 rounded-lg flex items-center justify-center",
                     `bg-${node.color}-100 dark:bg-${node.color}-900/30`
@@ -382,20 +382,20 @@ function SectionDetails({ node }: { node: SectionNode }) {
                     <TypeIcon size={16} className={`text-${node.color}-600 dark:text-${node.color}-400`} />
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">
+                    <p className="text-sm font-medium text-[var(--forge-text-primary)] capitalize">
                         {node.sectionType}
                     </p>
                     {node.duration && (
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-xs text-[var(--forge-text-secondary)]">
                             {node.duration}
                         </p>
                     )}
                 </div>
             </div>
             {node.status === "completed" && (
-                <div className="flex items-center gap-2 p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                    <CheckCircle size={16} className="text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-sm text-emerald-700 dark:text-emerald-400">
+                <div className="flex items-center gap-2 p-2 bg-[var(--forge-success)]/10 rounded-lg">
+                    <CheckCircle size={16} className="text-[var(--forge-success)]" />
+                    <span className="text-sm text-[var(--forge-success)]">
                         Section completed
                     </span>
                 </div>
@@ -417,12 +417,12 @@ interface StatCardProps {
 
 function StatCard({ icon: Icon, label, value, color }: StatCardProps) {
     return (
-        <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+        <div className="p-3 bg-[var(--forge-bg-anvil)] rounded-lg">
             <div className="flex items-center gap-2 mb-1">
                 <Icon size={14} className={`text-${color}-500`} />
-                <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+                <span className="text-xs text-[var(--forge-text-secondary)]">{label}</span>
             </div>
-            <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{value}</p>
+            <p className="text-lg font-semibold text-[var(--forge-text-primary)]">{value}</p>
         </div>
     );
 }

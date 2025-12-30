@@ -35,38 +35,38 @@ interface MapNodeProps {
 // Status styling - simplified for title-focused design
 const STATUS_STYLES = {
     completed: {
-        bg: "bg-emerald-50 dark:bg-emerald-950/40",
-        text: "text-emerald-800 dark:text-emerald-200",
-        glow: "shadow-emerald-200/50 dark:shadow-emerald-900/50",
-        progressBg: "bg-emerald-500",
+        bg: "bg-[var(--forge-success)]/10",
+        text: "text-[var(--forge-success)]",
+        glow: "shadow-[var(--forge-success)]/30",
+        progressBg: "bg-[var(--forge-success)]",
     },
     in_progress: {
-        bg: "bg-indigo-50 dark:bg-indigo-950/40",
-        text: "text-indigo-800 dark:text-indigo-200",
-        glow: "shadow-indigo-200/50 dark:shadow-indigo-900/50",
-        progressBg: "bg-indigo-500",
+        bg: "bg-[var(--ember)]/10",
+        text: "text-[var(--ember)]",
+        glow: "shadow-[var(--ember)]/30",
+        progressBg: "bg-[var(--ember)]",
     },
     available: {
-        bg: "bg-white dark:bg-slate-800/60",
-        text: "text-slate-800 dark:text-slate-200",
-        glow: "shadow-slate-200/50 dark:shadow-slate-800/50",
-        progressBg: "bg-slate-300 dark:bg-slate-600",
+        bg: "bg-[var(--forge-bg-elevated)]",
+        text: "text-[var(--forge-text-primary)]",
+        glow: "shadow-[var(--forge-border-subtle)]",
+        progressBg: "bg-[var(--forge-text-muted)]",
     },
     locked: {
-        bg: "bg-slate-100 dark:bg-slate-900/40",
-        text: "text-slate-400 dark:text-slate-500",
+        bg: "bg-[var(--forge-bg-anvil)]",
+        text: "text-[var(--forge-text-muted)]",
         glow: "",
-        progressBg: "bg-slate-200 dark:bg-slate-700",
+        progressBg: "bg-[var(--forge-border-subtle)]",
     },
 };
 
 // Progression level colors (vertical bar on right)
 const PROGRESSION_COLORS: Record<number, string> = {
-    0: "bg-emerald-500", // Foundation (domain)
-    1: "bg-blue-500",    // Core (course)
-    2: "bg-indigo-500",  // Intermediate (chapter)
-    3: "bg-purple-500",  // Advanced (section)
-    4: "bg-rose-500",    // Expert (concept)
+    0: "bg-[var(--forge-success)]", // Foundation (domain)
+    1: "bg-[var(--forge-info)]",    // Core (course)
+    2: "bg-[var(--ember)]",         // Intermediate (chapter)
+    3: "bg-[var(--ember-glow)]",    // Advanced (section)
+    4: "bg-[var(--forge-error)]",   // Expert (concept)
 };
 
 /**
@@ -131,11 +131,11 @@ export const MapNode: React.FC<MapNodeProps> = memo(function MapNode({
                 styles.bg,
                 // Only show border on sides and top - bottom is progress bar
                 "border-l-2 border-r-2 border-t-2",
-                node.status === "completed" && "border-emerald-300 dark:border-emerald-700",
-                node.status === "in_progress" && "border-indigo-300 dark:border-indigo-700",
-                node.status === "available" && "border-slate-200 dark:border-slate-700",
-                node.status === "locked" && "border-slate-200 dark:border-slate-800",
-                isSelected && `ring-2 ring-indigo-500 ring-offset-2 dark:ring-offset-slate-900`,
+                node.status === "completed" && "border-[var(--forge-success)]/50",
+                node.status === "in_progress" && "border-[var(--ember)]/50",
+                node.status === "available" && "border-[var(--forge-border-subtle)]",
+                node.status === "locked" && "border-[var(--forge-border-subtle)]",
+                isSelected && `ring-2 ring-[var(--ember)] ring-offset-2 ring-offset-[var(--forge-bg-anvil)]`,
                 isSelected && styles.glow && `shadow-lg ${styles.glow}`,
                 node.status === "locked" && "opacity-60 cursor-not-allowed"
             )}
@@ -171,8 +171,8 @@ export const MapNode: React.FC<MapNodeProps> = memo(function MapNode({
                         "absolute -top-2 -left-2 z-10",
                         "w-6 h-6 rounded-full",
                         "flex items-center justify-center",
-                        "text-[10px] font-bold text-white",
-                        "border-2 border-white dark:border-slate-900",
+                        "text-[10px] font-bold text-[var(--forge-text-primary)]",
+                        "border-2 border-[var(--forge-bg-elevated)]",
                         "shadow-sm"
                     )}
                     style={{ backgroundColor: domainColor }}
@@ -208,8 +208,8 @@ export const MapNode: React.FC<MapNodeProps> = memo(function MapNode({
                 <div className={cn(
                     "absolute inset-0",
                     node.status === "locked"
-                        ? "bg-slate-200 dark:bg-slate-700"
-                        : "bg-slate-200/50 dark:bg-slate-700/50"
+                        ? "bg-[var(--forge-border-subtle)]"
+                        : "bg-[var(--forge-border-subtle)]/50"
                 )} />
 
                 {/* Progress fill */}

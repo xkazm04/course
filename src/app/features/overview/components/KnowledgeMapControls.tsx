@@ -75,21 +75,21 @@ export const KnowledgeMapControls: React.FC<KnowledgeMapControlsProps> = ({
                         "flex items-center gap-2 px-3 py-2 text-sm rounded-xl",
                         "border transition-all duration-200",
                         focusMode
-                            ? "bg-indigo-100 dark:bg-indigo-900/40 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300"
-                            : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+                            ? "bg-[var(--ember)]/20 border-[var(--ember)]/50 text-[var(--ember)]"
+                            : "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-workshop)]"
                     )}
                     title={focusMode ? "Exit focus mode" : "Enter focus mode to isolate current path"}
                     data-testid="knowledge-map-focus-mode-btn"
                 >
                     <Focus className={cn(
                         "w-4 h-4",
-                        focusMode && "text-indigo-500"
+                        focusMode && "text-[var(--ember)]"
                     )} />
                     <span className="font-medium">
                         {focusMode ? "Focus On" : "Focus"}
                     </span>
                     {focusMode && focusedPathId && (
-                        <span className="px-1.5 py-0.5 text-xs bg-indigo-200 dark:bg-indigo-800 rounded-md">
+                        <span className="px-1.5 py-0.5 text-xs bg-[var(--ember)]/30 rounded-md">
                             Active
                         </span>
                     )}
@@ -106,28 +106,28 @@ export const KnowledgeMapControls: React.FC<KnowledgeMapControlsProps> = ({
                         "flex items-center gap-2 px-3 py-2 text-sm rounded-xl",
                         "border transition-all duration-200",
                         skillGapMode
-                            ? "bg-gradient-to-r from-emerald-100 via-amber-100 to-red-100 dark:from-emerald-900/40 dark:via-amber-900/40 dark:to-red-900/40 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300"
-                            : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+                            ? "bg-[var(--forge-warning)]/20 border-[var(--forge-warning)]/50 text-[var(--forge-warning)]"
+                            : "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-workshop)]"
                     )}
                     title={skillGapMode ? "Disable skill gap overlay" : "Show skill gap analysis overlay"}
                     data-testid="knowledge-map-skill-gap-btn"
                 >
                     <Target className={cn(
                         "w-4 h-4",
-                        skillGapMode && "text-amber-600 dark:text-amber-400"
+                        skillGapMode && "text-[var(--forge-warning)]"
                     )} />
                     <span className="font-medium">
                         {skillGapMode ? "Skill Gap" : "Gaps"}
                     </span>
                     {skillGapMode && skillGapStats && (
                         <div className="flex items-center gap-1">
-                            <span className="px-1 py-0.5 text-[10px] bg-emerald-200 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 rounded" title="Mastered skills">
+                            <span className="px-1 py-0.5 text-[10px] bg-[var(--forge-success)]/20 text-[var(--forge-success)] rounded" title="Mastered skills">
                                 {skillGapStats.totalMastered}
                             </span>
-                            <span className="px-1 py-0.5 text-[10px] bg-amber-200 dark:bg-amber-800 text-amber-700 dark:text-amber-300 rounded" title="Partial skills">
+                            <span className="px-1 py-0.5 text-[10px] bg-[var(--forge-warning)]/20 text-[var(--forge-warning)] rounded" title="Partial skills">
                                 {skillGapStats.totalPartial}
                             </span>
-                            <span className="px-1 py-0.5 text-[10px] bg-red-200 dark:bg-red-800 text-red-700 dark:text-red-300 rounded" title="Skill gaps">
+                            <span className="px-1 py-0.5 text-[10px] bg-[var(--forge-error)]/20 text-[var(--forge-error)] rounded" title="Skill gaps">
                                 {skillGapStats.totalGap}
                             </span>
                         </div>
@@ -142,9 +142,9 @@ export const KnowledgeMapControls: React.FC<KnowledgeMapControlsProps> = ({
                     onChange={(e) => onCategoryFilterChange(e.target.value || null)}
                     className={cn(
                         "appearance-none pl-8 pr-8 py-2 text-sm rounded-xl",
-                        "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700",
-                        "text-slate-700 dark:text-slate-300",
-                        "focus:outline-none focus:ring-2 focus:ring-indigo-500",
+                        "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)]",
+                        "text-[var(--forge-text-primary)]",
+                        "focus:outline-none focus:ring-2 focus:ring-[var(--ember)]",
                         "cursor-pointer"
                     )}
                     data-testid="knowledge-map-category-filter"
@@ -156,36 +156,36 @@ export const KnowledgeMapControls: React.FC<KnowledgeMapControlsProps> = ({
                         </option>
                     ))}
                 </select>
-                <Filter className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <Filter className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--forge-text-muted)] pointer-events-none" />
                 {categoryFilter && (
                     <button
                         onClick={() => onCategoryFilterChange(null)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 hover:bg-[var(--forge-bg-workshop)] rounded"
                         data-testid="knowledge-map-clear-filter-btn"
                     >
-                        <X className="w-3 h-3 text-slate-400" />
+                        <X className="w-3 h-3 text-[var(--forge-text-muted)]" />
                     </button>
                 )}
             </div>
 
             {/* Zoom Controls */}
-            <div className="flex items-center bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden" data-testid="knowledge-map-zoom-controls">
+            <div className="flex items-center bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] overflow-hidden" data-testid="knowledge-map-zoom-controls">
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleZoomOut}
                     disabled={viewport.scale <= 0.3}
                     className={cn(
-                        "p-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors",
+                        "p-2 hover:bg-[var(--forge-bg-workshop)] transition-colors",
                         "disabled:opacity-50 disabled:cursor-not-allowed"
                     )}
                     title="Zoom out"
                     data-testid="knowledge-map-zoom-out-btn"
                 >
-                    <ZoomOut className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                    <ZoomOut className="w-4 h-4 text-[var(--forge-text-secondary)]" />
                 </motion.button>
 
-                <div className="w-px h-6 bg-slate-200 dark:bg-slate-700" />
+                <div className="w-px h-6 bg-[var(--forge-border-subtle)]" />
 
                 <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -193,39 +193,39 @@ export const KnowledgeMapControls: React.FC<KnowledgeMapControlsProps> = ({
                     onClick={handleZoomIn}
                     disabled={viewport.scale >= 2}
                     className={cn(
-                        "p-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors",
+                        "p-2 hover:bg-[var(--forge-bg-workshop)] transition-colors",
                         "disabled:opacity-50 disabled:cursor-not-allowed"
                     )}
                     title="Zoom in"
                     data-testid="knowledge-map-zoom-in-btn"
                 >
-                    <ZoomIn className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                    <ZoomIn className="w-4 h-4 text-[var(--forge-text-secondary)]" />
                 </motion.button>
 
-                <div className="w-px h-6 bg-slate-200 dark:bg-slate-700" />
+                <div className="w-px h-6 bg-[var(--forge-border-subtle)]" />
 
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={onFitToScreen}
-                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                    className="p-2 hover:bg-[var(--forge-bg-workshop)] transition-colors"
                     title="Fit to screen"
                     data-testid="knowledge-map-fit-screen-btn"
                 >
-                    <Maximize2 className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                    <Maximize2 className="w-4 h-4 text-[var(--forge-text-secondary)]" />
                 </motion.button>
 
-                <div className="w-px h-6 bg-slate-200 dark:bg-slate-700" />
+                <div className="w-px h-6 bg-[var(--forge-border-subtle)]" />
 
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleReset}
-                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                    className="p-2 hover:bg-[var(--forge-bg-workshop)] transition-colors"
                     title="Reset view"
                     data-testid="knowledge-map-reset-btn"
                 >
-                    <RotateCcw className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                    <RotateCcw className="w-4 h-4 text-[var(--forge-text-secondary)]" />
                 </motion.button>
             </div>
         </div>

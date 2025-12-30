@@ -22,10 +22,10 @@ const TYPE_CONFIG: Record<DocumentLink["type"], {
     label: string;
     color: string;
 }> = {
-    official: { icon: FileText, label: "Official", color: "indigo" },
-    blog: { icon: BookOpen, label: "Blog", color: "emerald" },
-    video: { icon: Video, label: "Video", color: "red" },
-    stackoverflow: { icon: MessageSquare, label: "Stack Overflow", color: "amber" },
+    official: { icon: FileText, label: "Official", color: "ember" },
+    blog: { icon: BookOpen, label: "Blog", color: "success" },
+    video: { icon: Video, label: "Video", color: "error" },
+    stackoverflow: { icon: MessageSquare, label: "Stack Overflow", color: "warning" },
 };
 
 export const RelevantDocs: React.FC<RelevantDocsProps> = ({ docs }) => {
@@ -64,10 +64,10 @@ const DocCard: React.FC<DocCardProps> = ({ doc }) => {
     const Icon = config.icon;
 
     const colorClasses = {
-        indigo: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
-        emerald: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-        red: "bg-red-500/10 text-red-400 border-red-500/20",
-        amber: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+        ember: "bg-[var(--ember)]/10 text-[var(--ember)] border-[var(--ember)]/20",
+        success: "bg-[var(--forge-success)]/10 text-[var(--forge-success)] border-[var(--forge-success)]/20",
+        error: "bg-[var(--forge-error)]/10 text-[var(--forge-error)] border-[var(--forge-error)]/20",
+        warning: "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)] border-[var(--forge-warning)]/20",
     };
 
     return (

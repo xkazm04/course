@@ -1,0 +1,422 @@
+{
+  "title": "LLM Application Health - Gemini Learning Platform",
+  "description": "End-to-end observability for Gemini-powered learning path and content generation (Datadog Hackathon)",
+  "widgets": [
+    {
+      "id": 1,
+      "definition": {
+        "title": "Key Performance Indicators",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Total LLM Requests (24h)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "sum:llm.gemini.request.count{*}.as_count().rollup(sum, 86400)",
+                  "aggregator": "sum"
+                }
+              ],
+              "autoscale": true,
+              "precision": 0
+            }
+          },
+          {
+            "definition": {
+              "title": "P95 Latency (ms)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "p95:llm.gemini.request.latency{*}",
+                  "aggregator": "avg"
+                }
+              ],
+              "autoscale": true,
+              "precision": 0,
+              "custom_unit": "ms"
+            }
+          },
+          {
+            "definition": {
+              "title": "Error Rate (%)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "(sum:llm.gemini.errors{*}.as_count() / sum:llm.gemini.request.count{*}.as_count()) * 100",
+                  "aggregator": "avg"
+                }
+              ],
+              "autoscale": true,
+              "precision": 2,
+              "custom_unit": "%"
+            }
+          },
+          {
+            "definition": {
+              "title": "Estimated Cost (24h)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "sum:llm.gemini.cost.usd{*}.rollup(sum, 86400)",
+                  "aggregator": "sum"
+                }
+              ],
+              "autoscale": true,
+              "precision": 4,
+              "custom_unit": "$"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "definition": {
+        "title": "Latency Analysis",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Request Latency Distribution",
+              "type": "distribution",
+              "requests": [
+                {
+                  "q": "avg:llm.gemini.request.latency{*}",
+                  "style": {
+                    "palette": "dog_classic"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "title": "Latency by Operation",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "q": "avg:llm.gemini.request.latency{*} by {operation}",
+                  "display_type": "line",
+                  "style": {
+                    "palette": "dog_classic",
+                    "line_type": "solid",
+                    "line_width": "normal"
+                  }
+                }
+              ],
+              "yaxis": {
+                "label": "ms",
+                "scale": "linear"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "definition": {
+        "title": "Token Usage",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Tokens Over Time",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "q": "sum:llm.gemini.tokens.input{*}.as_count()",
+                  "display_type": "area",
+                  "style": {
+                    "palette": "cool",
+                    "line_type": "solid",
+                    "line_width": "normal"
+                  },
+                  "metadata": [
+                    {
+                      "expression": "sum:llm.gemini.tokens.input{*}.as_count()",
+                      "alias_name": "Input Tokens"
+                    }
+                  ]
+                },
+                {
+                  "q": "sum:llm.gemini.tokens.output{*}.as_count()",
+                  "display_type": "area",
+                  "style": {
+                    "palette": "warm",
+                    "line_type": "solid",
+                    "line_width": "normal"
+                  },
+                  "metadata": [
+                    {
+                      "expression": "sum:llm.gemini.tokens.output{*}.as_count()",
+                      "alias_name": "Output Tokens"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "title": "Tokens by Operation",
+              "type": "toplist",
+              "requests": [
+                {
+                  "q": "sum:llm.gemini.tokens.total{*} by {operation}.as_count()"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "definition": {
+        "title": "Cost Analysis",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Cumulative Cost (Rolling 7d)",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "q": "cumsum(sum:llm.gemini.cost.usd{*})",
+                  "display_type": "line",
+                  "style": {
+                    "palette": "orange",
+                    "line_type": "solid",
+                    "line_width": "thick"
+                  }
+                }
+              ],
+              "yaxis": {
+                "label": "USD",
+                "scale": "linear"
+              }
+            }
+          },
+          {
+            "definition": {
+              "title": "Cost by Service",
+              "type": "pie",
+              "requests": [
+                {
+                  "q": "sum:llm.gemini.cost.usd{*} by {service}",
+                  "style": {
+                    "palette": "dog_classic"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "definition": {
+        "title": "Errors & Issues",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Errors by Type Over Time",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "q": "sum:llm.gemini.errors{*} by {error_type}.as_count()",
+                  "display_type": "bars",
+                  "style": {
+                    "palette": "warm"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "title": "Parse Errors (24h)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "sum:llm.response.parse_error{*}.as_count().rollup(sum, 86400)",
+                  "aggregator": "sum"
+                }
+              ],
+              "autoscale": true,
+              "precision": 0
+            }
+          },
+          {
+            "definition": {
+              "title": "Grounding Usage Rate",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "(sum:llm.gemini.grounding.used{*}.as_count() / sum:llm.gemini.request.count{*}.as_count()) * 100",
+                  "aggregator": "avg"
+                }
+              ],
+              "autoscale": true,
+              "precision": 1,
+              "custom_unit": "%"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "definition": {
+        "title": "Business Metrics - Oracle",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Learning Paths Generated",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "q": "sum:oracle.path.generated{*} by {domain}.as_count()",
+                  "display_type": "bars",
+                  "style": {
+                    "palette": "dog_classic"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "title": "Sessions by Domain",
+              "type": "pie",
+              "requests": [
+                {
+                  "q": "sum:oracle.session.created{*} by {domain}.as_count()"
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "title": "Path Confidence Distribution",
+              "type": "toplist",
+              "requests": [
+                {
+                  "q": "sum:oracle.path.generated{*} by {confidence_tier}.as_count()"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "definition": {
+        "title": "Business Metrics - Content Generator",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Content Jobs Over Time",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "q": "sum:content.job.completed{*} by {status}.as_count()",
+                  "display_type": "bars",
+                  "style": {
+                    "palette": "semantic"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "title": "Job Duration (P95)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "p95:content.job.duration{*}",
+                  "aggregator": "avg"
+                }
+              ],
+              "autoscale": true,
+              "precision": 0,
+              "custom_unit": "ms"
+            }
+          },
+          {
+            "definition": {
+              "title": "Courses Created (24h)",
+              "type": "query_value",
+              "requests": [
+                {
+                  "q": "sum:content.course.created{*}.as_count().rollup(sum, 86400)",
+                  "aggregator": "sum"
+                }
+              ],
+              "autoscale": true,
+              "precision": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "definition": {
+        "title": "Monitor Status",
+        "type": "group",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "title": "Monitor Summary",
+              "type": "manage_status",
+              "summary_type": "monitors",
+              "display_format": "countsAndList",
+              "color_preference": "text",
+              "hide_zero_counts": false,
+              "query": "tag:hackathon:datadog",
+              "sort": "status,asc"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "template_variables": [
+    {
+      "name": "service",
+      "default": "*",
+      "prefix": "service"
+    },
+    {
+      "name": "operation",
+      "default": "*",
+      "prefix": "operation"
+    },
+    {
+      "name": "env",
+      "default": "production",
+      "prefix": "env"
+    }
+  ],
+  "layout_type": "ordered",
+  "is_read_only": false,
+  "notify_list": [],
+  "reflow_type": "fixed"
+}

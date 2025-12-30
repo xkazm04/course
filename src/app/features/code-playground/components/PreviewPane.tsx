@@ -68,41 +68,41 @@ export function PreviewPane({
     const getConsoleIcon = (type: ConsoleMessage["type"]) => {
         switch (type) {
             case "error":
-                return <AlertCircle size={ICON_SIZES.xs} className="text-red-400 shrink-0" />;
+                return <AlertCircle size={ICON_SIZES.xs} className="text-[var(--forge-error)] shrink-0" />;
             case "warn":
-                return <AlertCircle size={ICON_SIZES.xs} className="text-amber-400 shrink-0" />;
+                return <AlertCircle size={ICON_SIZES.xs} className="text-[var(--forge-warning)] shrink-0" />;
             case "info":
-                return <Info size={ICON_SIZES.xs} className="text-blue-400 shrink-0" />;
+                return <Info size={ICON_SIZES.xs} className="text-[var(--forge-info)] shrink-0" />;
             default:
-                return <CheckCircle2 size={ICON_SIZES.xs} className="text-emerald-400 shrink-0" />;
+                return <CheckCircle2 size={ICON_SIZES.xs} className="text-[var(--forge-success)] shrink-0" />;
         }
     };
 
     const getConsoleColor = (type: ConsoleMessage["type"]) => {
         switch (type) {
             case "error":
-                return "text-red-400";
+                return "text-[var(--forge-error)]";
             case "warn":
-                return "text-amber-400";
+                return "text-[var(--forge-warning)]";
             case "info":
-                return "text-blue-400";
+                return "text-[var(--forge-info)]";
             default:
-                return "text-neutral-300";
+                return "text-[var(--forge-text-secondary)]";
         }
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#1e1e1e]">
+        <div className="flex flex-col h-full bg-[var(--forge-bg-void)]">
             {/* Tab Bar */}
-            <div className="flex items-center justify-between p-2 border-b border-[#3e3e42] bg-[#252526]">
+            <div className="flex items-center justify-between p-2 border-b border-[var(--forge-border-subtle)] bg-[var(--forge-bg-forge)]">
                 <div className="flex gap-1">
                     <button
                         onClick={() => onTabChange("preview")}
                         className={cn(
                             "px-3 py-1.5 text-xs rounded transition-colors",
                             activeTab === "preview"
-                                ? "bg-[#3e3e42] text-white"
-                                : "text-neutral-500 hover:text-neutral-300"
+                                ? "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-bright)]"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                         )}
                         data-testid="preview-tab-btn"
                     >
@@ -116,15 +116,15 @@ export function PreviewPane({
                         className={cn(
                             "px-3 py-1.5 text-xs rounded transition-colors flex items-center gap-1",
                             activeTab === "console"
-                                ? "bg-[#3e3e42] text-white"
-                                : "text-neutral-500 hover:text-neutral-300"
+                                ? "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-bright)]"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                         )}
                         data-testid="console-tab-btn"
                     >
                         <Terminal size={ICON_SIZES.xs} />
                         Console
                         {consoleMessages.some(m => m.type === "error") && (
-                            <span className="w-2 h-2 rounded-full bg-red-500 ml-1" />
+                            <span className="w-2 h-2 rounded-full bg-[var(--forge-error)] ml-1" />
                         )}
                     </button>
                 </div>
@@ -132,7 +132,7 @@ export function PreviewPane({
                 {activeTab === "console" && consoleMessages.length > 0 && (
                     <button
                         onClick={onClearConsole}
-                        className="px-2 py-1 text-xs text-neutral-500 hover:text-neutral-300 transition-colors"
+                        className="px-2 py-1 text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors"
                         data-testid="clear-console-btn"
                     >
                         Clear
@@ -153,9 +153,9 @@ export function PreviewPane({
                         >
                             {/* Loading overlay */}
                             {isRunning && (
-                                <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 z-10 flex items-center justify-center">
-                                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                                        <RefreshCw size={ICON_SIZES.md} className="animate-spin" />
+                                <div className="absolute inset-0 bg-[var(--forge-bg-workshop)]/90 z-10 flex items-center justify-center">
+                                    <div className="flex items-center gap-2 text-[var(--forge-text-secondary)]">
+                                        <RefreshCw size={ICON_SIZES.md} className="animate-spin text-[var(--ember)]" />
                                         <span>Compiling...</span>
                                     </div>
                                 </div>
@@ -163,8 +163,8 @@ export function PreviewPane({
 
                             {/* Error overlay */}
                             {error && !isRunning && (
-                                <div className="absolute top-0 left-0 right-0 bg-red-500/10 border-b border-red-500/30 p-3 z-10">
-                                    <div className="icon-text-align text-red-400 text-xs">
+                                <div className="absolute top-0 left-0 right-0 bg-[var(--forge-error)]/10 border-b border-[var(--forge-error)]/30 p-3 z-10">
+                                    <div className="icon-text-align text-[var(--forge-error)] text-xs">
                                         <AlertCircle size={ICON_SIZES.sm} data-icon />
                                         <span className="font-mono">{error}</span>
                                     </div>
@@ -186,11 +186,11 @@ export function PreviewPane({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-[#1e1e1e] p-3 font-mono text-xs overflow-auto"
+                            className="absolute inset-0 bg-[var(--forge-bg-void)] p-3 font-mono text-xs overflow-auto"
                             data-testid="console-output"
                         >
                             {consoleMessages.length === 0 ? (
-                                <span className="text-neutral-600 italic">
+                                <span className="text-[var(--forge-text-muted)] italic">
                                     Console output will appear here...
                                 </span>
                             ) : (
@@ -211,8 +211,8 @@ export function PreviewPane({
                                     ))}
                                 </div>
                             )}
-                            <div className="mt-2 flex items-center gap-2 text-neutral-600">
-                                <span className="text-emerald-500">&gt;</span>
+                            <div className="mt-2 flex items-center gap-2 text-[var(--forge-text-muted)]">
+                                <span className="text-[var(--ember)]">&gt;</span>
                                 <span className="animate-pulse">_</span>
                             </div>
                         </motion.div>

@@ -1,5 +1,5 @@
 import {
-    Compass, Target, Briefcase, BookOpen, Layers, FileText, Award
+    Compass, Briefcase, BookOpen, FileText, Award
 } from "lucide-react";
 
 export type AtmosphereVariant = "default" | "cool" | "warm";
@@ -24,22 +24,6 @@ export interface ModuleDefinition {
 
 export const modules: ModuleDefinition[] = [
     {
-        id: "landing",
-        title: "Landing Page",
-        subtitle: "Platform Showcase",
-        description: "Spatial-style showcase summarizing all platform features",
-        icon: Layers,
-        color: "orange",
-        gradient: "from-orange-500 to-orange-600",
-        features: ["3D Effects", "Parallax", "Dark Theme", "Hero Sections", "Knowledge Universe"],
-        atmosphereVariant: "default",
-        variants: [
-            { id: "spatial", name: "Spatial" },
-            { id: "dark", name: "Dark" },
-            { id: "universe", name: "Universe" },
-        ],
-    },
-    {
         id: "overview",
         title: "Courses Overview",
         subtitle: "Learning Paths",
@@ -50,24 +34,7 @@ export const modules: ModuleDefinition[] = [
         features: ["Frontend", "Fullstack", "Knowledge Map", "Skill Progress"],
         atmosphereVariant: "default",
         variants: [
-            { id: "split-view", name: "Split View" },
             { id: "knowledge-map", name: "Knowledge Map" },
-            { id: "oracle-map", name: "Oracle Map" },
-            { id: "skill-progress", name: "Skill Progress" },
-        ],
-    },
-    {
-        id: "goal-path",
-        title: "Goal Generation",
-        subtitle: "Career Oracle",
-        description: "AI-powered career path analysis with market intelligence",
-        icon: Target,
-        color: "purple",
-        gradient: "from-purple-500 to-purple-600",
-        features: ["Career Oracle", "Market Intelligence", "Focus Areas", "Estimated Outcomes"],
-        atmosphereVariant: "cool",
-        variants: [
-            { id: "career-oracle", name: "Career Oracle" },
         ],
     },
     {
@@ -166,7 +133,6 @@ export interface NavigationModule {
  */
 export const navigationModules: NavigationModule[] = [
     { id: "overview", title: "Explore Paths", icon: Compass, href: "/overview" },
-    { id: "goal-path", title: "Set Goals", icon: Target, href: "/goal-path" },
     { id: "career-mapping", title: "Career Map", icon: Briefcase, href: "/career-mapping" },
     { id: "chapter", title: "Learn", icon: BookOpen, href: "/chapter" },
 ];

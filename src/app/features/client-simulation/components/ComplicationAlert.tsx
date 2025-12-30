@@ -41,12 +41,12 @@ export const ComplicationAlert: React.FC<ComplicationAlertProps> = ({
     const Icon = TYPE_ICONS[complication.type];
 
     const colorClasses: Record<string, { bg: string; border: string; text: string }> = {
-        amber: { bg: "bg-amber-500/10", border: "border-amber-500/30", text: "text-amber-400" },
-        emerald: { bg: "bg-emerald-500/10", border: "border-emerald-500/30", text: "text-emerald-400" },
-        red: { bg: "bg-red-500/10", border: "border-red-500/30", text: "text-red-400" },
-        purple: { bg: "bg-purple-500/10", border: "border-purple-500/30", text: "text-purple-400" },
-        blue: { bg: "bg-blue-500/10", border: "border-blue-500/30", text: "text-blue-400" },
-        orange: { bg: "bg-orange-500/10", border: "border-orange-500/30", text: "text-orange-400" },
+        amber: { bg: "bg-[var(--forge-warning)]/10", border: "border-[var(--forge-warning)]/30", text: "text-[var(--forge-warning)]" },
+        emerald: { bg: "bg-[var(--forge-success)]/10", border: "border-[var(--forge-success)]/30", text: "text-[var(--forge-success)]" },
+        red: { bg: "bg-[var(--forge-error)]/10", border: "border-[var(--forge-error)]/30", text: "text-[var(--forge-error)]" },
+        purple: { bg: "bg-[var(--ember)]/10", border: "border-[var(--ember)]/30", text: "text-[var(--ember)]" },
+        blue: { bg: "bg-[var(--forge-info)]/10", border: "border-[var(--forge-info)]/30", text: "text-[var(--forge-info)]" },
+        orange: { bg: "bg-[var(--forge-warning)]/10", border: "border-[var(--forge-warning)]/30", text: "text-[var(--forge-warning)]" },
     };
 
     const colors = colorClasses[config.color] || colorClasses.amber;
@@ -105,19 +105,19 @@ export const ComplicationAlert: React.FC<ComplicationAlertProps> = ({
                                 {config.label}
                             </span>
                             {complication.impact.stressLevel === "high" && (
-                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-red-500/20 text-red-400">
+                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-[var(--forge-error)]/20 text-[var(--forge-error)]">
                                     High Impact
                                 </span>
                             )}
                         </div>
-                        <h4 className="font-semibold text-[var(--text-primary)] mt-1">
+                        <h4 className="font-semibold text-[var(--forge-text-primary)] mt-1">
                             Scope Change Detected
                         </h4>
                     </div>
                     {onDismiss && (
                         <button
                             onClick={onDismiss}
-                            className="p-1 rounded-lg hover:bg-[var(--surface-overlay)] text-[var(--text-muted)]"
+                            className="p-1 rounded-lg hover:bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
                         >
                             <X size={ICON_SIZES.md} />
                         </button>
@@ -125,8 +125,8 @@ export const ComplicationAlert: React.FC<ComplicationAlertProps> = ({
                 </div>
 
                 {/* Client message */}
-                <div className="mt-3 p-3 rounded-lg bg-[var(--surface-base)]">
-                    <p className="text-sm text-[var(--text-secondary)] italic">
+                <div className="mt-3 p-3 rounded-lg bg-[var(--forge-bg-workshop)]">
+                    <p className="text-sm text-[var(--forge-text-secondary)] italic">
                         "{complication.clientMessage}"
                     </p>
                 </div>
@@ -135,16 +135,16 @@ export const ComplicationAlert: React.FC<ComplicationAlertProps> = ({
                 <div className="flex gap-4 mt-3">
                     {complication.impact.timeImpact !== 0 && (
                         <div className="flex items-center gap-1 text-xs">
-                            <Clock size={ICON_SIZES.xs} className={complication.impact.timeImpact > 0 ? "text-red-400" : "text-emerald-400"} />
-                            <span className={complication.impact.timeImpact > 0 ? "text-red-400" : "text-emerald-400"}>
+                            <Clock size={ICON_SIZES.xs} className={complication.impact.timeImpact > 0 ? "text-[var(--forge-error)]" : "text-[var(--forge-success)]"} />
+                            <span className={complication.impact.timeImpact > 0 ? "text-[var(--forge-error)]" : "text-[var(--forge-success)]"}>
                                 {complication.impact.timeImpact > 0 ? "+" : ""}{complication.impact.timeImpact}h
                             </span>
                         </div>
                     )}
                     {complication.impact.budgetImpact !== 0 && (
                         <div className="flex items-center gap-1 text-xs">
-                            <DollarSign size={ICON_SIZES.xs} className={complication.impact.budgetImpact < 0 ? "text-red-400" : "text-emerald-400"} />
-                            <span className={complication.impact.budgetImpact < 0 ? "text-red-400" : "text-emerald-400"}>
+                            <DollarSign size={ICON_SIZES.xs} className={complication.impact.budgetImpact < 0 ? "text-[var(--forge-error)]" : "text-[var(--forge-success)]"} />
+                            <span className={complication.impact.budgetImpact < 0 ? "text-[var(--forge-error)]" : "text-[var(--forge-success)]"}>
                                 {complication.impact.budgetImpact > 0 ? "+" : ""}${Math.abs(complication.impact.budgetImpact)}
                             </span>
                         </div>
@@ -188,12 +188,12 @@ export const ComplicationBadge: React.FC<ComplicationBadgeProps> = ({
     const Icon = TYPE_ICONS[complication.type];
 
     const colorClasses: Record<string, string> = {
-        amber: "bg-amber-500/20 text-amber-400",
-        emerald: "bg-emerald-500/20 text-emerald-400",
-        red: "bg-red-500/20 text-red-400",
-        purple: "bg-purple-500/20 text-purple-400",
-        blue: "bg-blue-500/20 text-blue-400",
-        orange: "bg-orange-500/20 text-orange-400",
+        amber: "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+        emerald: "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+        red: "bg-[var(--forge-error)]/20 text-[var(--forge-error)]",
+        purple: "bg-[var(--ember)]/20 text-[var(--ember)]",
+        blue: "bg-[var(--forge-info)]/20 text-[var(--forge-info)]",
+        orange: "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
     };
 
     return (

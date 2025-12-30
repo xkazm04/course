@@ -185,12 +185,12 @@ const VideoSlotRendererComponent: React.FC<VideoSlotRendererProps> = ({ slot, st
 
     return (
         <PrismaticCard glowColor="indigo">
-            <div className="aspect-video bg-slate-900 rounded-t-2xl relative overflow-hidden">
+            <div className="aspect-video bg-[var(--forge-bg-void)] rounded-t-2xl relative overflow-hidden">
                 {/* Animated Background */}
                 <motion.div
                     animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
                     transition={TRANSITIONS.decorative}
-                    className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-900 opacity-80"
+                    className="absolute inset-0 bg-gradient-to-br from-[var(--ember)]/20 via-[var(--forge-bg-void)] to-[var(--ember-glow)]/20 opacity-80"
                 />
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
 
@@ -266,10 +266,10 @@ const VideoSlotRendererComponent: React.FC<VideoSlotRendererProps> = ({ slot, st
                         >
                             {/* Filled Progress */}
                             <div
-                                className="absolute top-0 left-0 h-full bg-indigo-500 rounded-full transition-colors duration-150"
+                                className="absolute top-0 left-0 h-full bg-[var(--ember)] rounded-full transition-colors duration-150"
                                 style={{
                                     width: `${progress}%`,
-                                    backgroundColor: isProgressHovered ? "rgb(129, 140, 248)" : "rgb(99, 102, 241)", // indigo-400 : indigo-500
+                                    backgroundColor: isProgressHovered ? "var(--ember-glow)" : "var(--ember)",
                                 }}
                             />
 
@@ -299,7 +299,7 @@ const VideoSlotRendererComponent: React.FC<VideoSlotRendererProps> = ({ slot, st
                                 opacity: isProgressHovered ? 1 : 0,
                             }}
                             transition={{ duration: 0.15 }}
-                            className="absolute top-1/2 w-4 h-4 bg-white rounded-full shadow-lg border-2 border-indigo-500 pointer-events-none"
+                            className="absolute top-1/2 w-4 h-4 bg-white rounded-full shadow-lg border-2 border-[var(--ember)] pointer-events-none"
                             style={{
                                 left: `${progress}%`,
                                 transform: "translate(-50%, -50%)",

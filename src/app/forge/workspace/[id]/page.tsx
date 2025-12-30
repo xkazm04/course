@@ -103,7 +103,7 @@ function ProgressSteps({ currentStep }: { currentStep: number }) {
                         <div
                             className={cn(
                                 "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm",
-                                isCompleted && "text-emerald-500",
+                                isCompleted && "text-[var(--forge-success)]",
                                 isCurrent && "bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]",
                                 !isCompleted && !isCurrent && "text-[var(--text-muted)]"
                             )}
@@ -119,7 +119,7 @@ function ProgressSteps({ currentStep }: { currentStep: number }) {
                             <ChevronRight
                                 size={14}
                                 className={cn(
-                                    isCompleted ? "text-emerald-500" : "text-[var(--text-muted)]"
+                                    isCompleted ? "text-[var(--forge-success)]" : "text-[var(--text-muted)]"
                                 )}
                             />
                         )}
@@ -444,8 +444,8 @@ export default function WorkspacePage() {
                             <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">
                                 Expected Outcome
                             </h2>
-                            <div className="flex items-start gap-3 p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                                <Check size={18} className="text-emerald-500 flex-shrink-0 mt-0.5" />
+                            <div className="flex items-start gap-3 p-4 bg-[var(--forge-success)]/10 rounded-lg border border-[var(--forge-success)]/20">
+                                <Check size={18} className="text-[var(--forge-success)] flex-shrink-0 mt-0.5" />
                                 <p className="text-[var(--text-secondary)]">
                                     {challenge.expectedOutcome}
                                 </p>
@@ -467,10 +467,10 @@ export default function WorkspacePage() {
                                             Hint {hint.level}
                                         </span>
                                         <div className="flex items-center gap-3">
-                                            <span className="text-xs text-rose-500">
+                                            <span className="text-xs text-[var(--forge-error)]">
                                                 -{hint.xpPenalty} XP
                                             </span>
-                                            <button className="flex items-center gap-1 text-xs text-amber-500 hover:text-amber-400">
+                                            <button className="flex items-center gap-1 text-xs text-[var(--gold)] hover:text-[var(--gold)]/80">
                                                 <Eye size={12} />
                                                 Reveal
                                             </button>

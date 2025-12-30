@@ -30,9 +30,9 @@ export function CourseProgressCard({ course, onClick, className }: CourseProgres
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className={cn(
-                "w-full text-left p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md",
-                "border border-white/50 dark:border-slate-700/50 rounded-xl",
-                "hover:bg-white/80 dark:hover:bg-slate-700/80 transition-all",
+                "w-full text-left p-4 bg-[var(--forge-bg-elevated)] backdrop-blur-md",
+                "border border-[var(--forge-border-subtle)] rounded-xl",
+                "hover:bg-[var(--forge-bg-workshop)] transition-all",
                 className
             )}
             data-testid={`course-progress-card-${course.courseId}`}
@@ -50,10 +50,10 @@ export function CourseProgressCard({ course, onClick, className }: CourseProgres
                     {course.courseName.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-slate-900 dark:text-slate-100 truncate">
+                    <h4 className="font-bold text-[var(--forge-text-primary)] truncate">
                         {course.courseName}
                     </h4>
-                    <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <div className="flex items-center gap-3 text-xs text-[var(--forge-text-muted)] mt-1">
                         {totalChapters > 0 && (
                             <span className="flex items-center gap-1">
                                 <CheckCircle size={ICON_SIZES.xs} />
@@ -73,7 +73,7 @@ export function CourseProgressCard({ course, onClick, className }: CourseProgres
                     </div>
                 </div>
                 <div className="text-right">
-                    <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <span className="text-lg font-bold text-[var(--forge-text-primary)]">
                         {course.overallProgress}%
                     </span>
                 </div>

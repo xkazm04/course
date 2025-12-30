@@ -35,17 +35,17 @@ export const MetricsDisplay: React.FC<MetricsDisplayProps> = ({
             {/* Overall score */}
             <div
                 className={cn(
-                    "rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] p-6",
+                    "rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] p-6",
                     elevation.elevated
                 )}
             >
                 <div className="flex items-center justify-between">
                     <div>
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
                             Overall Score
                         </h3>
-                        <p className="text-sm text-[var(--text-muted)]">
+                        <p className="text-sm text-[var(--forge-text-muted)]">
                             Combined performance metrics
                         </p>
                     </div>
@@ -83,9 +83,9 @@ const ScoreRing: React.FC<ScoreRingProps> = ({ score, size = 80 }) => {
     const progress = (score / 100) * circumference;
 
     const getColor = () => {
-        if (score >= 80) return "text-emerald-400";
-        if (score >= 60) return "text-amber-400";
-        return "text-red-400";
+        if (score >= 80) return "text-[var(--forge-success)]";
+        if (score >= 60) return "text-[var(--forge-warning)]";
+        return "text-[var(--forge-error)]";
     };
 
     return (
@@ -96,7 +96,7 @@ const ScoreRing: React.FC<ScoreRingProps> = ({ score, size = 80 }) => {
                     cy={size / 2}
                     r={radius}
                     fill="none"
-                    stroke="var(--surface-overlay)"
+                    stroke="var(--forge-bg-anvil)"
                     strokeWidth="8"
                 />
                 <motion.circle
@@ -133,19 +133,19 @@ const ScoreBreakdownItem: React.FC<ScoreBreakdownItemProps> = ({ item }) => {
     return (
         <div>
             <div className="flex items-center justify-between mb-1">
-                <span className="text-sm text-[var(--text-secondary)]">
+                <span className="text-sm text-[var(--forge-text-secondary)]">
                     {item.criterionName}
                 </span>
-                <span className="text-sm font-medium text-[var(--text-primary)]">
+                <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                     {item.score.toFixed(1)} / {item.maxScore}
                 </span>
             </div>
-            <div className="h-2 bg-[var(--surface-overlay)] rounded-full overflow-hidden">
+            <div className="h-2 bg-[var(--forge-bg-anvil)] rounded-full overflow-hidden">
                 <motion.div
                     className={cn(
                         "h-full rounded-full",
-                        percentage >= 80 ? "bg-emerald-500" :
-                        percentage >= 60 ? "bg-amber-500" : "bg-red-500"
+                        percentage >= 80 ? "bg-[var(--forge-success)]" :
+                        percentage >= 60 ? "bg-[var(--forge-warning)]" : "bg-[var(--forge-error)]"
                     )}
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
@@ -165,12 +165,12 @@ const PerformanceMetricsGrid: React.FC<PerformanceMetricsGridProps> = ({ metrics
     return (
         <div
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] p-6",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] p-6",
                 elevation.elevated
             )}
         >
-            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+            <h3 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4">
                 Performance Metrics
             </h3>
 
@@ -235,20 +235,20 @@ const MetricCard: React.FC<MetricCardProps> = ({
     status,
 }) => {
     const statusConfig = {
-        good: { color: "text-emerald-400", bg: "bg-emerald-500/10" },
-        warning: { color: "text-amber-400", bg: "bg-amber-500/10" },
-        bad: { color: "text-red-400", bg: "bg-red-500/10" },
+        good: { color: "text-[var(--forge-success)]", bg: "bg-[var(--forge-success)]/10" },
+        warning: { color: "text-[var(--forge-warning)]", bg: "bg-[var(--forge-warning)]/10" },
+        bad: { color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/10" },
     }[status];
 
     return (
-        <div className="p-4 rounded-lg bg-[var(--surface-overlay)]">
+        <div className="p-4 rounded-lg bg-[var(--forge-bg-anvil)]">
             <div className="flex items-center gap-2 mb-2">
                 <div className={cn("p-1.5 rounded-lg", statusConfig.bg)}>
                     <Icon size={ICON_SIZES.sm} className={statusConfig.color} />
                 </div>
             </div>
-            <p className="text-xl font-bold text-[var(--text-primary)]">{value}</p>
-            <p className="text-xs text-[var(--text-muted)]">
+            <p className="text-xl font-bold text-[var(--forge-text-primary)]">{value}</p>
+            <p className="text-xs text-[var(--forge-text-muted)]">
                 {label}
                 {subtext && <span className="ml-1">({subtext})</span>}
             </p>
@@ -265,12 +265,12 @@ const CodeQualityDisplay: React.FC<CodeQualityDisplayProps> = ({ quality }) => {
     return (
         <div
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] p-6",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] p-6",
                 elevation.elevated
             )}
         >
-            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+            <h3 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4">
                 Code Quality
             </h3>
 
@@ -287,16 +287,16 @@ const CodeQualityDisplay: React.FC<CodeQualityDisplayProps> = ({ quality }) => {
             </div>
 
             {quality.securityIssues.length > 0 && (
-                <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                <div className="mt-4 p-3 rounded-lg bg-[var(--forge-error)]/10 border border-[var(--forge-error)]/20">
                     <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle size={ICON_SIZES.sm} className="text-red-400" />
-                        <span className="text-sm font-medium text-red-400">
+                        <AlertTriangle size={ICON_SIZES.sm} className="text-[var(--forge-error)]" />
+                        <span className="text-sm font-medium text-[var(--forge-error)]">
                             {quality.securityIssues.length} Security Issue(s)
                         </span>
                     </div>
                     <ul className="space-y-1">
                         {quality.securityIssues.slice(0, 3).map((issue, i) => (
-                            <li key={i} className="text-xs text-red-300">
+                            <li key={i} className="text-xs text-[var(--forge-error)]/80">
                                 {issue.title}
                             </li>
                         ))}
@@ -315,8 +315,8 @@ interface QualityMetricProps {
 
 const QualityMetric: React.FC<QualityMetricProps> = ({ label, value }) => (
     <div className="text-center">
-        <div className="text-2xl font-bold text-[var(--text-primary)]">{value}</div>
-        <div className="text-xs text-[var(--text-muted)]">{label}</div>
+        <div className="text-2xl font-bold text-[var(--forge-text-primary)]">{value}</div>
+        <div className="text-xs text-[var(--forge-text-muted)]">{label}</div>
     </div>
 );
 
@@ -324,14 +324,14 @@ const QualityMetric: React.FC<QualityMetricProps> = ({ label, value }) => (
 const CompactMetrics: React.FC<{ scores: SubmissionScores }> = ({ scores }) => (
     <div className="flex items-center gap-4">
         <div className="flex items-center gap-1">
-            <CheckCircle size={ICON_SIZES.sm} className="text-emerald-400" />
+            <CheckCircle size={ICON_SIZES.sm} className="text-[var(--forge-success)]" />
             <span className="text-sm font-medium">{scores.overall.toFixed(1)}</span>
         </div>
-        <div className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
+        <div className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)]">
             <Clock size={ICON_SIZES.xs} />
             <span>{scores.metrics.responseTimeP50.toFixed(0)}ms</span>
         </div>
-        <div className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
+        <div className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)]">
             <TrendingUp size={ICON_SIZES.xs} />
             <span>{scores.metrics.uptime.toFixed(1)}%</span>
         </div>

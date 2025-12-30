@@ -3,14 +3,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Users, Clock, TrendingUp, Award } from "lucide-react";
-import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import type { PathStats } from "../lib/types";
 
 interface SocialProofStatsProps {
   stats: PathStats;
   reducedMotion: boolean;
-  theme?: "light" | "dark";
 }
 
 /**
@@ -19,43 +17,37 @@ interface SocialProofStatsProps {
 export function SocialProofStats({
   stats,
   reducedMotion,
-  theme = "dark",
 }: SocialProofStatsProps) {
-  const isDark = theme === "dark";
-
   const statItems = [
     {
       icon: Users,
       value: `${stats.totalJourneys}+`,
       label: "Success Stories",
-      color: "text-indigo-400",
+      color: "text-[var(--forge-accent-ember)]",
     },
     {
       icon: Clock,
       value: `${stats.averageMonths}mo`,
       label: "Avg. Duration",
-      color: "text-emerald-400",
+      color: "text-[var(--forge-accent-spark)]",
     },
     {
       icon: TrendingUp,
       value: `${stats.successRate}%`,
       label: "Success Rate",
-      color: "text-amber-400",
+      color: "text-[var(--forge-accent-molten)]",
     },
     {
       icon: Award,
       value: "Real",
       label: "Verified Paths",
-      color: "text-purple-400",
+      color: "text-[var(--forge-accent-forge)]",
     },
   ];
 
   return (
     <div
-      className={cn(
-        "flex flex-wrap justify-center gap-6 md:gap-10",
-        isDark ? "text-white" : "text-slate-900"
-      )}
+      className="flex flex-wrap justify-center gap-6 md:gap-10 text-[var(--forge-text-primary)]"
       data-testid="social-proof-stats"
     >
       {statItems.map((item, index) => (
@@ -70,22 +62,12 @@ export function SocialProofStats({
           }}
           data-testid={`stat-${item.label.toLowerCase().replace(" ", "-")}`}
         >
-          <div
-            className={cn(
-              "p-2 rounded-lg",
-              isDark ? "bg-white/5" : "bg-slate-100"
-            )}
-          >
+          <div className="p-2 rounded-lg bg-[var(--forge-bg-elevated)]">
             <item.icon size={ICON_SIZES.md} className={item.color} />
           </div>
           <div>
             <div className="text-lg font-bold">{item.value}</div>
-            <div
-              className={cn(
-                "text-xs",
-                isDark ? "text-slate-400" : "text-slate-500"
-              )}
-            >
+            <div className="text-xs text-[var(--forge-text-muted)]">
               {item.label}
             </div>
           </div>
@@ -109,7 +91,7 @@ export function SocialProofStatsCompact({
 }: SocialProofStatsCompactProps) {
   return (
     <motion.div
-      className="flex items-center gap-4 text-xs text-slate-400"
+      className="flex items-center gap-4 text-xs text-[var(--forge-text-muted)]"
       initial={{ opacity: reducedMotion ? 1 : 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: reducedMotion ? 0 : 0.3 }}
@@ -123,7 +105,7 @@ export function SocialProofStatsCompact({
         <Clock size={ICON_SIZES.xs} />
         ~{stats.averageMonths}mo avg
       </span>
-      <span className="flex items-center gap-1 text-emerald-400">
+      <span className="flex items-center gap-1 text-[var(--forge-accent-spark)]">
         <TrendingUp size={ICON_SIZES.xs} />
         {stats.successRate}%
       </span>

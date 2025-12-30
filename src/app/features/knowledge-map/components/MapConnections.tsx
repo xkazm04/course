@@ -25,7 +25,7 @@ interface MapConnectionsProps {
     selectedNodeId?: string | null;
 }
 
-// Connection color configurations matching previous implementation
+// Connection color configurations - using OpenForge ember for primary connections
 const CONNECTION_STYLES: Record<ConnectionType, {
     stroke: string;
     strokeWidth: number;
@@ -33,7 +33,7 @@ const CONNECTION_STYLES: Record<ConnectionType, {
     dashArray?: string;
 }> = {
     contains: {
-        stroke: "rgb(99, 102, 241)",  // indigo
+        stroke: "var(--ember)",  // ember primary
         strokeWidth: 2,
         opacity: 0.5,
     },
@@ -48,7 +48,7 @@ const CONNECTION_STYLES: Record<ConnectionType, {
         opacity: 0.5,
     },
     related: {
-        stroke: "rgb(148, 163, 184)", // slate
+        stroke: "var(--forge-text-muted)", // muted
         strokeWidth: 1.5,
         opacity: 0.3,
         dashArray: "4 3",
@@ -182,7 +182,7 @@ export const MapConnections: React.FC<MapConnectionsProps> = memo(function MapCo
                 >
                     <polygon
                         points="0 0, 8 3, 0 6"
-                        fill="rgb(99, 102, 241)"
+                        fill="rgb(255, 107, 53)"
                         opacity="0.7"
                     />
                 </marker>
@@ -224,16 +224,16 @@ export const MapConnections: React.FC<MapConnectionsProps> = memo(function MapCo
                 >
                     <polygon
                         points="0 0, 6 2, 0 4"
-                        fill="rgb(148, 163, 184)"
+                        fill="rgb(120, 113, 108)"
                         opacity="0.5"
                     />
                 </marker>
 
                 {/* Gradient for highlighted paths */}
                 <linearGradient id="highlight-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="rgb(99, 102, 241)" />   {/* indigo */}
-                    <stop offset="50%" stopColor="rgb(139, 92, 246)" />  {/* violet */}
-                    <stop offset="100%" stopColor="rgb(168, 85, 247)" /> {/* purple */}
+                    <stop offset="0%" stopColor="rgb(255, 107, 53)" />   {/* ember */}
+                    <stop offset="50%" stopColor="rgb(249, 115, 22)" />  {/* orange */}
+                    <stop offset="100%" stopColor="rgb(234, 88, 12)" />  {/* dark orange */}
                 </linearGradient>
 
                 {/* Recommended path gradient */}

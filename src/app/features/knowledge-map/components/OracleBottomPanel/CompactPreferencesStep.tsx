@@ -58,10 +58,10 @@ export function CompactPreferencesStep({
         <div className="h-full flex flex-col gap-3" data-testid="compact-preferences-step">
             {/* Header */}
             <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                <h3 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                     Set your preferences
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-[var(--forge-text-secondary)]">
                     Customize your learning experience
                 </p>
             </div>
@@ -70,8 +70,8 @@ export function CompactPreferencesStep({
                 {/* Weekly hours */}
                 <div className="flex-1">
                     <div className="flex items-center gap-1.5 mb-2">
-                        <Clock size={12} className="text-slate-400" />
-                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                        <Clock size={12} className="text-[var(--forge-text-muted)]" />
+                        <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Hours per week
                         </span>
                     </div>
@@ -84,8 +84,8 @@ export function CompactPreferencesStep({
                                     "px-3 py-1.5 rounded-lg text-xs font-medium",
                                     "transition-colors",
                                     weeklyHours === hours
-                                        ? "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
-                                        : "bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                                        ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-border-subtle)]"
                                 )}
                             >
                                 {hours}h
@@ -97,8 +97,8 @@ export function CompactPreferencesStep({
                 {/* Learning style */}
                 <div className="flex-1">
                     <div className="flex items-center gap-1.5 mb-2">
-                        <BookOpen size={12} className="text-slate-400" />
-                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                        <BookOpen size={12} className="text-[var(--forge-text-muted)]" />
+                        <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Learning style
                         </span>
                     </div>
@@ -116,8 +116,8 @@ export function CompactPreferencesStep({
                                     "text-xs font-medium",
                                     "transition-colors",
                                     learningStyle === option.id
-                                        ? "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
-                                        : "bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                                        ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-border-subtle)]"
                                 )}
                             >
                                 <span>{option.icon}</span>
@@ -130,8 +130,8 @@ export function CompactPreferencesStep({
                 {/* Focus areas */}
                 <div className="flex-1">
                     <div className="flex items-center gap-1.5 mb-2">
-                        <Target size={12} className="text-slate-400" />
-                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                        <Target size={12} className="text-[var(--forge-text-muted)]" />
+                        <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Focus areas
                         </span>
                     </div>
@@ -154,8 +154,8 @@ export function CompactPreferencesStep({
                                         "text-xs font-medium",
                                         "transition-colors",
                                         isSelected
-                                            ? "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
-                                            : "bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                                            ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                            : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-border-subtle)]"
                                     )}
                                 >
                                     {isSelected && <Check size={10} />}

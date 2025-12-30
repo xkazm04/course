@@ -265,8 +265,8 @@ export const VariantD: React.FC = () => {
             <div className="flex justify-between items-start">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
-                            <Map className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                        <div className="p-2 bg-[var(--ember)]/20 rounded-xl">
+                            <Map className="w-6 h-6 text-[var(--ember)]" />
                         </div>
                         <h2 className="text-3xl font-black text-[var(--text-primary)]">
                             Knowledge Map
@@ -275,10 +275,10 @@ export const VariantD: React.FC = () => {
                             onClick={handleShareView}
                             className={cn(
                                 "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg",
-                                "bg-[var(--surface-elevated)] border border-[var(--border-subtle)]",
-                                "text-[var(--text-secondary)] hover:text-[var(--accent-primary)]",
-                                "hover:border-[var(--accent-primary)] transition-colors",
-                                urlCopied && "bg-emerald-50 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
+                                "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)]",
+                                "text-[var(--forge-text-secondary)] hover:text-[var(--ember)]",
+                                "hover:border-[var(--ember)] transition-colors",
+                                urlCopied && "bg-[var(--forge-success)]/10 border-[var(--forge-success)]/50 text-[var(--forge-success)]"
                             )}
                             title="Copy shareable URL for current view"
                             data-testid="share-view-btn"
@@ -403,10 +403,10 @@ export const VariantD: React.FC = () => {
                         onClick={() => setShowNav(!showNav)}
                         className={cn(
                             "absolute -left-3 top-1/2 -translate-y-1/2 z-10",
-                            "w-6 h-12 bg-white dark:bg-slate-800 rounded-r-lg",
-                            "border border-l-0 border-slate-200 dark:border-slate-700",
+                            "w-6 h-12 bg-[var(--forge-bg-elevated)] rounded-r-lg",
+                            "border border-l-0 border-[var(--forge-border-subtle)]",
                             "flex items-center justify-center",
-                            "hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors",
+                            "hover:bg-[var(--forge-bg-workshop)] transition-colors",
                             "shadow-sm"
                         )}
                         title={showNav ? "Hide categories" : "Show categories"}
@@ -414,7 +414,7 @@ export const VariantD: React.FC = () => {
                     >
                         <motion.span
                             animate={{ rotate: showNav ? 180 : 0 }}
-                            className="text-slate-400"
+                            className="text-[var(--forge-text-muted)]"
                         >
                             ›
                         </motion.span>
@@ -427,10 +427,10 @@ export const VariantD: React.FC = () => {
                             className={cn(
                                 "absolute bottom-4 right-4 z-10",
                                 "px-3 py-1.5 rounded-lg text-xs font-medium",
-                                "bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm",
-                                "border border-slate-200 dark:border-slate-700",
-                                "hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors",
-                                showConnections && "ring-2 ring-indigo-500/50"
+                                "bg-[var(--forge-bg-elevated)]/80 backdrop-blur-sm",
+                                "border border-[var(--forge-border-subtle)]",
+                                "hover:bg-[var(--forge-bg-workshop)] transition-colors",
+                                showConnections && "ring-2 ring-[var(--ember)]/50"
                             )}
                             title={showConnections ? "Hide connections panel" : "Show connections panel"}
                             data-testid="toggle-connections-panel-btn"
@@ -444,7 +444,7 @@ export const VariantD: React.FC = () => {
             {/* Stats Panel */}
             <StatCardGrid columns={4} data-testid="knowledge-map-stats">
                 <StatCard
-                    icon={<BookOpen className="w-5 h-5 text-indigo-500" />}
+                    icon={<BookOpen className="w-5 h-5 text-[var(--ember)]" />}
                     value={stats.total}
                     label={categoryFilter
                         ? CATEGORY_META.find(c => c.id === categoryFilter)?.name || "Topics"
@@ -453,7 +453,7 @@ export const VariantD: React.FC = () => {
                     data-testid="stats-total-topics"
                 />
                 <StatCard
-                    icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                    icon={<CheckCircle2 className="w-5 h-5 text-[var(--forge-success)]" />}
                     value={stats.completed}
                     label="Completed"
                     glowColor="emerald"
@@ -465,7 +465,7 @@ export const VariantD: React.FC = () => {
                         <motion.div
                             animate={{ scale: [1, 1.1, 1] }}
                             transition={{ duration: 2, repeat: Infinity }}
-                            className="w-2 h-2 bg-indigo-500 rounded-full"
+                            className="w-2 h-2 bg-[var(--ember)] rounded-full"
                         />
                     }
                     value={stats.inProgress}
@@ -474,7 +474,7 @@ export const VariantD: React.FC = () => {
                     data-testid="stats-in-progress"
                 />
                 <StatCard
-                    icon={<Clock className="w-5 h-5 text-purple-500" />}
+                    icon={<Clock className="w-5 h-5 text-[var(--forge-accent)]" />}
                     value={`${stats.totalHours}h`}
                     label="Total Content"
                     glowColor="purple"

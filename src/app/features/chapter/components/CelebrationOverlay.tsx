@@ -42,41 +42,41 @@ interface Particle {
 const CELEBRATION_CONFIGS = {
     progress: {
         icon: Star,
-        color: "text-yellow-400",
-        bgColor: "from-yellow-900/30 via-amber-900/20 to-orange-900/30",
-        borderColor: "border-yellow-600/30",
+        color: "text-[var(--gold)]",
+        bgColor: "from-[var(--gold)]/30 via-[var(--forge-warning)]/20 to-[var(--ember)]/30",
+        borderColor: "border-[var(--gold)]/30",
         title: "Great Progress!",
         emojis: ["⭐", "✨", "🌟"],
     },
     streak: {
         icon: Zap,
-        color: "text-orange-400",
-        bgColor: "from-orange-900/30 via-red-900/20 to-pink-900/30",
-        borderColor: "border-orange-600/30",
+        color: "text-[var(--ember)]",
+        bgColor: "from-[var(--ember)]/30 via-[var(--forge-error)]/20 to-[var(--ember-glow)]/30",
+        borderColor: "border-[var(--ember)]/30",
         title: "Streak Active!",
         emojis: ["🔥", "⚡", "💫"],
     },
     mastery: {
         icon: Trophy,
-        color: "text-purple-400",
-        bgColor: "from-purple-900/30 via-indigo-900/20 to-blue-900/30",
-        borderColor: "border-purple-600/30",
+        color: "text-[var(--ember-glow)]",
+        bgColor: "from-[var(--ember-glow)]/30 via-[var(--forge-info)]/20 to-[var(--forge-info)]/30",
+        borderColor: "border-[var(--ember-glow)]/30",
         title: "Mastery Achieved!",
         emojis: ["🏆", "👑", "💎"],
     },
     speed: {
         icon: Sparkles,
-        color: "text-cyan-400",
-        bgColor: "from-cyan-900/30 via-teal-900/20 to-emerald-900/30",
-        borderColor: "border-cyan-600/30",
+        color: "text-[var(--forge-info)]",
+        bgColor: "from-[var(--forge-info)]/30 via-[var(--forge-success)]/20 to-[var(--forge-success)]/30",
+        borderColor: "border-[var(--forge-info)]/30",
         title: "Speed Bonus!",
         emojis: ["🚀", "💨", "⚡"],
     },
     completion: {
         icon: Award,
-        color: "text-green-400",
-        bgColor: "from-green-900/30 via-emerald-900/20 to-teal-900/30",
-        borderColor: "border-green-600/30",
+        color: "text-[var(--forge-success)]",
+        bgColor: "from-[var(--forge-success)]/30 via-[var(--forge-success)]/20 to-[var(--forge-info)]/30",
+        borderColor: "border-[var(--forge-success)]/30",
         title: "Section Complete!",
         emojis: ["🎉", "🎊", "✅"],
     },
@@ -209,7 +209,7 @@ export function CelebrationOverlay({
                         {/* Dismiss button */}
                         <button
                             onClick={handleDismiss}
-                            className="absolute top-3 right-3 p-1.5 rounded-full bg-slate-800/50 text-slate-400 hover:text-slate-200 transition-colors z-10"
+                            className="absolute top-3 right-3 p-1.5 rounded-full bg-[var(--forge-bg-anvil)]/50 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors z-10"
                             data-testid="celebration-dismiss-btn"
                         >
                             <X size={16} />
@@ -227,8 +227,8 @@ export function CelebrationOverlay({
                                 <div
                                     className={cn(
                                         "p-4 rounded-2xl",
-                                        "bg-gradient-to-br from-slate-800 to-slate-900",
-                                        "border border-slate-700/50"
+                                        "bg-gradient-to-br from-[var(--forge-bg-anvil)] to-[var(--forge-bg-void)]",
+                                        "border border-[var(--forge-border-subtle)]"
                                     )}
                                 >
                                     <motion.div
@@ -263,7 +263,7 @@ export function CelebrationOverlay({
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.4 }}
-                                    className="text-slate-300 leading-relaxed"
+                                    className="text-[var(--forge-text-secondary)] leading-relaxed"
                                 >
                                     {message}
                                 </motion.p>
@@ -277,10 +277,10 @@ export function CelebrationOverlay({
                                 onClick={handleDismiss}
                                 className={cn(
                                     "mt-6 px-6 py-2.5 rounded-lg font-medium",
-                                    "bg-gradient-to-r from-slate-700 to-slate-800",
-                                    "border border-slate-600/50",
-                                    "text-slate-200 hover:text-white",
-                                    "hover:from-slate-600 hover:to-slate-700",
+                                    "bg-gradient-to-r from-[var(--forge-bg-elevated)] to-[var(--forge-bg-anvil)]",
+                                    "border border-[var(--forge-border-default)]",
+                                    "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)]",
+                                    "hover:from-[var(--forge-bg-anvil)] hover:to-[var(--forge-bg-elevated)]",
                                     "transition-all"
                                 )}
                                 data-testid="celebration-continue-btn"
@@ -296,7 +296,7 @@ export function CelebrationOverlay({
                             transition={{ duration: autoDismissMs / 1000, ease: "linear" }}
                             className={cn(
                                 "h-1 origin-left",
-                                config.color.replace("text-", "bg-").replace("400", "600")
+                                config.color.replace("text-", "bg-")
                             )}
                         />
                     </motion.div>

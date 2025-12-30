@@ -70,19 +70,19 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
             {/* Legend */}
             <div className="flex flex-wrap gap-4 mt-6 text-xs text-[var(--text-muted)]">
                 <span className="flex items-center gap-1">
-                    <CheckCircle size={ICON_SIZES.xs} className="text-emerald-400" />
+                    <CheckCircle size={ICON_SIZES.xs} className="text-[var(--forge-success)]" />
                     Completed
                 </span>
                 <span className="flex items-center gap-1">
-                    <Circle size={ICON_SIZES.xs} className="text-blue-400" />
+                    <Circle size={ICON_SIZES.xs} className="text-[var(--forge-info)]" />
                     Current
                 </span>
                 <span className="flex items-center gap-1">
-                    <Circle size={ICON_SIZES.xs} className="text-[var(--text-muted)]" />
+                    <Circle size={ICON_SIZES.xs} className="text-[var(--forge-text-muted)]" />
                     Upcoming
                 </span>
                 <span className="flex items-center gap-1">
-                    <AlertTriangle size={ICON_SIZES.xs} className="text-amber-400" />
+                    <AlertTriangle size={ICON_SIZES.xs} className="text-[var(--forge-warning)]" />
                     Complication
                 </span>
             </div>
@@ -147,27 +147,27 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, index, total }) =>
         switch (event.type) {
             case "phase":
                 if (event.status === "completed") {
-                    return <CheckCircle size={ICON_SIZES.md} className="text-emerald-400" />;
+                    return <CheckCircle size={ICON_SIZES.md} className="text-[var(--forge-success)]" />;
                 }
                 if (event.status === "current") {
-                    return <Circle size={ICON_SIZES.md} className="text-blue-400 fill-blue-400" />;
+                    return <Circle size={ICON_SIZES.md} className="text-[var(--forge-info)] fill-[var(--forge-info)]" />;
                 }
-                return <Circle size={ICON_SIZES.md} className="text-[var(--text-muted)]" />;
+                return <Circle size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />;
             case "complication":
-                return <AlertTriangle size={ICON_SIZES.md} className="text-amber-400" />;
+                return <AlertTriangle size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />;
             case "deadline":
-                return <Flag size={ICON_SIZES.md} className="text-red-400" />;
+                return <Flag size={ICON_SIZES.md} className="text-[var(--forge-error)]" />;
             default:
                 return <Circle size={ICON_SIZES.md} />;
         }
     };
 
     const getNodeColor = () => {
-        if (event.status === "completed") return "bg-emerald-500";
-        if (event.status === "current") return "bg-blue-500";
-        if (event.type === "complication") return "bg-amber-500";
-        if (event.type === "deadline") return "bg-red-500";
-        return "bg-[var(--surface-overlay)]";
+        if (event.status === "completed") return "bg-[var(--forge-success)]";
+        if (event.status === "current") return "bg-[var(--forge-info)]";
+        if (event.type === "complication") return "bg-[var(--forge-warning)]";
+        if (event.type === "deadline") return "bg-[var(--forge-error)]";
+        return "bg-[var(--forge-bg-elevated)]";
     };
 
     return (
@@ -183,7 +183,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, index, total }) =>
                 className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center z-10",
                     getNodeColor(),
-                    event.status === "current" && "ring-4 ring-blue-500/30"
+                    event.status === "current" && "ring-4 ring-[var(--forge-info)]/30"
                 )}
                 whileHover={{ scale: 1.1 }}
             >
@@ -194,19 +194,19 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, index, total }) =>
             <div className="mt-3 text-center">
                 <p className={cn(
                     "text-xs font-medium",
-                    event.status === "current" ? "text-[var(--text-primary)]" :
-                    event.status === "completed" ? "text-emerald-400" :
-                    "text-[var(--text-muted)]"
+                    event.status === "current" ? "text-[var(--forge-text-primary)]" :
+                    event.status === "completed" ? "text-[var(--forge-success)]" :
+                    "text-[var(--forge-text-muted)]"
                 )}>
                     {event.label}
                 </p>
                 {event.description && (
-                    <p className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-1">
+                    <p className="text-xs text-[var(--forge-text-muted)] mt-0.5 line-clamp-1">
                         {event.description}
                     </p>
                 )}
                 {event.date && (
-                    <p className="text-xs text-red-400 mt-0.5">
+                    <p className="text-xs text-[var(--forge-error)] mt-0.5">
                         {formatDate(new Date(event.date))}
                     </p>
                 )}
@@ -232,9 +232,9 @@ export const CompactTimeline: React.FC<CompactTimelineProps> = ({
                     <motion.div
                         className={cn(
                             "w-3 h-3 rounded-full",
-                            index < currentPhase ? "bg-emerald-500" :
-                            index === currentPhase ? "bg-blue-500" :
-                            "bg-[var(--surface-overlay)]"
+                            index < currentPhase ? "bg-[var(--forge-success)]" :
+                            index === currentPhase ? "bg-[var(--forge-info)]" :
+                            "bg-[var(--forge-bg-elevated)]"
                         )}
                         whileHover={{ scale: 1.2 }}
                         title={phase.name}
@@ -242,7 +242,7 @@ export const CompactTimeline: React.FC<CompactTimelineProps> = ({
                     {index < phases.length - 1 && (
                         <div className={cn(
                             "flex-1 h-0.5 min-w-[8px]",
-                            index < currentPhase ? "bg-emerald-500" : "bg-[var(--surface-overlay)]"
+                            index < currentPhase ? "bg-[var(--forge-success)]" : "bg-[var(--forge-bg-elevated)]"
                         )} />
                     )}
                 </React.Fragment>

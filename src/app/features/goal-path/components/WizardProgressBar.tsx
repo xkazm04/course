@@ -51,16 +51,16 @@ const StepCircle = ({
             <div
                 className={cn(
                     "relative w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors",
-                    isCompleted && "bg-emerald-500",
-                    isCurrent && "bg-indigo-500",
-                    isUpcoming && "bg-slate-200 dark:bg-slate-700"
+                    isCompleted && "bg-[var(--forge-success)]",
+                    isCurrent && "bg-[var(--ember)]",
+                    isUpcoming && "bg-[var(--forge-bg-elevated)]"
                 )}
                 data-testid={`wizard-progress-step-${step.key}`}
             >
                 {/* Pulse ring animation for current step */}
                 {isCurrent && (
                     <motion.div
-                        className="absolute inset-0 rounded-full bg-indigo-500/30"
+                        className="absolute inset-0 rounded-full bg-[var(--ember)]/30"
                         initial={prefersReducedMotion ? false : { scale: 1, opacity: 0.6 }}
                         animate={
                             prefersReducedMotion
@@ -134,9 +134,8 @@ const StepCircle = ({
                                     : { duration: DURATION_FAST }
                             }
                             className={cn(
-                                isCurrent && "text-white",
-                                isUpcoming &&
-                                    "text-slate-500 dark:text-slate-400"
+                                isCurrent && "text-[var(--forge-text-primary)]",
+                                isUpcoming && "text-[var(--forge-text-muted)]"
                             )}
                         >
                             {stepNumber}
@@ -149,9 +148,9 @@ const StepCircle = ({
             <span
                 className={cn(
                     "text-xs font-bold uppercase tracking-widest transition-colors",
-                    isCompleted && "text-emerald-600 dark:text-emerald-400",
-                    isCurrent && "text-indigo-600 dark:text-indigo-400",
-                    isUpcoming && "text-slate-500 dark:text-slate-400"
+                    isCompleted && "text-[var(--forge-success)]",
+                    isCurrent && "text-[var(--ember)]",
+                    isUpcoming && "text-[var(--forge-text-muted)]"
                 )}
             >
                 {step.label}
@@ -174,9 +173,9 @@ const ConnectorLine = ({
     prefersReducedMotion,
 }: ConnectorLineProps) => {
     return (
-        <div className="flex-1 h-0.5 bg-slate-200 dark:bg-slate-700 mx-2 relative overflow-hidden self-start mt-4">
+        <div className="flex-1 h-0.5 bg-[var(--forge-bg-elevated)] mx-2 relative overflow-hidden self-start mt-4">
             <motion.div
-                className="absolute inset-y-0 left-0 bg-emerald-500"
+                className="absolute inset-y-0 left-0 bg-[var(--forge-success)]"
                 initial={prefersReducedMotion ? { width: isCompleted ? "100%" : "0%" } : { width: "0%" }}
                 animate={{ width: isCompleted ? "100%" : "0%" }}
                 transition={

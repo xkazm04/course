@@ -66,7 +66,7 @@ export const PeerReviewPanel: React.FC<PeerReviewPanelProps> = ({
             <div className="p-4 border-b border-[var(--border-subtle)]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <ThumbsUp size={ICON_SIZES.md} className="text-purple-400" />
+                        <ThumbsUp size={ICON_SIZES.md} className="text-[var(--ember-glow)]" />
                         <h3 className="font-semibold text-[var(--text-primary)]">
                             Peer Reviews
                         </h3>
@@ -103,7 +103,7 @@ export const PeerReviewPanel: React.FC<PeerReviewPanelProps> = ({
                     {!isReviewing ? (
                         <button
                             onClick={() => setIsReviewing(true)}
-                            className="w-full py-3 rounded-lg bg-purple-500/20 text-purple-400 font-medium hover:bg-purple-500/30 transition-colors"
+                            className="w-full py-3 rounded-lg bg-[var(--ember-glow)]/20 text-[var(--ember-glow)] font-medium hover:bg-[var(--ember-glow)]/30 transition-colors"
                         >
                             Write a Review
                         </button>
@@ -164,7 +164,7 @@ export const PeerReviewPanel: React.FC<PeerReviewPanelProps> = ({
                                 <button
                                     onClick={handleSubmit}
                                     disabled={uxScore === 0}
-                                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-purple-500 text-white font-medium hover:bg-purple-600 transition-colors disabled:opacity-50"
+                                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-[var(--ember-glow)] text-white font-medium hover:bg-[var(--ember-glow)]/90 transition-colors disabled:opacity-50"
                                 >
                                     <Send size={ICON_SIZES.sm} />
                                     Submit Review
@@ -223,7 +223,7 @@ const StarRating: React.FC<StarRatingProps> = ({ value, onChange, max = 5 }) => 
                             size={24}
                             className={cn(
                                 "transition-colors",
-                                isActive ? "text-amber-400 fill-amber-400" : "text-[var(--text-muted)]"
+                                isActive ? "text-[var(--gold)] fill-[var(--gold)]" : "text-[var(--text-muted)]"
                             )}
                         />
                     </motion.button>
@@ -267,7 +267,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
                     </div>
                 </div>
                 <div className="flex items-center gap-1">
-                    <Star size={ICON_SIZES.sm} className="text-amber-400 fill-amber-400" />
+                    <Star size={ICON_SIZES.sm} className="text-[var(--gold)] fill-[var(--gold)]" />
                     <span className="text-sm font-medium text-[var(--text-primary)]">
                         {averageScore.toFixed(1)}
                     </span>

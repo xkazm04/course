@@ -41,16 +41,16 @@ export function ContinueLearningSection({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-                "bg-white/60 dark:bg-slate-800/60 backdrop-blur-md",
-                "border border-white/50 dark:border-slate-700/50 rounded-2xl p-6",
+                "bg-[var(--forge-bg-elevated)] backdrop-blur-md",
+                "border border-[var(--forge-border-subtle)] rounded-2xl p-6",
                 className
             )}
             data-testid="continue-learning-section"
         >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                    <BookOpen className="text-indigo-500 dark:text-indigo-400" size={ICON_SIZES.md} />
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <BookOpen className="text-[var(--ember)]" size={ICON_SIZES.md} />
+                    <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         Continue Learning
                     </h2>
                 </div>
@@ -58,7 +58,7 @@ export function ContinueLearningSection({
                     {onExport && (
                         <button
                             onClick={onExport}
-                            className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                            className="p-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                             title="Export progress data"
                             data-testid="export-progress-btn"
                         >
@@ -68,7 +68,7 @@ export function ContinueLearningSection({
                     {onClearAll && (
                         <button
                             onClick={onClearAll}
-                            className="p-2 text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                            className="p-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-error)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                             title="Clear all progress"
                             data-testid="clear-progress-btn"
                         >
@@ -79,18 +79,18 @@ export function ContinueLearningSection({
             </div>
 
             <div className="flex items-center gap-6 mb-6 text-sm">
-                <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                <div className="flex items-center gap-2 text-[var(--forge-text-secondary)]">
                     <Clock size={ICON_SIZES.sm} />
                     <span>
-                        <strong className="text-slate-900 dark:text-slate-100">
+                        <strong className="text-[var(--forge-text-primary)]">
                             {formatWatchTime(totalWatchTime)}
                         </strong>{" "}
                         total watch time
                     </span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                <div className="flex items-center gap-2 text-[var(--forge-text-secondary)]">
                     <span>
-                        <strong className="text-slate-900 dark:text-slate-100">
+                        <strong className="text-[var(--forge-text-primary)]">
                             {overallCompletion}%
                         </strong>{" "}
                         overall completion
@@ -107,7 +107,7 @@ export function ContinueLearningSection({
 
             {otherItems.length > 0 && (
                 <div className="space-y-2">
-                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <p className="text-xs font-medium text-[var(--forge-text-muted)] uppercase tracking-wider">
                         Also in progress
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -115,13 +115,13 @@ export function ContinueLearningSection({
                             <button
                                 key={item.courseId}
                                 onClick={() => onContinue?.(item)}
-                                className="p-3 bg-white/50 dark:bg-slate-700/50 rounded-xl text-left hover:bg-white/80 dark:hover:bg-slate-600/80 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                className="p-3 bg-[var(--forge-bg-anvil)] rounded-xl text-left hover:bg-[var(--forge-bg-workshop)] transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                                 data-testid={`continue-learning-item-${item.courseId}`}
                             >
-                                <h4 className="font-medium text-sm text-slate-900 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                                <h4 className="font-medium text-sm text-[var(--forge-text-primary)] truncate group-hover:text-[var(--ember)]">
                                     {item.courseName}
                                 </h4>
-                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
+                                <p className="text-xs text-[var(--forge-text-muted)] mt-1 truncate">
                                     {item.chapterTitle}
                                 </p>
                                 <ProgressBar

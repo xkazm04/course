@@ -20,21 +20,21 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
     return (
         <div className="space-y-4">
             {/* Summary */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
-                        <FileCode size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
-                        <span className="text-sm text-[var(--text-primary)]">
+                        <FileCode size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                        <span className="text-sm text-[var(--forge-text-primary)]">
                             {diff.filesChanged} files changed
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Plus size={ICON_SIZES.sm} className="text-emerald-400" />
-                        <span className="text-sm text-emerald-400">+{diff.linesAdded}</span>
+                        <Plus size={ICON_SIZES.sm} className="text-[var(--forge-success)]" />
+                        <span className="text-sm text-[var(--forge-success)]">+{diff.linesAdded}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Minus size={ICON_SIZES.sm} className="text-red-400" />
-                        <span className="text-sm text-red-400">-{diff.linesRemoved}</span>
+                        <Minus size={ICON_SIZES.sm} className="text-[var(--forge-error)]" />
+                        <span className="text-sm text-[var(--forge-error)]">-{diff.linesRemoved}</span>
                     </div>
                 </div>
             </div>
@@ -59,40 +59,40 @@ const FileDiffCard: React.FC<FileDiffCardProps> = ({ fileDiff, mode }) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
     const statusColors = {
-        modified: "text-amber-400 bg-amber-500/10",
-        added: "text-emerald-400 bg-emerald-500/10",
-        deleted: "text-red-400 bg-red-500/10",
+        modified: "text-[var(--forge-warning)] bg-[var(--forge-warning)]/10",
+        added: "text-[var(--forge-success)] bg-[var(--forge-success)]/10",
+        deleted: "text-[var(--forge-error)] bg-[var(--forge-error)]/10",
     }[fileDiff.status];
 
     return (
-        <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] overflow-hidden", elevation.elevated)}>
+        <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] overflow-hidden", elevation.elevated)}>
             {/* Header */}
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full flex items-center justify-between p-3 hover:bg-[var(--surface-overlay)] transition-colors"
+                className="w-full flex items-center justify-between p-3 hover:bg-[var(--forge-bg-anvil)] transition-colors"
             >
                 <div className="flex items-center gap-3">
                     <span className={cn("px-2 py-0.5 rounded text-xs font-medium", statusColors)}>
                         {fileDiff.status}
                     </span>
-                    <span className="text-sm text-[var(--text-primary)] font-mono">
+                    <span className="text-sm text-[var(--forge-text-primary)] font-mono">
                         {fileDiff.path}
                     </span>
                 </div>
                 <div className="flex items-center gap-3">
-                    <span className="text-xs text-emerald-400">+{fileDiff.additions}</span>
-                    <span className="text-xs text-red-400">-{fileDiff.deletions}</span>
+                    <span className="text-xs text-[var(--forge-success)]">+{fileDiff.additions}</span>
+                    <span className="text-xs text-[var(--forge-error)]">-{fileDiff.deletions}</span>
                     {isExpanded ? (
-                        <ChevronUp size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
+                        <ChevronUp size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                     ) : (
-                        <ChevronDown size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
+                        <ChevronDown size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                     )}
                 </div>
             </button>
 
             {/* Hunks */}
             {isExpanded && (
-                <div className="border-t border-[var(--border-subtle)]">
+                <div className="border-t border-[var(--forge-border-subtle)]">
                     {fileDiff.hunks.map((hunk, i) => (
                         <DiffHunkView key={i} hunk={hunk} />
                     ))}
@@ -110,11 +110,11 @@ interface DiffHunkViewProps {
 const DiffHunkView: React.FC<DiffHunkViewProps> = ({ hunk }) => (
     <div className="font-mono text-xs">
         {/* Hunk header */}
-        <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border-b border-[var(--border-subtle)]">
+        <div className="px-3 py-1 bg-[var(--forge-info)]/10 text-[var(--forge-info)] border-b border-[var(--forge-border-subtle)]">
             @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
         </div>
         {/* Lines */}
-        <div className="divide-y divide-[var(--border-subtle)]">
+        <div className="divide-y divide-[var(--forge-border-subtle)]">
             {hunk.changes.map((change, i) => (
                 <DiffLine key={i} type={change.type} content={change.content} lineNumber={change.lineNumber} />
             ))}
@@ -131,9 +131,9 @@ interface DiffLineProps {
 
 const DiffLine: React.FC<DiffLineProps> = ({ type, content, lineNumber }) => {
     const styles = {
-        add: "bg-emerald-500/10 text-emerald-300",
-        remove: "bg-red-500/10 text-red-300",
-        context: "text-[var(--text-muted)]",
+        add: "bg-[var(--forge-success)]/10 text-[var(--forge-success)]",
+        remove: "bg-[var(--forge-error)]/10 text-[var(--forge-error)]",
+        context: "text-[var(--forge-text-muted)]",
     }[type];
 
     const prefix = {
@@ -144,7 +144,7 @@ const DiffLine: React.FC<DiffLineProps> = ({ type, content, lineNumber }) => {
 
     return (
         <div className={cn("flex", styles)}>
-            <span className="w-12 px-2 text-right text-[var(--text-muted)] border-r border-[var(--border-subtle)] select-none">
+            <span className="w-12 px-2 text-right text-[var(--forge-text-muted)] border-r border-[var(--forge-border-subtle)] select-none">
                 {lineNumber || ""}
             </span>
             <span className="w-6 text-center select-none">{prefix}</span>
@@ -159,16 +159,16 @@ interface DiffSummaryProps {
 }
 
 export const DiffSummary: React.FC<DiffSummaryProps> = ({ diff }) => (
-    <div className="flex items-center gap-4 p-3 rounded-lg bg-[var(--surface-overlay)]">
+    <div className="flex items-center gap-4 p-3 rounded-lg bg-[var(--forge-bg-anvil)]">
         <div className="flex items-center gap-1">
-            <FileCode size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
-            <span className="text-sm text-[var(--text-primary)]">{diff.filesChanged} files</span>
+            <FileCode size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+            <span className="text-sm text-[var(--forge-text-primary)]">{diff.filesChanged} files</span>
         </div>
-        <div className="flex items-center gap-1 text-emerald-400">
+        <div className="flex items-center gap-1 text-[var(--forge-success)]">
             <Plus size={ICON_SIZES.xs} />
             <span className="text-sm">{diff.linesAdded}</span>
         </div>
-        <div className="flex items-center gap-1 text-red-400">
+        <div className="flex items-center gap-1 text-[var(--forge-error)]">
             <Minus size={ICON_SIZES.xs} />
             <span className="text-sm">{diff.linesRemoved}</span>
         </div>

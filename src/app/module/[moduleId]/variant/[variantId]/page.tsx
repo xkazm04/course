@@ -4,78 +4,29 @@ import React from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/app/shared/lib/utils";
 import { BackgroundAtmosphere, VariantTabs, Breadcrumb, BreadcrumbItem } from "@/app/shared/components";
 import { ThemeToggle } from "@/app/features/theme";
-import { modules, getModuleById, getVariantIndex } from "@/app/shared/lib/modules";
+import { getModuleById, getVariantIndex } from "@/app/shared/lib/modules";
 
 // Feature imports - Legacy variants
-import {
-    VariantB as OverviewB,
-    VariantF as OverviewF,
-} from "@/app/features/overview";
-import { KnowledgeMap, KnowledgeMapWithOracle } from "@/app/features/knowledge-map";
+import { KnowledgeMap } from "@/app/features/knowledge-map";
 import {
     VariantD as CareerD
 } from "@/app/features/career-mapping";
-import { ChapterView } from "@/app/features/chapter";
+import { ChapterView, ChapterClassicVariants } from "@/app/features/chapter";
 import { MyNotesPage } from "@/app/features/bookmarks";
 import { CertificatesPage } from "@/app/features/certificates";
 
-// Polymorphic variant imports - New state machine pattern
-// These replace the legacy VariantX imports with mode-based components
-import {
-    LandingPolymorphic,
-    type LandingMode,
-} from "@/app/features/landing";
-import { VariantE as CareerOracle } from "@/app/features/goal-path";
-
-/**
- * Variant ID to Mode Mapping
- *
- * This maps the URL variant IDs to the polymorphic component modes.
- * The polymorphic pattern treats variants as "modes" or "states" of
- * a single component, making it trivial to add new variants.
- */
-const variantToLandingMode: Record<string, LandingMode> = {
-    spatial: "spatial",
-    dark: "dark",
-};
-
-/**
- * Polymorphic Variant Component Factory
- *
- * Creates variant components using the new polymorphic pattern.
- * This demonstrates how the "variant pattern as state machine" works:
- * - One component, multiple modes
- * - Mode changes transform rendering strategy
- * - Same data flows through all modes
- */
-const createPolymorphicVariants = () => ({
-    // Landing uses polymorphic pattern - single component with mode prop
-    landing: {
-        spatial: <LandingPolymorphic mode="spatial" />,
-        dark: <LandingPolymorphic mode="dark" />,
-    },
-    // Goal Path - AI Career Oracle with predictive intelligence
-    "goal-path": {
-        "career-oracle": <CareerOracle />,
-    },
-});
-
-// Legacy variant components (these will gradually migrate to polymorphic pattern)
-const legacyVariantComponents: Record<string, Record<string, React.ReactNode>> = {
+// Variant components
+const variantComponents: Record<string, Record<string, React.ReactNode>> = {
     overview: {
-        "split-view": <OverviewB />,
         "knowledge-map": <KnowledgeMap height="calc(100vh - 180px)" />,
-        "oracle-map": <KnowledgeMapWithOracle height="calc(100vh - 180px)" demo={true} debug={true} />,
-        "skill-progress": <OverviewF />,
     },
     "career-mapping": {
         gamified: <CareerD />,
     },
     chapter: {
-        classic: <ChapterView mode="classic" />,
+        classic: <ChapterClassicVariants />,
         expandable: <ChapterView mode="expandable" />,
         ide: <ChapterView mode="ide" />,
     },
@@ -85,12 +36,6 @@ const legacyVariantComponents: Record<string, Record<string, React.ReactNode>> =
     certificates: {
         gallery: <CertificatesPage />,
     },
-};
-
-// Combine polymorphic and legacy variants
-const variantComponents: Record<string, Record<string, React.ReactNode>> = {
-    ...createPolymorphicVariants(),
-    ...legacyVariantComponents,
 };
 
 export default function ModuleVariantPage() {

@@ -40,10 +40,10 @@ export function CompactGoalStep({
         <div className="h-full flex flex-col gap-3" data-testid="compact-goal-step">
             {/* Header */}
             <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                <h3 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                     What's your career goal?
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-[var(--forge-text-secondary)]">
                     Select your target role
                 </p>
             </div>
@@ -67,13 +67,13 @@ export function CompactGoalStep({
                                 "border-2",
                                 isSelected
                                     ? [
-                                        "bg-indigo-50 dark:bg-indigo-900/30",
-                                        "border-indigo-400 dark:border-indigo-500",
+                                        "bg-[var(--ember)]/10",
+                                        "border-[var(--ember)]",
                                     ]
                                     : [
-                                        "bg-white dark:bg-slate-800",
-                                        "border-slate-200 dark:border-slate-700",
-                                        "hover:border-slate-300 dark:hover:border-slate-600",
+                                        "bg-[var(--forge-bg-elevated)]",
+                                        "border-[var(--forge-border-subtle)]",
+                                        "hover:border-[var(--forge-text-muted)]",
                                     ]
                             )}
                         >
@@ -82,7 +82,7 @@ export function CompactGoalStep({
                                 <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center"
+                                    className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[var(--ember)] flex items-center justify-center"
                                 >
                                     <Check size={10} className="text-white" strokeWidth={3} />
                                 </motion.div>
@@ -93,16 +93,16 @@ export function CompactGoalStep({
                                 className={cn(
                                     "w-8 h-8 rounded-lg flex items-center justify-center mb-2",
                                     isSelected
-                                        ? "bg-indigo-100 dark:bg-indigo-800/50"
-                                        : "bg-slate-100 dark:bg-slate-700/50"
+                                        ? "bg-[var(--ember)]/20"
+                                        : "bg-[var(--forge-bg-anvil)]"
                                 )}
                             >
                                 <Briefcase
                                     size={16}
                                     className={cn(
                                         isSelected
-                                            ? "text-indigo-600 dark:text-indigo-400"
-                                            : "text-slate-500 dark:text-slate-400"
+                                            ? "text-[var(--ember)]"
+                                            : "text-[var(--forge-text-secondary)]"
                                     )}
                                 />
                             </div>
@@ -112,8 +112,8 @@ export function CompactGoalStep({
                                 className={cn(
                                     "text-xs font-medium leading-tight",
                                     isSelected
-                                        ? "text-indigo-700 dark:text-indigo-300"
-                                        : "text-slate-700 dark:text-slate-300"
+                                        ? "text-[var(--ember)]"
+                                        : "text-[var(--forge-text-primary)]"
                                 )}
                             >
                                 {option.label}

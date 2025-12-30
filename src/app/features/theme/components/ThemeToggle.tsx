@@ -41,11 +41,11 @@ export function ThemeToggle() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     "relative flex items-center justify-center w-10 h-10 rounded-xl",
-                    "bg-[var(--surface-elevated)] backdrop-blur-md",
-                    "border border-[var(--border-default)]",
+                    "bg-[var(--forge-bg-elevated)] backdrop-blur-md",
+                    "border border-[var(--forge-border-default)]",
                     "shadow-[var(--shadow-sm)]",
-                    "hover:bg-[var(--surface-overlay)]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2",
+                    "hover:bg-[var(--forge-bg-anvil)]",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2",
                     "transition-all duration-200"
                 )}
                 whileHover={{ scale: 1.05 }}
@@ -64,7 +64,7 @@ export function ThemeToggle() {
                             size={ICON_SIZES.md}
                             className={cn(
                                 "transition-colors",
-                                resolvedTheme === "dark" ? "text-amber-400" : "text-amber-500"
+                                resolvedTheme === "dark" ? "text-[var(--forge-warning)]" : "text-[var(--forge-warning)]"
                             )}
                         />
                     </motion.div>
@@ -81,8 +81,8 @@ export function ThemeToggle() {
                         transition={{ duration: DURATION_FAST, ease: "easeOut" }}
                         className={cn(
                             "absolute right-0 mt-2 w-40 py-1",
-                            "bg-[var(--surface-overlay)] backdrop-blur-xl",
-                            "border border-[var(--border-default)]",
+                            "bg-[var(--forge-bg-anvil)] backdrop-blur-xl",
+                            "border border-[var(--forge-border-default)]",
                             "rounded-xl shadow-[var(--shadow-lg)]",
                             "z-50"
                         )}
@@ -98,10 +98,10 @@ export function ThemeToggle() {
                                 className={cn(
                                     "w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium",
                                     "transition-colors duration-150",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--accent-primary)]",
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ember)]",
                                     theme === value
-                                        ? "bg-indigo-50 dark:bg-indigo-900/30 text-[var(--accent-primary)]"
-                                        : "text-[var(--text-secondary)] hover:bg-[var(--surface-inset)]"
+                                        ? "bg-[var(--ember)]/10 text-[var(--ember)]"
+                                        : "text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
                                 )}
                                 whileHover={{ x: 2 }}
                                 data-testid={`theme-option-${value}`}
@@ -111,7 +111,7 @@ export function ThemeToggle() {
                                 {theme === value && (
                                     <motion.div
                                         layoutId="theme-indicator"
-                                        className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)]"
+                                        className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--ember)]"
                                     />
                                 )}
                             </motion.button>

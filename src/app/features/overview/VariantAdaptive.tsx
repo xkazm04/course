@@ -184,18 +184,18 @@ const VariantAdaptiveInner: React.FC = () => {
                     <div className="flex items-center gap-3 mb-2">
                         <div className="relative">
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur-md opacity-50"
+                                className="absolute inset-0 bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] rounded-xl blur-md opacity-50"
                                 animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
                                 transition={{ duration: 2, repeat: Infinity }}
                             />
-                            <div className="relative p-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl">
+                            <div className="relative p-2 bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] rounded-xl">
                                 <Brain className="w-6 h-6 text-white" />
                             </div>
                         </div>
                         <h2 className="text-3xl font-black text-[var(--text-primary)]">
                             AI-Powered Knowledge Map
                         </h2>
-                        <span className="px-2 py-1 text-xs font-medium bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full">
+                        <span className="px-2 py-1 text-xs font-medium bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white rounded-full">
                             Adaptive
                         </span>
                     </div>
@@ -210,8 +210,8 @@ const VariantAdaptiveInner: React.FC = () => {
                         className={cn(
                             "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                             showAIPanel
-                                ? "bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                                ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)]"
                         )}
                         data-testid="toggle-ai-panel-btn"
                     >
@@ -307,8 +307,8 @@ const VariantAdaptiveInner: React.FC = () => {
                         <div className="relative h-[600px]">
                             {/* Recommended Path Overlay Indicator */}
                             {showRecommendedPath && recommendedPath && (
-                                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border border-indigo-200 dark:border-indigo-800">
-                                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 animate-pulse" />
+                                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-[var(--forge-bg-elevated)]/80 backdrop-blur-sm rounded-lg border border-[var(--ember)]/30">
+                                    <div className="w-3 h-3 rounded-full bg-[var(--ember)] animate-pulse" />
                                     <span className="text-xs font-medium text-[var(--text-primary)]">
                                         AI Recommended Path
                                     </span>
@@ -367,15 +367,15 @@ const VariantAdaptiveInner: React.FC = () => {
                         onClick={() => setShowNav(!showNav)}
                         className={cn(
                             "absolute -left-3 top-1/2 -translate-y-1/2 z-10",
-                            "w-6 h-12 bg-white dark:bg-slate-800 rounded-r-lg",
-                            "border border-l-0 border-slate-200 dark:border-slate-700",
+                            "w-6 h-12 bg-[var(--forge-bg-elevated)] rounded-r-lg",
+                            "border border-l-0 border-[var(--forge-border-subtle)]",
                             "flex items-center justify-center",
-                            "hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
+                            "hover:bg-[var(--forge-bg-workshop)] transition-colors shadow-sm"
                         )}
                         title={showNav ? "Hide categories" : "Show categories"}
                         data-testid="toggle-nav-btn"
                     >
-                        <motion.span animate={{ rotate: showNav ? 180 : 0 }} className="text-slate-400">
+                        <motion.span animate={{ rotate: showNav ? 180 : 0 }} className="text-[var(--forge-text-muted)]">
                             ›
                         </motion.span>
                     </button>
@@ -387,10 +387,10 @@ const VariantAdaptiveInner: React.FC = () => {
                             className={cn(
                                 "absolute bottom-4 right-4 z-10",
                                 "px-3 py-1.5 rounded-lg text-xs font-medium",
-                                "bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm",
-                                "border border-slate-200 dark:border-slate-700",
-                                "hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors",
-                                showConnections && "ring-2 ring-indigo-500/50"
+                                "bg-[var(--forge-bg-elevated)]/80 backdrop-blur-sm",
+                                "border border-[var(--forge-border-subtle)]",
+                                "hover:bg-[var(--forge-bg-workshop)] transition-colors",
+                                showConnections && "ring-2 ring-[var(--ember)]/50"
                             )}
                             data-testid="toggle-connections-btn"
                         >
@@ -403,14 +403,14 @@ const VariantAdaptiveInner: React.FC = () => {
             {/* Stats Panel */}
             <StatCardGrid columns={4} data-testid="adaptive-map-stats">
                 <StatCard
-                    icon={<BookOpen className="w-5 h-5 text-indigo-500" />}
+                    icon={<BookOpen className="w-5 h-5 text-[var(--ember)]" />}
                     value={stats.total}
                     label={categoryFilter ? CATEGORY_META.find(c => c.id === categoryFilter)?.name || "Topics" : "Total Topics"}
                     glowColor="indigo"
                     data-testid="stats-total"
                 />
                 <StatCard
-                    icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                    icon={<CheckCircle2 className="w-5 h-5 text-[var(--forge-success)]" />}
                     value={stats.completed}
                     label="Completed"
                     glowColor="emerald"
@@ -422,7 +422,7 @@ const VariantAdaptiveInner: React.FC = () => {
                         <motion.div
                             animate={{ scale: [1, 1.1, 1] }}
                             transition={{ duration: 2, repeat: Infinity }}
-                            className="w-2 h-2 bg-indigo-500 rounded-full"
+                            className="w-2 h-2 bg-[var(--ember)] rounded-full"
                         />
                     }
                     value={stats.inProgress}
@@ -431,7 +431,7 @@ const VariantAdaptiveInner: React.FC = () => {
                     data-testid="stats-in-progress"
                 />
                 <StatCard
-                    icon={<Clock className="w-5 h-5 text-purple-500" />}
+                    icon={<Clock className="w-5 h-5 text-[var(--forge-accent)]" />}
                     value={`${stats.totalHours}h`}
                     label="Total Content"
                     glowColor="purple"
@@ -440,24 +440,24 @@ const VariantAdaptiveInner: React.FC = () => {
             </StatCardGrid>
 
             {/* Legend */}
-            <div className="flex flex-wrap items-center gap-4 px-4 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl text-xs">
-                <span className="font-medium text-slate-600 dark:text-slate-400">AI Path:</span>
+            <div className="flex flex-wrap items-center gap-4 px-4 py-3 bg-[var(--forge-bg-elevated)] rounded-xl text-xs">
+                <span className="font-medium text-[var(--forge-text-secondary)]">AI Path:</span>
                 <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" />
-                    <span className="text-slate-600 dark:text-slate-400">Recommended</span>
+                    <span className="w-3 h-3 rounded-full bg-[var(--ember)]" />
+                    <span className="text-[var(--forge-text-secondary)]">Recommended</span>
                 </div>
-                <span className="ml-4 font-medium text-slate-600 dark:text-slate-400">Prediction:</span>
+                <span className="ml-4 font-medium text-[var(--forge-text-secondary)]">Prediction:</span>
                 <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full" />
-                    <span className="text-slate-600 dark:text-slate-400">High (70%+)</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 bg-amber-500 rounded-full" />
-                    <span className="text-slate-600 dark:text-slate-400">Medium (40-70%)</span>
+                    <span className="w-2 h-2 bg-[var(--forge-success)] rounded-full" />
+                    <span className="text-[var(--forge-text-secondary)]">High (70%+)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 bg-red-500 rounded-full" />
-                    <span className="text-slate-600 dark:text-slate-400">Low (&lt;40%)</span>
+                    <span className="w-2 h-2 bg-[var(--forge-warning)] rounded-full" />
+                    <span className="text-[var(--forge-text-secondary)]">Medium (40-70%)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-[var(--forge-error)] rounded-full" />
+                    <span className="text-[var(--forge-text-secondary)]">Low (&lt;40%)</span>
                 </div>
             </div>
         </div>

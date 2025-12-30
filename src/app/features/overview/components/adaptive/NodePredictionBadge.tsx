@@ -30,35 +30,35 @@ export const NodePredictionBadge: React.FC<NodePredictionBadgeProps> = ({ nodeId
             data-testid="node-prediction-badge"
         >
             <div className={cn(
-                "px-4 py-3 rounded-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm",
-                "border border-slate-200 dark:border-slate-700 shadow-lg"
+                "px-4 py-3 rounded-xl bg-[var(--forge-bg-elevated)] backdrop-blur-sm",
+                "border border-[var(--forge-border-subtle)] shadow-lg"
             )}>
                 <div className="flex items-center gap-3 mb-2">
-                    <Brain className="w-5 h-5 text-indigo-500" />
-                    <span className="font-medium text-[var(--text-primary)]">AI Prediction</span>
+                    <Brain className="w-5 h-5 text-[var(--ember)]" />
+                    <span className="font-medium text-[var(--forge-text-primary)]">AI Prediction</span>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="text-center">
                         <div className={cn(
                             "text-2xl font-bold",
-                            color === "emerald" ? "text-emerald-600 dark:text-emerald-400" :
-                                color === "amber" ? "text-amber-600 dark:text-amber-400" :
-                                    "text-red-600 dark:text-red-400"
+                            color === "emerald" ? "text-[var(--forge-success)]" :
+                                color === "amber" ? "text-[var(--forge-warning)]" :
+                                    "text-[var(--forge-error)]"
                         )}>
                             {Math.round(probability * 100)}%
                         </div>
-                        <div className="text-xs text-[var(--text-secondary)]">Success Rate</div>
+                        <div className="text-xs text-[var(--forge-text-secondary)]">Success Rate</div>
                     </div>
                     <div className="text-center">
-                        <div className="text-2xl font-bold text-[var(--text-primary)]">
+                        <div className="text-2xl font-bold text-[var(--forge-text-primary)]">
                             {prediction.estimatedHours.toFixed(1)}h
                         </div>
-                        <div className="text-xs text-[var(--text-secondary)]">Est. Time</div>
+                        <div className="text-xs text-[var(--forge-text-secondary)]">Est. Time</div>
                     </div>
                 </div>
                 {prediction.potentialChallenges.length > 0 && (
-                    <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                        <p className="text-xs text-amber-600 dark:text-amber-400">
+                    <div className="mt-2 pt-2 border-t border-[var(--forge-border-subtle)]">
+                        <p className="text-xs text-[var(--forge-warning)]">
                             {prediction.potentialChallenges[0]}
                         </p>
                     </div>

@@ -65,33 +65,33 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
     return (
         <div
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] overflow-hidden",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] overflow-hidden",
                 elevation.elevated
             )}
         >
             {/* Header */}
-            <div className="p-4 border-b border-[var(--border-subtle)]">
+            <div className="p-4 border-b border-[var(--forge-border-subtle)]">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                        <Trophy size={ICON_SIZES.lg} className="text-amber-400" />
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+                        <Trophy size={ICON_SIZES.lg} className="text-[var(--forge-warning)]" />
+                        <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
                             Leaderboard
                         </h3>
-                        <span className="text-sm text-[var(--text-muted)]">
+                        <span className="text-sm text-[var(--forge-text-muted)]">
                             ({totalParticipants} participants)
                         </span>
                     </div>
                     <button
                         onClick={refresh}
-                        className="p-2 rounded-lg hover:bg-[var(--surface-overlay)] text-[var(--text-muted)] transition-colors"
+                        className="p-2 rounded-lg hover:bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] transition-colors"
                     >
                         <RefreshCw size={ICON_SIZES.md} className={isLoading ? "animate-spin" : ""} />
                     </button>
                 </div>
 
                 {/* Type tabs */}
-                <div className="flex gap-1 p-1 rounded-lg bg-[var(--surface-overlay)]">
+                <div className="flex gap-1 p-1 rounded-lg bg-[var(--forge-bg-anvil)]">
                     {(Object.keys(TYPE_CONFIG) as LeaderboardType[]).map((type) => {
                         const config = TYPE_CONFIG[type];
                         const Icon = config.icon;
@@ -102,8 +102,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                                 className={cn(
                                     "flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                                     selectedType === type
-                                        ? "bg-[var(--accent-primary)] text-white"
-                                        : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                        ? "bg-[var(--ember)] text-white shadow-ember-sm"
+                                        : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                                 )}
                             >
                                 <Icon size={ICON_SIZES.sm} />
@@ -122,8 +122,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                             className={cn(
                                 "px-3 py-1 rounded-full text-xs font-medium transition-colors whitespace-nowrap",
                                 selectedTier === tier
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "bg-[var(--surface-base)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)] text-white shadow-ember-sm"
+                                    : "bg-[var(--forge-bg-workshop)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             {tier === "all" ? "All Tiers" : (
@@ -135,7 +135,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             </div>
 
             {/* Entries */}
-            <div className="divide-y divide-[var(--border-subtle)]">
+            <div className="divide-y divide-[var(--forge-border-subtle)]">
                 {isLoading ? (
                     <LoadingState />
                 ) : displayedEntries.length === 0 ? (
@@ -156,8 +156,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 
             {/* User position if not in view */}
             {userEntry && !displayedEntries.find((e) => e.userId === userEntry.userId) && (
-                <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--surface-base)]">
-                    <p className="text-xs text-[var(--text-muted)] mb-2">Your Position</p>
+                <div className="p-4 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]">
+                    <p className="text-xs text-[var(--forge-text-muted)] mb-2">Your Position</p>
                     <LeaderboardEntry
                         entry={userEntry}
                         isCurrentUser
@@ -183,7 +183,7 @@ const CompactLeaderboard: React.FC<CompactLeaderboardProps> = ({
 }) => {
     if (isLoading) {
         return (
-            <div className="p-4 text-center text-[var(--text-muted)]">
+            <div className="p-4 text-center text-[var(--forge-text-muted)]">
                 Loading...
             </div>
         );
@@ -200,7 +200,7 @@ const CompactLeaderboard: React.FC<CompactLeaderboardProps> = ({
             ))}
             {userEntry && !entries.find((e) => e.userId === userEntry.userId) && (
                 <>
-                    <div className="border-t border-[var(--border-subtle)] my-2" />
+                    <div className="border-t border-[var(--forge-border-subtle)] my-2" />
                     <CompactLeaderboardEntry entry={userEntry} isCurrentUser />
                 </>
             )}
@@ -216,17 +216,17 @@ const LoadingState: React.FC = () => (
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="inline-block"
         >
-            <RefreshCw size={ICON_SIZES.xl} className="text-[var(--text-muted)]" />
+            <RefreshCw size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)]" />
         </motion.div>
-        <p className="text-[var(--text-muted)] mt-2">Loading leaderboard...</p>
+        <p className="text-[var(--forge-text-muted)] mt-2">Loading leaderboard...</p>
     </div>
 );
 
 // Empty state
 const EmptyState: React.FC = () => (
     <div className="p-8 text-center">
-        <Trophy size={ICON_SIZES.xl} className="text-[var(--text-muted)] mx-auto mb-2" />
-        <p className="text-[var(--text-muted)]">No submissions yet</p>
-        <p className="text-xs text-[var(--text-muted)] mt-1">Be the first to submit!</p>
+        <Trophy size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)] mx-auto mb-2" />
+        <p className="text-[var(--forge-text-muted)]">No submissions yet</p>
+        <p className="text-xs text-[var(--forge-text-muted)] mt-1">Be the first to submit!</p>
     </div>
 );

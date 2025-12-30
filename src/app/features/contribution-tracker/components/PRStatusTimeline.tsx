@@ -29,17 +29,17 @@ const EVENT_CONFIG: Record<ContributionEventType, {
     color: string;
     bgColor: string;
 }> = {
-    claimed: { icon: Flag, color: "text-slate-400", bgColor: "bg-slate-500/20" },
-    started_work: { icon: Code, color: "text-blue-400", bgColor: "bg-blue-500/20" },
-    pushed_commit: { icon: GitCommit, color: "text-cyan-400", bgColor: "bg-cyan-500/20" },
-    opened_pr: { icon: GitPullRequest, color: "text-purple-400", bgColor: "bg-purple-500/20" },
-    received_review: { icon: MessageSquare, color: "text-amber-400", bgColor: "bg-amber-500/20" },
-    made_changes: { icon: RefreshCw, color: "text-orange-400", bgColor: "bg-orange-500/20" },
-    approved: { icon: CheckCircle, color: "text-emerald-400", bgColor: "bg-emerald-500/20" },
-    merged: { icon: GitMerge, color: "text-green-400", bgColor: "bg-green-500/20" },
-    closed: { icon: XCircle, color: "text-red-400", bgColor: "bg-red-500/20" },
-    abandoned: { icon: AlertTriangle, color: "text-red-400", bgColor: "bg-red-500/20" },
-    note_added: { icon: FileText, color: "text-slate-400", bgColor: "bg-slate-500/20" },
+    claimed: { icon: Flag, color: "text-[var(--forge-text-muted)]", bgColor: "bg-[var(--forge-text-muted)]/20" },
+    started_work: { icon: Code, color: "text-[var(--forge-info)]", bgColor: "bg-[var(--forge-info)]/20" },
+    pushed_commit: { icon: GitCommit, color: "text-[var(--forge-info)]", bgColor: "bg-[var(--forge-info)]/20" },
+    opened_pr: { icon: GitPullRequest, color: "text-[var(--ember)]", bgColor: "bg-[var(--ember)]/20" },
+    received_review: { icon: MessageSquare, color: "text-[var(--forge-warning)]", bgColor: "bg-[var(--forge-warning)]/20" },
+    made_changes: { icon: RefreshCw, color: "text-[var(--forge-warning)]", bgColor: "bg-[var(--forge-warning)]/20" },
+    approved: { icon: CheckCircle, color: "text-[var(--forge-success)]", bgColor: "bg-[var(--forge-success)]/20" },
+    merged: { icon: GitMerge, color: "text-[var(--forge-success)]", bgColor: "bg-[var(--forge-success)]/20" },
+    closed: { icon: XCircle, color: "text-[var(--forge-error)]", bgColor: "bg-[var(--forge-error)]/20" },
+    abandoned: { icon: AlertTriangle, color: "text-[var(--forge-error)]", bgColor: "bg-[var(--forge-error)]/20" },
+    note_added: { icon: FileText, color: "text-[var(--forge-text-muted)]", bgColor: "bg-[var(--forge-text-muted)]/20" },
 };
 
 export const PRStatusTimeline: React.FC<PRStatusTimelineProps> = ({
@@ -79,7 +79,7 @@ export const PRStatusTimeline: React.FC<PRStatusTimelineProps> = ({
     return (
         <div className="relative">
             {/* Vertical line */}
-            <div className="absolute left-3 top-3 bottom-3 w-0.5 bg-[var(--border-subtle)]" />
+            <div className="absolute left-3 top-3 bottom-3 w-0.5 bg-[var(--forge-border-subtle)]" />
 
             {/* Events */}
             <div className="space-y-4">
@@ -127,19 +127,19 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isFirst, isLast })
             {/* Content */}
             <div className="flex-1 min-w-0 pb-4">
                 <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm text-[var(--text-primary)]">
+                    <span className="text-sm text-[var(--forge-text-primary)]">
                         {event.description}
                     </span>
                 </div>
-                <span className="text-xs text-[var(--text-muted)]">
+                <span className="text-xs text-[var(--forge-text-muted)]">
                     {formatEventDate(date)}
                 </span>
 
                 {/* Metadata preview */}
                 {event.metadata && Object.keys(event.metadata).length > 0 && (
-                    <div className="mt-1 text-xs text-[var(--text-muted)]">
+                    <div className="mt-1 text-xs text-[var(--forge-text-muted)]">
                         {event.metadata.prNumber && (
-                            <span className="text-purple-400">PR #{event.metadata.prNumber as number}</span>
+                            <span className="text-[var(--ember)]">PR #{event.metadata.prNumber as number}</span>
                         )}
                     </div>
                 )}

@@ -55,8 +55,8 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] overflow-hidden",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] overflow-hidden",
                 elevation.hoverable
             )}
         >
@@ -65,12 +65,12 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs text-[var(--text-muted)]">
+                            <span className="text-xs text-[var(--forge-text-muted)]">
                                 {contribution.repositoryOwner}/{contribution.repositoryName}
                             </span>
                             <StatusBadge status={contribution.status} />
                         </div>
-                        <h3 className="font-semibold text-[var(--text-primary)] line-clamp-2">
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] line-clamp-2">
                             {contribution.issueTitle}
                         </h3>
                     </div>
@@ -79,7 +79,7 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                     <div className="relative">
                         <button
                             onClick={() => setShowActions(!showActions)}
-                            className="p-1.5 rounded-lg hover:bg-[var(--surface-overlay)] text-[var(--text-muted)]"
+                            className="p-1.5 rounded-lg hover:bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]"
                         >
                             <MoreVertical size={ICON_SIZES.md} />
                         </button>
@@ -91,28 +91,28 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                                     exit={{ opacity: 0, scale: 0.95 }}
                                     className={cn(
                                         "absolute right-0 top-full mt-1 z-10",
-                                        "w-48 rounded-lg border border-[var(--border-default)]",
-                                        "bg-[var(--surface-elevated)] py-1",
+                                        "w-48 rounded-lg border border-[var(--forge-border-default)]",
+                                        "bg-[var(--forge-bg-elevated)] py-1",
                                         elevation.modal
                                     )}
                                 >
                                     <button
                                         onClick={() => { setIsEditingNotes(true); setShowActions(false); }}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--surface-overlay)]"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)]"
                                     >
                                         <Edit3 size={ICON_SIZES.sm} />
                                         Edit Notes
                                     </button>
                                     <button
                                         onClick={() => { onComplete?.(contribution.id); setShowActions(false); }}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-emerald-400 hover:bg-[var(--surface-overlay)]"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--forge-success)] hover:bg-[var(--forge-bg-anvil)]"
                                     >
                                         <CheckCircle size={ICON_SIZES.sm} />
                                         Mark Complete
                                     </button>
                                     <button
                                         onClick={() => { onAbandon?.(contribution.id); setShowActions(false); }}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-[var(--surface-overlay)]"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--forge-error)] hover:bg-[var(--forge-bg-anvil)]"
                                     >
                                         <Trash2 size={ICON_SIZES.sm} />
                                         Abandon
@@ -124,7 +124,7 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                 </div>
 
                 {/* Branch and PR info */}
-                <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-[var(--text-muted)]">
+                <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-[var(--forge-text-muted)]">
                     {contribution.branchName && (
                         <span className="flex items-center gap-1">
                             <GitBranch size={ICON_SIZES.xs} />
@@ -136,7 +136,7 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                             href={contribution.prUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-purple-400 hover:underline"
+                            className="flex items-center gap-1 text-[var(--ember)] hover:underline"
                         >
                             <GitPullRequest size={ICON_SIZES.xs} />
                             #{contribution.prNumber}
@@ -159,29 +159,29 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                                     placeholder="Add notes about your progress..."
                                     className={cn(
                                         "w-full px-3 py-2 rounded-lg text-sm",
-                                        "bg-[var(--surface-overlay)] border border-[var(--border-default)]",
-                                        "text-[var(--text-primary)] placeholder:text-[var(--text-muted)]",
-                                        "focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/50"
+                                        "bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-default)]",
+                                        "text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)]",
+                                        "focus:outline-none focus:ring-2 focus:ring-[var(--ember)]/50"
                                     )}
                                     rows={2}
                                 />
                                 <div className="flex gap-2">
                                     <button
                                         onClick={handleSaveNotes}
-                                        className="px-3 py-1 rounded text-xs font-medium bg-[var(--accent-primary)] text-white"
+                                        className="px-3 py-1 rounded text-xs font-medium bg-[var(--ember)] text-white"
                                     >
                                         Save
                                     </button>
                                     <button
                                         onClick={() => { setNotes(contribution.notes); setIsEditingNotes(false); }}
-                                        className="px-3 py-1 rounded text-xs font-medium text-[var(--text-muted)]"
+                                        className="px-3 py-1 rounded text-xs font-medium text-[var(--forge-text-muted)]"
                                     >
                                         Cancel
                                     </button>
                                 </div>
                             </div>
                         ) : (
-                            <p className="text-sm text-[var(--text-muted)] italic">
+                            <p className="text-sm text-[var(--forge-text-muted)] italic">
                                 {contribution.notes}
                             </p>
                         )}
@@ -190,10 +190,10 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
             </div>
 
             {/* Expandable timeline */}
-            <div className="border-t border-[var(--border-subtle)]">
+            <div className="border-t border-[var(--forge-border-subtle)]">
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--text-secondary)] hover:bg-[var(--surface-overlay)] transition-colors"
+                    className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)] transition-colors"
                 >
                     <span>Timeline ({contribution.timeline.length} events)</span>
                     {isExpanded ? (
@@ -211,7 +211,7 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden"
                         >
-                            <div className="p-4 border-t border-[var(--border-subtle)]">
+                            <div className="p-4 border-t border-[var(--forge-border-subtle)]">
                                 <PRStatusTimeline events={contribution.timeline} />
                             </div>
                         </motion.div>
@@ -220,7 +220,7 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
             </div>
 
             {/* Actions footer */}
-            <div className="flex items-center gap-2 p-3 border-t border-[var(--border-subtle)] bg-[var(--surface-base)]">
+            <div className="flex items-center gap-2 p-3 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]">
                 <a
                     href={contribution.issueUrl}
                     target="_blank"
@@ -228,9 +228,9 @@ export const ActiveContributionCard: React.FC<ActiveContributionCardProps> = ({
                     className={cn(
                         "flex-1 flex items-center justify-center gap-2",
                         "px-4 py-2 rounded-lg text-sm font-medium",
-                        "border border-[var(--border-default)]",
-                        "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
-                        "hover:bg-[var(--surface-overlay)] transition-colors"
+                        "border border-[var(--forge-border-default)]",
+                        "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)]",
+                        "hover:bg-[var(--forge-bg-anvil)] transition-colors"
                     )}
                 >
                     View Issue
@@ -283,8 +283,8 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({ currentStatus, onSelect
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium",
-                    "bg-[var(--accent-primary)] text-white",
-                    "hover:bg-[var(--accent-primary-hover)] transition-colors"
+                    "bg-[var(--ember)] text-white",
+                    "hover:bg-[var(--ember-glow)] transition-colors"
                 )}
             >
                 Update Status
@@ -299,8 +299,8 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({ currentStatus, onSelect
                         exit={{ opacity: 0, y: -10 }}
                         className={cn(
                             "absolute right-0 bottom-full mb-1 z-10",
-                            "w-56 rounded-lg border border-[var(--border-default)]",
-                            "bg-[var(--surface-elevated)] py-1",
+                            "w-56 rounded-lg border border-[var(--forge-border-default)]",
+                            "bg-[var(--forge-bg-elevated)] py-1",
                             elevation.modal
                         )}
                     >
@@ -313,7 +313,7 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({ currentStatus, onSelect
                                     disabled={status === currentStatus}
                                     className={cn(
                                         "w-full flex items-center gap-2 px-3 py-2 text-sm",
-                                        "hover:bg-[var(--surface-overlay)] transition-colors",
+                                        "hover:bg-[var(--forge-bg-anvil)] transition-colors",
                                         status === currentStatus
                                             ? "opacity-50 cursor-not-allowed"
                                             : ""

@@ -18,20 +18,20 @@ const LEVEL_CONFIG: Record<
 > = {
     beginner: {
         label: "Building Foundation",
-        color: "text-blue-400",
-        bgColor: "bg-blue-500/10",
+        color: "text-[var(--forge-info)]",
+        bgColor: "bg-[var(--forge-info)]/10",
         icon: <span className="text-sm">📚</span>,
     },
     intermediate: {
         label: "Growing Skills",
-        color: "text-emerald-400",
-        bgColor: "bg-emerald-500/10",
+        color: "text-[var(--forge-success)]",
+        bgColor: "bg-[var(--forge-success)]/10",
         icon: <span className="text-sm">🌱</span>,
     },
     advanced: {
         label: "Mastering Concepts",
-        color: "text-purple-400",
-        bgColor: "bg-purple-500/10",
+        color: "text-[var(--ember-glow)]",
+        bgColor: "bg-[var(--ember)]/10",
         icon: <span className="text-sm">🚀</span>,
     },
 };
@@ -65,10 +65,10 @@ export function ComprehensionIndicator({
 
     const trendColor =
         trend === "improving"
-            ? "text-green-400"
+            ? "text-[var(--forge-success)]"
             : trend === "struggling"
-            ? "text-amber-400"
-            : "text-slate-400";
+            ? "text-[var(--forge-warning)]"
+            : "text-[var(--forge-text-muted)]";
 
     if (compact) {
         return (
@@ -92,13 +92,13 @@ export function ComprehensionIndicator({
         <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`rounded-lg border border-slate-700/50 bg-slate-800/50 p-4 ${className}`}
+            className={`rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)] p-4 ${className}`}
             data-testid="comprehension-indicator"
         >
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                    <Brain className="w-4 h-4 text-slate-400" />
-                    <span className="text-sm font-medium text-slate-300">
+                    <Brain className="w-4 h-4 text-[var(--forge-text-muted)]" />
+                    <span className="text-sm font-medium text-[var(--forge-text-secondary)]">
                         Adaptive Learning
                     </span>
                 </div>
@@ -120,7 +120,7 @@ export function ComprehensionIndicator({
             </div>
 
             {showDetails && (
-                <div className="space-y-2 text-xs text-slate-400">
+                <div className="space-y-2 text-xs text-[var(--forge-text-muted)]">
                     <div className="flex items-center justify-between">
                         <span>Recent Performance</span>
                         <span className={config.color}>{recentPerformance}%</span>
@@ -128,9 +128,9 @@ export function ComprehensionIndicator({
                     <div className="flex items-center justify-between">
                         <span>Confidence</span>
                         <div className="flex items-center gap-1">
-                            <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                            <div className="w-16 h-1.5 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
                                 <motion.div
-                                    className="h-full bg-slate-400 rounded-full"
+                                    className="h-full bg-[var(--forge-text-muted)] rounded-full"
                                     initial={{ width: 0 }}
                                     animate={{ width: `${confidence * 100}%` }}
                                     transition={{ duration: 0.5 }}
@@ -142,7 +142,7 @@ export function ComprehensionIndicator({
                 </div>
             )}
 
-            <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+            <div className="mt-3 flex items-center gap-1.5 text-xs text-[var(--forge-text-muted)]">
                 <Sparkles className="w-3 h-3" />
                 <span>Content adapts to your learning pace</span>
             </div>
@@ -184,7 +184,7 @@ export function ComprehensionBadge({ className = "" }: ComprehensionBadgeProps) 
             {TrendIcon && (
                 <TrendIcon
                     className={`w-3 h-3 ${
-                        trend === "improving" ? "text-green-400" : "text-amber-400"
+                        trend === "improving" ? "text-[var(--forge-success)]" : "text-[var(--forge-warning)]"
                     }`}
                 />
             )}
@@ -237,7 +237,7 @@ export function StateMachineIndicator({
                         <h4 className={`text-sm font-semibold ${stateDef.color.text}`}>
                             {stateDef.label}
                         </h4>
-                        <p className="text-xs text-slate-400">{stateDef.description}</p>
+                        <p className="text-xs text-[var(--forge-text-muted)]">{stateDef.description}</p>
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@ export function StateMachineIndicator({
             {showProgress && nextStateDef && currentState !== nextState && (
                 <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-400">Progress to next level</span>
+                        <span className="text-[var(--forge-text-muted)]">Progress to next level</span>
                         <div className="flex items-center gap-1">
                             <span className={nextStateDef.color.text}>{nextStateDef.label}</span>
                             <span className="text-lg">{nextStateDef.icon}</span>
@@ -254,7 +254,7 @@ export function StateMachineIndicator({
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="relative h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                    <div className="relative h-2 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
                         <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
@@ -270,7 +270,7 @@ export function StateMachineIndicator({
                         />
                     </div>
 
-                    <div className="text-xs text-slate-500">{Math.round(progress)}% complete</div>
+                    <div className="text-xs text-[var(--forge-text-muted)]">{Math.round(progress)}% complete</div>
 
                     {/* Requirements */}
                     {requirements.length > 0 && (
@@ -278,7 +278,7 @@ export function StateMachineIndicator({
                             {requirements.map((req, i) => (
                                 <div
                                     key={i}
-                                    className="flex items-center gap-2 text-xs text-slate-400"
+                                    className="flex items-center gap-2 text-xs text-[var(--forge-text-muted)]"
                                 >
                                     <ChevronRight className="w-3 h-3" />
                                     <span>{req}</span>
@@ -293,7 +293,7 @@ export function StateMachineIndicator({
             {currentState === "mastery" && (
                 <div className="flex items-center gap-2 mt-2">
                     <Sparkles className={`w-4 h-4 ${stateDef.color.text}`} />
-                    <span className="text-xs text-slate-300">
+                    <span className="text-xs text-[var(--forge-text-secondary)]">
                         You've achieved mastery! Ready for advanced challenges.
                     </span>
                 </div>
@@ -388,7 +388,7 @@ export function StateJourneyVisualization({
                                     ? `w-10 h-10 ${stateDef.color.bg} ${stateDef.color.border} border-2`
                                     : isPast
                                     ? `w-6 h-6 ${stateDef.color.bg} opacity-60`
-                                    : "w-6 h-6 bg-slate-700/50 opacity-40"
+                                    : "w-6 h-6 bg-[var(--forge-bg-elevated)] opacity-40"
                             }`}
                             animate={isActive ? { scale: [1, 1.05, 1] } : {}}
                             transition={{ repeat: Infinity, duration: 2 }}
@@ -401,7 +401,7 @@ export function StateJourneyVisualization({
                         {index < STATE_ORDER.length - 1 && (
                             <div
                                 className={`h-0.5 w-4 rounded-full transition-colors ${
-                                    isPast ? "bg-slate-500" : "bg-slate-700/50"
+                                    isPast ? "bg-[var(--forge-text-muted)]" : "bg-[var(--forge-bg-elevated)]"
                                 }`}
                             />
                         )}

@@ -26,11 +26,11 @@ const CATEGORY_CONFIG: Record<HintCategory, {
     label: string;
     color: string;
 }> = {
-    approach: { icon: Compass, label: "Approach", color: "indigo" },
-    location: { icon: MapPin, label: "Location", color: "emerald" },
-    implementation: { icon: Code, label: "Implementation", color: "purple" },
-    testing: { icon: TestTube, label: "Testing", color: "cyan" },
-    debugging: { icon: Bug, label: "Debugging", color: "amber" },
+    approach: { icon: Compass, label: "Approach", color: "ember" },
+    location: { icon: MapPin, label: "Location", color: "success" },
+    implementation: { icon: Code, label: "Implementation", color: "ember" },
+    testing: { icon: TestTube, label: "Testing", color: "info" },
+    debugging: { icon: Bug, label: "Debugging", color: "warning" },
 };
 
 export const HintSystem: React.FC<HintSystemProps> = ({ hints, onUnlock }) => {
@@ -45,12 +45,12 @@ export const HintSystem: React.FC<HintSystemProps> = ({ hints, onUnlock }) => {
     return (
         <div className="space-y-6">
             {/* Info header */}
-            <div className="p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+            <div className="p-3 rounded-lg bg-[var(--ember)]/10 border border-[var(--ember)]/20">
                 <div className="flex items-start gap-2">
-                    <Lightbulb size={ICON_SIZES.md} className="text-indigo-400 flex-shrink-0" />
+                    <Lightbulb size={ICON_SIZES.md} className="text-[var(--ember)] flex-shrink-0" />
                     <div>
-                        <h4 className="text-sm font-medium text-indigo-300">Progressive Hints</h4>
-                        <p className="text-xs text-indigo-300/70 mt-1">
+                        <h4 className="text-sm font-medium text-[var(--ember)]">Progressive Hints</h4>
+                        <p className="text-xs text-[var(--ember)]/70 mt-1">
                             Hints are designed to guide without giving away the solution.
                             Start with Level 1 hints and only unlock more if needed.
                         </p>
@@ -91,9 +91,9 @@ interface LevelBadgeProps {
 
 const LevelBadge: React.FC<LevelBadgeProps> = ({ level }) => {
     const colors = {
-        1: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-        2: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-        3: "bg-red-500/20 text-red-400 border-red-500/30",
+        1: "bg-[var(--forge-success)]/20 text-[var(--forge-success)] border-[var(--forge-success)]/30",
+        2: "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)] border-[var(--forge-warning)]/30",
+        3: "bg-[var(--forge-error)]/20 text-[var(--forge-error)] border-[var(--forge-error)]/30",
     };
 
     return (
@@ -117,11 +117,10 @@ const HintCard: React.FC<HintCardProps> = ({ hint, onUnlock }) => {
     const Icon = config.icon;
 
     const colorClasses = {
-        indigo: "bg-indigo-500/10 border-indigo-500/20 text-indigo-400",
-        emerald: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
-        purple: "bg-purple-500/10 border-purple-500/20 text-purple-400",
-        cyan: "bg-cyan-500/10 border-cyan-500/20 text-cyan-400",
-        amber: "bg-amber-500/10 border-amber-500/20 text-amber-400",
+        ember: "bg-[var(--ember)]/10 border-[var(--ember)]/20 text-[var(--ember)]",
+        success: "bg-[var(--forge-success)]/10 border-[var(--forge-success)]/20 text-[var(--forge-success)]",
+        info: "bg-[var(--forge-info)]/10 border-[var(--forge-info)]/20 text-[var(--forge-info)]",
+        warning: "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
     };
 
     if (!hint.unlocked) {

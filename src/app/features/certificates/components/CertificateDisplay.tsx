@@ -38,10 +38,10 @@ export function CertificateDisplay({
     };
 
     const accentColors = {
-        indigo: "from-indigo-500 to-indigo-600",
-        purple: "from-purple-500 to-purple-600",
-        blue: "from-blue-500 to-blue-600",
-        orange: "from-orange-500 to-orange-600",
+        indigo: "bg-gradient-forge",
+        purple: "bg-gradient-forge",
+        blue: "bg-gradient-forge",
+        orange: "bg-gradient-forge",
     };
 
     return (
@@ -57,9 +57,9 @@ export function CertificateDisplay({
             data-testid={`certificate-display-${certificate.id}`}
         >
             {/* Certificate Preview */}
-            <div className="relative rounded-xl overflow-hidden shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-transform group-hover:scale-[1.02]">
+            <div className="relative rounded-xl overflow-hidden shadow-lg bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] transition-transform group-hover:scale-[1.02]">
                 {/* SVG Certificate Preview */}
-                <div className="aspect-[4/3] w-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+                <div className="aspect-[4/3] w-full bg-[var(--forge-bg-anvil)]">
                     <img
                         src={svgDataUrl}
                         alt={`Certificate for ${certificate.courseTitle}`}
@@ -70,7 +70,7 @@ export function CertificateDisplay({
 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="px-4 py-2 bg-white dark:bg-slate-800 rounded-full text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <span className="px-4 py-2 bg-[var(--forge-bg-elevated)] rounded-full text-sm font-semibold text-[var(--forge-text-primary)]">
                         Click to view
                     </span>
                 </div>
@@ -81,16 +81,16 @@ export function CertificateDisplay({
                 <div className="mt-4 space-y-2">
                     <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-bold text-slate-900 dark:text-slate-100 truncate text-sm">
+                            <h3 className="font-bold text-[var(--forge-text-primary)] truncate text-sm">
                                 {certificate.courseTitle}
                             </h3>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                            <p className="text-xs text-[var(--forge-text-muted)]">
                                 {certificate.learnerName}
                             </p>
                         </div>
                         <div
                             className={cn(
-                                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br text-white",
+                                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[var(--forge-text-primary)]",
                                 accentColors[template.accentColor as keyof typeof accentColors] || accentColors.indigo
                             )}
                         >
@@ -98,7 +98,7 @@ export function CertificateDisplay({
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="flex flex-wrap gap-2 text-xs text-[var(--forge-text-muted)]">
                         <span className="flex items-center gap-1">
                             <Calendar size={ICON_SIZES.xs} />
                             {formatCertificateDate(certificate.completionDate)}
@@ -118,14 +118,14 @@ export function CertificateDisplay({
                             {certificate.skills.slice(0, 3).map((skill, index) => (
                                 <span
                                     key={index}
-                                    className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-full text-xs text-slate-600 dark:text-slate-300 flex items-center gap-1"
+                                    className="px-2 py-0.5 bg-[var(--forge-bg-elevated)] rounded-full text-xs text-[var(--forge-text-secondary)] flex items-center gap-1"
                                 >
-                                    <CheckCircle size={ICON_SIZES.xs} className="text-emerald-500" />
+                                    <CheckCircle size={ICON_SIZES.xs} className="text-[var(--forge-success)]" />
                                     {skill}
                                 </span>
                             ))}
                             {certificate.skills.length > 3 && (
-                                <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-full text-xs text-slate-400">
+                                <span className="px-2 py-0.5 bg-[var(--forge-bg-elevated)] rounded-full text-xs text-[var(--forge-text-muted)]">
                                     +{certificate.skills.length - 3}
                                 </span>
                             )}

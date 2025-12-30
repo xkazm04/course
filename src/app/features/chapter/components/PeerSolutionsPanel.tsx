@@ -149,15 +149,15 @@ export function PeerSolutionsPanel({
                 onClick={handleToggle}
                 className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-lg transition-all",
-                    "bg-gradient-to-r from-purple-900/30 to-blue-900/30",
-                    "border border-purple-700/30 hover:border-purple-600/50",
-                    "text-purple-300 hover:text-purple-200"
+                    "bg-gradient-to-r from-[var(--ember-glow)]/20 to-[var(--forge-info)]/20",
+                    "border border-[var(--ember-glow)]/30 hover:border-[var(--ember-glow)]/50",
+                    "text-[var(--ember-glow)] hover:text-[var(--ember-bright)]"
                 )}
                 data-testid="peer-solutions-toggle-btn"
             >
                 <Users size={18} />
                 <span className="text-sm font-medium">Peer Solutions</span>
-                <span className="px-2 py-0.5 text-xs bg-purple-800/50 rounded-full">
+                <span className="px-2 py-0.5 text-xs bg-[var(--ember-glow)]/30 rounded-full">
                     {solutions.length}
                 </span>
                 <motion.div
@@ -179,19 +179,19 @@ export function PeerSolutionsPanel({
                         className="mt-3"
                         data-testid="peer-solutions-panel"
                     >
-                        <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl overflow-hidden">
+                        <div className="bg-[var(--forge-bg-anvil)]/80 backdrop-blur-sm border border-[var(--forge-border-subtle)] rounded-xl overflow-hidden">
                             {/* Header */}
-                            <div className="px-4 py-3 border-b border-slate-700/50">
+                            <div className="px-4 py-3 border-b border-[var(--forge-border-subtle)]">
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
-                                        <Sparkles size={16} className="text-purple-400" />
-                                        <h3 className="text-sm font-semibold text-slate-200">
+                                        <Sparkles size={16} className="text-[var(--ember)]" />
+                                        <h3 className="text-sm font-semibold text-[var(--forge-text-secondary)]">
                                             Solutions from fellow learners
                                         </h3>
                                     </div>
                                     <button
                                         onClick={handleToggle}
-                                        className="p-1 text-slate-500 hover:text-slate-300 transition-colors"
+                                        className="p-1 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors"
                                         data-testid="peer-solutions-close-btn"
                                     >
                                         <X size={16} />
@@ -204,14 +204,14 @@ export function PeerSolutionsPanel({
                                     <div className="flex-1 min-w-[200px] relative">
                                         <Search
                                             size={14}
-                                            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+                                            className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                                         />
                                         <input
                                             type="text"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                             placeholder="Search solutions..."
-                                            className="w-full pl-9 pr-3 py-1.5 text-sm bg-slate-900/50 border border-slate-700/50 rounded-lg text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-purple-600/50"
+                                            className="w-full pl-9 pr-3 py-1.5 text-sm bg-[var(--forge-bg-void)]/50 border border-[var(--forge-border-subtle)] rounded-lg text-[var(--forge-text-secondary)] placeholder:text-[var(--forge-text-muted)] focus:outline-none focus:border-[var(--ember)]/50"
                                             data-testid="peer-solutions-search-input"
                                         />
                                     </div>
@@ -219,7 +219,7 @@ export function PeerSolutionsPanel({
                                     {/* Filter dropdown */}
                                     <div className="relative">
                                         <button
-                                            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-slate-900/50 border border-slate-700/50 rounded-lg text-slate-400 hover:text-slate-300 hover:border-slate-600/50 transition-colors"
+                                            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-[var(--forge-bg-void)]/50 border border-[var(--forge-border-subtle)] rounded-lg text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:border-[var(--forge-border-default)] transition-colors"
                                             data-testid="peer-solutions-filter-btn"
                                         >
                                             <Filter size={14} />
@@ -231,7 +231,7 @@ export function PeerSolutionsPanel({
                                     {/* Sort dropdown */}
                                     <div className="relative">
                                         <button
-                                            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-slate-900/50 border border-slate-700/50 rounded-lg text-slate-400 hover:text-slate-300 hover:border-slate-600/50 transition-colors"
+                                            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-[var(--forge-bg-void)]/50 border border-[var(--forge-border-subtle)] rounded-lg text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:border-[var(--forge-border-default)] transition-colors"
                                             data-testid="peer-solutions-sort-btn"
                                         >
                                             <ArrowUpDown size={14} />
@@ -251,8 +251,8 @@ export function PeerSolutionsPanel({
                                             className={cn(
                                                 "px-2.5 py-1 text-xs rounded-full transition-colors",
                                                 filterBy === filter
-                                                    ? "bg-purple-600/50 text-purple-200"
-                                                    : "bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
+                                                    ? "bg-[var(--ember)]/50 text-[var(--ember)]"
+                                                    : "bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-elevated)] hover:text-[var(--forge-text-secondary)]"
                                             )}
                                             data-testid={`peer-solutions-filter-chip-${filter}`}
                                         >
@@ -278,7 +278,7 @@ export function PeerSolutionsPanel({
                                         />
                                     ))
                                 ) : (
-                                    <div className="text-center py-8 text-slate-500">
+                                    <div className="text-center py-8 text-[var(--forge-text-muted)]">
                                         <Users size={32} className="mx-auto mb-2 opacity-50" />
                                         <p className="text-sm">No solutions match your criteria</p>
                                     </div>
@@ -286,11 +286,11 @@ export function PeerSolutionsPanel({
                             </div>
 
                             {/* Footer */}
-                            <div className="px-4 py-3 border-t border-slate-700/50 bg-slate-900/30">
-                                <p className="text-xs text-slate-500 text-center">
+                            <div className="px-4 py-3 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-void)]/30">
+                                <p className="text-xs text-[var(--forge-text-muted)] text-center">
                                     Solutions are anonymized and ranked by helpfulness.
                                     <button
-                                        className="text-purple-400 hover:text-purple-300 ml-1"
+                                        className="text-[var(--ember)] hover:text-[var(--ember-glow)] ml-1"
                                         data-testid="peer-solutions-contribute-btn"
                                     >
                                         Contribute your solution

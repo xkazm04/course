@@ -77,15 +77,15 @@ export function OracleStepIndicator({
                                 "text-xs font-semibold",
                                 "transition-colors duration-200",
                                 isActive && !isGenerating && [
-                                    "bg-indigo-500 text-white",
-                                    "ring-4 ring-indigo-200 dark:ring-indigo-800/50",
+                                    "bg-[var(--ember)] text-white",
+                                    "ring-4 ring-[var(--ember)]/30",
                                 ],
                                 isCompleted && !isActive && [
-                                    "bg-emerald-500 text-white",
+                                    "bg-[var(--forge-success)] text-white",
                                 ],
                                 !isActive && !isCompleted && [
-                                    "bg-slate-200 dark:bg-slate-700",
-                                    "text-slate-500 dark:text-slate-400",
+                                    "bg-[var(--forge-bg-anvil)]",
+                                    "text-[var(--forge-text-secondary)]",
                                 ],
                                 isClickable && "cursor-pointer hover:scale-110",
                                 !isClickable && "cursor-default"
@@ -107,8 +107,8 @@ export function OracleStepIndicator({
                                 className={cn(
                                     "w-8 h-0.5 rounded-full transition-colors duration-300",
                                     isPast || isCompleted
-                                        ? "bg-emerald-500"
-                                        : "bg-slate-200 dark:bg-slate-700"
+                                        ? "bg-[var(--forge-success)]"
+                                        : "bg-[var(--forge-border-subtle)]"
                                 )}
                             />
                         )}
@@ -119,7 +119,7 @@ export function OracleStepIndicator({
             {/* Generating indicator */}
             {isGenerating && (
                 <motion.div
-                    className="flex items-center gap-2 ml-2 text-indigo-500"
+                    className="flex items-center gap-2 ml-2 text-[var(--ember)]"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                 >
@@ -131,7 +131,7 @@ export function OracleStepIndicator({
             {/* Complete indicator */}
             {isComplete && (
                 <motion.div
-                    className="flex items-center gap-2 ml-2 text-emerald-500"
+                    className="flex items-center gap-2 ml-2 text-[var(--forge-success)]"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                 >

@@ -32,7 +32,7 @@ export const BookmarkIndicator: React.FC<BookmarkIndicatorProps> = ({
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className={cn(
-                "text-indigo-500 dark:text-indigo-400",
+                "text-[var(--ember)]",
                 className
             )}
             title="Has bookmark"

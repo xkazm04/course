@@ -64,7 +64,7 @@ export const DiscoveryDashboard: React.FC = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 >
-                    <Compass size={ICON_SIZES.xl} className="text-[var(--accent-primary)]" />
+                    <Compass size={ICON_SIZES.xl} className="text-[var(--ember)]" />
                 </motion.div>
             </div>
         );
@@ -75,23 +75,23 @@ export const DiscoveryDashboard: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+                    <h2 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         Discover Contributions
                     </h2>
-                    <p className="text-[var(--text-muted)] mt-1">
+                    <p className="text-[var(--forge-text-muted)] mt-1">
                         Find real open-source issues that match your skills
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
                     {/* View toggle */}
-                    <div className="flex rounded-lg bg-[var(--surface-elevated)] p-1">
+                    <div className="flex rounded-lg bg-[var(--forge-bg-elevated)] p-1">
                         <button
                             onClick={() => setViewMode("issues")}
                             className={cn(
                                 "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                                 viewMode === "issues"
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)] text-white"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             Issues
@@ -101,8 +101,8 @@ export const DiscoveryDashboard: React.FC = () => {
                             className={cn(
                                 "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                                 viewMode === "repositories"
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)] text-white"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             Repositories
@@ -204,18 +204,18 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({
     const complexities: TaskComplexity[] = ["trivial", "simple", "moderate", "complex", "expert"];
 
     return (
-        <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4">
+        <div className="rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                    <SlidersHorizontal size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
-                    <span className="text-sm font-medium text-[var(--text-primary)]">
+                    <SlidersHorizontal size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                    <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                         Quick Filters
                     </span>
                 </div>
                 {activeCount > 0 && (
                     <button
                         onClick={onReset}
-                        className="text-xs text-[var(--accent-primary)] hover:underline"
+                        className="text-xs text-[var(--ember)] hover:underline"
                     >
                         Reset ({activeCount})
                     </button>
@@ -228,8 +228,8 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({
                 className={cn(
                     "w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-3 transition-colors",
                     filters.hasGoodFirstIssueLabel
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                        ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)]"
+                        : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                 )}
             >
                 <Sparkles size={ICON_SIZES.sm} />
@@ -238,7 +238,7 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({
 
             {/* Complexity filters */}
             <div className="space-y-1">
-                <span className="text-xs text-[var(--text-muted)]">Complexity</span>
+                <span className="text-xs text-[var(--forge-text-muted)]">Complexity</span>
                 <div className="flex flex-wrap gap-1.5">
                     {complexities.map(c => {
                         const config = COMPLEXITY_CONFIG[c];
@@ -251,7 +251,7 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({
                                     "px-2 py-1 rounded text-xs font-medium transition-colors",
                                     isSelected
                                         ? `${config.bgColor} ${config.color}`
-                                        : "bg-[var(--surface-overlay)] text-[var(--text-muted)]"
+                                        : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
                                 )}
                             >
                                 {config.label}
@@ -278,17 +278,17 @@ const IssueListHeader: React.FC<IssueListHeaderProps> = ({
 }) => {
     return (
         <div className="flex items-center justify-between">
-            <span className="text-sm text-[var(--text-muted)]">
+            <span className="text-sm text-[var(--forge-text-muted)]">
                 {count} issue{count !== 1 ? "s" : ""} found
             </span>
-            <div className="flex rounded-lg bg-[var(--surface-elevated)] p-1">
+            <div className="flex rounded-lg bg-[var(--forge-bg-elevated)] p-1">
                 <button
                     onClick={() => onLayoutChange("grid")}
                     className={cn(
                         "p-1.5 rounded transition-colors",
                         layoutMode === "grid"
-                            ? "bg-[var(--surface-overlay)] text-[var(--text-primary)]"
-                            : "text-[var(--text-muted)]"
+                            ? "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-primary)]"
+                            : "text-[var(--forge-text-muted)]"
                     )}
                 >
                     <LayoutGrid size={ICON_SIZES.sm} />
@@ -298,8 +298,8 @@ const IssueListHeader: React.FC<IssueListHeaderProps> = ({
                     className={cn(
                         "p-1.5 rounded transition-colors",
                         layoutMode === "list"
-                            ? "bg-[var(--surface-overlay)] text-[var(--text-primary)]"
-                            : "text-[var(--text-muted)]"
+                            ? "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-primary)]"
+                            : "text-[var(--forge-text-muted)]"
                     )}
                 >
                     <List size={ICON_SIZES.sm} />
@@ -319,14 +319,14 @@ interface EmptyStateProps {
 const EmptyState: React.FC<EmptyStateProps> = ({ title, description, onReset }) => {
     return (
         <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--surface-elevated)] mb-4">
-                <GitBranch size={ICON_SIZES.xl} className="text-[var(--text-muted)]" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--forge-bg-elevated)] mb-4">
+                <GitBranch size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)]" />
             </div>
-            <h3 className="text-lg font-medium text-[var(--text-primary)]">{title}</h3>
-            <p className="text-[var(--text-muted)] mt-1 max-w-md mx-auto">{description}</p>
+            <h3 className="text-lg font-medium text-[var(--forge-text-primary)]">{title}</h3>
+            <p className="text-[var(--forge-text-muted)] mt-1 max-w-md mx-auto">{description}</p>
             <button
                 onClick={onReset}
-                className="mt-4 px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-white text-sm font-medium hover:bg-[var(--accent-primary-hover)] transition-colors"
+                className="mt-4 px-4 py-2 rounded-lg bg-[var(--ember)] text-white text-sm font-medium hover:brightness-110 transition-colors"
             >
                 Reset Filters
             </button>

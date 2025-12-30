@@ -80,10 +80,10 @@ export function CertificateModal({
     };
 
     const accentColors = {
-        indigo: "bg-indigo-500",
-        purple: "bg-purple-500",
-        blue: "bg-blue-500",
-        orange: "bg-orange-500",
+        indigo: "bg-gradient-forge",
+        purple: "bg-gradient-forge",
+        blue: "bg-gradient-forge",
+        orange: "bg-gradient-forge",
     };
 
     if (!certificate) return null;
@@ -104,36 +104,36 @@ export function CertificateModal({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+                        className="relative bg-[var(--forge-bg-elevated)] rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                         data-testid="certificate-modal"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center justify-between p-4 border-b border-[var(--forge-border-subtle)]">
                             <div className="flex items-center gap-3">
                                 <div
                                     className={cn(
-                                        "w-10 h-10 rounded-xl flex items-center justify-center text-white",
+                                        "w-10 h-10 rounded-xl flex items-center justify-center text-[var(--forge-text-primary)]",
                                         accentColors[template.accentColor as keyof typeof accentColors] || accentColors.indigo
                                     )}
                                 >
                                     <Award size={ICON_SIZES.md} />
                                 </div>
                                 <div>
-                                    <h2 className="font-bold text-slate-900 dark:text-slate-100">
+                                    <h2 className="font-bold text-[var(--forge-text-primary)]">
                                         Certificate of Completion
                                     </h2>
-                                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                                    <p className="text-sm text-[var(--forge-text-muted)]">
                                         {certificate.courseTitle}
                                     </p>
                                 </div>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                                className="p-2 hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                 data-testid="certificate-modal-close-btn"
                             >
-                                <X size={ICON_SIZES.md} className="text-slate-500" />
+                                <X size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                             </button>
                         </div>
 
@@ -142,7 +142,7 @@ export function CertificateModal({
                             <div className="grid md:grid-cols-2 gap-6">
                                 {/* Certificate Preview */}
                                 <div className="space-y-4">
-                                    <div className="rounded-xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                                    <div className="rounded-xl overflow-hidden shadow-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)]">
                                         <img
                                             src={svgDataUrl}
                                             alt={`Certificate for ${certificate.courseTitle}`}
@@ -152,12 +152,12 @@ export function CertificateModal({
                                     </div>
 
                                     {/* Verification Code */}
-                                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <div className="flex items-center justify-between p-3 bg-[var(--forge-bg-anvil)] rounded-lg border border-[var(--forge-border-subtle)]">
                                         <div>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                                            <p className="text-xs text-[var(--forge-text-muted)]">
                                                 Verification Code
                                             </p>
-                                            <p className="font-mono text-sm font-bold text-slate-700 dark:text-slate-200">
+                                            <p className="font-mono text-sm font-bold text-[var(--forge-text-primary)]">
                                                 {certificate.uniqueCode}
                                             </p>
                                         </div>
@@ -165,7 +165,7 @@ export function CertificateModal({
                                             href={certificate.verificationUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
+                                            className="flex items-center gap-1 text-xs text-[var(--ember)] hover:underline"
                                             data-testid="certificate-verify-link"
                                         >
                                             <ExternalLink size={ICON_SIZES.xs} />
@@ -178,50 +178,50 @@ export function CertificateModal({
                                 <div className="space-y-6">
                                     {/* Learner Info */}
                                     <div>
-                                        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                                        <h3 className="text-lg font-bold text-[var(--forge-text-primary)] mb-2">
                                             {certificate.learnerName}
                                         </h3>
-                                        <p className="text-slate-600 dark:text-slate-400">
+                                        <p className="text-[var(--forge-text-secondary)]">
                                             has successfully completed <strong>{certificate.courseTitle}</strong>
                                         </p>
                                     </div>
 
                                     {/* Stats */}
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                                            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+                                        <div className="p-3 bg-[var(--forge-bg-anvil)] rounded-lg">
+                                            <div className="flex items-center gap-2 text-[var(--forge-text-muted)] mb-1">
                                                 <Calendar size={ICON_SIZES.sm} />
                                                 <span className="text-xs">Completed</span>
                                             </div>
-                                            <p className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                                            <p className="font-semibold text-[var(--forge-text-primary)] text-sm">
                                                 {formatCertificateDate(certificate.completionDate)}
                                             </p>
                                         </div>
-                                        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                                            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+                                        <div className="p-3 bg-[var(--forge-bg-anvil)] rounded-lg">
+                                            <div className="flex items-center gap-2 text-[var(--forge-text-muted)] mb-1">
                                                 <Clock size={ICON_SIZES.sm} />
                                                 <span className="text-xs">Duration</span>
                                             </div>
-                                            <p className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                                            <p className="font-semibold text-[var(--forge-text-primary)] text-sm">
                                                 {certificate.metadata.totalHours} hours
                                             </p>
                                         </div>
-                                        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                                            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+                                        <div className="p-3 bg-[var(--forge-bg-anvil)] rounded-lg">
+                                            <div className="flex items-center gap-2 text-[var(--forge-text-muted)] mb-1">
                                                 <BookOpen size={ICON_SIZES.sm} />
                                                 <span className="text-xs">Modules</span>
                                             </div>
-                                            <p className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                                            <p className="font-semibold text-[var(--forge-text-primary)] text-sm">
                                                 {certificate.metadata.modulesCompleted} completed
                                             </p>
                                         </div>
                                         {certificate.metadata.quizScore && (
-                                            <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                                                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+                                            <div className="p-3 bg-[var(--forge-bg-anvil)] rounded-lg">
+                                                <div className="flex items-center gap-2 text-[var(--forge-text-muted)] mb-1">
                                                     <CheckCircle size={ICON_SIZES.sm} />
                                                     <span className="text-xs">Quiz Score</span>
                                                 </div>
-                                                <p className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                                                <p className="font-semibold text-[var(--forge-text-primary)] text-sm">
                                                     {certificate.metadata.quizScore}%
                                                 </p>
                                             </div>
@@ -230,16 +230,16 @@ export function CertificateModal({
 
                                     {/* Skills */}
                                     <div>
-                                        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                        <h4 className="text-sm font-semibold text-[var(--forge-text-secondary)] mb-2">
                                             Skills Earned
                                         </h4>
                                         <div className="flex flex-wrap gap-2">
                                             {certificate.skills.map((skill, index) => (
                                                 <span
                                                     key={index}
-                                                    className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium flex items-center gap-1"
+                                                    className="px-3 py-1 bg-[var(--ember)]/20 text-[var(--ember)] rounded-full text-xs font-medium flex items-center gap-1"
                                                 >
-                                                    <CheckCircle size={ICON_SIZES.xs} className="text-emerald-500" />
+                                                    <CheckCircle size={ICON_SIZES.xs} className="text-[var(--forge-success)]" />
                                                     {skill}
                                                 </span>
                                             ))}
@@ -247,9 +247,9 @@ export function CertificateModal({
                                     </div>
 
                                     {/* Issuer */}
-                                    <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                                        <p className="text-xs text-slate-500 dark:text-slate-400">Issued by</p>
-                                        <p className="font-semibold text-slate-700 dark:text-slate-200">
+                                    <div className="pt-4 border-t border-[var(--forge-border-subtle)]">
+                                        <p className="text-xs text-[var(--forge-text-muted)]">Issued by</p>
+                                        <p className="font-semibold text-[var(--forge-text-primary)]">
                                             {certificate.issuerName}
                                         </p>
                                     </div>
@@ -258,8 +258,8 @@ export function CertificateModal({
                         </div>
 
                         {/* Footer Actions */}
-                        <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center justify-between p-4 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)]">
+                            <p className="text-xs text-[var(--forge-text-muted)]">
                                 Certificate ID: {certificate.id}
                             </p>
                             <div className="flex items-center gap-2">
@@ -268,7 +268,7 @@ export function CertificateModal({
                                     <button
                                         onClick={() => setShowDownloadMenu(!showDownloadMenu)}
                                         disabled={isDownloading}
-                                        className="flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-lg text-slate-700 dark:text-slate-200 text-sm font-medium transition-colors disabled:opacity-50"
+                                        className="flex items-center gap-2 px-4 py-2 bg-[var(--forge-bg-elevated)] hover:bg-[var(--forge-bg-workshop)] rounded-lg text-[var(--forge-text-primary)] text-sm font-medium transition-colors disabled:opacity-50"
                                         data-testid="certificate-download-btn"
                                     >
                                         <Download size={ICON_SIZES.sm} />
@@ -280,11 +280,11 @@ export function CertificateModal({
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
-                                                className="absolute bottom-full right-0 mb-2 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden"
+                                                className="absolute bottom-full right-0 mb-2 bg-[var(--forge-bg-elevated)] rounded-lg shadow-lg border border-[var(--forge-border-subtle)] overflow-hidden"
                                             >
                                                 <button
                                                     onClick={() => handleDownload("pdf")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="download-pdf-btn"
                                                 >
                                                     <FileText size={ICON_SIZES.sm} />
@@ -292,7 +292,7 @@ export function CertificateModal({
                                                 </button>
                                                 <button
                                                     onClick={() => handleDownload("png")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="download-png-btn"
                                                 >
                                                     <ImageIcon size={ICON_SIZES.sm} />
@@ -300,7 +300,7 @@ export function CertificateModal({
                                                 </button>
                                                 <button
                                                     onClick={() => handleDownload("jpg")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="download-jpg-btn"
                                                 >
                                                     <ImageIcon size={ICON_SIZES.sm} />
@@ -315,7 +315,7 @@ export function CertificateModal({
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowShareMenu(!showShareMenu)}
-                                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white text-sm font-medium transition-colors"
+                                        className="flex items-center gap-2 px-4 py-2 bg-[var(--ember)] hover:opacity-90 rounded-lg text-[var(--forge-text-primary)] text-sm font-medium transition-colors"
                                         data-testid="certificate-share-btn"
                                     >
                                         <Share2 size={ICON_SIZES.sm} />
@@ -327,11 +327,11 @@ export function CertificateModal({
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
-                                                className="absolute bottom-full right-0 mb-2 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden min-w-[160px]"
+                                                className="absolute bottom-full right-0 mb-2 bg-[var(--forge-bg-elevated)] rounded-lg shadow-lg border border-[var(--forge-border-subtle)] overflow-hidden min-w-[160px]"
                                             >
                                                 <button
                                                     onClick={() => handleShare("linkedin")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="share-linkedin-btn"
                                                 >
                                                     <Linkedin size={ICON_SIZES.sm} className="text-[#0A66C2]" />
@@ -339,7 +339,7 @@ export function CertificateModal({
                                                 </button>
                                                 <button
                                                     onClick={() => handleShare("twitter")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="share-twitter-btn"
                                                 >
                                                     <Twitter size={ICON_SIZES.sm} className="text-[#1DA1F2]" />
@@ -347,7 +347,7 @@ export function CertificateModal({
                                                 </button>
                                                 <button
                                                     onClick={() => handleShare("facebook")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="share-facebook-btn"
                                                 >
                                                     <Facebook size={ICON_SIZES.sm} className="text-[#1877F2]" />
@@ -355,25 +355,25 @@ export function CertificateModal({
                                                 </button>
                                                 <button
                                                     onClick={() => handleShare("email")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)]"
                                                     data-testid="share-email-btn"
                                                 >
-                                                    <Mail size={ICON_SIZES.sm} className="text-slate-600" />
+                                                    <Mail size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                                                     Email
                                                 </button>
                                                 <button
                                                     onClick={() => handleShare("copy")}
-                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-left text-sm border-t border-slate-200 dark:border-slate-700"
+                                                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-[var(--forge-bg-anvil)] text-left text-sm text-[var(--forge-text-primary)] border-t border-[var(--forge-border-subtle)]"
                                                     data-testid="share-copy-btn"
                                                 >
                                                     {copiedLink ? (
                                                         <>
-                                                            <Check size={ICON_SIZES.sm} className="text-emerald-500" />
+                                                            <Check size={ICON_SIZES.sm} className="text-[var(--forge-success)]" />
                                                             Copied!
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Link size={ICON_SIZES.sm} className="text-slate-600" />
+                                                            <Link size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                                                             Copy Link
                                                         </>
                                                     )}

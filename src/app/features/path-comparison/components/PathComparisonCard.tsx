@@ -63,12 +63,12 @@ const IndicatorIcon: React.FC<{ indicator: ComparisonIndicator; className?: stri
 }) => {
     switch (indicator) {
         case "advantage":
-            return <ArrowUp size={ICON_SIZES.xs} className={cn("text-green-500", className)} />;
+            return <ArrowUp size={ICON_SIZES.xs} className={cn("text-[var(--forge-success)]", className)} />;
         case "disadvantage":
-            return <ArrowDown size={ICON_SIZES.xs} className={cn("text-amber-500", className)} />;
+            return <ArrowDown size={ICON_SIZES.xs} className={cn("text-[var(--forge-warning)]", className)} />;
         case "neutral":
         default:
-            return <Minus size={ICON_SIZES.xs} className={cn("text-[var(--text-muted)]", className)} />;
+            return <Minus size={ICON_SIZES.xs} className={cn("text-[var(--forge-text-muted)]", className)} />;
     }
 };
 
@@ -97,7 +97,7 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: animationDelay + 0.2 }}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold rounded-full shadow-lg"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1 bg-gradient-forge text-white text-xs font-bold rounded-full shadow-ember"
                     data-testid={`top-pick-badge-${path.id}`}
                 >
                     <Trophy size={ICON_SIZES.xs} />
@@ -110,7 +110,7 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                 elevation={isTopPick ? "modal" : "hoverable"}
                 className={cn(
                     "h-full",
-                    isTopPick && "ring-2 ring-green-500/30"
+                    isTopPick && "ring-2 ring-[var(--forge-success)]/30"
                 )}
             >
                 <div className="p-6 flex flex-col h-full">
@@ -118,7 +118,7 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                     {onRemove && (
                         <button
                             onClick={onRemove}
-                            className="absolute top-4 right-4 p-1.5 rounded-full bg-[var(--surface-inset)] hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-500 transition-colors"
+                            className="absolute top-4 right-4 p-1.5 rounded-full bg-[var(--forge-bg-anvil)] hover:bg-[var(--forge-error)]/10 text-[var(--forge-text-muted)] hover:text-[var(--forge-error)] transition-colors"
                             data-testid={`remove-comparison-${path.id}`}
                             aria-label={`Remove ${path.name} from comparison`}
                         >
@@ -137,23 +137,23 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                             {PathIcon && <PathIcon size={ICON_SIZES.lg} />}
                         </div>
                         <div className="flex-1 min-w-0 pr-8">
-                            <h3 className="text-lg font-bold text-[var(--text-primary)] truncate">
+                            <h3 className="text-lg font-bold text-[var(--forge-text-primary)] truncate">
                                 {path.name}
                             </h3>
-                            <p className="text-sm text-[var(--text-muted)] line-clamp-2">
+                            <p className="text-sm text-[var(--forge-text-muted)] line-clamp-2">
                                 {path.description}
                             </p>
                         </div>
                     </div>
 
                     {/* Overall Score */}
-                    <div className="flex items-center justify-between mb-6 p-3 rounded-xl bg-[var(--surface-inset)]">
-                        <span className="text-sm font-medium text-[var(--text-secondary)]">
+                    <div className="flex items-center justify-between mb-6 p-3 rounded-xl bg-[var(--forge-bg-anvil)]">
+                        <span className="text-sm font-medium text-[var(--forge-text-secondary)]">
                             Overall Score
                         </span>
                         <div className="flex items-center gap-2">
                             <div
-                                className="h-2 w-24 rounded-full bg-[var(--border-default)] overflow-hidden"
+                                className="h-2 w-24 rounded-full bg-[var(--forge-border-default)] overflow-hidden"
                                 role="progressbar"
                                 aria-valuenow={overallScore}
                                 aria-valuemin={0}
@@ -166,10 +166,10 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                                     className={cn(
                                         "h-full rounded-full",
                                         overallScore >= 80
-                                            ? "bg-gradient-to-r from-green-500 to-emerald-500"
+                                            ? "bg-gradient-forge"
                                             : overallScore >= 60
-                                              ? "bg-gradient-to-r from-amber-500 to-orange-500"
-                                              : "bg-gradient-to-r from-slate-400 to-slate-500"
+                                              ? "bg-[var(--forge-warning)]"
+                                              : "bg-[var(--forge-text-muted)]"
                                     )}
                                 />
                             </div>
@@ -177,10 +177,10 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                                 className={cn(
                                     "text-lg font-bold",
                                     overallScore >= 80
-                                        ? "text-green-500"
+                                        ? "text-[var(--forge-success)]"
                                         : overallScore >= 60
-                                          ? "text-amber-500"
-                                          : "text-[var(--text-secondary)]"
+                                          ? "text-[var(--forge-warning)]"
+                                          : "text-[var(--forge-text-secondary)]"
                                 )}
                             >
                                 {overallScore}
@@ -207,14 +207,14 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                                     <div className="flex items-center gap-3">
                                         <DimensionIcon
                                             size={ICON_SIZES.sm}
-                                            className="text-[var(--text-muted)]"
+                                            className="text-[var(--forge-text-muted)]"
                                         />
                                         <div>
-                                            <div className="text-sm font-medium text-[var(--text-primary)]">
+                                            <div className="text-sm font-medium text-[var(--forge-text-primary)]">
                                                 {DIMENSION_LABELS[score.dimension]}
                                             </div>
                                             {score.detail && (
-                                                <div className="text-xs text-[var(--text-muted)]">
+                                                <div className="text-xs text-[var(--forge-text-muted)]">
                                                     {score.detail}
                                                 </div>
                                             )}
@@ -232,13 +232,13 @@ export const PathComparisonCard: React.FC<PathComparisonCardProps> = ({
                     </div>
 
                     {/* Skills Preview */}
-                    <div className="mt-4 pt-4 border-t border-[var(--border-default)]">
-                        <div className="text-xs text-[var(--text-muted)] mb-2">Core Skills</div>
+                    <div className="mt-4 pt-4 border-t border-[var(--forge-border-default)]">
+                        <div className="text-xs text-[var(--forge-text-muted)] mb-2">Core Skills</div>
                         <div className="flex flex-wrap gap-1.5">
                             {path.skills.slice(0, 4).map((skill) => (
                                 <span
                                     key={skill}
-                                    className="px-2 py-1 text-xs bg-[var(--surface-inset)] text-[var(--text-secondary)] rounded-md"
+                                    className="px-2 py-1 text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] rounded-md"
                                 >
                                     {skill}
                                 </span>

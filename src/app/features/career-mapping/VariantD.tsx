@@ -177,7 +177,7 @@ export const VariantD = () => {
                                             initial={{ opacity: 0, y: 5 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0 }}
-                                            className="absolute top-full right-0 mt-2 text-xs bg-slate-900 text-white px-3 py-1.5 rounded-lg whitespace-nowrap"
+                                            className="absolute top-full right-0 mt-2 text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-primary)] px-3 py-1.5 rounded-lg whitespace-nowrap border border-[var(--forge-border-subtle)]"
                                         >
                                             Share Progress
                                         </motion.span>

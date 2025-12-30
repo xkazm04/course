@@ -22,12 +22,12 @@ import { MapConnections } from "./MapConnections";
 import { HypotheticalNode } from "./HypotheticalNode";
 import { HypotheticalMapNode } from "../lib/types";
 
-// Gradient configurations for mesh background
+// Gradient configurations for mesh background - using OpenForge ember color
 const GRADIENT_VARIANTS = {
     default: {
-        primary: "from-indigo-200/20 via-purple-200/20 to-blue-200/20 dark:from-indigo-900/20 dark:via-purple-900/20 dark:to-blue-900/20",
-        secondary: "from-cyan-200/20 via-pink-200/20 to-indigo-200/20 dark:from-cyan-900/20 dark:via-pink-900/20 dark:to-indigo-900/20",
-        tertiary: "from-violet-200/15 via-fuchsia-200/15 to-rose-200/15 dark:from-violet-900/15 dark:via-fuchsia-900/15 dark:to-rose-900/15",
+        primary: "from-[var(--ember)]/10 via-[var(--ember-glow)]/15 to-[var(--forge-info)]/15",
+        secondary: "from-[var(--forge-info)]/15 via-[var(--ember-glow)]/15 to-[var(--ember)]/10",
+        tertiary: "from-[var(--ember-glow)]/10 via-[var(--ember)]/10 to-[var(--forge-error)]/10",
     },
 };
 
@@ -129,8 +129,7 @@ export const MapCanvas: React.FC<MapCanvasProps> = memo(function MapCanvas({
             ref={containerRef}
             className={cn(
                 "relative w-full h-full overflow-hidden",
-                "bg-gradient-to-br from-slate-50 via-white to-slate-100",
-                "dark:from-slate-950 dark:via-slate-900 dark:to-slate-950",
+                "bg-[var(--forge-bg-workshop)]",
                 cursorStyle,
                 className
             )}
@@ -265,7 +264,7 @@ export const MapCanvas: React.FC<MapCanvasProps> = memo(function MapCanvas({
             {/* Empty state */}
             {nodes.length === 0 && containerSize.width > 0 && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-slate-500 dark:text-slate-400">
+                    <div className="text-center text-[var(--forge-text-secondary)]">
                         <p className="text-lg font-medium">No content available</p>
                         <p className="text-sm">Select a domain to explore its courses</p>
                     </div>

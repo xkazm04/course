@@ -1,6 +1,3 @@
-// Career Oracle (VariantE) export
-export { VariantE } from "./VariantE";
-
 // Re-export unified LearnerProfile types from shared lib
 // This makes it convenient to import from goal-path feature
 export type {
@@ -185,9 +182,7 @@ export {
     AlternativePathsCard,
 } from "./components/LearningPathTimeline";
 
-export const goalPathVariants = [
-    { name: "Career Oracle", key: "E" },
-];
+export const goalPathVariants: { name: string; key: string }[] = [];
 
 // Decision Tree Architecture exports (for AI Chat mode)
 export {

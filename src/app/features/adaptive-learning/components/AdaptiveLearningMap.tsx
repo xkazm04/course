@@ -67,14 +67,14 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl">
+                    <div className="p-2 bg-gradient-forge rounded-xl shadow-ember-sm">
                         <Brain className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold text-[var(--text-primary)]">
+                        <h2 className="text-xl font-bold text-[var(--forge-text-primary)]">
                             AI Learning Path
                         </h2>
-                        <p className="text-sm text-[var(--text-secondary)]">
+                        <p className="text-sm text-[var(--forge-text-secondary)]">
                             Personalized recommendations based on your goals
                         </p>
                     </div>
@@ -84,8 +84,8 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                     disabled={state.isLoading}
                     className={cn(
                         "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium",
-                        "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400",
-                        "hover:bg-indigo-100 dark:hover:bg-indigo-900/40",
+                        "bg-[var(--ember)]/10 text-[var(--ember)]",
+                        "hover:bg-[var(--ember)]/20",
                         "disabled:opacity-50 disabled:cursor-not-allowed",
                         "transition-all"
                     )}
@@ -126,29 +126,29 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                                 <div className="flex items-center gap-3">
                                     <div className="relative">
                                         <motion.div
-                                            className="absolute inset-0 bg-indigo-500/30 rounded-full blur-md"
+                                            className="absolute inset-0 bg-[var(--ember)]/30 rounded-full blur-md"
                                             animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
                                             transition={{ duration: 2, repeat: Infinity }}
                                         />
-                                        <div className="relative p-2 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full">
+                                        <div className="relative p-2 bg-gradient-forge rounded-full">
                                             <Sparkles className="w-5 h-5 text-white" />
                                         </div>
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-lg text-[var(--text-primary)]">
+                                        <h3 className="font-bold text-lg text-[var(--forge-text-primary)]">
                                             {topRecommendation.name}
                                         </h3>
-                                        <p className="text-sm text-[var(--text-secondary)]">
+                                        <p className="text-sm text-[var(--forge-text-secondary)]">
                                             {topRecommendation.description}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="text-right">
-                                        <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                                        <div className="text-lg font-bold text-[var(--ember)]">
                                             {Math.round(topRecommendation.optimality * 100)}%
                                         </div>
-                                        <div className="text-xs text-[var(--text-secondary)]">
+                                        <div className="text-xs text-[var(--forge-text-secondary)]">
                                             Match Score
                                         </div>
                                     </div>
@@ -185,7 +185,7 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
 
                             {/* Animated Path Preview */}
                             <div className="relative mb-6">
-                                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500 via-purple-500 to-cyan-500" />
+                                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[var(--ember)] via-[var(--molten)] to-[var(--gold)]" />
                                 <div className="space-y-3">
                                     {topRecommendation.nodeIds.slice(0, 5).map((nodeId, index) => {
                                         const node = getNodeById(nodeId);
@@ -203,7 +203,7 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                                             >
                                                 {/* Node indicator */}
                                                 <motion.div
-                                                    className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-800 border-2 border-indigo-500"
+                                                    className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[var(--forge-bg-workshop)] border-2 border-[var(--ember)]"
                                                     animate={hoveredNodeId === nodeId ? { scale: 1.2 } : { scale: 1 }}
                                                 />
 
@@ -211,20 +211,20 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                                                     onClick={() => onNavigateToNode?.(nodeId)}
                                                     className={cn(
                                                         "w-full flex items-center justify-between p-3 rounded-xl",
-                                                        "bg-white/50 dark:bg-slate-800/50",
-                                                        "border border-slate-200 dark:border-slate-700",
-                                                        "hover:bg-indigo-50 dark:hover:bg-indigo-950/30",
-                                                        "hover:border-indigo-300 dark:hover:border-indigo-700",
+                                                        "bg-[var(--forge-bg-workshop)]/50",
+                                                        "border border-[var(--forge-border-subtle)]",
+                                                        "hover:bg-[var(--ember)]/5",
+                                                        "hover:border-[var(--ember)]/30",
                                                         "transition-all cursor-pointer"
                                                     )}
                                                     data-testid={`path-node-${nodeId}`}
                                                 >
                                                     <div className="flex items-center gap-3">
-                                                        <span className="text-sm font-medium text-[var(--text-primary)]">
+                                                        <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                                                             {node?.title || nodeId}
                                                         </span>
                                                         {node && (
-                                                            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-[var(--text-secondary)]">
+                                                            <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)]">
                                                                 {node.estimatedHours}h
                                                             </span>
                                                         )}
@@ -233,7 +233,7 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                                                         {prediction && (
                                                             <PredictionBadge prediction={prediction} />
                                                         )}
-                                                        <ChevronRight className="w-4 h-4 text-slate-400" />
+                                                        <ChevronRight className="w-4 h-4 text-[var(--forge-text-muted)]" />
                                                     </div>
                                                 </button>
                                             </motion.div>
@@ -250,7 +250,7 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                                     >
                                         <button
                                             onClick={() => setSelectedPath(topRecommendation)}
-                                            className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+                                            className="text-sm text-[var(--ember)] hover:underline"
                                             data-testid="view-full-path-btn"
                                         >
                                             + {topRecommendation.nodeIds.length - 5} more topics
@@ -261,14 +261,14 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
 
                             {/* Reasoning */}
                             <div className="space-y-2">
-                                <h4 className="text-sm font-medium text-[var(--text-secondary)]">
+                                <h4 className="text-sm font-medium text-[var(--forge-text-secondary)]">
                                     Why this path?
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {topRecommendation.reasoning.map((reason, index) => (
                                         <span
                                             key={index}
-                                            className="text-xs px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400"
+                                            className="text-xs px-3 py-1.5 rounded-full bg-[var(--ember)]/10 text-[var(--ember)]"
                                         >
                                             {reason}
                                         </span>
@@ -288,9 +288,9 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                                 }}
                                 className={cn(
                                     "w-full mt-6 py-3 px-6 rounded-xl",
-                                    "bg-gradient-to-r from-indigo-500 to-purple-500",
+                                    "bg-gradient-forge",
                                     "text-white font-medium",
-                                    "hover:shadow-lg hover:shadow-indigo-500/25",
+                                    "hover:shadow-lg shadow-ember",
                                     "transition-shadow"
                                 )}
                                 data-testid="start-path-btn"
@@ -305,7 +305,7 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
             {/* Other Recommendations */}
             {state.recommendations.length > 1 && (
                 <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
                         Alternative Paths
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -332,8 +332,8 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                     <PrismaticCard glowColor="purple">
                         <div className="p-6">
                             <div className="flex items-center gap-3 mb-4">
-                                <BarChart3 className="w-5 h-5 text-purple-500" />
-                                <h3 className="font-bold text-[var(--text-primary)]">
+                                <BarChart3 className="w-5 h-5 text-[var(--ember)]" />
+                                <h3 className="font-bold text-[var(--forge-text-primary)]">
                                     Your Learning Analytics
                                 </h3>
                             </div>
@@ -378,9 +378,9 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     >
-                        <Brain className="w-8 h-8 text-indigo-500" />
+                        <Brain className="w-8 h-8 text-[var(--ember)]" />
                     </motion.div>
-                    <span className="ml-3 text-[var(--text-secondary)]">
+                    <span className="ml-3 text-[var(--forge-text-secondary)]">
                         Analyzing your learning patterns...
                     </span>
                 </div>
@@ -389,16 +389,16 @@ export const AdaptiveLearningMap: React.FC<AdaptiveLearningMapProps> = ({
             {/* Empty State */}
             {!state.isLoading && state.recommendations.length === 0 && (
                 <div className="text-center py-12">
-                    <Sparkles className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">
+                    <Sparkles className="w-12 h-12 text-[var(--forge-text-muted)] mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-[var(--forge-text-primary)] mb-2">
                         No recommendations yet
                     </h3>
-                    <p className="text-[var(--text-secondary)] mb-4">
+                    <p className="text-[var(--forge-text-secondary)] mb-4">
                         Start exploring topics to get personalized learning paths
                     </p>
                     <button
                         onClick={refreshRecommendations}
-                        className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                        className="text-[var(--ember)] hover:underline"
                         data-testid="generate-recommendations-btn"
                     >
                         Generate Recommendations
@@ -427,17 +427,17 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
     index,
 }) => {
     const severityColors = {
-        info: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
-        suggestion: "bg-indigo-50 dark:bg-indigo-950/30 border-indigo-200 dark:border-indigo-800",
-        recommendation: "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800",
-        urgent: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800",
+        info: "bg-[var(--forge-info)]/10 border-[var(--forge-info)]/30",
+        suggestion: "bg-[var(--ember)]/10 border-[var(--ember)]/30",
+        recommendation: "bg-[var(--molten)]/10 border-[var(--molten)]/30",
+        urgent: "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/30",
     };
 
     const severityIcons = {
-        info: <AlertCircle className="w-4 h-4 text-blue-500" />,
-        suggestion: <Sparkles className="w-4 h-4 text-indigo-500" />,
-        recommendation: <Target className="w-4 h-4 text-purple-500" />,
-        urgent: <Zap className="w-4 h-4 text-amber-500" />,
+        info: <AlertCircle className="w-4 h-4 text-[var(--forge-info)]" />,
+        suggestion: <Sparkles className="w-4 h-4 text-[var(--ember)]" />,
+        recommendation: <Target className="w-4 h-4 text-[var(--molten)]" />,
+        urgent: <Zap className="w-4 h-4 text-[var(--forge-warning)]" />,
     };
 
     return (
@@ -454,16 +454,16 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
         >
             {severityIcons[suggestion.severity]}
             <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-[var(--text-primary)]">
+                <h4 className="font-medium text-[var(--forge-text-primary)]">
                     {suggestion.title}
                 </h4>
-                <p className="text-sm text-[var(--text-secondary)] mt-0.5">
+                <p className="text-sm text-[var(--forge-text-secondary)] mt-0.5">
                     {suggestion.message}
                 </p>
                 {suggestion.action.targetNodeId && (
                     <button
                         onClick={onAction}
-                        className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline mt-2"
+                        className="text-sm text-[var(--ember)] hover:underline mt-2"
                         data-testid="suggestion-action-btn"
                     >
                         Go to topic →
@@ -472,7 +472,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
             </div>
             <button
                 onClick={onDismiss}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                className="text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                 data-testid="dismiss-suggestion-btn"
             >
                 <X className="w-4 h-4" />
@@ -490,10 +490,10 @@ interface PathStatProps {
 
 const PathStat: React.FC<PathStatProps> = ({ icon, label, value, color }) => {
     const colorClasses = {
-        indigo: "text-indigo-500 bg-indigo-50 dark:bg-indigo-950/30",
-        purple: "text-purple-500 bg-purple-50 dark:bg-purple-950/30",
-        cyan: "text-cyan-500 bg-cyan-50 dark:bg-cyan-950/30",
-        emerald: "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30",
+        indigo: "text-[var(--ember)] bg-[var(--ember)]/10",
+        purple: "text-[var(--molten)] bg-[var(--molten)]/10",
+        cyan: "text-[var(--forge-info)] bg-[var(--forge-info)]/10",
+        emerald: "text-[var(--forge-success)] bg-[var(--forge-success)]/10",
     };
 
     return (
@@ -501,8 +501,8 @@ const PathStat: React.FC<PathStatProps> = ({ icon, label, value, color }) => {
             <div className={cn("inline-flex p-2 rounded-lg mb-1", colorClasses[color])}>
                 {icon}
             </div>
-            <div className="text-lg font-bold text-[var(--text-primary)]">{value}</div>
-            <div className="text-xs text-[var(--text-secondary)]">{label}</div>
+            <div className="text-lg font-bold text-[var(--forge-text-primary)]">{value}</div>
+            <div className="text-xs text-[var(--forge-text-secondary)]">{label}</div>
         </div>
     );
 };
@@ -516,9 +516,9 @@ const PredictionBadge: React.FC<PredictionBadgeProps> = ({ prediction }) => {
     const color = probability > 0.7 ? "emerald" : probability > 0.4 ? "amber" : "red";
 
     const colorClasses = {
-        emerald: "bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400",
-        amber: "bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400",
-        red: "bg-red-100 dark:bg-red-950/30 text-red-600 dark:text-red-400",
+        emerald: "bg-[var(--forge-success)]/10 text-[var(--forge-success)]",
+        amber: "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]",
+        red: "bg-[var(--forge-error)]/10 text-[var(--forge-error)]",
     };
 
     return (
@@ -545,17 +545,17 @@ const PathCard: React.FC<PathCardProps> = ({ path, index, onSelect, onNavigate }
             <PrismaticCard static className="h-full">
                 <div className="p-4">
                     <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-semibold text-[var(--text-primary)]">
+                        <h4 className="font-semibold text-[var(--forge-text-primary)]">
                             {path.name}
                         </h4>
-                        <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                        <span className="text-sm font-medium text-[var(--ember)]">
                             {Math.round(path.optimality * 100)}%
                         </span>
                     </div>
-                    <p className="text-sm text-[var(--text-secondary)] mb-3 line-clamp-2">
+                    <p className="text-sm text-[var(--forge-text-secondary)] mb-3 line-clamp-2">
                         {path.description}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-[var(--text-secondary)]">
+                    <div className="flex items-center gap-4 text-xs text-[var(--forge-text-secondary)]">
                         <span>{path.nodeIds.length} topics</span>
                         <span>{path.totalHours}h</span>
                         <span className="capitalize">{path.difficulty}</span>
@@ -566,7 +566,7 @@ const PathCard: React.FC<PathCardProps> = ({ path, index, onSelect, onNavigate }
                                 onNavigate(path.nodeIds[0]);
                             }
                         }}
-                        className="w-full mt-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-lg transition-colors"
+                        className="w-full mt-4 py-2 text-sm font-medium text-[var(--ember)] hover:bg-[var(--ember)]/10 rounded-lg transition-colors"
                         data-testid={`start-path-${path.id}-btn`}
                     >
                         Start Path
@@ -585,11 +585,11 @@ interface AnalyticsStatProps {
 
 const AnalyticsStat: React.FC<AnalyticsStatProps> = ({ label, value, trend }) => {
     const trendColors = {
-        slow: "text-amber-500",
-        steady: "text-blue-500",
-        fast: "text-emerald-500",
-        accelerating: "text-emerald-500",
-        decelerating: "text-red-500",
+        slow: "text-[var(--forge-warning)]",
+        steady: "text-[var(--forge-info)]",
+        fast: "text-[var(--forge-success)]",
+        accelerating: "text-[var(--forge-success)]",
+        decelerating: "text-[var(--forge-error)]",
     };
 
     const trendIcons = {
@@ -602,10 +602,10 @@ const AnalyticsStat: React.FC<AnalyticsStatProps> = ({ label, value, trend }) =>
 
     return (
         <div className="text-center">
-            <div className="text-2xl font-bold text-[var(--text-primary)]">
+            <div className="text-2xl font-bold text-[var(--forge-text-primary)]">
                 {value}
             </div>
-            <div className="text-xs text-[var(--text-secondary)]">{label}</div>
+            <div className="text-xs text-[var(--forge-text-secondary)]">{label}</div>
             <div className={cn("text-xs font-medium mt-1", trendColors[trend])}>
                 {trendIcons[trend]} {trend}
             </div>
@@ -623,28 +623,28 @@ const PredictionTooltip: React.FC<PredictionTooltipProps> = ({ prediction }) => 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="fixed bottom-4 right-4 max-w-sm p-4 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-50"
+            className="fixed bottom-4 right-4 max-w-sm p-4 bg-[var(--forge-bg-workshop)] rounded-xl shadow-xl border border-[var(--forge-border-subtle)] z-50"
             data-testid="prediction-tooltip"
         >
-            <h4 className="font-semibold text-[var(--text-primary)] mb-2">
+            <h4 className="font-semibold text-[var(--forge-text-primary)] mb-2">
                 Completion Prediction
             </h4>
             <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                    <span className="text-[var(--text-secondary)]">Success probability:</span>
-                    <span className="font-medium text-[var(--text-primary)]">
+                    <span className="text-[var(--forge-text-secondary)]">Success probability:</span>
+                    <span className="font-medium text-[var(--forge-text-primary)]">
                         {Math.round(prediction.probability * 100)}%
                     </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                    <span className="text-[var(--text-secondary)]">Estimated time:</span>
-                    <span className="font-medium text-[var(--text-primary)]">
+                    <span className="text-[var(--forge-text-secondary)]">Estimated time:</span>
+                    <span className="font-medium text-[var(--forge-text-primary)]">
                         {prediction.estimatedHours.toFixed(1)}h
                     </span>
                 </div>
                 {prediction.potentialChallenges.length > 0 && (
-                    <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                        <span className="text-xs text-amber-600 dark:text-amber-400">
+                    <div className="mt-2 pt-2 border-t border-[var(--forge-border-subtle)]">
+                        <span className="text-xs text-[var(--forge-warning)]">
                             ⚠️ {prediction.potentialChallenges[0]}
                         </span>
                     </div>

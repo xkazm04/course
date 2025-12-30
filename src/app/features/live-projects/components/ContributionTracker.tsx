@@ -74,14 +74,14 @@ const PHASE_ICONS: Record<PhaseType, React.ElementType> = {
 };
 
 const STATUS_COLORS: Record<ContributionStatus, { bg: string; text: string }> = {
-    exploring: { bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-600 dark:text-blue-400" },
-    in_progress: { bg: "bg-indigo-100 dark:bg-indigo-900/30", text: "text-indigo-600 dark:text-indigo-400" },
-    review_ready: { bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-600 dark:text-amber-400" },
-    changes_requested: { bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-600 dark:text-orange-400" },
-    approved: { bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-600 dark:text-emerald-400" },
-    merged: { bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-600 dark:text-purple-400" },
-    abandoned: { bg: "bg-slate-100 dark:bg-slate-800", text: "text-slate-600 dark:text-slate-400" },
-    blocked: { bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-600 dark:text-red-400" },
+    exploring: { bg: "bg-[var(--forge-info)]/10", text: "text-[var(--forge-info)]" },
+    in_progress: { bg: "bg-[var(--ember)]/10", text: "text-[var(--ember)]" },
+    review_ready: { bg: "bg-[var(--forge-warning)]/10", text: "text-[var(--forge-warning)]" },
+    changes_requested: { bg: "bg-[var(--forge-warning)]/10", text: "text-[var(--forge-warning)]" },
+    approved: { bg: "bg-[var(--forge-success)]/10", text: "text-[var(--forge-success)]" },
+    merged: { bg: "bg-[var(--ember)]/10", text: "text-[var(--ember)]" },
+    abandoned: { bg: "bg-[var(--forge-bg-elevated)]", text: "text-[var(--forge-text-muted)]" },
+    blocked: { bg: "bg-[var(--forge-error)]/10", text: "text-[var(--forge-error)]" },
 };
 
 // ============================================================================
@@ -132,13 +132,13 @@ export const ContributionTracker = ({
                             target="_blank"
                             rel="noopener noreferrer"
                             data-testid="issue-link"
-                            className="flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline mb-2"
+                            className="flex items-center gap-2 text-sm font-medium text-[var(--ember)] hover:underline mb-2"
                         >
                             {issue.repository.fullName} #{issue.number}
                             <ExternalLink size={ICON_SIZES.xs} />
                         </a>
 
-                        <h1 className="text-xl font-black text-slate-900 dark:text-slate-100 mb-2">
+                        <h1 className="text-xl font-black text-[var(--forge-text-primary)] mb-2">
                             {issue.title}
                         </h1>
 
@@ -153,7 +153,7 @@ export const ContributionTracker = ({
                             >
                                 {status.replace("_", " ")}
                             </span>
-                            <span className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
+                            <span className="flex items-center gap-1 text-sm text-[var(--forge-text-muted)]">
                                 <Clock size={ICON_SIZES.sm} />
                                 {analyzedIssue.estimatedHours}h estimated
                             </span>
@@ -171,7 +171,7 @@ export const ContributionTracker = ({
                                     stroke="currentColor"
                                     strokeWidth="8"
                                     fill="none"
-                                    className="text-slate-200 dark:text-slate-700"
+                                    className="text-[var(--forge-border-subtle)]"
                                 />
                                 <motion.circle
                                     cx="40"
@@ -181,7 +181,7 @@ export const ContributionTracker = ({
                                     strokeWidth="8"
                                     fill="none"
                                     strokeLinecap="round"
-                                    className="text-indigo-600 dark:text-indigo-400"
+                                    className="text-[var(--ember)]"
                                     initial={prefersReducedMotion ? false : { pathLength: 0 }}
                                     animate={{ pathLength: overallProgress / 100 }}
                                     transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
@@ -192,25 +192,25 @@ export const ContributionTracker = ({
                                 />
                             </svg>
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-xl font-black text-slate-900 dark:text-slate-100">
+                                <span className="text-xl font-black text-[var(--forge-text-primary)]">
                                     {overallProgress}%
                                 </span>
                             </div>
                         </div>
-                        <span className="text-xs text-slate-500 dark:text-slate-400 mt-1">Progress</span>
+                        <span className="text-xs text-[var(--forge-text-muted)] mt-1">Progress</span>
                     </div>
                 </div>
 
                 {/* Pull Request Info */}
                 {pullRequest && (
-                    <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                    <div className="mt-4 p-4 rounded-xl bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)]">
                         <div className="flex items-center justify-between">
                             <a
                                 href={pullRequest.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 data-testid="pr-link"
-                                className="flex items-center gap-2 font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
+                                className="flex items-center gap-2 font-medium text-[var(--ember)] hover:underline"
                             >
                                 <GitPullRequest size={ICON_SIZES.md} />
                                 PR #{pullRequest.number}: {pullRequest.title}
@@ -220,16 +220,16 @@ export const ContributionTracker = ({
                                 className={cn(
                                     "px-2 py-1 rounded-full text-xs font-medium capitalize",
                                     pullRequest.state === "merged"
-                                        ? "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+                                        ? "bg-[var(--ember)]/10 text-[var(--ember)]"
                                         : pullRequest.state === "closed"
-                                        ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
-                                        : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                                        ? "bg-[var(--forge-error)]/10 text-[var(--forge-error)]"
+                                        : "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                 )}
                             >
                                 {pullRequest.state}
                             </span>
                         </div>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-4 mt-2 text-sm text-[var(--forge-text-muted)]">
                             <span>+{pullRequest.additions} / -{pullRequest.deletions}</span>
                             <span>{pullRequest.filesChanged} files</span>
                             <span>{pullRequest.commentsCount} comments</span>
@@ -242,7 +242,7 @@ export const ContributionTracker = ({
                     <button
                         onClick={onLinkPR}
                         data-testid="link-pr-btn"
-                        className="mt-4 w-full py-3 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-slate-600 dark:text-slate-400 font-medium hover:border-indigo-300 dark:hover:border-indigo-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center justify-center gap-2"
+                        className="mt-4 w-full py-3 border-2 border-dashed border-[var(--forge-border-default)] rounded-xl text-[var(--forge-text-secondary)] font-medium hover:border-[var(--ember)] hover:text-[var(--ember)] transition-colors flex items-center justify-center gap-2"
                     >
                         <GitPullRequest size={ICON_SIZES.md} />
                         Link Pull Request
@@ -254,14 +254,14 @@ export const ContributionTracker = ({
             {outcome && outcome.success && (
                 <PrismaticCard glowColor="emerald" className="p-6">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center">
-                            <GitMerge size={ICON_SIZES.lg} className="text-emerald-600 dark:text-emerald-400" />
+                        <div className="w-12 h-12 bg-[var(--forge-success)]/10 rounded-2xl flex items-center justify-center">
+                            <GitMerge size={ICON_SIZES.lg} className="text-[var(--forge-success)]" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-black text-slate-900 dark:text-slate-100">
+                            <h2 className="text-lg font-black text-[var(--forge-text-primary)]">
                                 Contribution Merged!
                             </h2>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400">
+                            <p className="text-sm text-[var(--forge-success)]">
                                 Your code is now part of {issue.repository.name}
                             </p>
                         </div>
@@ -269,14 +269,14 @@ export const ContributionTracker = ({
 
                     {/* Skills Demonstrated */}
                     <div className="mb-4">
-                        <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        <h3 className="text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                             Skills Demonstrated
                         </h3>
                         <div className="flex flex-wrap gap-2">
                             {outcome.skillsDemonstrated.map((skill, i) => (
                                 <span
                                     key={i}
-                                    className="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-medium rounded-full"
+                                    className="px-3 py-1 bg-[var(--forge-success)]/10 text-[var(--forge-success)] text-sm font-medium rounded-full"
                                 >
                                     {skill}
                                 </span>
@@ -286,15 +286,15 @@ export const ContributionTracker = ({
 
                     {/* Badge Earned */}
                     {outcome.badgeEarned && (
-                        <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 flex items-center gap-3">
-                            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center">
-                                <Award size={ICON_SIZES.lg} className="text-amber-600 dark:text-amber-400" />
+                        <div className="p-4 rounded-xl bg-[var(--forge-warning)]/10 border border-[var(--forge-border-subtle)] flex items-center gap-3">
+                            <div className="w-12 h-12 bg-[var(--forge-warning)]/10 rounded-2xl flex items-center justify-center">
+                                <Award size={ICON_SIZES.lg} className="text-[var(--forge-warning)]" />
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                                <h4 className="font-bold text-[var(--forge-text-primary)]">
                                     {outcome.badgeEarned.name}
                                 </h4>
-                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                <p className="text-sm text-[var(--forge-text-secondary)]">
                                     {outcome.badgeEarned.description}
                                 </p>
                             </div>
@@ -305,7 +305,7 @@ export const ContributionTracker = ({
 
             {/* Learning Path Phases */}
             <PrismaticCard className="p-6">
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+                <h2 className="text-lg font-bold text-[var(--forge-text-primary)] mb-4">
                     Learning Path
                 </h2>
 
@@ -335,7 +335,7 @@ export const ContributionTracker = ({
 
             {/* Checkpoints */}
             <PrismaticCard className="p-6">
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+                <h2 className="text-lg font-bold text-[var(--forge-text-primary)] mb-4">
                     Checkpoints
                 </h2>
 
@@ -392,10 +392,10 @@ const PhaseCard = ({
             className={cn(
                 "rounded-xl border transition-all",
                 isActive
-                    ? "border-indigo-300 dark:border-indigo-700 bg-indigo-50/50 dark:bg-indigo-900/10"
+                    ? "border-[var(--ember)] bg-[var(--ember)]/5"
                     : isCompleted
-                    ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-900/10"
-                    : "border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30"
+                    ? "border-[var(--forge-success)] bg-[var(--forge-success)]/5"
+                    : "border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)]"
             )}
         >
             {/* Phase Header */}
@@ -409,18 +409,18 @@ const PhaseCard = ({
                     className={cn(
                         "w-10 h-10 rounded-xl flex items-center justify-center",
                         isCompleted
-                            ? "bg-emerald-100 dark:bg-emerald-900/30"
+                            ? "bg-[var(--forge-success)]/10"
                             : isActive
-                            ? "bg-indigo-100 dark:bg-indigo-900/30"
-                            : "bg-slate-100 dark:bg-slate-800"
+                            ? "bg-[var(--ember)]/10"
+                            : "bg-[var(--forge-bg-anvil)]"
                     )}
                 >
                     {isCompleted ? (
-                        <CheckCircle2 size={ICON_SIZES.md} className="text-emerald-600 dark:text-emerald-400" />
+                        <CheckCircle2 size={ICON_SIZES.md} className="text-[var(--forge-success)]" />
                     ) : isActive ? (
-                        <PlayCircle size={ICON_SIZES.md} className="text-indigo-600 dark:text-indigo-400" />
+                        <PlayCircle size={ICON_SIZES.md} className="text-[var(--ember)]" />
                     ) : (
-                        <Icon size={ICON_SIZES.md} className="text-slate-400" />
+                        <Icon size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                     )}
                 </div>
 
@@ -431,21 +431,21 @@ const PhaseCard = ({
                             className={cn(
                                 "font-semibold",
                                 isCompleted
-                                    ? "text-emerald-700 dark:text-emerald-400"
+                                    ? "text-[var(--forge-success)]"
                                     : isActive
-                                    ? "text-indigo-700 dark:text-indigo-400"
-                                    : "text-slate-700 dark:text-slate-300"
+                                    ? "text-[var(--ember)]"
+                                    : "text-[var(--forge-text-secondary)]"
                             )}
                         >
                             {phase.title}
                         </h3>
                         {isActive && (
-                            <span className="px-2 py-0.5 bg-indigo-600 text-white text-xs font-medium rounded-full">
+                            <span className="px-2 py-0.5 bg-gradient-forge text-white text-xs font-medium rounded-full shadow-ember-sm">
                                 Current
                             </span>
                         )}
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    <div className="flex items-center gap-3 text-sm text-[var(--forge-text-muted)] mt-1">
                         <span>
                             {progress?.tasksCompleted || 0}/{progress?.totalTasks || phase.tasks.length} tasks
                         </span>
@@ -458,9 +458,9 @@ const PhaseCard = ({
 
                 {/* Expand Icon */}
                 {isExpanded ? (
-                    <ChevronDown size={ICON_SIZES.md} className="text-slate-400" />
+                    <ChevronDown size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                 ) : (
-                    <ChevronRight size={ICON_SIZES.md} className="text-slate-400" />
+                    <ChevronRight size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                 )}
             </button>
 
@@ -471,7 +471,7 @@ const PhaseCard = ({
                     animate={{ opacity: 1, height: "auto" }}
                     className="px-4 pb-4"
                 >
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{phase.description}</p>
+                    <p className="text-sm text-[var(--forge-text-secondary)] mb-4">{phase.description}</p>
 
                     {/* Tasks */}
                     <div className="space-y-2">
@@ -487,8 +487,8 @@ const PhaseCard = ({
 
                     {/* Mentorship Prompts */}
                     {phase.mentorshipPrompts.length > 0 && (
-                        <div className="mt-4 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-800">
-                            <h4 className="flex items-center gap-2 text-sm font-medium text-indigo-700 dark:text-indigo-400 mb-2">
+                        <div className="mt-4 p-3 rounded-xl bg-[var(--ember)]/5 border border-[var(--forge-border-subtle)]">
+                            <h4 className="flex items-center gap-2 text-sm font-medium text-[var(--ember)] mb-2">
                                 <Bot size={ICON_SIZES.sm} />
                                 Ask AI Mentor
                             </h4>
@@ -498,7 +498,7 @@ const PhaseCard = ({
                                         key={i}
                                         onClick={() => onRequestAI("approach_guidance", prompt)}
                                         data-testid={`mentor-prompt-${i}-btn`}
-                                        className="w-full text-left text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                                        className="w-full text-left text-sm text-[var(--forge-text-secondary)] hover:text-[var(--ember)] transition-colors"
                                     >
                                         "{prompt}"
                                     </button>
@@ -528,8 +528,8 @@ const TaskItem = ({ task, onComplete, onRequestAI }: TaskItemProps) => {
             className={cn(
                 "p-3 rounded-xl flex items-start gap-3",
                 task.completed
-                    ? "bg-emerald-50 dark:bg-emerald-900/10"
-                    : "bg-white dark:bg-slate-800/50"
+                    ? "bg-[var(--forge-success)]/5"
+                    : "bg-[var(--forge-bg-workshop)]"
             )}
         >
             <button
@@ -539,11 +539,11 @@ const TaskItem = ({ task, onComplete, onRequestAI }: TaskItemProps) => {
                 className="flex-shrink-0 mt-0.5"
             >
                 {task.completed ? (
-                    <CheckCircle2 size={ICON_SIZES.md} className="text-emerald-500" />
+                    <CheckCircle2 size={ICON_SIZES.md} className="text-[var(--forge-success)]" />
                 ) : (
                     <Circle
                         size={ICON_SIZES.md}
-                        className="text-slate-300 dark:text-slate-600 hover:text-indigo-500 transition-colors"
+                        className="text-[var(--forge-border-default)] hover:text-[var(--ember)] transition-colors"
                     />
                 )}
             </button>
@@ -553,13 +553,13 @@ const TaskItem = ({ task, onComplete, onRequestAI }: TaskItemProps) => {
                     className={cn(
                         "font-medium",
                         task.completed
-                            ? "text-emerald-700 dark:text-emerald-400 line-through"
-                            : "text-slate-900 dark:text-slate-100"
+                            ? "text-[var(--forge-success)] line-through"
+                            : "text-[var(--forge-text-primary)]"
                     )}
                 >
                     {task.title}
                 </h4>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{task.description}</p>
+                <p className="text-sm text-[var(--forge-text-muted)] mt-0.5">{task.description}</p>
 
                 {/* Resources */}
                 {task.resources && task.resources.length > 0 && (
@@ -570,7 +570,7 @@ const TaskItem = ({ task, onComplete, onRequestAI }: TaskItemProps) => {
                                 href={resource.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                                className="text-xs text-[var(--ember)] hover:underline flex items-center gap-1"
                             >
                                 <ExternalLink size={10} />
                                 {resource.title}
@@ -585,7 +585,7 @@ const TaskItem = ({ task, onComplete, onRequestAI }: TaskItemProps) => {
                 <button
                     onClick={() => onRequestAI(task.aiAssistanceType!)}
                     data-testid={`ai-assist-${task.id}-btn`}
-                    className="flex-shrink-0 p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50 transition-colors"
+                    className="flex-shrink-0 p-2 rounded-lg bg-[var(--ember)]/10 text-[var(--ember)] hover:bg-[var(--ember)]/20 transition-colors"
                     title="Get AI assistance"
                 >
                     <Bot size={ICON_SIZES.sm} />
@@ -609,22 +609,22 @@ const CheckpointCard = ({ checkpoint }: CheckpointCardProps) => {
             className={cn(
                 "p-4 rounded-xl border",
                 checkpoint.passed
-                    ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/10"
-                    : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/30"
+                    ? "border-[var(--forge-success)] bg-[var(--forge-success)]/5"
+                    : "border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)]"
             )}
         >
             <div className="flex items-center gap-3 mb-3">
                 {checkpoint.passed ? (
-                    <CheckCircle2 size={ICON_SIZES.md} className="text-emerald-500" />
+                    <CheckCircle2 size={ICON_SIZES.md} className="text-[var(--forge-success)]" />
                 ) : (
-                    <Circle size={ICON_SIZES.md} className="text-slate-400" />
+                    <Circle size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                 )}
                 <h3
                     className={cn(
                         "font-semibold",
                         checkpoint.passed
-                            ? "text-emerald-700 dark:text-emerald-400"
-                            : "text-slate-900 dark:text-slate-100"
+                            ? "text-[var(--forge-success)]"
+                            : "text-[var(--forge-text-primary)]"
                     )}
                 >
                     {checkpoint.title}
@@ -632,22 +632,22 @@ const CheckpointCard = ({ checkpoint }: CheckpointCardProps) => {
             </div>
 
             <div className="ml-8">
-                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <h4 className="text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                     Verification Criteria
                 </h4>
                 <ul className="space-y-1 mb-3">
                     {checkpoint.verificationCriteria.map((criteria, i) => (
-                        <li key={i} className="text-sm text-slate-600 dark:text-slate-400 flex items-start gap-2">
-                            <span className="text-slate-400 mt-1">•</span>
+                        <li key={i} className="text-sm text-[var(--forge-text-secondary)] flex items-start gap-2">
+                            <span className="text-[var(--forge-text-muted)] mt-1">•</span>
                             {criteria}
                         </li>
                     ))}
                 </ul>
 
-                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Self Assessment</h4>
+                <h4 className="text-sm font-medium text-[var(--forge-text-secondary)] mb-2">Self Assessment</h4>
                 <ul className="space-y-1">
                     {checkpoint.selfAssessment.map((question, i) => (
-                        <li key={i} className="text-sm text-indigo-600 dark:text-indigo-400 italic">
+                        <li key={i} className="text-sm text-[var(--ember)] italic">
                             {question}
                         </li>
                     ))}
@@ -698,23 +698,23 @@ const AIAssistanceModal = ({ type, context, onClose, onRate }: AIAssistanceModal
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden"
+                className="w-full max-w-lg bg-[var(--forge-bg-workshop)] rounded-2xl shadow-2xl overflow-hidden"
             >
                 {/* Header */}
-                <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
-                        <Bot size={ICON_SIZES.md} className="text-indigo-600 dark:text-indigo-400" />
+                <div className="p-4 border-b border-[var(--forge-border-subtle)] flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[var(--ember)]/10 rounded-xl flex items-center justify-center">
+                        <Bot size={ICON_SIZES.md} className="text-[var(--ember)]" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-slate-900 dark:text-slate-100">AI Mentor</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">{context}</p>
+                        <h3 className="font-bold text-[var(--forge-text-primary)]">AI Mentor</h3>
+                        <p className="text-sm text-[var(--forge-text-muted)]">{context}</p>
                     </div>
                 </div>
 
                 {/* Response */}
                 <div className="p-4 max-h-96 overflow-y-auto">
                     <div className="prose prose-sm dark:prose-invert">
-                        <pre className="whitespace-pre-wrap text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-4 rounded-xl">
+                        <pre className="whitespace-pre-wrap text-sm text-[var(--forge-text-secondary)] bg-[var(--forge-bg-elevated)] p-4 rounded-xl">
                             {getAIResponse(type, context)}
                         </pre>
                     </div>
@@ -722,13 +722,13 @@ const AIAssistanceModal = ({ type, context, onClose, onRate }: AIAssistanceModal
 
                 {/* Rating */}
                 {!rated && (
-                    <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">Was this helpful?</p>
+                    <div className="p-4 border-t border-[var(--forge-border-subtle)]">
+                        <p className="text-sm text-[var(--forge-text-secondary)] mb-3">Was this helpful?</p>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => handleRate(true)}
                                 data-testid="rate-helpful-btn"
-                                className="flex-1 py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl font-medium hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors flex items-center justify-center gap-2"
+                                className="flex-1 py-2 bg-[var(--forge-success)]/10 text-[var(--forge-success)] rounded-xl font-medium hover:bg-[var(--forge-success)]/20 transition-colors flex items-center justify-center gap-2"
                             >
                                 <ThumbsUp size={ICON_SIZES.sm} />
                                 Yes
@@ -736,7 +736,7 @@ const AIAssistanceModal = ({ type, context, onClose, onRate }: AIAssistanceModal
                             <button
                                 onClick={() => handleRate(false)}
                                 data-testid="rate-not-helpful-btn"
-                                className="flex-1 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
+                                className="flex-1 py-2 bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] rounded-xl font-medium hover:bg-[var(--forge-bg-anvil)] transition-colors flex items-center justify-center gap-2"
                             >
                                 <ThumbsDown size={ICON_SIZES.sm} />
                                 No
@@ -746,19 +746,19 @@ const AIAssistanceModal = ({ type, context, onClose, onRate }: AIAssistanceModal
                 )}
 
                 {rated && (
-                    <div className="p-4 border-t border-slate-200 dark:border-slate-700 text-center">
-                        <p className="text-sm text-emerald-600 dark:text-emerald-400">
+                    <div className="p-4 border-t border-[var(--forge-border-subtle)] text-center">
+                        <p className="text-sm text-[var(--forge-success)]">
                             Thanks for your feedback!
                         </p>
                     </div>
                 )}
 
                 {/* Close Button */}
-                <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+                <div className="p-4 border-t border-[var(--forge-border-subtle)]">
                     <button
                         onClick={onClose}
                         data-testid="close-ai-modal-btn"
-                        className="w-full py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                        className="w-full py-3 bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] font-medium rounded-xl hover:bg-[var(--forge-bg-anvil)] transition-colors"
                     >
                         Close
                     </button>

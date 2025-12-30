@@ -139,29 +139,29 @@ export const PathComparisonModal: React.FC<PathComparisonModalProps> = ({
                         className="fixed inset-4 z-50 flex items-center justify-center pointer-events-none"
                     >
                         <div
-                            className="w-full max-w-7xl max-h-[calc(100vh-2rem)] bg-[var(--surface-base)] rounded-3xl shadow-2xl overflow-hidden pointer-events-auto"
+                            className="w-full max-w-7xl max-h-[calc(100vh-2rem)] bg-[var(--forge-bg-workshop)] rounded-3xl shadow-2xl overflow-hidden pointer-events-auto"
                             data-testid="comparison-modal"
                             role="dialog"
                             aria-modal="true"
                             aria-labelledby="comparison-modal-title"
                         >
                             {/* Header */}
-                            <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border-default)] bg-gradient-to-r from-[var(--surface-elevated)] to-[var(--surface-base)]">
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--forge-border-default)] bg-gradient-to-r from-[var(--forge-bg-elevated)] to-[var(--forge-bg-workshop)]">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded-xl bg-[var(--accent-primary)]/10">
+                                    <div className="p-2 rounded-xl bg-[var(--ember)]/10">
                                         <GitCompare
                                             size={ICON_SIZES.md}
-                                            className="text-[var(--accent-primary)]"
+                                            className="text-[var(--ember)]"
                                         />
                                     </div>
                                     <div>
                                         <h2
                                             id="comparison-modal-title"
-                                            className="text-xl font-bold text-[var(--text-primary)]"
+                                            className="text-xl font-bold text-[var(--forge-text-primary)]"
                                         >
                                             Path Comparison
                                         </h2>
-                                        <p className="text-sm text-[var(--text-muted)]">
+                                        <p className="text-sm text-[var(--forge-text-muted)]">
                                             Compare {comparisonData.length} learning paths side-by-side
                                         </p>
                                     </div>
@@ -169,7 +169,7 @@ export const PathComparisonModal: React.FC<PathComparisonModalProps> = ({
 
                                 <button
                                     onClick={onClose}
-                                    className="p-2 rounded-xl hover:bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                                    className="p-2 rounded-xl hover:bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] transition-colors"
                                     data-testid="close-comparison-modal-btn"
                                     aria-label="Close comparison modal"
                                 >
@@ -186,8 +186,8 @@ export const PathComparisonModal: React.FC<PathComparisonModalProps> = ({
                                         className={cn(
                                             "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                                             activeView === tab.id
-                                                ? "bg-[var(--accent-primary)] text-white shadow-md"
-                                                : "bg-[var(--surface-inset)] text-[var(--text-secondary)] hover:bg-[var(--surface-overlay)]"
+                                                ? "bg-gradient-forge text-white shadow-ember"
+                                                : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
                                         )}
                                         data-testid={`view-tab-${tab.id}`}
                                     >
@@ -203,20 +203,20 @@ export const PathComparisonModal: React.FC<PathComparisonModalProps> = ({
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2 }}
-                                    className="mx-6 mt-4 p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-xl"
+                                    className="mx-6 mt-4 p-4 bg-[var(--forge-success)]/10 border border-[var(--forge-success)]/20 rounded-xl"
                                     data-testid="recommendation-banner"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <Sparkles size={ICON_SIZES.md} className="text-green-500" />
+                                        <Sparkles size={ICON_SIZES.md} className="text-[var(--forge-success)]" />
                                         <div>
-                                            <p className="text-sm font-medium text-[var(--text-primary)]">
+                                            <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                                                 Based on your comparison,{" "}
-                                                <span className="text-green-500 font-bold">
+                                                <span className="text-[var(--forge-success)] font-bold">
                                                     {comparisonData.find(d => d.path.id === topPickId)?.path.name}
                                                 </span>{" "}
                                                 looks like the best match for you!
                                             </p>
-                                            <p className="text-xs text-[var(--text-muted)] mt-1">
+                                            <p className="text-xs text-[var(--forge-text-muted)] mt-1">
                                                 Highest overall score considering time, skills, career, and community.
                                             </p>
                                         </div>
@@ -291,8 +291,8 @@ export const PathComparisonModal: React.FC<PathComparisonModalProps> = ({
                             </div>
 
                             {/* Footer Actions */}
-                            <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--border-default)] bg-[var(--surface-elevated)]">
-                                <p className="text-sm text-[var(--text-muted)]">
+                            <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)]">
+                                <p className="text-sm text-[var(--forge-text-muted)]">
                                     Green indicators show advantages, amber shows areas for consideration.
                                 </p>
 
@@ -302,7 +302,7 @@ export const PathComparisonModal: React.FC<PathComparisonModalProps> = ({
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.3 }}
                                         onClick={() => onStartPath(topPickId)}
-                                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-green-500/20"
+                                        className="flex items-center gap-2 px-6 py-3 bg-gradient-forge text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-ember-glow"
                                         data-testid="start-recommended-path-btn"
                                     >
                                         <span>

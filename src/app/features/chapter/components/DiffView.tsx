@@ -57,14 +57,14 @@ const DiffViewComponent: React.FC<DiffViewProps> = ({
 
     return (
         <div
-            className={cn("rounded-xl overflow-hidden border border-slate-700/50", className)}
+            className={cn("rounded-xl overflow-hidden border border-[var(--forge-border-subtle)]", className)}
             data-testid="diff-view-container"
         >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-800 dark:bg-slate-800 border-b border-slate-700/50">
+            <div className="flex items-center justify-between px-4 py-2 bg-[var(--forge-bg-anvil)] border-b border-[var(--forge-border-subtle)]">
                 <div className="flex items-center gap-3">
-                    <Code2 size={ICON_SIZES.sm} className="text-slate-400" />
-                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <Code2 size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                    <div className="flex items-center gap-2 text-xs text-[var(--forge-text-muted)]">
                         {oldFilename && (
                             <span className="font-medium">{oldFilename}</span>
                         )}
@@ -85,7 +85,7 @@ const DiffViewComponent: React.FC<DiffViewProps> = ({
                         <div className="flex items-center gap-2">
                             {diffResult.stats.added > 0 && (
                                 <span
-                                    className="flex items-center gap-1 text-xs font-medium text-emerald-400"
+                                    className="flex items-center gap-1 text-xs font-medium text-[var(--forge-success)]"
                                     data-testid="diff-stats-added"
                                 >
                                     <Plus size={12} />
@@ -94,7 +94,7 @@ const DiffViewComponent: React.FC<DiffViewProps> = ({
                             )}
                             {diffResult.stats.removed > 0 && (
                                 <span
-                                    className="flex items-center gap-1 text-xs font-medium text-red-400"
+                                    className="flex items-center gap-1 text-xs font-medium text-[var(--forge-error)]"
                                     data-testid="diff-stats-removed"
                                 >
                                     <Minus size={12} />
@@ -103,13 +103,13 @@ const DiffViewComponent: React.FC<DiffViewProps> = ({
                             )}
                         </div>
                     ) : (
-                        <span className="text-xs text-slate-500">No changes</span>
+                        <span className="text-xs text-[var(--forge-text-muted)]">No changes</span>
                     )}
                 </div>
             </div>
 
             {/* Diff Content */}
-            <div className="bg-slate-900 dark:bg-slate-900 overflow-x-auto">
+            <div className="bg-[var(--forge-bg-void)] overflow-x-auto">
                 {diffResult.hunks.map((hunk, hunkIndex) => (
                     <DiffHunkView
                         key={hunkIndex}
@@ -123,7 +123,7 @@ const DiffViewComponent: React.FC<DiffViewProps> = ({
 
                 {/* Show message if no hunks (empty files) */}
                 {diffResult.hunks.length === 0 && (
-                    <div className="p-4 text-center text-sm text-slate-500">
+                    <div className="p-4 text-center text-sm text-[var(--forge-text-muted)]">
                         Both versions are empty
                     </div>
                 )}
@@ -165,12 +165,12 @@ const DiffHunkView: React.FC<DiffHunkViewProps> = memo(({
 
     return (
         <div
-            className="border-b border-slate-700/30 last:border-b-0"
+            className="border-b border-[var(--forge-border-subtle)]/30 last:border-b-0"
             data-testid={`diff-hunk-${hunkIndex}`}
         >
             {/* Hunk header (collapsible region indicator) */}
             {!isOnlyHunk && (
-                <div className="flex items-center gap-2 px-4 py-1 bg-slate-800/50 text-xs text-slate-500 font-mono">
+                <div className="flex items-center gap-2 px-4 py-1 bg-[var(--forge-bg-anvil)]/50 text-xs text-[var(--forge-text-muted)] font-mono">
                     <span>@@ -{hunk.startOld} +{hunk.startNew} @@</span>
                 </div>
             )}
@@ -179,7 +179,7 @@ const DiffHunkView: React.FC<DiffHunkViewProps> = memo(({
             {canCollapse && (
                 <button
                     onClick={onToggleCollapse}
-                    className="flex items-center gap-2 w-full px-4 py-1 bg-slate-800/30 hover:bg-slate-700/30 text-xs text-slate-400 transition-colors"
+                    className="flex items-center gap-2 w-full px-4 py-1 bg-[var(--forge-bg-anvil)]/30 hover:bg-[var(--forge-bg-elevated)]/30 text-xs text-[var(--forge-text-muted)] transition-colors"
                     data-testid={`diff-collapse-toggle-${hunkIndex}`}
                 >
                     {isCollapsed ? (
@@ -202,7 +202,7 @@ const DiffHunkView: React.FC<DiffHunkViewProps> = memo(({
                         return (
                             <div
                                 key={`collapse-${lineIndex}`}
-                                className="flex items-center justify-center py-1 bg-slate-800/20 text-xs text-slate-500"
+                                className="flex items-center justify-center py-1 bg-[var(--forge-bg-anvil)]/20 text-xs text-[var(--forge-text-muted)]"
                             >
                                 ⋮ {line.count} lines hidden
                             </div>
@@ -232,17 +232,17 @@ interface DiffLineViewProps {
 
 const DiffLineView: React.FC<DiffLineViewProps> = memo(({ line }) => {
     const lineStyles = {
-        added: "bg-emerald-500/10 border-l-2 border-emerald-500",
-        removed: "bg-red-500/10 border-l-2 border-red-500",
+        added: "bg-[var(--forge-success)]/10 border-l-2 border-[var(--forge-success)]",
+        removed: "bg-[var(--forge-error)]/10 border-l-2 border-[var(--forge-error)]",
         unchanged: "",
-        context: "bg-slate-800/20",
+        context: "bg-[var(--forge-bg-anvil)]/20",
     };
 
     const prefixStyles = {
-        added: "text-emerald-400",
-        removed: "text-red-400",
-        unchanged: "text-slate-600",
-        context: "text-slate-600",
+        added: "text-[var(--forge-success)]",
+        removed: "text-[var(--forge-error)]",
+        unchanged: "text-[var(--forge-text-muted)]",
+        context: "text-[var(--forge-text-muted)]",
     };
 
     const prefixChar = {
@@ -253,10 +253,10 @@ const DiffLineView: React.FC<DiffLineViewProps> = memo(({ line }) => {
     };
 
     const lineNumberStyles = {
-        added: "text-emerald-600/60",
-        removed: "text-red-600/60",
-        unchanged: "text-slate-600",
-        context: "text-slate-600",
+        added: "text-[var(--forge-success)]/60",
+        removed: "text-[var(--forge-error)]/60",
+        unchanged: "text-[var(--forge-text-muted)]",
+        context: "text-[var(--forge-text-muted)]",
     };
 
     return (
@@ -280,7 +280,7 @@ const DiffLineView: React.FC<DiffLineViewProps> = memo(({ line }) => {
             {/* New line number */}
             <div
                 className={cn(
-                    "flex-shrink-0 w-10 text-right pr-2 select-none text-xs border-r border-slate-700/50",
+                    "flex-shrink-0 w-10 text-right pr-2 select-none text-xs border-r border-[var(--forge-border-subtle)]",
                     lineNumberStyles[line.type]
                 )}
             >
@@ -298,7 +298,7 @@ const DiffLineView: React.FC<DiffLineViewProps> = memo(({ line }) => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 pr-4 text-slate-300">
+            <div className="flex-1 pr-4 text-[var(--forge-text-secondary)]">
                 <pre className="whitespace-pre">
                     {line.content || " "}
                 </pre>

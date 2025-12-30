@@ -24,20 +24,20 @@ const velocityConfig: Record<
     focused: {
         icon: Focus,
         label: "Focused",
-        color: "text-blue-500 dark:text-blue-400",
-        bgColor: "bg-blue-500/10 dark:bg-blue-400/10",
+        color: "text-[var(--forge-info)]",
+        bgColor: "bg-[var(--forge-info)]/10",
     },
     balanced: {
         icon: Gauge,
         label: "Balanced",
-        color: "text-gray-500 dark:text-gray-400",
-        bgColor: "bg-gray-500/10 dark:bg-gray-400/10",
+        color: "text-[var(--forge-text-secondary)]",
+        bgColor: "bg-[var(--forge-bg-elevated)]",
     },
     exploring: {
         icon: Compass,
         label: "Exploring",
-        color: "text-amber-500 dark:text-amber-400",
-        bgColor: "bg-amber-500/10 dark:bg-amber-400/10",
+        color: "text-[var(--forge-warning)]",
+        bgColor: "bg-[var(--forge-warning)]/10",
     },
 };
 
@@ -77,7 +77,7 @@ export function VelocityIndicator({
             >
                 <Icon size={ICON_SIZES.xs} className={config.color} />
                 {isOverridden && (
-                    <Zap size={ICON_SIZES.xs} className="text-yellow-500" />
+                    <Zap size={ICON_SIZES.xs} className="text-[var(--forge-warning)]" />
                 )}
             </motion.div>
         );
@@ -89,8 +89,8 @@ export function VelocityIndicator({
             animate={{ opacity: 1, y: 0 }}
             className={cn(
                 "p-4 rounded-xl border",
-                "bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm",
-                "border-gray-200/50 dark:border-gray-700/50",
+                "bg-[var(--forge-bg-elevated)]/50 backdrop-blur-sm",
+                "border-[var(--forge-border-subtle)]",
                 className
             )}
             data-testid="velocity-indicator"
@@ -107,16 +107,16 @@ export function VelocityIndicator({
                 </div>
                 <div>
                     <div className="flex items-center gap-2">
-                        <span className="font-semibold text-gray-900 dark:text-white">
+                        <span className="font-semibold text-[var(--forge-text-primary)]">
                             {config.label}
                         </span>
                         {isOverridden && (
-                            <span className="text-xs px-1.5 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400">
+                            <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]">
                                 Manual
                             </span>
                         )}
                     </div>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-[var(--forge-text-muted)]">
                         {velocity === "focused"
                             ? "High detail, efficient paths"
                             : velocity === "exploring"
@@ -128,19 +128,19 @@ export function VelocityIndicator({
 
             {/* Signal Indicators */}
             <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-[var(--forge-text-secondary)]">
                     <span>Scroll</span>
                     <span className="font-mono">{Math.round(signals.scrollVelocity)} px/s</span>
                 </div>
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-[var(--forge-text-secondary)]">
                     <span>Mouse</span>
                     <span className="font-mono">{Math.round(signals.mouseVelocity)} px/s</span>
                 </div>
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-[var(--forge-text-secondary)]">
                     <span>Idle</span>
                     <span className="font-mono">{Math.round(signals.idleTime / 1000)}s</span>
                 </div>
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-[var(--forge-text-secondary)]">
                     <span>Nav</span>
                     <span className="font-mono">{signals.rapidNavigationCount}</span>
                 </div>
@@ -148,8 +148,8 @@ export function VelocityIndicator({
 
             {/* Override Controls */}
             {showControls && (
-                <div className="pt-3 border-t border-gray-200/50 dark:border-gray-700/50">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                <div className="pt-3 border-t border-[var(--forge-border-subtle)]">
+                    <div className="text-xs text-[var(--forge-text-muted)] mb-2">
                         Override velocity:
                     </div>
                     <div className="flex gap-1">
@@ -170,7 +170,7 @@ export function VelocityIndicator({
                                             "flex items-center justify-center gap-1",
                                             isSelected
                                                 ? cn(levelConfig.bgColor, levelConfig.color)
-                                                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                                : "bg-[var(--forge-bg-workshop)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)]"
                                         )}
                                         data-testid={`velocity-override-${level}`}
                                     >
@@ -184,7 +184,7 @@ export function VelocityIndicator({
                     {velocityOverride && (
                         <button
                             onClick={() => setVelocityOverride(null)}
-                            className="w-full mt-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                            className="w-full mt-2 text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             data-testid="velocity-clear-override"
                         >
                             Clear override (use auto-detection)

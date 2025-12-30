@@ -39,23 +39,23 @@ const KeyPointsSlotRendererComponent: React.FC<KeyPointsSlotRendererProps> = ({ 
 
     return (
         <div
-            className={`bg-indigo-50 dark:bg-indigo-900/30 rounded-xl ${elevation.flat} ${className ?? ""}`}
+            className={`bg-[var(--ember)]/10 rounded-xl ${elevation.flat} ${className ?? ""}`}
             style={{ padding: "var(--slot-padding-sm)" }}
             data-testid={`key-points-slot-${slot.id}`}
         >
-            <h4 className="font-bold text-indigo-900 dark:text-indigo-100 mb-2 flex items-center gap-2">
-                <Icon size={ICON_SIZES.sm} />
+            <h4 className="font-bold text-[var(--forge-text-primary)] mb-2 flex items-center gap-2">
+                <Icon size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                 {title}
             </h4>
             <ul className="space-y-2">
                 {points.map((point, i) => (
                     <li
                         key={i}
-                        className="flex items-start gap-2 text-sm text-indigo-800 dark:text-indigo-200"
+                        className="flex items-start gap-2 text-sm text-[var(--forge-text-secondary)]"
                     >
                         <CheckCircle
                             size={ICON_SIZES.sm}
-                            className="text-indigo-500 dark:text-indigo-400 mt-0.5 shrink-0"
+                            className="text-[var(--ember)] mt-0.5 shrink-0"
                         />
                         {point}
                     </li>

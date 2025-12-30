@@ -5,5 +5,8 @@
  */
 
 export { ProjectDiscovery } from "./ProjectDiscovery";
-export { ContributionTracker } from "./ContributionTracker";
 export { ContributionStats } from "./ContributionStats";
+
+// Modular ContributionTracker - refactored for clean code
+export { ContributionTracker } from "./ContributionTracker/ContributionTracker";
+export type { ContributionTrackerProps } from "./ContributionTracker/types";

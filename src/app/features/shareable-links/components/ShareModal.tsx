@@ -57,7 +57,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md"
                     >
-                        <div className="bg-[var(--surface-elevated)] border border-[var(--border-default)] rounded-2xl shadow-2xl overflow-hidden">
+                        <div className="bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)] rounded-2xl shadow-2xl overflow-hidden">
                             {/* Header with path info */}
                             <div className="p-6 pb-4">
                                 <div className="flex items-start justify-between mb-4">
@@ -69,10 +69,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                                             {PathIcon && <PathIcon size={ICON_SIZES.lg} />}
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-lg text-[var(--text-primary)]">
+                                            <h3 className="font-bold text-lg text-[var(--forge-text-primary)]">
                                                 Share Learning Path
                                             </h3>
-                                            <p className="text-sm text-[var(--text-muted)]">
+                                            <p className="text-sm text-[var(--forge-text-muted)]">
                                                 {path.name}
                                             </p>
                                         </div>
@@ -80,36 +80,36 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                                     <button
                                         data-testid="share-modal-close-btn"
                                         onClick={onClose}
-                                        className="p-2 rounded-lg hover:bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                                        className="p-2 rounded-lg hover:bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] transition-colors"
                                     >
                                         <X size={ICON_SIZES.md} />
                                     </button>
                                 </div>
 
                                 {/* Path preview card */}
-                                <div className="p-4 bg-[var(--surface-inset)] rounded-xl mb-4">
-                                    <div className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
-                                        <span className="px-2 py-1 bg-[var(--surface-overlay)] rounded-md">
+                                <div className="p-4 bg-[var(--forge-bg-workshop)] rounded-xl mb-4">
+                                    <div className="flex items-center gap-3 text-sm text-[var(--forge-text-secondary)]">
+                                        <span className="px-2 py-1 bg-[var(--forge-bg-anvil)] rounded-md">
                                             {path.courses} courses
                                         </span>
-                                        <span className="px-2 py-1 bg-[var(--surface-overlay)] rounded-md">
+                                        <span className="px-2 py-1 bg-[var(--forge-bg-anvil)] rounded-md">
                                             {path.hours}h
                                         </span>
                                     </div>
-                                    <p className="mt-2 text-sm text-[var(--text-muted)]">
+                                    <p className="mt-2 text-sm text-[var(--forge-text-muted)]">
                                         {path.description}
                                     </p>
                                 </div>
 
                                 {/* Share URL input */}
-                                <div className="flex items-center gap-2 p-3 bg-[var(--surface-inset)] rounded-xl border border-[var(--border-default)]">
-                                    <Link2 size={ICON_SIZES.sm} className="text-[var(--text-muted)] flex-shrink-0" />
+                                <div className="flex items-center gap-2 p-3 bg-[var(--forge-bg-workshop)] rounded-xl border border-[var(--forge-border-default)]">
+                                    <Link2 size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)] flex-shrink-0" />
                                     <input
                                         data-testid="share-url-input"
                                         type="text"
                                         readOnly
                                         value={shareUrl}
-                                        className="flex-1 bg-transparent text-sm text-[var(--text-primary)] outline-none truncate"
+                                        className="flex-1 bg-transparent text-sm text-[var(--forge-text-primary)] outline-none truncate"
                                     />
                                     <button
                                         data-testid="copy-share-url-btn"
@@ -117,8 +117,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                                         className={cn(
                                             "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
                                             copied
-                                                ? "bg-emerald-500/20 text-emerald-500"
-                                                : "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] hover:opacity-90"
+                                                ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)]"
+                                                : "bg-[var(--ember)] text-white hover:opacity-90"
                                         )}
                                     >
                                         {copied ? (
@@ -138,7 +138,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
                             {/* Social share buttons */}
                             <div className="p-6 pt-0">
-                                <p className="text-xs text-[var(--text-muted)] mb-3">Share on</p>
+                                <p className="text-xs text-[var(--forge-text-muted)] mb-3">Share on</p>
                                 <div className="flex gap-3">
                                     <button
                                         data-testid="share-twitter-btn"
@@ -163,7 +163,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
                             {/* Footer note */}
                             <div className="px-6 pb-6">
-                                <p className="text-xs text-center text-[var(--text-muted)]">
+                                <p className="text-xs text-center text-[var(--forge-text-muted)]">
                                     Anyone with this link can view your learning path
                                 </p>
                             </div>

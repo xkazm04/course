@@ -52,9 +52,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
             whileTap={{ scale: 0.95 }}
             className={cn(
                 "flex items-center gap-1.5 rounded-lg transition-colors",
-                "bg-[var(--surface-elevated)] hover:bg-[var(--surface-overlay)]",
-                "border border-[var(--border-default)] hover:border-[var(--border-strong)]",
-                "text-[var(--text-muted)] hover:text-[var(--text-primary)]",
+                "bg-[var(--forge-bg-elevated)] hover:bg-[var(--forge-bg-anvil)]",
+                "border border-[var(--forge-border-default)] hover:border-[var(--forge-border-subtle)]",
+                "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]",
                 sizeStyles[size],
                 className
             )}

@@ -39,19 +39,19 @@ export const FeedbackReview: React.FC<FeedbackReviewProps> = ({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] overflow-hidden",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] overflow-hidden",
                 elevation.elevated
             )}
         >
             {/* Header with overall score */}
-            <div className="p-6 border-b border-[var(--border-subtle)] bg-gradient-to-r from-[var(--accent-primary)]/10 to-transparent">
+            <div className="p-6 border-b border-[var(--forge-border-subtle)] bg-gradient-to-r from-[var(--ember)]/10 to-transparent">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h3 className="text-xl font-bold text-[var(--text-primary)]">
+                        <h3 className="text-xl font-bold text-[var(--forge-text-primary)]">
                             Simulation Complete
                         </h3>
-                        <p className="text-sm text-[var(--text-muted)] mt-1">
+                        <p className="text-sm text-[var(--forge-text-muted)] mt-1">
                             Review your performance and insights
                         </p>
                     </div>
@@ -66,32 +66,32 @@ export const FeedbackReview: React.FC<FeedbackReviewProps> = ({
                     label="Satisfaction"
                     value={`${simulation.clientSatisfaction}%`}
                     trend={simulation.clientSatisfaction >= 70 ? "up" : "down"}
-                    color="emerald"
+                    color="success"
                 />
                 <MetricCard
                     icon={MessageSquare}
                     label="Messages"
                     value={metrics.messageCount.toString()}
-                    color="blue"
+                    color="info"
                 />
                 <MetricCard
                     icon={CheckCircle}
                     label="Requirements"
                     value={`${metrics.requirementsCompleted}/${metrics.totalRequirements}`}
                     trend={metrics.requirementsCompleted === metrics.totalRequirements ? "up" : "neutral"}
-                    color="purple"
+                    color="ember"
                 />
                 <MetricCard
                     icon={Clock}
                     label="Duration"
                     value={formatDuration(metrics.duration)}
-                    color="amber"
+                    color="warning"
                 />
             </div>
 
             {/* Insights */}
             <div className="px-6 pb-6">
-                <h4 className="text-sm font-semibold text-[var(--text-muted)] uppercase mb-3">
+                <h4 className="text-sm font-semibold text-[var(--forge-text-muted)] uppercase mb-3">
                     Performance Insights
                 </h4>
                 <div className="space-y-3">
@@ -102,11 +102,11 @@ export const FeedbackReview: React.FC<FeedbackReviewProps> = ({
             </div>
 
             {/* Actions */}
-            <div className="p-4 border-t border-[var(--border-subtle)] flex gap-3">
+            <div className="p-4 border-t border-[var(--forge-border-subtle)] flex gap-3">
                 {onRetry && (
                     <button
                         onClick={onRetry}
-                        className="flex-1 py-2 rounded-lg bg-[var(--accent-primary)] text-white font-medium hover:bg-[var(--accent-primary-hover)] transition-colors"
+                        className="flex-1 py-2 rounded-lg bg-[var(--ember)] text-white font-medium hover:bg-[var(--ember-glow)] transition-colors"
                     >
                         Try Again
                     </button>
@@ -114,7 +114,7 @@ export const FeedbackReview: React.FC<FeedbackReviewProps> = ({
                 {onClose && (
                     <button
                         onClick={onClose}
-                        className="flex-1 py-2 rounded-lg bg-[var(--surface-overlay)] text-[var(--text-secondary)] font-medium hover:bg-[var(--surface-elevated)] transition-colors"
+                        className="flex-1 py-2 rounded-lg bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] font-medium hover:bg-[var(--forge-bg-anvil)] transition-colors"
                     >
                         Close Review
                     </button>
@@ -143,7 +143,7 @@ const ScoreRing: React.FC<ScoreRingProps> = ({ score }) => {
                     cy="48"
                     r={radius}
                     fill="none"
-                    stroke="var(--surface-overlay)"
+                    stroke="var(--forge-bg-elevated)"
                     strokeWidth="8"
                 />
                 <motion.circle
@@ -162,8 +162,8 @@ const ScoreRing: React.FC<ScoreRingProps> = ({ score }) => {
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                    <span className={`text-2xl font-bold text-${color}-400`}>{score}</span>
-                    <span className="text-xs text-[var(--text-muted)] block">Score</span>
+                    <span className={`text-2xl font-bold ${color === "emerald" ? "text-[var(--forge-success)]" : color === "amber" ? "text-[var(--forge-warning)]" : "text-[var(--forge-error)]"}`}>{score}</span>
+                    <span className="text-xs text-[var(--forge-text-muted)] block">Score</span>
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@ interface MetricCardProps {
     label: string;
     value: string;
     trend?: "up" | "down" | "neutral";
-    color: "emerald" | "blue" | "purple" | "amber";
+    color: "success" | "info" | "ember" | "warning";
 }
 
 const MetricCard: React.FC<MetricCardProps> = ({
@@ -187,26 +187,26 @@ const MetricCard: React.FC<MetricCardProps> = ({
     color,
 }) => {
     const colorClasses = {
-        emerald: "bg-emerald-500/10 text-emerald-400",
-        blue: "bg-blue-500/10 text-blue-400",
-        purple: "bg-purple-500/10 text-purple-400",
-        amber: "bg-amber-500/10 text-amber-400",
+        success: "bg-[var(--forge-success)]/10 text-[var(--forge-success)]",
+        info: "bg-[var(--forge-info)]/10 text-[var(--forge-info)]",
+        ember: "bg-[var(--ember)]/10 text-[var(--ember)]",
+        warning: "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]",
     };
 
     return (
-        <div className="p-4 rounded-lg bg-[var(--surface-overlay)]">
+        <div className="p-4 rounded-lg bg-[var(--forge-bg-elevated)]">
             <div className="flex items-center gap-2 mb-2">
                 <div className={cn("p-1.5 rounded-lg", colorClasses[color])}>
                     <Icon size={ICON_SIZES.sm} />
                 </div>
                 {trend && trend !== "neutral" && (
                     trend === "up"
-                        ? <TrendingUp size={ICON_SIZES.xs} className="text-emerald-400" />
-                        : <TrendingDown size={ICON_SIZES.xs} className="text-red-400" />
+                        ? <TrendingUp size={ICON_SIZES.xs} className="text-[var(--forge-success)]" />
+                        : <TrendingDown size={ICON_SIZES.xs} className="text-[var(--forge-error)]" />
                 )}
             </div>
-            <p className="text-lg font-bold text-[var(--text-primary)]">{value}</p>
-            <p className="text-xs text-[var(--text-muted)]">{label}</p>
+            <p className="text-lg font-bold text-[var(--forge-text-primary)]">{value}</p>
+            <p className="text-xs text-[var(--forge-text-muted)]">{label}</p>
         </div>
     );
 };
@@ -224,9 +224,9 @@ interface InsightCardProps {
 
 const InsightCard: React.FC<InsightCardProps> = ({ insight }) => {
     const config = {
-        positive: { icon: Award, bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400" },
-        negative: { icon: AlertTriangle, bg: "bg-red-500/10", border: "border-red-500/20", text: "text-red-400" },
-        neutral: { icon: Target, bg: "bg-blue-500/10", border: "border-blue-500/20", text: "text-blue-400" },
+        positive: { icon: Award, bg: "bg-[var(--forge-success)]/10", border: "border-[var(--forge-success)]/20", text: "text-[var(--forge-success)]" },
+        negative: { icon: AlertTriangle, bg: "bg-[var(--forge-error)]/10", border: "border-[var(--forge-error)]/20", text: "text-[var(--forge-error)]" },
+        neutral: { icon: Target, bg: "bg-[var(--forge-info)]/10", border: "border-[var(--forge-info)]/20", text: "text-[var(--forge-info)]" },
     }[insight.type];
 
     const Icon = config.icon;
@@ -236,7 +236,7 @@ const InsightCard: React.FC<InsightCardProps> = ({ insight }) => {
             <Icon size={ICON_SIZES.md} className={config.text} />
             <div>
                 <p className={cn("font-medium text-sm", config.text)}>{insight.title}</p>
-                <p className="text-xs text-[var(--text-muted)] mt-0.5">{insight.description}</p>
+                <p className="text-xs text-[var(--forge-text-muted)] mt-0.5">{insight.description}</p>
             </div>
         </div>
     );

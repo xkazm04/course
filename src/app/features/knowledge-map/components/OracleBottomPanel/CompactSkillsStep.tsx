@@ -60,14 +60,14 @@ export function CompactSkillsStep({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    <h3 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                         What skills do you have?
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-[var(--forge-text-secondary)]">
                         Select at least one skill to continue
                     </p>
                 </div>
-                <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
+                <span className="text-xs font-medium text-[var(--ember)]">
                     {selectedSkills.length} selected
                 </span>
             </div>
@@ -86,9 +86,9 @@ export function CompactSkillsStep({
                             className={cn(
                                 "flex items-center gap-1 px-2 py-1 rounded-md",
                                 "text-xs font-medium",
-                                "bg-indigo-100 dark:bg-indigo-900/40",
-                                "text-indigo-700 dark:text-indigo-300",
-                                "hover:bg-indigo-200 dark:hover:bg-indigo-900/60",
+                                "bg-[var(--ember)]/20",
+                                "text-[var(--ember)]",
+                                "hover:bg-[var(--ember)]/30",
                                 "transition-colors"
                             )}
                         >
@@ -105,7 +105,7 @@ export function CompactSkillsStep({
                 <div className="relative">
                     <Search
                         size={14}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                     />
                     <input
                         type="text"
@@ -115,11 +115,11 @@ export function CompactSkillsStep({
                         className={cn(
                             "w-full pl-8 pr-3 py-1.5 rounded-lg",
                             "text-xs",
-                            "bg-slate-100 dark:bg-slate-700/50",
-                            "border border-slate-200 dark:border-slate-600",
-                            "text-slate-900 dark:text-slate-100",
-                            "placeholder-slate-400",
-                            "focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                            "bg-[var(--forge-bg-anvil)]",
+                            "border border-[var(--forge-border-subtle)]",
+                            "text-[var(--forge-text-primary)]",
+                            "placeholder-[var(--forge-text-muted)]",
+                            "focus:outline-none focus:ring-2 focus:ring-[var(--ember)]/20"
                         )}
                     />
                 </div>
@@ -135,10 +135,10 @@ export function CompactSkillsStep({
                             className={cn(
                                 "flex items-center gap-1 px-2 py-1 rounded-md",
                                 "text-xs",
-                                "bg-slate-100 dark:bg-slate-700/50",
-                                "text-slate-600 dark:text-slate-400",
-                                "hover:bg-slate-200 dark:hover:bg-slate-700",
-                                "border border-slate-200 dark:border-slate-600",
+                                "bg-[var(--forge-bg-anvil)]",
+                                "text-[var(--forge-text-secondary)]",
+                                "hover:bg-[var(--forge-border-subtle)]",
+                                "border border-[var(--forge-border-subtle)]",
                                 "transition-colors"
                             )}
                         >

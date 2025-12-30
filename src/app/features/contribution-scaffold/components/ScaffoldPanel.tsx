@@ -63,8 +63,8 @@ export const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({
             {/* Header */}
             <div className="p-4 border-b border-[var(--border-subtle)]">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20">
-                        <Code2 size={ICON_SIZES.lg} className="text-indigo-400" />
+                    <div className="p-2 rounded-lg bg-gradient-forge">
+                        <Code2 size={ICON_SIZES.lg} className="text-[var(--ember)]" />
                     </div>
                     <div>
                         <h3 className="font-semibold text-[var(--text-primary)]">

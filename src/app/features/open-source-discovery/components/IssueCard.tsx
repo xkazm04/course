@@ -45,8 +45,8 @@ export const IssueCard: React.FC<IssueCardProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] overflow-hidden",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] overflow-hidden",
                 elevation.hoverable
             )}
         >
@@ -55,21 +55,21 @@ export const IssueCard: React.FC<IssueCardProps> = ({
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs text-[var(--text-muted)]">
+                            <span className="text-xs text-[var(--forge-text-muted)]">
                                 {issue.repositoryOwner}/{issue.repositoryName}
                             </span>
                             {matchScore !== undefined && (
                                 <span className={cn(
                                     "text-xs font-medium px-1.5 py-0.5 rounded",
-                                    matchScore >= 70 ? "bg-emerald-500/20 text-emerald-400" :
-                                    matchScore >= 50 ? "bg-amber-500/20 text-amber-400" :
-                                    "bg-slate-500/20 text-slate-400"
+                                    matchScore >= 70 ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)]" :
+                                    matchScore >= 50 ? "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]" :
+                                    "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
                                 )}>
                                     {matchScore}% match
                                 </span>
                             )}
                         </div>
-                        <h3 className="font-semibold text-[var(--text-primary)] line-clamp-2">
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] line-clamp-2">
                             {issue.title}
                         </h3>
                     </div>
@@ -83,7 +83,7 @@ export const IssueCard: React.FC<IssueCardProps> = ({
                 {/* Labels */}
                 <div className="flex flex-wrap gap-1.5 mt-3">
                     {hasGoodFirstIssue && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--forge-success)]/20 text-[var(--forge-success)]">
                             <Sparkles size={ICON_SIZES.xs} />
                             Good First Issue
                         </span>
@@ -94,7 +94,7 @@ export const IssueCard: React.FC<IssueCardProps> = ({
                         .map(label => (
                             <span
                                 key={label}
-                                className="px-2 py-0.5 rounded-full text-xs bg-[var(--surface-overlay)] text-[var(--text-secondary)]"
+                                className="px-2 py-0.5 rounded-full text-xs bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)]"
                             >
                                 {label}
                             </span>
@@ -102,7 +102,7 @@ export const IssueCard: React.FC<IssueCardProps> = ({
                 </div>
 
                 {/* Meta */}
-                <div className="flex items-center gap-4 mt-3 text-xs text-[var(--text-muted)]">
+                <div className="flex items-center gap-4 mt-3 text-xs text-[var(--forge-text-muted)]">
                     <span className="flex items-center gap-1">
                         <MessageSquare size={ICON_SIZES.xs} />
                         {issue.commentCount} comments
@@ -112,10 +112,10 @@ export const IssueCard: React.FC<IssueCardProps> = ({
             </div>
 
             {/* Expandable Details */}
-            <div className="border-t border-[var(--border-subtle)]">
+            <div className="border-t border-[var(--forge-border-subtle)]">
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--text-secondary)] hover:bg-[var(--surface-overlay)] transition-colors"
+                    className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
                 >
                     <span>View analysis & skills</span>
                     {isExpanded ? (
@@ -144,15 +144,15 @@ export const IssueCard: React.FC<IssueCardProps> = ({
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2 p-3 border-t border-[var(--border-subtle)] bg-[var(--surface-base)]">
+            <div className="flex items-center gap-2 p-3 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]">
                 <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => onClaim?.(issue)}
                     className={cn(
                         "flex-1 px-4 py-2 rounded-lg font-medium text-sm",
-                        "bg-[var(--accent-primary)] text-white",
-                        "hover:bg-[var(--accent-primary-hover)] transition-colors"
+                        "bg-[var(--ember)] text-white",
+                        "hover:brightness-110 transition-colors"
                     )}
                 >
                     Start Contributing
@@ -164,9 +164,9 @@ export const IssueCard: React.FC<IssueCardProps> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                        "p-2 rounded-lg border border-[var(--border-default)]",
-                        "hover:bg-[var(--surface-overlay)] transition-colors",
-                        "text-[var(--text-secondary)]"
+                        "p-2 rounded-lg border border-[var(--forge-border-default)]",
+                        "hover:bg-[var(--forge-bg-elevated)] transition-colors",
+                        "text-[var(--forge-text-secondary)]"
                     )}
                 >
                     <ExternalLink size={ICON_SIZES.md} />
@@ -192,7 +192,7 @@ const IssueAnalysisDetails: React.FC<IssueAnalysisDetailsProps> = ({
         <div className="px-4 pb-4 space-y-4">
             {/* Complexity visualization */}
             <div>
-                <h4 className="text-xs font-medium text-[var(--text-muted)] uppercase mb-2">
+                <h4 className="text-xs font-medium text-[var(--forge-text-muted)] uppercase mb-2">
                     Complexity Analysis
                 </h4>
                 <ComplexityBar
@@ -203,7 +203,7 @@ const IssueAnalysisDetails: React.FC<IssueAnalysisDetailsProps> = ({
 
             {/* Required skills */}
             <div>
-                <h4 className="text-xs font-medium text-[var(--text-muted)] uppercase mb-2">
+                <h4 className="text-xs font-medium text-[var(--forge-text-muted)] uppercase mb-2">
                     Required Skills
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -213,8 +213,8 @@ const IssueAnalysisDetails: React.FC<IssueAnalysisDetailsProps> = ({
                             className={cn(
                                 "flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs",
                                 skill.isStretch
-                                    ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
-                                    : "bg-[var(--surface-overlay)] text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)]/20 text-[var(--ember)] border border-[var(--ember)]/30"
+                                    : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)]"
                             )}
                         >
                             <span className="font-medium">{skill.skillName}</span>
@@ -230,14 +230,14 @@ const IssueAnalysisDetails: React.FC<IssueAnalysisDetailsProps> = ({
             {/* Learning opportunities */}
             {analysis.learningOpportunities.length > 0 && (
                 <div>
-                    <h4 className="text-xs font-medium text-[var(--text-muted)] uppercase mb-2 flex items-center gap-1">
+                    <h4 className="text-xs font-medium text-[var(--forge-text-muted)] uppercase mb-2 flex items-center gap-1">
                         <BookOpen size={ICON_SIZES.xs} />
                         What You'll Learn
                     </h4>
                     <ul className="space-y-1">
                         {analysis.learningOpportunities.map((opp, index) => (
-                            <li key={index} className="text-sm text-[var(--text-secondary)] flex items-start gap-2">
-                                <span className="text-emerald-400 mt-1">+</span>
+                            <li key={index} className="text-sm text-[var(--forge-text-secondary)] flex items-start gap-2">
+                                <span className="text-[var(--forge-success)] mt-1">+</span>
                                 {opp}
                             </li>
                         ))}
@@ -247,10 +247,10 @@ const IssueAnalysisDetails: React.FC<IssueAnalysisDetailsProps> = ({
 
             {/* Suggested approach */}
             <div>
-                <h4 className="text-xs font-medium text-[var(--text-muted)] uppercase mb-2">
+                <h4 className="text-xs font-medium text-[var(--forge-text-muted)] uppercase mb-2">
                     Suggested Approach
                 </h4>
-                <p className="text-sm text-[var(--text-secondary)]">
+                <p className="text-sm text-[var(--forge-text-secondary)]">
                     {analysis.suggestedApproach}
                 </p>
             </div>
@@ -258,14 +258,14 @@ const IssueAnalysisDetails: React.FC<IssueAnalysisDetailsProps> = ({
             {/* Potential blockers */}
             {analysis.potentialBlockers.length > 0 && (
                 <div>
-                    <h4 className="text-xs font-medium text-amber-400 uppercase mb-2 flex items-center gap-1">
+                    <h4 className="text-xs font-medium text-[var(--forge-warning)] uppercase mb-2 flex items-center gap-1">
                         <AlertCircle size={ICON_SIZES.xs} />
                         Potential Blockers
                     </h4>
                     <ul className="space-y-1">
                         {analysis.potentialBlockers.map((blocker, index) => (
-                            <li key={index} className="text-sm text-[var(--text-muted)] flex items-start gap-2">
-                                <span className="text-amber-400">!</span>
+                            <li key={index} className="text-sm text-[var(--forge-text-muted)] flex items-start gap-2">
+                                <span className="text-[var(--forge-warning)]">!</span>
                                 {blocker}
                             </li>
                         ))}

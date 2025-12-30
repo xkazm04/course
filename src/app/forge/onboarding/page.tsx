@@ -510,8 +510,8 @@ function GitHubConnectStep({
             <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] p-6 mb-8">
                 {connected ? (
                     <div className="text-center">
-                        <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
-                            <Check size={32} className="text-emerald-500" />
+                        <div className="w-16 h-16 rounded-full bg-[var(--forge-success)]/20 flex items-center justify-center mx-auto mb-4">
+                            <Check size={32} className="text-[var(--forge-success)]" />
                         </div>
                         <h3 className="font-semibold text-[var(--text-primary)] mb-2">
                             GitHub Connected!
@@ -523,7 +523,7 @@ function GitHubConnectStep({
                 ) : (
                     <>
                         <div className="flex items-start gap-4 mb-6">
-                            <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-lg bg-[var(--forge-bg-void)] flex items-center justify-center flex-shrink-0">
                                 <Github size={24} className="text-white" />
                             </div>
                             <div>
@@ -532,15 +532,15 @@ function GitHubConnectStep({
                                 </h3>
                                 <ul className="text-sm text-[var(--text-secondary)] space-y-1">
                                     <li className="flex items-center gap-2">
-                                        <Check size={14} className="text-emerald-500" />
+                                        <Check size={14} className="text-[var(--forge-success)]" />
                                         Fork projects directly to your account
                                     </li>
                                     <li className="flex items-center gap-2">
-                                        <Check size={14} className="text-emerald-500" />
+                                        <Check size={14} className="text-[var(--forge-success)]" />
                                         Submit pull requests seamlessly
                                     </li>
                                     <li className="flex items-center gap-2">
-                                        <Check size={14} className="text-emerald-500" />
+                                        <Check size={14} className="text-[var(--forge-success)]" />
                                         Build a verified contribution history
                                     </li>
                                 </ul>
@@ -549,7 +549,7 @@ function GitHubConnectStep({
 
                         <button
                             onClick={onConnect}
-                            className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-lg bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors"
+                            className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-lg bg-[var(--forge-bg-void)] text-white font-medium hover:bg-[var(--forge-bg-anvil)] transition-colors"
                         >
                             <Github size={20} />
                             Connect GitHub Account
@@ -607,7 +607,7 @@ function RecommendationsStep({ state, onFinish }: { state: OnboardingState; onFi
     return (
         <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--forge-success)] to-[var(--forge-success)] flex items-center justify-center mx-auto mb-4">
                     <Target size={32} className="text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
@@ -637,7 +637,7 @@ function RecommendationsStep({ state, onFinish }: { state: OnboardingState; onFi
                                 {project.tagline}
                             </p>
                             <div className="flex items-center gap-2 mt-2">
-                                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500">
+                                <span className="text-xs px-2 py-0.5 rounded bg-[var(--forge-success)]/10 text-[var(--forge-success)]">
                                     {project.openChallenges} beginner challenges
                                 </span>
                                 <span className="text-xs text-[var(--text-muted)]">
@@ -672,7 +672,7 @@ function RecommendationsStep({ state, onFinish }: { state: OnboardingState; onFi
                         <span
                             className={cn(
                                 "ml-2",
-                                state.githubConnected ? "text-emerald-500" : "text-amber-500"
+                                state.githubConnected ? "text-[var(--forge-success)]" : "text-[var(--gold)]"
                             )}
                         >
                             {state.githubConnected ? "Connected" : "Not connected"}

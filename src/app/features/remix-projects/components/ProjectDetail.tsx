@@ -37,15 +37,15 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
             <div className="flex items-center gap-4">
                 <button
                     onClick={onBack}
-                    className="p-2 rounded-lg hover:bg-[var(--surface-overlay)] transition-colors text-[var(--text-muted)]"
+                    className="p-2 rounded-lg hover:bg-[var(--forge-bg-anvil)] transition-colors text-[var(--forge-text-muted)]"
                 >
                     <ArrowLeft size={ICON_SIZES.md} />
                 </button>
                 <div>
-                    <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+                    <h1 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         {project.name}
                     </h1>
-                    <p className="text-[var(--text-muted)]">{project.description}</p>
+                    <p className="text-[var(--forge-text-muted)]">{project.description}</p>
                 </div>
             </div>
 
@@ -53,22 +53,22 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
                 {/* Main Content */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Tech Stack */}
-                    <section className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                        <h3 className="font-semibold text-[var(--text-primary)] mb-3">Tech Stack</h3>
+                    <section className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3">Tech Stack</h3>
                         <div className="grid grid-cols-2 gap-3">
                             {Object.entries(project.techStack).map(([key, value]) => value && (
                                 <div key={key} className="flex items-center gap-2">
-                                    <span className="text-xs text-[var(--text-muted)] uppercase w-20">{key}:</span>
-                                    <span className="text-sm text-[var(--text-primary)]">{value}</span>
+                                    <span className="text-xs text-[var(--forge-text-muted)] uppercase w-20">{key}:</span>
+                                    <span className="text-sm text-[var(--forge-text-primary)]">{value}</span>
                                 </div>
                             ))}
                         </div>
                     </section>
 
                     {/* Issues Overview */}
-                    <section className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                        <h3 className="font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                            <Bug size={ICON_SIZES.sm} className="text-red-400" />
+                    <section className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                            <Bug size={ICON_SIZES.sm} className="text-[var(--forge-error)]" />
                             Known Issues ({project.knownIssues.length})
                         </h3>
                         <div className="space-y-2">
@@ -79,9 +79,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
                     </section>
 
                     {/* Code Smells */}
-                    <section className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                        <h3 className="font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                            <AlertTriangle size={ICON_SIZES.sm} className="text-amber-400" />
+                    <section className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                            <AlertTriangle size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                             Code Smells ({project.codeSmells.length})
                         </h3>
                         <div className="space-y-2">
@@ -92,9 +92,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
                     </section>
 
                     {/* Missing Features */}
-                    <section className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                        <h3 className="font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                            <Sparkles size={ICON_SIZES.sm} className="text-purple-400" />
+                    <section className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                            <Sparkles size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                             Missing Features ({project.missingFeatures.length})
                         </h3>
                         <div className="space-y-2">
@@ -108,7 +108,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
                 {/* Sidebar */}
                 <div className="space-y-6">
                     {/* Stats */}
-                    <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
+                    <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
                         <div className="grid grid-cols-2 gap-4">
                             <StatItem icon={Clock} label="Est. Hours" value={`${project.estimatedHours}h`} />
                             <StatItem icon={Users} label="Completed" value={project.timesAssigned.toString()} />
@@ -130,7 +130,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
                             const assignment = assignments[0];
                             if (assignment) onStartAssignment(assignment.id);
                         }}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[var(--accent-primary)] text-white font-medium hover:bg-[var(--accent-primary-hover)] transition-colors"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-forge text-white font-medium hover:opacity-90 transition-colors shadow-ember"
                     >
                         <Play size={ICON_SIZES.sm} />
                         Start Assignment
@@ -149,9 +149,9 @@ interface IssueItemProps {
 
 const IssueItem: React.FC<IssueItemProps> = ({ description, type }) => {
     const colors = {
-        bug: "bg-red-500/10 border-red-500/20 text-red-400",
-        smell: "bg-amber-500/10 border-amber-500/20 text-amber-400",
-        feature: "bg-purple-500/10 border-purple-500/20 text-purple-400",
+        bug: "bg-[var(--forge-error)]/10 border-[var(--forge-error)]/20 text-[var(--forge-error)]",
+        smell: "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+        feature: "bg-[var(--ember)]/10 border-[var(--ember)]/20 text-[var(--ember)]",
     }[type];
 
     return (
@@ -170,8 +170,8 @@ interface StatItemProps {
 
 const StatItem: React.FC<StatItemProps> = ({ icon: Icon, label, value }) => (
     <div className="text-center">
-        <Icon size={ICON_SIZES.md} className="mx-auto mb-1 text-[var(--text-muted)]" />
-        <div className="text-lg font-bold text-[var(--text-primary)]">{value}</div>
-        <div className="text-xs text-[var(--text-muted)]">{label}</div>
+        <Icon size={ICON_SIZES.md} className="mx-auto mb-1 text-[var(--forge-text-muted)]" />
+        <div className="text-lg font-bold text-[var(--forge-text-primary)]">{value}</div>
+        <div className="text-xs text-[var(--forge-text-muted)]">{label}</div>
     </div>
 );

@@ -81,8 +81,8 @@ export function OracleBottomPanel({
         <motion.div
             className={cn(
                 "w-full overflow-hidden",
-                "border-t border-slate-200 dark:border-slate-800",
-                "bg-white dark:bg-slate-900",
+                "border-t border-[var(--forge-border-subtle)]",
+                "bg-[var(--forge-bg-elevated)]",
                 "shadow-lg"
             )}
             variants={panelVariants}

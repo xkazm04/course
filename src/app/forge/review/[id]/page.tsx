@@ -35,15 +35,15 @@ function ScoreCard({ label, score, maxScore = 100 }: { label: string; score: num
     const percentage = (score / maxScore) * 100;
 
     const getScoreColor = (pct: number) => {
-        if (pct >= 80) return "text-emerald-500";
-        if (pct >= 60) return "text-amber-500";
-        return "text-rose-500";
+        if (pct >= 80) return "text-[var(--forge-success)]";
+        if (pct >= 60) return "text-[var(--gold)]";
+        return "text-[var(--forge-error)]";
     };
 
     const getBarColor = (pct: number) => {
-        if (pct >= 80) return "bg-emerald-500";
-        if (pct >= 60) return "bg-amber-500";
-        return "bg-rose-500";
+        if (pct >= 80) return "bg-[var(--forge-success)]";
+        if (pct >= 60) return "bg-[var(--gold)]";
+        return "bg-[var(--forge-error)]";
     };
 
     return (
@@ -72,10 +72,10 @@ function FeedbackItem({ item }: { item: { type: string; file?: string; line?: nu
     const [isExpanded, setIsExpanded] = useState(false);
 
     const typeConfig = {
-        praise: { icon: ThumbsUp, color: "text-emerald-500", bg: "bg-emerald-500/10", label: "Great work!" },
-        suggestion: { icon: Lightbulb, color: "text-amber-500", bg: "bg-amber-500/10", label: "Suggestion" },
-        issue: { icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-500/10", label: "Issue" },
-        question: { icon: MessageSquare, color: "text-blue-500", bg: "bg-blue-500/10", label: "Question" },
+        praise: { icon: ThumbsUp, color: "text-[var(--forge-success)]", bg: "bg-[var(--forge-success)]/10", label: "Great work!" },
+        suggestion: { icon: Lightbulb, color: "text-[var(--gold)]", bg: "bg-[var(--gold)]/10", label: "Suggestion" },
+        issue: { icon: AlertTriangle, color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/10", label: "Issue" },
+        question: { icon: MessageSquare, color: "text-[var(--forge-info)]", bg: "bg-[var(--forge-info)]/10", label: "Question" },
     };
 
     const config = typeConfig[item.type as keyof typeof typeConfig] || typeConfig.suggestion;
@@ -136,8 +136,8 @@ function LearningPoints({ points }: { points: string[] }) {
             <ul className="space-y-3">
                 {points.map((point, i) => (
                     <li key={i} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Check size={12} className="text-emerald-500" />
+                        <div className="w-5 h-5 rounded-full bg-[var(--forge-success)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check size={12} className="text-[var(--forge-success)]" />
                         </div>
                         <span className="text-sm text-[var(--text-secondary)]">{point}</span>
                     </li>
@@ -155,7 +155,7 @@ function SuggestedResources({ resources }: { resources: { type: string; title: s
     return (
         <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] p-6">
             <div className="flex items-center gap-2 mb-4">
-                <TrendingUp size={20} className="text-blue-500" />
+                <TrendingUp size={20} className="text-[var(--forge-info)]" />
                 <h3 className="font-semibold text-[var(--text-primary)]">Continue Learning</h3>
             </div>
             <div className="space-y-3">
@@ -233,25 +233,25 @@ export default function ReviewPage() {
     const verdictConfig = {
         approved: {
             icon: Check,
-            color: "text-emerald-500",
-            bg: "bg-emerald-500/10",
-            border: "border-emerald-500/30",
+            color: "text-[var(--forge-success)]",
+            bg: "bg-[var(--forge-success)]/10",
+            border: "border-[var(--forge-success)]/30",
             label: "Approved",
             message: "Excellent work! Your contribution meets all requirements.",
         },
         changes_requested: {
             icon: AlertTriangle,
-            color: "text-amber-500",
-            bg: "bg-amber-500/10",
-            border: "border-amber-500/30",
+            color: "text-[var(--gold)]",
+            bg: "bg-[var(--gold)]/10",
+            border: "border-[var(--gold)]/30",
             label: "Changes Requested",
             message: "Good progress! Please address the feedback below.",
         },
         needs_discussion: {
             icon: MessageSquare,
-            color: "text-blue-500",
-            bg: "bg-blue-500/10",
-            border: "border-blue-500/30",
+            color: "text-[var(--forge-info)]",
+            bg: "bg-[var(--forge-info)]/10",
+            border: "border-[var(--forge-info)]/30",
             label: "Needs Discussion",
             message: "Let's discuss some aspects of your implementation.",
         },
@@ -308,7 +308,7 @@ export default function ReviewPage() {
                     </div>
                     {review.verdict === "approved" && (
                         <div className="text-right">
-                            <div className="flex items-center gap-1 text-2xl font-bold text-amber-500">
+                            <div className="flex items-center gap-1 text-2xl font-bold text-[var(--gold)]">
                                 <Zap size={24} />
                                 +{challenge.xpReward} XP
                             </div>
@@ -418,7 +418,7 @@ export default function ReviewPage() {
                             {challenge.skillsTaught.map((skill) => (
                                 <span
                                     key={skill}
-                                    className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-sm text-emerald-500"
+                                    className="px-3 py-1.5 rounded-lg bg-[var(--forge-success)]/10 text-sm text-[var(--forge-success)]"
                                 >
                                     {skill}
                                 </span>
@@ -439,7 +439,7 @@ export default function ReviewPage() {
                                 <>
                                     <Link
                                         href="/forge/dashboard"
-                                        className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:opacity-90"
+                                        className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[var(--ember)] to-[var(--gold)] text-white font-medium hover:opacity-90"
                                     >
                                         <Trophy size={18} />
                                         View Dashboard
@@ -455,7 +455,7 @@ export default function ReviewPage() {
                                 <>
                                     <Link
                                         href={`/forge/workspace/${challengeId}`}
-                                        className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:opacity-90"
+                                        className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[var(--ember)] to-[var(--gold)] text-white font-medium hover:opacity-90"
                                     >
                                         Continue Working
                                     </Link>
@@ -474,7 +474,7 @@ export default function ReviewPage() {
             {showCelebration && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] max-w-md w-full p-8 text-center">
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mx-auto mb-6">
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--ember)] flex items-center justify-center mx-auto mb-6">
                             <Trophy size={40} className="text-white" />
                         </div>
                         <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
@@ -486,12 +486,12 @@ export default function ReviewPage() {
 
                         <div className="flex items-center justify-center gap-6 mb-6 p-4 bg-[var(--surface-overlay)] rounded-lg">
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-amber-500">+{challenge.xpReward}</div>
+                                <div className="text-2xl font-bold text-[var(--gold)]">+{challenge.xpReward}</div>
                                 <div className="text-xs text-[var(--text-muted)]">XP Earned</div>
                             </div>
                             <div className="w-px h-10 bg-[var(--border-default)]" />
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-emerald-500">+1</div>
+                                <div className="text-2xl font-bold text-[var(--forge-success)]">+1</div>
                                 <div className="text-xs text-[var(--text-muted)]">PR Merged</div>
                             </div>
                             <div className="w-px h-10 bg-[var(--border-default)]" />
@@ -503,7 +503,7 @@ export default function ReviewPage() {
 
                         <button
                             onClick={() => setShowCelebration(false)}
-                            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:opacity-90"
+                            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[var(--ember)] to-[var(--gold)] text-white font-medium hover:opacity-90"
                         >
                             Continue
                         </button>

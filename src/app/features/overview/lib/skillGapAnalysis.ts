@@ -200,25 +200,25 @@ export function analyzeSkillGaps(
  */
 export const SKILL_GAP_COLORS = {
     mastered: {
-        bg: "bg-emerald-50 dark:bg-emerald-950/50",
-        border: "border-emerald-400 dark:border-emerald-600",
-        text: "text-emerald-700 dark:text-emerald-300",
-        ring: "ring-emerald-400",
-        stroke: "rgb(34, 197, 94)", // emerald-500
+        bg: "bg-[var(--forge-success)]/10",
+        border: "border-[var(--forge-success)]",
+        text: "text-[var(--forge-success)]",
+        ring: "ring-[var(--forge-success)]",
+        stroke: "var(--forge-success)",
     },
     partial: {
-        bg: "bg-amber-50 dark:bg-amber-950/50",
-        border: "border-amber-400 dark:border-amber-600",
-        text: "text-amber-700 dark:text-amber-300",
-        ring: "ring-amber-400",
-        stroke: "rgb(245, 158, 11)", // amber-500
+        bg: "bg-[var(--forge-warning)]/10",
+        border: "border-[var(--forge-warning)]",
+        text: "text-[var(--forge-warning)]",
+        ring: "ring-[var(--forge-warning)]",
+        stroke: "var(--forge-warning)",
     },
     gap: {
-        bg: "bg-red-50 dark:bg-red-950/50",
-        border: "border-red-400 dark:border-red-600",
-        text: "text-red-700 dark:text-red-300",
-        ring: "ring-red-400",
-        stroke: "rgb(239, 68, 68)", // red-500
+        bg: "bg-[var(--forge-error)]/10",
+        border: "border-[var(--forge-error)]",
+        text: "text-[var(--forge-error)]",
+        ring: "ring-[var(--forge-error)]",
+        stroke: "var(--forge-error)",
     },
 };
 

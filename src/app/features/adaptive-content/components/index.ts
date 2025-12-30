@@ -27,12 +27,13 @@ export {
     StateProgress,
     StateJourneyTimeline,
 } from "./StateTransitionCelebration";
+// Modular ConceptEntanglementGraph - refactored for clean code
 export {
     GraphHealthOverview,
     ConceptNodeCard,
     RepairPathWizard,
     CascadeVisualization,
-} from "./ConceptEntanglementGraph";
+} from "./ConceptEntanglementGraph/index";
 export {
     PredictiveInterventionPanel,
     FloatingInterventionContainer,

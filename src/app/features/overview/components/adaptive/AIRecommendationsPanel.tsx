@@ -46,14 +46,14 @@ export const AIRecommendationsPanel: React.FC<AIRecommendationsPanelProps> = ({
         <PrismaticCard className="h-[600px] overflow-y-auto" glowColor="indigo">
             <div className="p-4 space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-[var(--text-primary)] flex items-center gap-2">
-                        <Brain className="w-5 h-5 text-indigo-500" />
+                    <h3 className="font-bold text-[var(--forge-text-primary)] flex items-center gap-2">
+                        <Brain className="w-5 h-5 text-[var(--ember)]" />
                         Your Path
                     </h3>
                     <button
                         onClick={onRefresh}
                         disabled={isLoading}
-                        className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
+                        className="text-xs text-[var(--ember)] hover:underline"
                         data-testid="refresh-path-btn"
                     >
                         {isLoading ? "Analyzing..." : "Refresh"}
@@ -64,36 +64,36 @@ export const AIRecommendationsPanel: React.FC<AIRecommendationsPanelProps> = ({
                 {recommendedPath ? (
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-[var(--text-primary)]">
+                            <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                                 {recommendedPath.name}
                             </span>
-                            <span className="text-xs px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-full">
+                            <span className="text-xs px-2 py-0.5 bg-[var(--ember)]/20 text-[var(--ember)] rounded-full">
                                 {Math.round(recommendedPath.optimality * 100)}% match
                             </span>
                         </div>
-                        <p className="text-xs text-[var(--text-secondary)]">
+                        <p className="text-xs text-[var(--forge-text-secondary)]">
                             {recommendedPath.description}
                         </p>
 
                         {/* Path Stats */}
                         <div className="grid grid-cols-3 gap-2 text-center">
-                            <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                <div className="text-lg font-bold text-[var(--text-primary)]">
+                            <div className="p-2 bg-[var(--forge-bg-workshop)] rounded-lg">
+                                <div className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     {recommendedPath.nodeIds.length}
                                 </div>
-                                <div className="text-[10px] text-[var(--text-secondary)]">Topics</div>
+                                <div className="text-[10px] text-[var(--forge-text-secondary)]">Topics</div>
                             </div>
-                            <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                <div className="text-lg font-bold text-[var(--text-primary)]">
+                            <div className="p-2 bg-[var(--forge-bg-workshop)] rounded-lg">
+                                <div className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     {recommendedPath.totalHours}h
                                 </div>
-                                <div className="text-[10px] text-[var(--text-secondary)]">Hours</div>
+                                <div className="text-[10px] text-[var(--forge-text-secondary)]">Hours</div>
                             </div>
-                            <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                                <div className="text-lg font-bold text-[var(--text-primary)]">
+                            <div className="p-2 bg-[var(--forge-bg-workshop)] rounded-lg">
+                                <div className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     {recommendedPath.skillsGained.length}
                                 </div>
-                                <div className="text-[10px] text-[var(--text-secondary)]">Skills</div>
+                                <div className="text-[10px] text-[var(--forge-text-secondary)]">Skills</div>
                             </div>
                         </div>
 
@@ -103,8 +103,8 @@ export const AIRecommendationsPanel: React.FC<AIRecommendationsPanelProps> = ({
                             className={cn(
                                 "w-full py-2 text-sm font-medium rounded-lg transition-colors",
                                 showRecommendedPath
-                                    ? "bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400"
-                                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                                    ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                    : "bg-[var(--forge-bg-workshop)] text-[var(--forge-text-secondary)]"
                             )}
                             data-testid="toggle-path-highlight-btn"
                         >
@@ -128,25 +128,25 @@ export const AIRecommendationsPanel: React.FC<AIRecommendationsPanelProps> = ({
                                         onClick={() => onNavigateToNode(nodeId)}
                                         className={cn(
                                             "w-full flex items-center gap-3 p-2 rounded-lg",
-                                            "bg-white/50 dark:bg-slate-800/50",
-                                            "border border-slate-200 dark:border-slate-700",
-                                            "hover:bg-indigo-50 dark:hover:bg-indigo-950/30",
-                                            "hover:border-indigo-300 dark:hover:border-indigo-700",
+                                            "bg-[var(--forge-bg-elevated)]/50",
+                                            "border border-[var(--forge-border-subtle)]",
+                                            "hover:bg-[var(--ember)]/10",
+                                            "hover:border-[var(--ember)]/30",
                                             "transition-all text-left"
                                         )}
                                         data-testid={`path-node-btn-${nodeId}`}
                                     >
                                         <div className={cn(
                                             "flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold",
-                                            "bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+                                            "bg-[var(--ember)] text-[var(--forge-text-primary)]"
                                         )}>
                                             {index + 1}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-xs font-medium text-[var(--text-primary)] truncate">
+                                            <p className="text-xs font-medium text-[var(--forge-text-primary)] truncate">
                                                 {node.title}
                                             </p>
-                                            <p className="text-[10px] text-[var(--text-secondary)]">
+                                            <p className="text-[10px] text-[var(--forge-text-secondary)]">
                                                 {node.estimatedHours}h - {node.difficulty}
                                             </p>
                                         </div>
@@ -159,15 +159,15 @@ export const AIRecommendationsPanel: React.FC<AIRecommendationsPanelProps> = ({
                         </div>
 
                         {recommendedPath.nodeIds.length > 8 && (
-                            <p className="text-xs text-center text-[var(--text-secondary)]">
+                            <p className="text-xs text-center text-[var(--forge-text-secondary)]">
                                 +{recommendedPath.nodeIds.length - 8} more topics
                             </p>
                         )}
                     </div>
                 ) : (
                     <div className="text-center py-8">
-                        <Sparkles className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                        <p className="text-sm text-[var(--text-secondary)]">
+                        <Sparkles className="w-10 h-10 text-[var(--forge-text-muted)] mx-auto mb-3" />
+                        <p className="text-sm text-[var(--forge-text-secondary)]">
                             {isLoading
                                 ? "Analyzing your learning patterns..."
                                 : "No path generated yet"}
@@ -177,9 +177,9 @@ export const AIRecommendationsPanel: React.FC<AIRecommendationsPanelProps> = ({
 
                 {/* Analytics Preview */}
                 {analytics && (
-                    <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                            <TrendingUp className="w-4 h-4 text-purple-500" />
+                    <div className="pt-4 border-t border-[var(--forge-border-subtle)]">
+                        <h4 className="text-sm font-medium text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4 text-[var(--forge-accent)]" />
                             Your Progress
                         </h4>
                         <div className="space-y-2">

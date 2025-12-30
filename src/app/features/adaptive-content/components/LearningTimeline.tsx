@@ -44,44 +44,44 @@ const CATEGORY_CONFIG: Record<
     assessment: {
         icon: <Target className="w-4 h-4" />,
         label: "Quiz",
-        color: "text-blue-400",
-        bgColor: "bg-blue-500/10",
+        color: "text-[var(--forge-info)]",
+        bgColor: "bg-[var(--forge-info)]/10",
     },
     practice: {
         icon: <Code className="w-4 h-4" />,
         label: "Practice",
-        color: "text-emerald-400",
-        bgColor: "bg-emerald-500/10",
+        color: "text-[var(--forge-success)]",
+        bgColor: "bg-[var(--forge-success)]/10",
     },
     consumption: {
         icon: <BookOpen className="w-4 h-4" />,
         label: "Learning",
-        color: "text-purple-400",
-        bgColor: "bg-purple-500/10",
+        color: "text-[var(--ember-glow)]",
+        bgColor: "bg-[var(--ember)]/10",
     },
     navigation: {
         icon: <Navigation className="w-4 h-4" />,
         label: "Navigation",
-        color: "text-slate-400",
-        bgColor: "bg-slate-500/10",
+        color: "text-[var(--forge-text-muted)]",
+        bgColor: "bg-[var(--forge-text-muted)]/10",
     },
     error: {
         icon: <AlertCircle className="w-4 h-4" />,
         label: "Error",
-        color: "text-amber-400",
-        bgColor: "bg-amber-500/10",
+        color: "text-[var(--forge-warning)]",
+        bgColor: "bg-[var(--forge-warning)]/10",
     },
     milestone: {
         icon: <Award className="w-4 h-4" />,
         label: "Milestone",
-        color: "text-yellow-400",
-        bgColor: "bg-yellow-500/10",
+        color: "text-[var(--gold)]",
+        bgColor: "bg-[var(--gold)]/10",
     },
     session: {
         icon: <Play className="w-4 h-4" />,
         label: "Session",
-        color: "text-cyan-400",
-        bgColor: "bg-cyan-500/10",
+        color: "text-[var(--molten)]",
+        bgColor: "bg-[var(--molten)]/10",
     },
 };
 
@@ -92,22 +92,22 @@ const SIGNIFICANCE_CONFIG: Record<
     breakthrough: {
         icon: <Sparkles className="w-3 h-3" />,
         label: "Breakthrough",
-        color: "text-green-400",
+        color: "text-[var(--forge-success)]",
     },
     notable: {
         icon: <Zap className="w-3 h-3" />,
         label: "Notable",
-        color: "text-blue-400",
+        color: "text-[var(--forge-info)]",
     },
     routine: {
         icon: <Minus className="w-3 h-3" />,
         label: "Routine",
-        color: "text-slate-400",
+        color: "text-[var(--forge-text-muted)]",
     },
     struggle: {
         icon: <AlertCircle className="w-3 h-3" />,
         label: "Challenge",
-        color: "text-amber-400",
+        color: "text-[var(--forge-warning)]",
     },
 };
 
@@ -166,7 +166,7 @@ function TimelineEventItem({ event, isFirst = false, isLast = false }: TimelineE
                 >
                     {categoryConfig.icon}
                 </div>
-                {!isLast && <div className="w-0.5 flex-1 bg-slate-700/50 my-1" />}
+                {!isLast && <div className="w-0.5 flex-1 bg-[var(--forge-border-subtle)] my-1" />}
             </div>
 
             {/* Event content */}
@@ -184,9 +184,9 @@ function TimelineEventItem({ event, isFirst = false, isLast = false }: TimelineE
                                 {significanceConfig.label}
                             </span>
                         </div>
-                        <p className="text-xs text-slate-400 mt-0.5">{getEventDescription()}</p>
+                        <p className="text-xs text-[var(--forge-text-muted)] mt-0.5">{getEventDescription()}</p>
                     </div>
-                    <span className="text-xs text-slate-500 whitespace-nowrap">
+                    <span className="text-xs text-[var(--forge-text-muted)] whitespace-nowrap">
                         {formatTime(timestamp)}
                     </span>
                 </div>
@@ -210,15 +210,15 @@ function PatternCard({ pattern }: PatternCardProps) {
     const isWarning = ["struggle", "plateau", "distracted", "error_prone"].includes(pattern.type);
 
     const bgColor = isPositive
-        ? "bg-green-500/10 border-green-500/20"
+        ? "bg-[var(--forge-success)]/10 border-[var(--forge-success)]/20"
         : isWarning
-        ? "bg-amber-500/10 border-amber-500/20"
-        : "bg-slate-500/10 border-slate-500/20";
+        ? "bg-[var(--forge-warning)]/10 border-[var(--forge-warning)]/20"
+        : "bg-[var(--forge-text-muted)]/10 border-[var(--forge-border-subtle)]";
     const textColor = isPositive
-        ? "text-green-400"
+        ? "text-[var(--forge-success)]"
         : isWarning
-        ? "text-amber-400"
-        : "text-slate-400";
+        ? "text-[var(--forge-warning)]"
+        : "text-[var(--forge-text-muted)]";
 
     return (
         <motion.div
@@ -241,14 +241,14 @@ function PatternCard({ pattern }: PatternCardProps) {
                             .replace(/_/g, " ")
                             .replace(/\b\w/g, (c) => c.toUpperCase())}
                     </p>
-                    <p className="text-xs text-slate-400 mt-1">{pattern.description}</p>
+                    <p className="text-xs text-[var(--forge-text-muted)] mt-1">{pattern.description}</p>
                     {pattern.recommendation && (
-                        <p className="text-xs text-slate-300 mt-2 italic">
+                        <p className="text-xs text-[var(--forge-text-secondary)] mt-2 italic">
                             💡 {pattern.recommendation}
                         </p>
                     )}
                 </div>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-[var(--forge-text-muted)]">
                     {Math.round(pattern.confidence * 100)}%
                 </span>
             </div>
@@ -282,37 +282,37 @@ function ProfileCard({ profile }: ProfileCardProps) {
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-lg border border-slate-700/50 bg-slate-800/50 p-4"
+            className="rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)] p-4"
             data-testid="learner-profile-card"
         >
-            <h4 className="text-sm font-medium text-slate-200 mb-3">Your Learning Profile</h4>
+            <h4 className="text-sm font-medium text-[var(--forge-text-primary)] mb-3">Your Learning Profile</h4>
 
             <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                    <span className="text-slate-500">Style</span>
-                    <p className="text-slate-200 mt-0.5">
+                    <span className="text-[var(--forge-text-muted)]">Style</span>
+                    <p className="text-[var(--forge-text-primary)] mt-0.5">
                         {styleEmoji[profile.learningStyle]} {profile.learningStyle}
                     </p>
                 </div>
                 <div>
-                    <span className="text-slate-500">Pace</span>
-                    <p className="text-slate-200 mt-0.5">
+                    <span className="text-[var(--forge-text-muted)]">Pace</span>
+                    <p className="text-[var(--forge-text-primary)] mt-0.5">
                         {paceEmoji[profile.pacePreference]} {profile.pacePreference}
                     </p>
                 </div>
                 <div>
-                    <span className="text-slate-500">Best Time</span>
-                    <p className="text-slate-200 mt-0.5 capitalize">{profile.bestPerformanceTime}</p>
+                    <span className="text-[var(--forge-text-muted)]">Best Time</span>
+                    <p className="text-[var(--forge-text-primary)] mt-0.5 capitalize">{profile.bestPerformanceTime}</p>
                 </div>
                 <div>
-                    <span className="text-slate-500">Session Length</span>
-                    <p className="text-slate-200 mt-0.5">{profile.optimalSessionLength} min</p>
+                    <span className="text-[var(--forge-text-muted)]">Session Length</span>
+                    <p className="text-[var(--forge-text-primary)] mt-0.5">{profile.optimalSessionLength} min</p>
                 </div>
             </div>
 
             {profile.strengthAreas.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-slate-700/50">
-                    <span className="text-xs text-slate-500">Strengths</span>
+                <div className="mt-3 pt-3 border-t border-[var(--forge-border-subtle)]">
+                    <span className="text-xs text-[var(--forge-text-muted)]">Strengths</span>
                     <div className="flex flex-wrap gap-1 mt-1">
                         {profile.strengthAreas.map((area) => (
                             <span
@@ -378,12 +378,12 @@ export function LearningTimeline({
     if (events.length === 0) {
         return (
             <div
-                className={`rounded-lg border border-slate-700/50 bg-slate-800/50 p-6 text-center ${className}`}
+                className={`rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)] p-6 text-center ${className}`}
                 data-testid="learning-timeline-empty"
             >
-                <Clock className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                <p className="text-sm text-slate-400">No learning events yet</p>
-                <p className="text-xs text-slate-500 mt-1">
+                <Clock className="w-8 h-8 text-[var(--forge-text-muted)] mx-auto mb-2" />
+                <p className="text-sm text-[var(--forge-text-muted)]">No learning events yet</p>
+                <p className="text-xs text-[var(--forge-text-muted)] mt-1">
                     Your learning journey will appear here as you progress
                 </p>
             </div>
@@ -396,17 +396,17 @@ export function LearningTimeline({
 
     return (
         <div
-            className={`rounded-lg border border-slate-700/50 bg-slate-800/50 overflow-hidden ${className}`}
+            className={`rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)] overflow-hidden ${className}`}
             data-testid="learning-timeline"
         >
             {/* Header */}
-            <div className="p-4 border-b border-slate-700/50">
+            <div className="p-4 border-b border-[var(--forge-border-subtle)]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-slate-400" />
-                        <h3 className="text-sm font-medium text-slate-200">Learning Journey</h3>
+                        <Calendar className="w-4 h-4 text-[var(--forge-text-muted)]" />
+                        <h3 className="text-sm font-medium text-[var(--forge-text-primary)]">Learning Journey</h3>
                     </div>
-                    <span className="text-xs text-slate-500">{events.length} events</span>
+                    <span className="text-xs text-[var(--forge-text-muted)]">{events.length} events</span>
                 </div>
 
                 {/* Quick Stats */}
@@ -427,12 +427,12 @@ export function LearningTimeline({
 
             {/* Filters */}
             {showFilters && (
-                <div className="px-4 py-2 border-b border-slate-700/50 flex items-center gap-2">
-                    <Filter className="w-3.5 h-3.5 text-slate-500" />
+                <div className="px-4 py-2 border-b border-[var(--forge-border-subtle)] flex items-center gap-2">
+                    <Filter className="w-3.5 h-3.5 text-[var(--forge-text-muted)]" />
                     <select
                         value={categoryFilter}
                         onChange={(e) => setCategoryFilter(e.target.value as EventCategory | "all")}
-                        className="text-xs bg-slate-700/50 border border-slate-600 rounded px-2 py-1 text-slate-300"
+                        className="text-xs bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)] rounded px-2 py-1 text-[var(--forge-text-secondary)]"
                         data-testid="category-filter"
                     >
                         <option value="all">All Categories</option>
@@ -447,7 +447,7 @@ export function LearningTimeline({
                         onChange={(e) =>
                             setSignificanceFilter(e.target.value as EventSignificance | "all")
                         }
-                        className="text-xs bg-slate-700/50 border border-slate-600 rounded px-2 py-1 text-slate-300"
+                        className="text-xs bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)] rounded px-2 py-1 text-[var(--forge-text-secondary)]"
                         data-testid="significance-filter"
                     >
                         <option value="all">All Types</option>
@@ -461,10 +461,10 @@ export function LearningTimeline({
             )}
 
             {/* Events Section */}
-            <div className="border-b border-slate-700/50">
+            <div className="border-b border-[var(--forge-border-subtle)]">
                 <button
                     onClick={() => toggleSection("events")}
-                    className="w-full px-4 py-2 flex items-center justify-between text-sm text-slate-300 hover:bg-slate-700/30 transition-colors"
+                    className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
                     data-testid="toggle-events-btn"
                 >
                     <span>Recent Activity</span>
@@ -499,10 +499,10 @@ export function LearningTimeline({
 
             {/* Patterns Section */}
             {showPatterns && patterns.length > 0 && (
-                <div className="border-b border-slate-700/50">
+                <div className="border-b border-[var(--forge-border-subtle)]">
                     <button
                         onClick={() => toggleSection("patterns")}
-                        className="w-full px-4 py-2 flex items-center justify-between text-sm text-slate-300 hover:bg-slate-700/30 transition-colors"
+                        className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
                         data-testid="toggle-patterns-btn"
                     >
                         <span>Patterns & Insights ({patterns.length})</span>
@@ -536,7 +536,7 @@ export function LearningTimeline({
                 <div>
                     <button
                         onClick={() => toggleSection("profile")}
-                        className="w-full px-4 py-2 flex items-center justify-between text-sm text-slate-300 hover:bg-slate-700/30 transition-colors"
+                        className="w-full px-4 py-2 flex items-center justify-between text-sm text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
                         data-testid="toggle-profile-btn"
                     >
                         <span>Your Profile</span>
@@ -605,7 +605,7 @@ export function CompactTimeline({ events, className = "", maxEvents = 5 }: Compa
                 );
             })}
             {events.length > maxEvents && (
-                <span className="text-xs text-slate-500">+{events.length - maxEvents}</span>
+                <span className="text-xs text-[var(--forge-text-muted)]">+{events.length - maxEvents}</span>
             )}
         </div>
     );

@@ -93,10 +93,10 @@ export function CertificateIssueModal({
     };
 
     const templateColors: Record<string, string> = {
-        classic: "border-slate-300 dark:border-slate-600",
-        modern: "border-indigo-400 dark:border-indigo-500",
-        professional: "border-blue-400 dark:border-blue-500",
-        elegant: "border-orange-400 dark:border-orange-500",
+        classic: "border-[var(--forge-border-subtle)]",
+        modern: "border-[var(--ember)]",
+        professional: "border-[var(--ember)]",
+        elegant: "border-[var(--ember)]",
     };
 
     return (
@@ -115,31 +115,31 @@ export function CertificateIssueModal({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden"
+                        className="relative bg-[var(--forge-bg-elevated)] rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                         data-testid="certificate-issue-modal"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center justify-between p-4 border-b border-[var(--forge-border-subtle)]">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+                                <div className="w-10 h-10 rounded-xl bg-gradient-forge flex items-center justify-center text-[var(--forge-text-primary)]">
                                     <Award size={ICON_SIZES.md} />
                                 </div>
                                 <div>
-                                    <h2 className="font-bold text-slate-900 dark:text-slate-100">
+                                    <h2 className="font-bold text-[var(--forge-text-primary)]">
                                         Issue Certificate
                                     </h2>
-                                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                                    <p className="text-sm text-[var(--forge-text-muted)]">
                                         Create a new completion certificate
                                     </p>
                                 </div>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                                className="p-2 hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                 data-testid="certificate-issue-modal-close-btn"
                             >
-                                <X size={ICON_SIZES.md} className="text-slate-500" />
+                                <X size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />
                             </button>
                         </div>
 
@@ -147,7 +147,7 @@ export function CertificateIssueModal({
                         <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)] space-y-6">
                             {/* Learner Name */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                     <User size={ICON_SIZES.sm} className="inline mr-2" />
                                     Learner Name
                                 </label>
@@ -156,14 +156,14 @@ export function CertificateIssueModal({
                                     value={learnerName}
                                     onChange={(e) => setLearnerName(e.target.value)}
                                     placeholder="Enter your full name"
-                                    className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100 placeholder-slate-400"
+                                    className="w-full px-4 py-2 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)]"
                                     data-testid="learner-name-input"
                                 />
                             </div>
 
                             {/* Course Title */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                     <BookOpen size={ICON_SIZES.sm} className="inline mr-2" />
                                     Course Title
                                 </label>
@@ -173,14 +173,14 @@ export function CertificateIssueModal({
                                     onChange={(e) => setCourseTitle(e.target.value)}
                                     placeholder="Enter course title"
                                     disabled={!!defaultCourseTitle}
-                                    className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100 placeholder-slate-400 disabled:opacity-60"
+                                    className="w-full px-4 py-2 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] disabled:opacity-60"
                                     data-testid="course-title-input"
                                 />
                             </div>
 
                             {/* Skills */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                     <CheckCircle size={ICON_SIZES.sm} className="inline mr-2" />
                                     Skills Earned
                                 </label>
@@ -191,12 +191,12 @@ export function CertificateIssueModal({
                                         onChange={(e) => setNewSkill(e.target.value)}
                                         onKeyPress={(e) => e.key === "Enter" && handleAddSkill()}
                                         placeholder="Add a skill"
-                                        className="flex-1 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100 placeholder-slate-400"
+                                        className="flex-1 px-4 py-2 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)]"
                                         data-testid="skill-input"
                                     />
                                     <button
                                         onClick={handleAddSkill}
-                                        className="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/50 transition-colors"
+                                        className="px-4 py-2 bg-[var(--ember)]/20 text-[var(--ember)] rounded-lg hover:bg-[var(--ember)]/30 transition-colors"
                                         data-testid="add-skill-btn"
                                     >
                                         <Plus size={ICON_SIZES.sm} />
@@ -207,12 +207,12 @@ export function CertificateIssueModal({
                                         {skills.map((skill, index) => (
                                             <span
                                                 key={index}
-                                                className="inline-flex items-center gap-1 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300"
+                                                className="inline-flex items-center gap-1 px-3 py-1 bg-[var(--forge-bg-anvil)] rounded-full text-sm text-[var(--forge-text-secondary)]"
                                             >
                                                 {skill}
                                                 <button
                                                     onClick={() => handleRemoveSkill(skill)}
-                                                    className="ml-1 hover:text-red-500"
+                                                    className="ml-1 hover:text-[var(--forge-error)]"
                                                     data-testid={`remove-skill-${index}-btn`}
                                                 >
                                                     <X size={ICON_SIZES.xs} />
@@ -226,7 +226,7 @@ export function CertificateIssueModal({
                             {/* Metadata */}
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                                    <label className="block text-xs font-medium text-[var(--forge-text-muted)] mb-1">
                                         Total Hours
                                     </label>
                                     <input
@@ -234,12 +234,12 @@ export function CertificateIssueModal({
                                         value={totalHours}
                                         onChange={(e) => setTotalHours(Number(e.target.value))}
                                         min={1}
-                                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
+                                        className="w-full px-3 py-2 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)]"
                                         data-testid="total-hours-input"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                                    <label className="block text-xs font-medium text-[var(--forge-text-muted)] mb-1">
                                         Modules
                                     </label>
                                     <input
@@ -247,12 +247,12 @@ export function CertificateIssueModal({
                                         value={modulesCompleted}
                                         onChange={(e) => setModulesCompleted(Number(e.target.value))}
                                         min={1}
-                                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
+                                        className="w-full px-3 py-2 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)]"
                                         data-testid="modules-completed-input"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                                    <label className="block text-xs font-medium text-[var(--forge-text-muted)] mb-1">
                                         Quiz Score %
                                     </label>
                                     <input
@@ -261,7 +261,7 @@ export function CertificateIssueModal({
                                         onChange={(e) => setQuizScore(Number(e.target.value))}
                                         min={0}
                                         max={100}
-                                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
+                                        className="w-full px-3 py-2 bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-[var(--forge-text-primary)]"
                                         data-testid="quiz-score-input"
                                     />
                                 </div>
@@ -269,7 +269,7 @@ export function CertificateIssueModal({
 
                             {/* Template Selection */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                     <Sparkles size={ICON_SIZES.sm} className="inline mr-2" />
                                     Certificate Template
                                 </label>
@@ -281,8 +281,8 @@ export function CertificateIssueModal({
                                             className={cn(
                                                 "p-3 rounded-xl border-2 transition-all text-left",
                                                 selectedTemplate === template.id
-                                                    ? `${templateColors[template.id]} bg-slate-50 dark:bg-slate-800`
-                                                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                                                    ? `${templateColors[template.id]} bg-[var(--forge-bg-anvil)]`
+                                                    : "border-[var(--forge-border-subtle)] hover:border-[var(--forge-text-muted)]"
                                             )}
                                             data-testid={`template-${template.id}-btn`}
                                         >
@@ -292,7 +292,7 @@ export function CertificateIssueModal({
                                                     template.backgroundGradient
                                                 )}
                                             />
-                                            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                                            <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                                                 {template.name}
                                             </p>
                                         </button>
@@ -302,10 +302,10 @@ export function CertificateIssueModal({
                         </div>
 
                         {/* Footer */}
-                        <div className="flex items-center justify-end gap-3 p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                        <div className="flex items-center justify-end gap-3 p-4 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)]">
                             <button
                                 onClick={onClose}
-                                className="px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium transition-colors"
+                                className="px-4 py-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] text-sm font-medium transition-colors"
                                 data-testid="cancel-issue-btn"
                             >
                                 Cancel
@@ -313,7 +313,7 @@ export function CertificateIssueModal({
                             <button
                                 onClick={handleIssue}
                                 disabled={!learnerName.trim() || !courseTitle.trim() || isIssuing}
-                                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-6 py-2 bg-gradient-forge text-[var(--forge-text-primary)] rounded-lg text-sm font-medium transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                                 data-testid="issue-certificate-btn"
                             >
                                 <Award size={ICON_SIZES.sm} />

@@ -46,25 +46,25 @@ const StatBlock: React.FC<{
     <div
         className={cn(
             "flex items-center gap-3 p-3 rounded-xl",
-            variant === "success" && "bg-green-500/10 border border-green-500/20",
-            variant === "warning" && "bg-amber-500/10 border border-amber-500/20",
-            variant === "default" && "bg-[var(--surface-elevated)] border border-[var(--border-default)]"
+            variant === "success" && "bg-[var(--forge-success)]/10 border border-[var(--forge-success)]/20",
+            variant === "warning" && "bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/20",
+            variant === "default" && "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)]"
         )}
     >
         <div
             className={cn(
                 "p-2 rounded-lg",
-                variant === "success" && "bg-green-500/20 text-green-500",
-                variant === "warning" && "bg-amber-500/20 text-amber-500",
-                variant === "default" && "bg-[var(--surface-inset)] text-[var(--text-muted)]"
+                variant === "success" && "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+                variant === "warning" && "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+                variant === "default" && "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]"
             )}
         >
             {icon}
         </div>
         <div>
-            <div className="text-lg font-bold text-[var(--text-primary)]">{value}</div>
-            <div className="text-xs text-[var(--text-muted)]">{label}</div>
-            {subtext && <div className="text-xs text-[var(--text-muted)] mt-0.5">{subtext}</div>}
+            <div className="text-lg font-bold text-[var(--forge-text-primary)]">{value}</div>
+            <div className="text-xs text-[var(--forge-text-muted)]">{label}</div>
+            {subtext && <div className="text-xs text-[var(--forge-text-muted)] mt-0.5">{subtext}</div>}
         </div>
     </div>
 );
@@ -94,14 +94,14 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-4 p-4 bg-[var(--surface-inset)] rounded-xl"
+            className="space-y-4 p-4 bg-[var(--forge-bg-anvil)] rounded-xl"
             data-testid="combined-path-panel"
         >
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Zap size={ICON_SIZES.md} className="text-amber-500" />
-                    <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                    <Zap size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />
+                    <h3 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         Combined Path Analysis
                     </h3>
                 </div>
@@ -109,7 +109,7 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
                     <motion.div
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
-                        className="flex items-center gap-1.5 px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-xs font-medium border border-green-500/20"
+                        className="flex items-center gap-1.5 px-3 py-1 bg-[var(--forge-success)]/10 text-[var(--forge-success)] rounded-full text-xs font-medium border border-[var(--forge-success)]/20"
                     >
                         <Sparkles size={ICON_SIZES.xs} />
                         Recommended Combo
@@ -149,8 +149,8 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
             {/* Suggested Learning Order */}
             <div className="space-y-3" data-testid="suggested-order-section">
                 <div className="flex items-center gap-2">
-                    <ArrowRight size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
-                    <span className="text-sm font-semibold text-[var(--text-secondary)]">
+                    <ArrowRight size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                    <span className="text-sm font-semibold text-[var(--forge-text-secondary)]">
                         Suggested Learning Order
                     </span>
                 </div>
@@ -163,7 +163,7 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
                                 {index > 0 && (
                                     <ArrowRight
                                         size={ICON_SIZES.sm}
-                                        className="text-[var(--text-muted)]"
+                                        className="text-[var(--forge-text-muted)]"
                                     />
                                 )}
                                 <motion.div
@@ -172,11 +172,11 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
                                     transition={{ delay: index * 0.1 }}
                                     className={cn(
                                         "flex items-center gap-2 px-3 py-2 rounded-xl border",
-                                        "bg-[var(--surface-elevated)] border-[var(--border-default)]"
+                                        "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-default)]"
                                     )}
                                     data-testid={`order-step-${index + 1}`}
                                 >
-                                    <span className="text-xs font-bold text-[var(--text-muted)] w-5 h-5 flex items-center justify-center bg-[var(--surface-inset)] rounded-full">
+                                    <span className="text-xs font-bold text-[var(--forge-text-muted)] w-5 h-5 flex items-center justify-center bg-[var(--forge-bg-anvil)] rounded-full">
                                         {index + 1}
                                     </span>
                                     <div
@@ -187,7 +187,7 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
                                     >
                                         {PathIcon && <PathIcon size={ICON_SIZES.xs} />}
                                     </div>
-                                    <span className="text-sm font-medium text-[var(--text-primary)]">
+                                    <span className="text-sm font-medium text-[var(--forge-text-primary)]">
                                         {path.name.split(' ')[0]}
                                     </span>
                                 </motion.div>
@@ -205,22 +205,22 @@ export const CombinedPathPanel: React.FC<CombinedPathPanelProps> = ({
                 className={cn(
                     "flex items-start gap-3 p-4 rounded-xl",
                     isRecommendedCombo
-                        ? "bg-green-500/10 border border-green-500/20"
-                        : "bg-[var(--surface-elevated)] border border-[var(--border-default)]"
+                        ? "bg-[var(--forge-success)]/10 border border-[var(--forge-success)]/20"
+                        : "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)]"
                 )}
                 data-testid="recommendation-section"
             >
                 {isRecommendedCombo ? (
-                    <CheckCircle2 size={ICON_SIZES.md} className="text-green-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 size={ICON_SIZES.md} className="text-[var(--forge-success)] shrink-0 mt-0.5" />
                 ) : (
-                    <AlertCircle size={ICON_SIZES.md} className="text-[var(--text-muted)] shrink-0 mt-0.5" />
+                    <AlertCircle size={ICON_SIZES.md} className="text-[var(--forge-text-muted)] shrink-0 mt-0.5" />
                 )}
                 <div>
-                    <p className="text-sm font-medium text-[var(--text-primary)]">
+                    <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                         {recommendation}
                     </p>
                     {hoursSaved > 0 && (
-                        <p className="text-xs text-[var(--text-muted)] mt-1">
+                        <p className="text-xs text-[var(--forge-text-muted)] mt-1">
                             Overlapping content means you can learn both paths in less time than taking them separately.
                         </p>
                     )}

@@ -13,7 +13,6 @@ import { BackgroundAtmosphere } from "@/app/shared/components";
 import { CodePlayground } from "@/app/features/code-playground";
 import { SocialProofVisualization } from "@/app/features/social-proof";
 import { KnowledgeUniverse } from "@/app/features/knowledge-universe";
-import { PathExplorer } from "@/app/features/generative-content";
 
 // Experiment feature imports (Tasks 01-04)
 import { DiscoveryDashboard } from "@/app/features/open-source-discovery";
@@ -40,11 +39,6 @@ const featuresMeta: Record<string, { title: string; description: string; gradien
         description: "Interactive code editor with live preview",
         gradient: "from-cyan-500 to-blue-600"
     },
-    "skill-assessment": {
-        title: "Skill Assessment",
-        description: "Interactive skill evaluation with scoring",
-        gradient: "from-rose-500 to-pink-600"
-    },
     "social-proof": {
         title: "Social Proof",
         description: "Animated learner journey visualization",
@@ -59,16 +53,6 @@ const featuresMeta: Record<string, { title: string; description: string; gradien
         title: "Adaptive Learning",
         description: "AI-powered learning path predictions",
         gradient: "from-yellow-500 to-amber-600"
-    },
-    "curriculum-generator": {
-        title: "Curriculum Generator",
-        description: "LLM-powered lesson content generation",
-        gradient: "from-lime-500 to-green-600"
-    },
-    "generative-content": {
-        title: "Generative Content",
-        description: "AI-generated chapters from path seeds",
-        gradient: "from-fuchsia-500 to-pink-600"
     },
     "path-comparison": {
         title: "Path Comparison",
@@ -126,18 +110,12 @@ function FeatureRenderer({ featureId }: { featureId: string }) {
     switch (featureId) {
         case "code-playground":
             return <CodePlayground playgroundId="dev-playground" initialFiles={mockPlaygroundFiles} title="Dev Playground" />;
-        case "skill-assessment":
-            return <FeaturePlaceholder name="Skill Assessment" description="Interactive skill evaluation with adaptive scoring based on learner responses." />;
         case "social-proof":
             return <SocialProofVisualization />;
         case "knowledge-universe":
             return <KnowledgeUniverse />;
         case "adaptive-learning":
             return <FeaturePlaceholder name="Adaptive Learning" description="AI-powered learning map with personalized path predictions based on learner behavior." />;
-        case "curriculum-generator":
-            return <FeaturePlaceholder name="Curriculum Generator" description="LLM-powered curriculum generation with lessons, exercises, and projects." />;
-        case "generative-content":
-            return <PathExplorer />;
         case "path-comparison":
             return <FeaturePlaceholder name="Path Comparison" description="Side-by-side comparison of learning paths with skill overlap visualization and combined path suggestions." />;
         case "shareable-links":

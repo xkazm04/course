@@ -81,42 +81,42 @@ const STATUS_ICONS = {
 
 const STATUS_STYLES = {
     completed: {
-        bg: "bg-emerald-50 dark:bg-emerald-950/40",
-        border: "border-emerald-300 dark:border-emerald-700",
-        text: "text-emerald-700 dark:text-emerald-300",
-        icon: "text-emerald-500",
-        glow: "shadow-emerald-200/50 dark:shadow-emerald-900/50",
+        bg: "bg-[var(--forge-success)]/10",
+        border: "border-[var(--forge-success)]/50",
+        text: "text-[var(--forge-success)]",
+        icon: "text-[var(--forge-success)]",
+        glow: "shadow-[var(--forge-success)]/20",
     },
     in_progress: {
-        bg: "bg-indigo-50 dark:bg-indigo-950/40",
-        border: "border-indigo-300 dark:border-indigo-700",
-        text: "text-indigo-700 dark:text-indigo-300",
-        icon: "text-indigo-500",
-        glow: "shadow-indigo-200/50 dark:shadow-indigo-900/50",
+        bg: "bg-[var(--ember)]/10",
+        border: "border-[var(--ember)]/50",
+        text: "text-[var(--ember)]",
+        icon: "text-[var(--ember)]",
+        glow: "shadow-[var(--ember)]/20",
     },
     available: {
-        bg: "bg-slate-50 dark:bg-slate-800/40",
-        border: "border-slate-200 dark:border-slate-700",
-        text: "text-slate-700 dark:text-slate-300",
-        icon: "text-slate-500",
-        glow: "shadow-slate-200/50 dark:shadow-slate-800/50",
+        bg: "bg-[var(--forge-bg-elevated)]",
+        border: "border-[var(--forge-border-subtle)]",
+        text: "text-[var(--forge-text-secondary)]",
+        icon: "text-[var(--forge-text-muted)]",
+        glow: "shadow-[var(--forge-bg-workshop)]/50",
     },
     locked: {
-        bg: "bg-slate-100 dark:bg-slate-900/40",
-        border: "border-slate-200 dark:border-slate-800",
-        text: "text-slate-400 dark:text-slate-500",
-        icon: "text-slate-400",
+        bg: "bg-[var(--forge-bg-workshop)]",
+        border: "border-[var(--forge-border-subtle)]",
+        text: "text-[var(--forge-text-muted)]",
+        icon: "text-[var(--forge-text-muted)]",
         glow: "",
     },
 };
 
 // Color for progression level indicators (based on unified progression coordinate)
 const PROGRESSION_COLORS: Record<ProgressionLevel, string> = {
-    0: "bg-emerald-500", // Foundation
-    1: "bg-blue-500",    // Core
-    2: "bg-indigo-500",  // Intermediate
-    3: "bg-purple-500",  // Advanced
-    4: "bg-rose-500",    // Expert
+    0: "bg-[var(--forge-success)]", // Foundation
+    1: "bg-[var(--forge-accent)]",    // Core
+    2: "bg-[var(--ember)]",  // Intermediate
+    3: "bg-[var(--forge-accent)]",  // Advanced
+    4: "bg-[var(--forge-error)]",    // Expert
 };
 
 const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
@@ -151,7 +151,7 @@ const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
     const effectiveBg = skillGapStyles?.bg ?? styles.bg;
     const effectiveBorder = skillGapStyles?.border ?? styles.border;
     const effectiveText = skillGapStyles?.text ?? styles.text;
-    const effectiveRing = skillGapStyles?.ring ?? "ring-indigo-500";
+    const effectiveRing = skillGapStyles?.ring ?? "ring-[var(--ember)]";
 
     // Build status description for screen readers
     const masteryLabels = {
@@ -187,7 +187,7 @@ const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
                 "transition-all duration-300",
                 effectiveBg,
                 effectiveBorder,
-                isSelected && `ring-2 ${effectiveRing} ring-offset-2 dark:ring-offset-slate-900`,
+                isSelected && `ring-2 ${effectiveRing} ring-offset-2 ring-offset-[var(--forge-bg-void)]`,
                 isSelected && styles.glow && `shadow-lg ${styles.glow}`,
                 node.status === "locked" && !skillGapMode && "opacity-60 cursor-not-allowed",
                 isDimmed && "pointer-events-auto"
@@ -219,7 +219,7 @@ const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
         >
             {/* Category indicator dot */}
             <div
-                className="absolute -top-1.5 -left-1.5 w-3 h-3 rounded-full border-2 border-white dark:border-slate-900"
+                className="absolute -top-1.5 -left-1.5 w-3 h-3 rounded-full border-2 border-[var(--forge-bg-void)]"
                 style={{ backgroundColor: categoryMeta.color }}
                 title={categoryMeta.name}
             />
@@ -250,10 +250,10 @@ const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
             {/* Skill gap indicator badge */}
             {skillGapMode && masteryLevel && (
                 <div className={cn(
-                    "absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-slate-900",
-                    masteryLevel === "mastered" && "bg-emerald-500 text-white",
-                    masteryLevel === "partial" && "bg-amber-500 text-white",
-                    masteryLevel === "gap" && "bg-red-500 text-white"
+                    "absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-[var(--forge-bg-void)]",
+                    masteryLevel === "mastered" && "bg-[var(--forge-success)] text-[var(--forge-text-primary)]",
+                    masteryLevel === "partial" && "bg-[var(--forge-warning)] text-[var(--forge-text-primary)]",
+                    masteryLevel === "gap" && "bg-[var(--forge-error)] text-[var(--forge-text-primary)]"
                 )}
                     title={masteryLabels[masteryLevel]}
                     data-testid={`skill-gap-indicator-${node.id}`}
@@ -266,16 +266,16 @@ const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
 
             {/* Metadata */}
             <div className="flex items-center gap-2 mt-1.5">
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 icon-text-align-tight">
+                <span className="text-[10px] text-[var(--forge-text-muted)] icon-text-align-tight">
                     <Clock className="w-2.5 h-2.5" data-icon />
                     <span>{node.estimatedHours}h</span>
                 </span>
                 <span className={cn(
                     "text-[10px] px-1.5 py-0.5 rounded-full",
-                    node.difficulty === "beginner" && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-                    node.difficulty === "intermediate" && "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-                    node.difficulty === "advanced" && "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
-                    node.difficulty === "expert" && "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+                    node.difficulty === "beginner" && "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+                    node.difficulty === "intermediate" && "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+                    node.difficulty === "advanced" && "bg-[var(--ember)]/20 text-[var(--ember)]",
+                    node.difficulty === "expert" && "bg-[var(--forge-error)]/20 text-[var(--forge-error)]",
                 )}>
                     {node.difficulty.charAt(0).toUpperCase() + node.difficulty.slice(1)}
                 </span>
@@ -283,9 +283,9 @@ const KnowledgeMapNodeComponent: React.FC<KnowledgeMapNodeProps> = ({
 
             {/* Progress bar for in_progress */}
             {node.status === "in_progress" && (
-                <div className="mt-2 h-1 bg-indigo-100 dark:bg-indigo-900/30 rounded-full overflow-hidden">
+                <div className="mt-2 h-1 bg-[var(--ember)]/20 rounded-full overflow-hidden">
                     <motion.div
-                        className="h-full bg-indigo-500"
+                        className="h-full bg-[var(--ember)]"
                         initial={{ width: 0 }}
                         animate={{ width: "45%" }}
                         transition={{ duration: DURATION_SLOW, delay: 0.3 }}

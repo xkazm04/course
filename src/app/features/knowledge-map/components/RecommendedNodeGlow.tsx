@@ -52,9 +52,9 @@ const glowVariants: Variants = {
 const pulseVariants: Variants = {
     animate: {
         boxShadow: [
-            "0 0 0 2px rgba(99, 102, 241, 0.3)",
-            "0 0 12px 4px rgba(99, 102, 241, 0.4)",
-            "0 0 0 2px rgba(99, 102, 241, 0.3)",
+            "0 0 0 2px rgba(255, 107, 53, 0.3)",
+            "0 0 12px 4px rgba(255, 107, 53, 0.4)",
+            "0 0 0 2px rgba(255, 107, 53, 0.3)",
         ],
         transition: {
             duration: 2,
@@ -72,7 +72,7 @@ export function RecommendedNodeGlow({
     position,
     size,
     isActive = true,
-    color = "indigo",
+    color = "ember",
     className,
 }: RecommendedNodeGlowProps) {
     if (!isActive) return null;
@@ -104,7 +104,7 @@ export function RecommendedNodeGlow({
             <motion.div
                 className={cn(
                     "absolute inset-0 rounded-xl",
-                    "ring-2 ring-indigo-400/60 dark:ring-indigo-500/60"
+                    "ring-2 ring-[var(--ember)]/60"
                 )}
                 variants={pulseVariants}
                 animate="animate"
@@ -114,15 +114,14 @@ export function RecommendedNodeGlow({
             <div
                 className={cn(
                     "absolute inset-0 rounded-xl",
-                    "bg-gradient-to-br from-indigo-400/10 to-purple-400/10",
-                    "dark:from-indigo-500/10 dark:to-purple-500/10"
+                    "bg-gradient-to-br from-[var(--ember)]/10 to-[var(--ember-glow)]/10"
                 )}
             />
 
             {/* Corner sparkles */}
             <div className="absolute -top-1 -right-1 w-2 h-2">
                 <motion.div
-                    className="w-full h-full rounded-full bg-indigo-400"
+                    className="w-full h-full rounded-full bg-[var(--ember)]"
                     animate={{
                         opacity: [0.5, 1, 0.5],
                         scale: [0.8, 1, 0.8],
@@ -136,7 +135,7 @@ export function RecommendedNodeGlow({
             </div>
             <div className="absolute -bottom-1 -left-1 w-2 h-2">
                 <motion.div
-                    className="w-full h-full rounded-full bg-purple-400"
+                    className="w-full h-full rounded-full bg-[var(--ember-glow)]"
                     animate={{
                         opacity: [0.5, 1, 0.5],
                         scale: [0.8, 1, 0.8],

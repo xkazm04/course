@@ -79,18 +79,18 @@ export const DEFAULT_VIEWPORT: ViewportState = {
 
 // Category metadata with colors
 export const CATEGORY_META: CategoryMeta[] = [
-    { id: "html-css", name: "HTML & CSS", color: "#e34c26", bgColor: "bg-orange-50 dark:bg-orange-950/30", borderColor: "border-orange-200 dark:border-orange-800", icon: "🎨" },
-    { id: "javascript", name: "JavaScript", color: "#f7df1e", bgColor: "bg-yellow-50 dark:bg-yellow-950/30", borderColor: "border-yellow-200 dark:border-yellow-800", icon: "⚡" },
-    { id: "typescript", name: "TypeScript", color: "#3178c6", bgColor: "bg-blue-50 dark:bg-blue-950/30", borderColor: "border-blue-200 dark:border-blue-800", icon: "📘" },
-    { id: "react", name: "React", color: "#61dafb", bgColor: "bg-cyan-50 dark:bg-cyan-950/30", borderColor: "border-cyan-200 dark:border-cyan-800", icon: "⚛️" },
-    { id: "vue", name: "Vue.js", color: "#4fc08d", bgColor: "bg-emerald-50 dark:bg-emerald-950/30", borderColor: "border-emerald-200 dark:border-emerald-800", icon: "💚" },
-    { id: "angular", name: "Angular", color: "#dd0031", bgColor: "bg-red-50 dark:bg-red-950/30", borderColor: "border-red-200 dark:border-red-800", icon: "🔺" },
-    { id: "testing", name: "Testing", color: "#99425b", bgColor: "bg-pink-50 dark:bg-pink-950/30", borderColor: "border-pink-200 dark:border-pink-800", icon: "🧪" },
-    { id: "build-tools", name: "Build Tools", color: "#646cff", bgColor: "bg-violet-50 dark:bg-violet-950/30", borderColor: "border-violet-200 dark:border-violet-800", icon: "🔧" },
-    { id: "performance", name: "Performance", color: "#00c853", bgColor: "bg-green-50 dark:bg-green-950/30", borderColor: "border-green-200 dark:border-green-800", icon: "🚀" },
-    { id: "accessibility", name: "Accessibility", color: "#0288d1", bgColor: "bg-sky-50 dark:bg-sky-950/30", borderColor: "border-sky-200 dark:border-sky-800", icon: "♿" },
-    { id: "design-systems", name: "Design Systems", color: "#ff6f00", bgColor: "bg-amber-50 dark:bg-amber-950/30", borderColor: "border-amber-200 dark:border-amber-800", icon: "🎯" },
-    { id: "state-management", name: "State Management", color: "#7c4dff", bgColor: "bg-indigo-50 dark:bg-indigo-950/30", borderColor: "border-indigo-200 dark:border-indigo-800", icon: "📦" },
+    { id: "html-css", name: "HTML & CSS", color: "#e34c26", bgColor: "bg-[var(--ember)]/10", borderColor: "border-[var(--ember)]/30", icon: "🎨" },
+    { id: "javascript", name: "JavaScript", color: "#f7df1e", bgColor: "bg-[var(--gold)]/10", borderColor: "border-[var(--gold)]/30", icon: "⚡" },
+    { id: "typescript", name: "TypeScript", color: "#3178c6", bgColor: "bg-[var(--forge-info)]/10", borderColor: "border-[var(--forge-info)]/30", icon: "📘" },
+    { id: "react", name: "React", color: "#61dafb", bgColor: "bg-[var(--forge-info)]/10", borderColor: "border-[var(--forge-info)]/30", icon: "⚛️" },
+    { id: "vue", name: "Vue.js", color: "#4fc08d", bgColor: "bg-[var(--forge-success)]/10", borderColor: "border-[var(--forge-success)]/30", icon: "💚" },
+    { id: "angular", name: "Angular", color: "#dd0031", bgColor: "bg-[var(--forge-error)]/10", borderColor: "border-[var(--forge-error)]/30", icon: "🔺" },
+    { id: "testing", name: "Testing", color: "#99425b", bgColor: "bg-[var(--ember-glow)]/10", borderColor: "border-[var(--ember-glow)]/30", icon: "🧪" },
+    { id: "build-tools", name: "Build Tools", color: "#646cff", bgColor: "bg-[var(--ember-glow)]/10", borderColor: "border-[var(--ember-glow)]/30", icon: "🔧" },
+    { id: "performance", name: "Performance", color: "#00c853", bgColor: "bg-[var(--forge-success)]/10", borderColor: "border-[var(--forge-success)]/30", icon: "🚀" },
+    { id: "accessibility", name: "Accessibility", color: "#0288d1", bgColor: "bg-[var(--forge-info)]/10", borderColor: "border-[var(--forge-info)]/30", icon: "♿" },
+    { id: "design-systems", name: "Design Systems", color: "#ff6f00", bgColor: "bg-[var(--forge-warning)]/10", borderColor: "border-[var(--forge-warning)]/30", icon: "🎯" },
+    { id: "state-management", name: "State Management", color: "#7c4dff", bgColor: "bg-[var(--ember-glow)]/10", borderColor: "border-[var(--ember-glow)]/30", icon: "📦" },
 ];
 
 export function getCategoryMeta(category: CurriculumCategory): CategoryMeta {

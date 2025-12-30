@@ -64,30 +64,30 @@ export function PrerequisiteWarning({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className={cn(
-                    "bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4",
+                    "bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/30 rounded-lg p-4",
                     className
                 )}
                 data-testid="prerequisite-warning-banner"
             >
                 <div className="flex items-start gap-3">
                     <div className="flex-shrink-0">
-                        <AlertTriangle className="h-5 w-5 text-amber-500" />
+                        <AlertTriangle className="h-5 w-5 text-[var(--forge-warning)]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                        <h3 className="text-sm font-medium text-[var(--forge-warning)]">
                             Prerequisites Required
                         </h3>
-                        <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
+                        <p className="mt-1 text-sm text-[var(--forge-text-secondary)]">
                             Complete the following chapter{missingPrerequisites.length > 1 ? "s" : ""}{" "}
                             first for the best learning experience:
                         </p>
                         <ul className="mt-2 space-y-1">
                             {missingPrerequisites.map((prereq) => (
                                 <li key={prereq.id} className="flex items-center gap-2">
-                                    <Lock className="h-3 w-3 text-amber-500" />
+                                    <Lock className="h-3 w-3 text-[var(--forge-warning)]" />
                                     <button
                                         onClick={() => onNavigateToPrerequisite?.(prereq.id)}
-                                        className="text-sm text-amber-800 dark:text-amber-200 hover:underline font-medium flex items-center gap-1"
+                                        className="text-sm text-[var(--forge-warning)] hover:underline font-medium flex items-center gap-1"
                                         data-testid={`prereq-link-${prereq.id}`}
                                     >
                                         {prereq.title}
@@ -100,7 +100,7 @@ export function PrerequisiteWarning({
                             <div className="mt-3 flex gap-2">
                                 <button
                                     onClick={onSkip}
-                                    className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
+                                    className="text-xs text-[var(--forge-warning)] hover:underline"
                                     data-testid="skip-prerequisites-btn"
                                 >
                                     Continue anyway (not recommended)
@@ -111,7 +111,7 @@ export function PrerequisiteWarning({
                     {onDismiss && (
                         <button
                             onClick={onDismiss}
-                            className="flex-shrink-0 text-amber-500 hover:text-amber-700 dark:hover:text-amber-300"
+                            className="flex-shrink-0 text-[var(--forge-warning)] hover:text-[var(--forge-warning)]/80"
                             data-testid="dismiss-warning-btn"
                         >
                             <X className="h-4 w-4" />
@@ -128,7 +128,7 @@ export function PrerequisiteWarning({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className={cn(
-                    "flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm",
+                    "flex items-center gap-2 text-[var(--forge-warning)] text-sm",
                     className
                 )}
                 data-testid="prerequisite-warning-inline"
@@ -147,20 +147,20 @@ export function PrerequisiteWarning({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className={cn(
-                "bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-700 rounded-xl p-6 shadow-lg",
+                "bg-[var(--forge-bg-workshop)] border border-[var(--forge-warning)]/30 rounded-xl p-6 shadow-lg",
                 className
             )}
             data-testid="prerequisite-warning-card"
         >
             <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                    <Lock className="h-6 w-6 text-amber-500" />
+                <div className="p-2 bg-[var(--forge-warning)]/10 rounded-lg">
+                    <Lock className="h-6 w-6 text-[var(--forge-warning)]" />
                 </div>
                 <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-white">
+                    <h3 className="font-semibold text-[var(--forge-text-primary)]">
                         Chapter Locked
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <p className="text-sm text-[var(--forge-text-muted)]">
                         Complete prerequisites to unlock
                     </p>
                 </div>
@@ -171,23 +171,23 @@ export function PrerequisiteWarning({
                     <button
                         key={prereq.id}
                         onClick={() => onNavigateToPrerequisite?.(prereq.id)}
-                        className="w-full flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors group"
+                        className="w-full flex items-center gap-3 p-3 bg-[var(--forge-bg-elevated)] rounded-lg hover:bg-[var(--forge-warning)]/10 transition-colors group"
                         data-testid={`prereq-card-${prereq.id}`}
                     >
-                        <BookOpen className="h-5 w-5 text-slate-400 group-hover:text-amber-500" />
-                        <span className="flex-1 text-left text-sm font-medium text-slate-700 dark:text-slate-200">
+                        <BookOpen className="h-5 w-5 text-[var(--forge-text-muted)] group-hover:text-[var(--forge-warning)]" />
+                        <span className="flex-1 text-left text-sm font-medium text-[var(--forge-text-secondary)]">
                             {prereq.title}
                         </span>
-                        <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="h-4 w-4 text-[var(--forge-text-muted)] group-hover:text-[var(--forge-warning)] group-hover:translate-x-1 transition-transform" />
                     </button>
                 ))}
             </div>
 
             {allowSkip && (
-                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <div className="mt-4 pt-4 border-t border-[var(--forge-border-subtle)]">
                     <button
                         onClick={onSkip}
-                        className="text-sm text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400"
+                        className="text-sm text-[var(--forge-text-muted)] hover:text-[var(--forge-warning)]"
                         data-testid="skip-prerequisites-card-btn"
                     >
                         Skip prerequisites and continue anyway →
@@ -227,12 +227,12 @@ export function SuggestedNextChapters({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-                "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4",
+                "bg-gradient-to-r from-[var(--forge-success)]/10 to-[var(--forge-success)]/20 border border-[var(--forge-success)]/30 rounded-lg p-4",
                 className
             )}
             data-testid="suggested-next-chapters"
         >
-            <h3 className="text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-medium text-[var(--forge-success)] mb-3 flex items-center gap-2">
                 <ArrowRight className="h-4 w-4" />
                 Suggested Next Steps
             </h3>
@@ -241,19 +241,19 @@ export function SuggestedNextChapters({
                     <button
                         key={chapter.id}
                         onClick={() => onSelectChapter?.(chapter.id)}
-                        className="w-full flex items-center gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors group"
+                        className="w-full flex items-center gap-3 p-3 bg-[var(--forge-bg-workshop)] rounded-lg hover:bg-[var(--forge-success)]/10 transition-colors group"
                         data-testid={`suggested-chapter-${chapter.id}`}
                     >
-                        <BookOpen className="h-4 w-4 text-emerald-500" />
+                        <BookOpen className="h-4 w-4 text-[var(--forge-success)]" />
                         <div className="flex-1 text-left">
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-200 block">
+                            <span className="text-sm font-medium text-[var(--forge-text-secondary)] block">
                                 {chapter.name}
                             </span>
-                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                            <span className="text-xs text-[var(--forge-text-muted)]">
                                 {chapter.durationMinutes} min · {chapter.xpReward} XP
                             </span>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="h-4 w-4 text-[var(--forge-text-muted)] group-hover:text-[var(--forge-success)] group-hover:translate-x-1 transition-transform" />
                     </button>
                 ))}
             </div>
@@ -273,26 +273,26 @@ export interface ChapterStatusBadgeProps {
 export function ChapterStatusBadge({ status, className }: ChapterStatusBadgeProps) {
     const config = {
         locked: {
-            bg: "bg-slate-100 dark:bg-slate-700",
-            text: "text-slate-500 dark:text-slate-400",
+            bg: "bg-[var(--forge-bg-elevated)]",
+            text: "text-[var(--forge-text-muted)]",
             icon: Lock,
             label: "Locked",
         },
         available: {
-            bg: "bg-blue-100 dark:bg-blue-900/30",
-            text: "text-blue-600 dark:text-blue-400",
+            bg: "bg-[var(--forge-info)]/10",
+            text: "text-[var(--forge-info)]",
             icon: BookOpen,
             label: "Available",
         },
         in_progress: {
-            bg: "bg-amber-100 dark:bg-amber-900/30",
-            text: "text-amber-600 dark:text-amber-400",
+            bg: "bg-[var(--ember)]/10",
+            text: "text-[var(--ember)]",
             icon: BookOpen,
             label: "In Progress",
         },
         completed: {
-            bg: "bg-emerald-100 dark:bg-emerald-900/30",
-            text: "text-emerald-600 dark:text-emerald-400",
+            bg: "bg-[var(--forge-success)]/10",
+            text: "text-[var(--forge-success)]",
             icon: BookOpen,
             label: "Completed",
         },

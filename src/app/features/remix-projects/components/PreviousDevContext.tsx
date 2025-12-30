@@ -24,8 +24,8 @@ export const PreviousDevContext: React.FC<PreviousDevContextProps> = ({
     return (
         <div
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-gradient-to-br from-[var(--surface-elevated)] to-amber-500/5",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-gradient-to-br from-[var(--forge-bg-elevated)] to-[var(--forge-warning)]/5",
                 elevation.elevated
             )}
         >
@@ -37,16 +37,16 @@ export const PreviousDevContext: React.FC<PreviousDevContextProps> = ({
                 <div className="flex items-center gap-3">
                     <div className="text-3xl">{developer.avatar}</div>
                     <div>
-                        <h4 className="font-medium text-[var(--text-primary)] flex items-center gap-2">
-                            <User size={ICON_SIZES.sm} className="text-amber-400" />
+                        <h4 className="font-medium text-[var(--forge-text-primary)] flex items-center gap-2">
+                            <User size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                             Previous Developer Context
                         </h4>
-                        <p className="text-sm text-[var(--text-muted)]">
+                        <p className="text-sm text-[var(--forge-text-muted)]">
                             {developer.name} - {developer.experience}
                         </p>
                     </div>
                 </div>
-                <div className="text-[var(--text-muted)]">
+                <div className="text-[var(--forge-text-muted)]">
                     {isExpanded ? (
                         <ChevronUp size={ICON_SIZES.md} />
                     ) : (
@@ -66,8 +66,8 @@ export const PreviousDevContext: React.FC<PreviousDevContextProps> = ({
                     >
                         <div className="px-4 pb-4 space-y-4">
                             {/* Backstory */}
-                            <div className="p-3 rounded-lg bg-[var(--surface-overlay)]">
-                                <p className="text-sm text-[var(--text-secondary)] italic">
+                            <div className="p-3 rounded-lg bg-[var(--forge-bg-anvil)]">
+                                <p className="text-sm text-[var(--forge-text-secondary)] italic">
                                     "{developer.backstory}"
                                 </p>
                             </div>
@@ -90,15 +90,15 @@ export const PreviousDevContext: React.FC<PreviousDevContextProps> = ({
 
                             {/* Known weaknesses */}
                             <div>
-                                <h5 className="text-xs font-semibold text-[var(--text-muted)] uppercase mb-2 flex items-center gap-1">
-                                    <AlertCircle size={ICON_SIZES.xs} className="text-amber-400" />
+                                <h5 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase mb-2 flex items-center gap-1">
+                                    <AlertCircle size={ICON_SIZES.xs} className="text-[var(--forge-warning)]" />
                                     Known Weaknesses
                                 </h5>
                                 <div className="flex flex-wrap gap-2">
                                     {developer.knownWeaknesses.map((weakness, i) => (
                                         <span
                                             key={i}
-                                            className="px-2 py-1 rounded-lg text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                                            className="px-2 py-1 rounded-lg text-xs bg-[var(--forge-warning)]/10 text-[var(--forge-warning)] border border-[var(--forge-warning)]/20"
                                         >
                                             {weakness}
                                         </span>
@@ -108,11 +108,11 @@ export const PreviousDevContext: React.FC<PreviousDevContextProps> = ({
 
                             {/* Project history */}
                             {projectHistory && (
-                                <div className="p-3 rounded-lg bg-[var(--surface-base)] border border-[var(--border-subtle)]">
-                                    <h5 className="text-xs font-semibold text-[var(--text-muted)] uppercase mb-1">
+                                <div className="p-3 rounded-lg bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-subtle)]">
+                                    <h5 className="text-xs font-semibold text-[var(--forge-text-muted)] uppercase mb-1">
                                         Project History
                                     </h5>
-                                    <p className="text-sm text-[var(--text-secondary)]">
+                                    <p className="text-sm text-[var(--forge-text-secondary)]">
                                         {projectHistory}
                                     </p>
                                 </div>
@@ -135,22 +135,22 @@ interface TraitCardProps {
 
 const TraitCard: React.FC<TraitCardProps> = ({ icon: Icon, title, content, color }) => {
     const colorClasses = {
-        blue: "text-blue-400 bg-blue-500/10",
-        purple: "text-purple-400 bg-purple-500/10",
-        amber: "text-amber-400 bg-amber-500/10",
+        blue: "text-[var(--forge-info)] bg-[var(--forge-info)]/10",
+        purple: "text-[var(--ember)] bg-[var(--ember)]/10",
+        amber: "text-[var(--forge-warning)] bg-[var(--forge-warning)]/10",
     }[color];
 
     return (
-        <div className="p-3 rounded-lg bg-[var(--surface-overlay)]">
+        <div className="p-3 rounded-lg bg-[var(--forge-bg-anvil)]">
             <div className="flex items-center gap-2 mb-1">
                 <div className={cn("p-1 rounded", colorClasses)}>
                     <Icon size={ICON_SIZES.sm} />
                 </div>
-                <span className="text-xs font-medium text-[var(--text-muted)] uppercase">
+                <span className="text-xs font-medium text-[var(--forge-text-muted)] uppercase">
                     {title}
                 </span>
             </div>
-            <p className="text-sm text-[var(--text-secondary)]">{content}</p>
+            <p className="text-sm text-[var(--forge-text-secondary)]">{content}</p>
         </div>
     );
 };
@@ -162,11 +162,11 @@ interface InlineDevContextProps {
 
 export const InlineDevContext: React.FC<InlineDevContextProps> = ({ developer }) => {
     return (
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+        <div className="flex items-center gap-2 p-2 rounded-lg bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/20">
             <span className="text-xl">{developer.avatar}</span>
             <div className="flex-1 min-w-0">
-                <p className="text-xs text-amber-400 font-medium">{developer.name}</p>
-                <p className="text-xs text-[var(--text-muted)] truncate italic">
+                <p className="text-xs text-[var(--forge-warning)] font-medium">{developer.name}</p>
+                <p className="text-xs text-[var(--forge-text-muted)] truncate italic">
                     "{developer.timeConstraints}"
                 </p>
             </div>

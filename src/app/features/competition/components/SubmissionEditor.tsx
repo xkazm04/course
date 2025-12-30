@@ -189,12 +189,12 @@ interface DeploymentStatusBadgeProps {
 
 const DeploymentStatusBadge: React.FC<DeploymentStatusBadgeProps> = ({ status }) => {
     const config = {
-        pending: { label: "Pending", color: "text-slate-400", bg: "bg-slate-500/20" },
-        building: { label: "Building", color: "text-blue-400", bg: "bg-blue-500/20", animate: true },
-        deploying: { label: "Deploying", color: "text-purple-400", bg: "bg-purple-500/20", animate: true },
-        running: { label: "Running", color: "text-emerald-400", bg: "bg-emerald-500/20" },
-        failed: { label: "Failed", color: "text-red-400", bg: "bg-red-500/20" },
-        terminated: { label: "Terminated", color: "text-slate-400", bg: "bg-slate-500/20" },
+        pending: { label: "Pending", color: "text-[var(--forge-text-muted)]", bg: "bg-[var(--forge-bg-elevated)]" },
+        building: { label: "Building", color: "text-[var(--forge-info)]", bg: "bg-[var(--forge-info)]/20", animate: true },
+        deploying: { label: "Deploying", color: "text-[var(--ember)]", bg: "bg-[var(--ember)]/20", animate: true },
+        running: { label: "Running", color: "text-[var(--forge-success)]", bg: "bg-[var(--forge-success)]/20" },
+        failed: { label: "Failed", color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/20" },
+        terminated: { label: "Terminated", color: "text-[var(--forge-text-muted)]", bg: "bg-[var(--forge-bg-elevated)]" },
     }[status];
 
     return (
@@ -300,7 +300,7 @@ const DependenciesEditor: React.FC<DependenciesEditorProps> = ({
                         </div>
                         <button
                             onClick={() => removeDependency(pkg)}
-                            className="text-red-400 text-sm hover:underline"
+                            className="text-[var(--forge-error)] text-sm hover:underline"
                         >
                             Remove
                         </button>

@@ -10,65 +10,65 @@ import React from "react";
 
 export const KnowledgeMapLegend: React.FC = () => {
     return (
-        <div className="flex flex-wrap items-center gap-4 px-4 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl text-xs">
+        <div className="flex flex-wrap items-center gap-4 px-4 py-3 bg-[var(--forge-bg-elevated)] rounded-xl text-xs">
             {/* Status Section */}
-            <span className="font-medium text-slate-600 dark:text-slate-400">Status:</span>
+            <span className="font-medium text-[var(--forge-text-secondary)]">Status:</span>
             <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Completed</span>
+                <span className="w-2 h-2 bg-[var(--forge-success)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Completed</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-indigo-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">In Progress</span>
+                <span className="w-2 h-2 bg-[var(--ember)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">In Progress</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-slate-400 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Available</span>
+                <span className="w-2 h-2 bg-[var(--forge-text-muted)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Available</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-slate-300 dark:bg-slate-600 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Locked</span>
+                <span className="w-2 h-2 bg-[var(--forge-text-muted)] opacity-50 rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Locked</span>
             </div>
 
             {/* Connections Section */}
-            <span className="ml-4 font-medium text-slate-600 dark:text-slate-400">Connections:</span>
+            <span className="ml-4 font-medium text-[var(--forge-text-secondary)]">Connections:</span>
             <div className="flex items-center gap-1.5">
-                <span className="w-4 h-0.5 bg-indigo-500" />
-                <span className="text-slate-600 dark:text-slate-400">Required</span>
+                <span className="w-4 h-0.5 bg-[var(--ember)]" />
+                <span className="text-[var(--forge-text-secondary)]">Required</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-4 h-0.5 bg-green-500" />
-                <span className="text-slate-600 dark:text-slate-400">Recommended</span>
+                <span className="w-4 h-0.5 bg-[var(--forge-success)]" />
+                <span className="text-[var(--forge-text-secondary)]">Recommended</span>
             </div>
             <div className="flex items-center gap-1.5">
                 <span
-                    className="w-4 h-0.5 bg-slate-400 opacity-50"
+                    className="w-4 h-0.5 bg-[var(--forge-text-muted)] opacity-50"
                     style={{ backgroundImage: "repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px)" }}
                 />
-                <span className="text-slate-600 dark:text-slate-400">Optional</span>
+                <span className="text-[var(--forge-text-secondary)]">Optional</span>
             </div>
 
             {/* Progression Section */}
-            <span className="ml-4 font-medium text-slate-600 dark:text-slate-400">Progression:</span>
+            <span className="ml-4 font-medium text-[var(--forge-text-secondary)]">Progression:</span>
             <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-4 bg-emerald-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Foundation</span>
+                <span className="w-1.5 h-4 bg-[var(--forge-success)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Foundation</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-4 bg-blue-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Core</span>
+                <span className="w-1.5 h-4 bg-[var(--forge-accent)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Core</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-4 bg-indigo-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Intermediate</span>
+                <span className="w-1.5 h-4 bg-[var(--ember)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Intermediate</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-4 bg-purple-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Advanced</span>
+                <span className="w-1.5 h-4 bg-[var(--forge-accent)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Advanced</span>
             </div>
             <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-4 bg-rose-500 rounded-full" />
-                <span className="text-slate-600 dark:text-slate-400">Expert</span>
+                <span className="w-1.5 h-4 bg-[var(--forge-error)] rounded-full" />
+                <span className="text-[var(--forge-text-secondary)]">Expert</span>
             </div>
         </div>
     );

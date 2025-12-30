@@ -71,12 +71,12 @@ const BotMessage = ({
         transition={prefersReducedMotion ? { duration: 0 } : undefined}
         className="flex gap-3"
     >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 text-white flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--ember-glow)] to-[var(--ember)] text-[var(--forge-text-primary)] flex items-center justify-center shrink-0">
             <Bot size={ICON_SIZES.sm} />
         </div>
         <div className="max-w-[80%]">
-            <div className="p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl rounded-tl-sm">
-                <p className="text-sm text-slate-700 dark:text-slate-200">{content}</p>
+            <div className="p-4 bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] rounded-2xl rounded-tl-sm">
+                <p className="text-sm text-[var(--forge-text-secondary)]">{content}</p>
             </div>
             {options && options.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -86,9 +86,9 @@ const BotMessage = ({
                             onClick={() => onSelectOption(option.label)}
                             className={cn(
                                 "px-4 py-3 min-h-[44px] rounded-full text-sm font-medium transition-colors",
-                                "bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50",
-                                "text-indigo-700 dark:text-indigo-400",
-                                option.isRecommended && "ring-2 ring-indigo-400 ring-offset-2 dark:ring-offset-slate-900"
+                                "bg-[var(--ember)]/10 hover:bg-[var(--ember)]/20",
+                                "text-[var(--ember)]",
+                                option.isRecommended && "ring-2 ring-[var(--ember)] ring-offset-2 ring-offset-[var(--forge-bg-anvil)]"
                             )}
                             data-testid={option.testId ?? `chat-option-${i}`}
                         >
@@ -116,11 +116,11 @@ const UserMessage = ({ content, prefersReducedMotion }: UserMessageProps) => (
         transition={prefersReducedMotion ? { duration: 0 } : undefined}
         className="flex gap-3 flex-row-reverse"
     >
-        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 rounded-full bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] flex items-center justify-center shrink-0">
             <User size={ICON_SIZES.sm} />
         </div>
         <div className="max-w-[80%] text-right">
-            <div className="p-4 bg-slate-900 text-white rounded-2xl rounded-tr-sm">
+            <div className="p-4 bg-[var(--forge-bg-anvil)] text-[var(--forge-text-primary)] rounded-2xl rounded-tr-sm">
                 <p className="text-sm">{content}</p>
             </div>
         </div>
@@ -142,28 +142,28 @@ const TypingIndicator = ({ prefersReducedMotion }: TypingIndicatorProps) => (
         transition={prefersReducedMotion ? { duration: 0 } : undefined}
         className="flex gap-3"
     >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 text-white flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--ember-glow)] to-[var(--ember)] text-[var(--forge-text-primary)] flex items-center justify-center">
             <Bot size={ICON_SIZES.sm} />
         </div>
-        <div className="p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl rounded-tl-sm">
+        <div className="p-4 bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] rounded-2xl rounded-tl-sm">
             <div className="flex gap-1">
                 <span
                     className={cn(
-                        "w-2 h-2 bg-slate-300 dark:bg-slate-600 rounded-full",
+                        "w-2 h-2 bg-[var(--forge-text-muted)] rounded-full",
                         !prefersReducedMotion && "animate-bounce"
                     )}
                     style={{ animationDelay: "0ms" }}
                 />
                 <span
                     className={cn(
-                        "w-2 h-2 bg-slate-300 dark:bg-slate-600 rounded-full",
+                        "w-2 h-2 bg-[var(--forge-text-muted)] rounded-full",
                         !prefersReducedMotion && "animate-bounce"
                     )}
                     style={{ animationDelay: "150ms" }}
                 />
                 <span
                     className={cn(
-                        "w-2 h-2 bg-slate-300 dark:bg-slate-600 rounded-full",
+                        "w-2 h-2 bg-[var(--forge-text-muted)] rounded-full",
                         !prefersReducedMotion && "animate-bounce"
                     )}
                     style={{ animationDelay: "300ms" }}
@@ -204,7 +204,7 @@ const PathResultCard = ({ formState, prefersReducedMotion }: PathResultCardProps
             initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={prefersReducedMotion ? { duration: 0 } : undefined}
-            className="mt-4 p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl text-white"
+            className="mt-4 p-6 bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)] rounded-2xl text-[var(--forge-text-primary)]"
             data-testid="chat-generated-path"
         >
             <div className="flex items-center gap-2 mb-4">
@@ -262,7 +262,7 @@ const PathResultCard = ({ formState, prefersReducedMotion }: PathResultCardProps
             <Button
                 size="full"
                 variant="secondary"
-                className="mt-4 bg-white text-indigo-600 hover:bg-white/90 shadow-none"
+                className="mt-4 bg-[var(--forge-bg-daylight)] text-[var(--ember)] hover:bg-[var(--forge-bg-daylight)]/90 shadow-none"
                 data-testid="chat-start-journey-btn"
             >
                 Start My Journey <ArrowRight size={ICON_SIZES.md} />
@@ -320,7 +320,7 @@ export const ChatTreeRenderer = ({
                     initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={prefersReducedMotion ? { duration: 0 } : undefined}
-                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 dark:bg-purple-900/30 text-[var(--accent-secondary)] font-bold tracking-wide text-xs uppercase mb-4"
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--ember-glow)]/10 text-[var(--ember-glow)] font-bold tracking-wide text-xs uppercase mb-4"
                 >
                     <Bot size={ICON_SIZES.sm} />
                     AI-Powered Path Generation
@@ -341,7 +341,7 @@ export const ChatTreeRenderer = ({
                         {canGoBack && onBack && (
                             <button
                                 onClick={onBack}
-                                className="text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-1 mb-2"
+                                className="text-sm text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] flex items-center gap-1 mb-2"
                                 data-testid="chat-back-btn"
                             >
                                 <ArrowLeft size={ICON_SIZES.sm} />
@@ -389,7 +389,7 @@ export const ChatTreeRenderer = ({
                     {/* Input Form */}
                     <form
                         onSubmit={handleSubmit}
-                        className="p-4 border-t border-slate-100 dark:border-slate-700"
+                        className="p-4 border-t border-[var(--forge-border-subtle)]"
                     >
                         <div className="flex gap-3">
                             <input
@@ -399,7 +399,7 @@ export const ChatTreeRenderer = ({
                                 placeholder={
                                     currentMessage?.inputPlaceholder ?? "Type your message..."
                                 }
-                                className="flex-1 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900 outline-none transition-all"
+                                className="flex-1 p-4 bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] focus:border-[var(--ember)] focus:ring-2 focus:ring-[var(--ember)]/20 outline-none transition-all"
                                 data-testid="chat-input"
                             />
                             <Button

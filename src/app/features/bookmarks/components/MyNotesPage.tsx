@@ -73,14 +73,14 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
             {/* Header */}
             <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                        <Bookmark size={ICON_SIZES.lg} className="text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-[var(--ember)] to-[var(--ember-dim)] rounded-2xl flex items-center justify-center">
+                        <Bookmark size={ICON_SIZES.lg} className="text-[var(--forge-text-primary)]" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-black text-slate-900 dark:text-slate-100">
+                        <h1 className="text-3xl font-black text-[var(--forge-text-primary)]">
                             My Notes
                         </h1>
-                        <p className="text-slate-500 dark:text-slate-400">
+                        <p className="text-[var(--forge-text-secondary)]">
                             All your bookmarks and notes in one place
                         </p>
                     </div>
@@ -91,26 +91,26 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
             <div className="grid grid-cols-3 gap-4 mb-6">
                 <PrismaticCard glowColor="indigo" cardElevation="flat" className="!rounded-xl" data-testid="stats-bookmarks-card">
                     <div className="p-4 text-center">
-                        <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                        <p className="text-2xl font-bold text-[var(--ember)]">
                             {stats.total}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Bookmarks</p>
+                        <p className="text-xs text-[var(--forge-text-secondary)]">Bookmarks</p>
                     </div>
                 </PrismaticCard>
                 <PrismaticCard glowColor="purple" cardElevation="flat" className="!rounded-xl" data-testid="stats-courses-card">
                     <div className="p-4 text-center">
-                        <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                        <p className="text-2xl font-bold text-[var(--ember)]">
                             {stats.coursesCount}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Courses</p>
+                        <p className="text-xs text-[var(--forge-text-secondary)]">Courses</p>
                     </div>
                 </PrismaticCard>
                 <PrismaticCard glowColor="cyan" cardElevation="flat" className="!rounded-xl" data-testid="stats-tags-card">
                     <div className="p-4 text-center">
-                        <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+                        <p className="text-2xl font-bold text-[var(--ember)]">
                             {stats.tagsCount}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Tags</p>
+                        <p className="text-xs text-[var(--forge-text-secondary)]">Tags</p>
                     </div>
                 </PrismaticCard>
             </div>
@@ -122,14 +122,14 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                     <div className="relative flex-1">
                         <Search
                             size={ICON_SIZES.md}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                         />
                         <input
                             type="text"
                             value={filters.search}
                             onChange={(e) => updateFilters({ search: e.target.value })}
                             placeholder="Search notes, tags, chapters..."
-                            className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            className="w-full pl-12 pr-4 py-3 rounded-xl border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ember)] focus:border-transparent"
                             data-testid="notes-search-input"
                         />
                     </div>
@@ -140,15 +140,15 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                         className={cn(
                             "flex items-center gap-2 px-4 py-3 rounded-xl border font-medium text-sm transition-colors",
                             showFilters || hasActiveFilters
-                                ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400"
-                                : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                                ? "bg-[var(--ember-dim)]/10 border-[var(--ember)]/30 text-[var(--ember)]"
+                                : "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)]"
                         )}
                         data-testid="notes-filter-toggle"
                     >
                         <Filter size={ICON_SIZES.sm} />
                         Filters
                         {hasActiveFilters && (
-                            <span className="w-2 h-2 bg-indigo-500 rounded-full" />
+                            <span className="w-2 h-2 bg-[var(--ember)] rounded-full" />
                         )}
                     </button>
 
@@ -161,7 +161,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                     sortBy: e.target.value as BookmarkFilters["sortBy"],
                                 })
                             }
-                            className="appearance-none pl-4 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="appearance-none pl-4 pr-10 py-3 rounded-xl border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[var(--ember)]"
                             data-testid="notes-sort-select"
                         >
                             {sortOptions.map((opt) => (
@@ -172,7 +172,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                         </select>
                         <ChevronDown
                             size={ICON_SIZES.sm}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)] pointer-events-none"
                         />
                     </div>
 
@@ -183,7 +183,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                 sortOrder: filters.sortOrder === "asc" ? "desc" : "asc",
                             })
                         }
-                        className="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        className="p-3 rounded-xl border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)] transition-colors"
                         data-testid="notes-sort-order-btn"
                     >
                         {filters.sortOrder === "asc" ? (
@@ -196,7 +196,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                     {/* Export */}
                     <button
                         onClick={handleExport}
-                        className="flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-medium text-sm hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors"
+                        className="flex items-center gap-2 px-4 py-3 rounded-xl bg-[var(--ember)] text-[var(--forge-text-primary)] font-medium text-sm hover:opacity-90 transition-colors"
                         data-testid="notes-export-btn"
                     >
                         <Download size={ICON_SIZES.sm} />
@@ -213,10 +213,10 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                             exit={{ opacity: 0, height: 0 }}
                             className="overflow-hidden"
                         >
-                            <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4">
+                            <div className="p-4 bg-[var(--forge-bg-anvil)] rounded-xl border border-[var(--forge-border-subtle)] space-y-4">
                                 {/* Course Filter */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                         Filter by Course
                                     </label>
                                     <div className="flex flex-wrap gap-2">
@@ -225,8 +225,8 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                             className={cn(
                                                 "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                                                 filters.courseId === null
-                                                    ? "bg-indigo-500 text-white"
-                                                    : "bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
+                                                    ? "bg-[var(--ember)] text-[var(--forge-text-primary)]"
+                                                    : "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]/80"
                                             )}
                                             data-testid="notes-filter-all-courses"
                                         >
@@ -246,8 +246,8 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                                 className={cn(
                                                     "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                                                     filters.courseId === course.id
-                                                        ? "bg-indigo-500 text-white"
-                                                        : "bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
+                                                        ? "bg-[var(--ember)] text-[var(--forge-text-primary)]"
+                                                        : "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]/80"
                                                 )}
                                                 data-testid={`notes-filter-course-${course.id}`}
                                             >
@@ -260,7 +260,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                 {/* Tag Filter */}
                                 {tags.length > 0 && (
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                        <label className="block text-sm font-medium text-[var(--forge-text-secondary)] mb-2">
                                             Filter by Tags
                                         </label>
                                         <div className="flex flex-wrap gap-2">
@@ -271,8 +271,8 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                                     className={cn(
                                                         "inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                                                         filters.tags.includes(tag)
-                                                            ? "bg-indigo-500 text-white"
-                                                            : "bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
+                                                            ? "bg-[var(--ember)] text-[var(--forge-text-primary)]"
+                                                            : "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]/80"
                                                     )}
                                                     data-testid={`notes-filter-tag-${tag}`}
                                                 >
@@ -288,7 +288,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                                 {hasActiveFilters && (
                                     <button
                                         onClick={resetFilters}
-                                        className="flex items-center gap-1 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
+                                        className="flex items-center gap-1 text-sm font-medium text-[var(--forge-error)] hover:opacity-80 transition-colors"
                                         data-testid="notes-clear-filters"
                                     >
                                         <X size={ICON_SIZES.sm} />
@@ -304,17 +304,17 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
             {/* Results */}
             {loading ? (
                 <div className="flex items-center justify-center py-16">
-                    <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-8 h-8 border-2 border-[var(--ember)] border-t-transparent rounded-full animate-spin" />
                 </div>
             ) : bookmarks.length === 0 ? (
                 <div className="text-center py-16">
-                    <div className="w-20 h-20 mx-auto mb-4 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center">
-                        <FileText size={ICON_SIZES.xl} className="text-slate-400" />
+                    <div className="w-20 h-20 mx-auto mb-4 bg-[var(--forge-bg-anvil)] rounded-2xl flex items-center justify-center">
+                        <FileText size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-2">
                         {hasActiveFilters ? "No matching bookmarks" : "No bookmarks yet"}
                     </h3>
-                    <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                    <p className="text-[var(--forge-text-secondary)] max-w-md mx-auto">
                         {hasActiveFilters
                             ? "Try adjusting your filters or search query."
                             : "Start adding bookmarks while learning to build your personal study notes."}
@@ -322,7 +322,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                     {hasActiveFilters && (
                         <button
                             onClick={resetFilters}
-                            className="mt-4 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                            className="mt-4 px-4 py-2 text-sm font-medium text-[var(--ember)] hover:opacity-80 transition-colors"
                             data-testid="notes-empty-clear-filters"
                         >
                             Clear filters
@@ -331,7 +331,7 @@ export const MyNotesPage: React.FC<MyNotesPageProps> = ({ onNavigate }) => {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <p className="text-sm text-[var(--forge-text-secondary)]">
                         Showing {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""}
                     </p>
                     <AnimatePresence>

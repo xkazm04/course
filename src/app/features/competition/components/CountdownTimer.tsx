@@ -121,7 +121,7 @@ const CompactCountdown: React.FC<CountdownVariantProps> = ({
         <div
             className={cn(
                 "inline-flex items-center gap-1 text-sm",
-                isCritical ? "text-red-400" : isUrgent ? "text-amber-400" : "text-[var(--text-muted)]"
+                isCritical ? "text-[var(--forge-error)]" : isUrgent ? "text-[var(--forge-warning)]" : "text-[var(--forge-text-muted)]"
             )}
         >
             {showIcon && (
@@ -145,7 +145,7 @@ const DefaultCountdown: React.FC<CountdownVariantProps> = ({
 }) => {
     if (timeLeft.total <= 0) {
         return (
-            <div className="flex items-center gap-2 text-red-400">
+            <div className="flex items-center gap-2 text-[var(--forge-error)]">
                 <AlertTriangle size={ICON_SIZES.md} />
                 <span className="font-medium">Challenge Ended</span>
             </div>
@@ -156,7 +156,7 @@ const DefaultCountdown: React.FC<CountdownVariantProps> = ({
         <div
             className={cn(
                 "flex items-center gap-2",
-                isCritical ? "text-red-400" : isUrgent ? "text-amber-400" : "text-[var(--text-secondary)]"
+                isCritical ? "text-[var(--forge-error)]" : isUrgent ? "text-[var(--forge-warning)]" : "text-[var(--forge-text-secondary)]"
             )}
         >
             {showIcon && (
@@ -175,17 +175,17 @@ const DefaultCountdown: React.FC<CountdownVariantProps> = ({
                 {timeLeft.days > 0 && (
                     <>
                         <span className="font-bold">{timeLeft.days}</span>
-                        <span className="text-xs text-[var(--text-muted)]">d</span>
+                        <span className="text-xs text-[var(--forge-text-muted)]">d</span>
                     </>
                 )}
                 <span className="font-bold">{timeLeft.hours.toString().padStart(2, "0")}</span>
-                <span className="text-xs text-[var(--text-muted)]">h</span>
+                <span className="text-xs text-[var(--forge-text-muted)]">h</span>
                 <span className="font-bold">{timeLeft.minutes.toString().padStart(2, "0")}</span>
-                <span className="text-xs text-[var(--text-muted)]">m</span>
+                <span className="text-xs text-[var(--forge-text-muted)]">m</span>
                 {timeLeft.days === 0 && (
                     <>
                         <span className="font-bold">{timeLeft.seconds.toString().padStart(2, "0")}</span>
-                        <span className="text-xs text-[var(--text-muted)]">s</span>
+                        <span className="text-xs text-[var(--forge-text-muted)]">s</span>
                     </>
                 )}
             </div>
@@ -201,9 +201,9 @@ const LargeCountdown: React.FC<Omit<CountdownVariantProps, "showIcon">> = ({
 }) => {
     if (timeLeft.total <= 0) {
         return (
-            <div className="text-center p-4 rounded-lg bg-red-500/10 border border-red-500/20">
-                <AlertTriangle size={ICON_SIZES.xl} className="text-red-400 mx-auto mb-2" />
-                <span className="text-lg font-bold text-red-400">Challenge Ended</span>
+            <div className="text-center p-4 rounded-lg bg-[var(--forge-error)]/10 border border-[var(--forge-error)]/20">
+                <AlertTriangle size={ICON_SIZES.xl} className="text-[var(--forge-error)] mx-auto mb-2" />
+                <span className="text-lg font-bold text-[var(--forge-error)]">Challenge Ended</span>
             </div>
         );
     }
@@ -217,15 +217,15 @@ const LargeCountdown: React.FC<Omit<CountdownVariantProps, "showIcon">> = ({
                 className={cn(
                     "w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold",
                     isCritical
-                        ? "bg-red-500/20 text-red-400"
+                        ? "bg-[var(--forge-error)]/20 text-[var(--forge-error)]"
                         : isUrgent
-                        ? "bg-amber-500/20 text-amber-400"
-                        : "bg-[var(--surface-overlay)] text-[var(--text-primary)]"
+                        ? "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]"
+                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-primary)]"
                 )}
             >
                 {value.toString().padStart(2, "0")}
             </motion.div>
-            <span className="text-xs text-[var(--text-muted)] mt-1">{label}</span>
+            <span className="text-xs text-[var(--forge-text-muted)] mt-1">{label}</span>
         </div>
     );
 
@@ -271,15 +271,15 @@ export const TimeProgress: React.FC<TimeProgressProps> = ({ startDate, endDate }
 
     return (
         <div className="w-full">
-            <div className="h-2 bg-[var(--surface-overlay)] rounded-full overflow-hidden">
+            <div className="h-2 bg-[var(--forge-bg-anvil)] rounded-full overflow-hidden">
                 <motion.div
-                    className="h-full bg-[var(--accent-primary)] rounded-full"
+                    className="h-full bg-[var(--ember)] rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
                     transition={{ duration: 0.5 }}
                 />
             </div>
-            <div className="flex justify-between text-xs text-[var(--text-muted)] mt-1">
+            <div className="flex justify-between text-xs text-[var(--forge-text-muted)] mt-1">
                 <span>Started</span>
                 <span>{Math.round(progress)}% elapsed</span>
                 <span>Ends</span>

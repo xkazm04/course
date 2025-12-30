@@ -18,37 +18,37 @@ const MILESTONE_CONFIG: Record<number, { title: string; description: string; rew
         title: "One Week Wonder!",
         description: "You've maintained a 7-day streak!",
         reward: "+1 Streak Freeze",
-        color: "from-amber-500 to-orange-500",
+        color: "from-[var(--forge-warning)] to-[var(--ember)]",
     },
     14: {
         title: "Two Week Champion!",
         description: "14 days of consistent learning!",
         reward: "+1 Streak Freeze",
-        color: "from-emerald-500 to-teal-500",
+        color: "from-[var(--forge-success)] to-[var(--forge-success)]",
     },
     30: {
         title: "Monthly Master!",
         description: "A full month of dedication!",
         reward: "+2 Streak Freezes",
-        color: "from-purple-500 to-pink-500",
+        color: "from-[var(--forge-accent)] to-[var(--forge-error)]",
     },
     60: {
         title: "Two Month Legend!",
         description: "60 days of unstoppable progress!",
         reward: "+2 Streak Freezes",
-        color: "from-cyan-500 to-blue-500",
+        color: "from-[var(--forge-info)] to-[var(--forge-accent)]",
     },
     100: {
         title: "Century Champion!",
         description: "100 days of excellence!",
         reward: "+3 Streak Freezes",
-        color: "from-rose-500 to-red-500",
+        color: "from-[var(--forge-error)] to-[var(--ember)]",
     },
     365: {
         title: "Year of Greatness!",
         description: "365 days of mastery!",
         reward: "+5 Streak Freezes",
-        color: "from-indigo-500 to-violet-500",
+        color: "from-[var(--forge-accent)] to-[var(--forge-info)]",
     },
 };
 
@@ -89,7 +89,7 @@ export const MilestoneCelebration = ({
                             exit={{ scale: 0, rotate: 10 }}
                             transition={{ type: "spring", bounce: 0.5, duration: 0.6 }}
                             className={cn(
-                                "relative w-full max-w-sm bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl",
+                                "relative w-full max-w-sm bg-[var(--forge-bg-elevated)] rounded-3xl overflow-hidden shadow-2xl",
                                 className
                             )}
                             onClick={(e) => e.stopPropagation()}
@@ -168,7 +168,7 @@ export const MilestoneCelebration = ({
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ delay: 0.5, type: "spring", bounce: 0.5 }}
-                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30 mb-6"
+                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[var(--ember)] to-[var(--forge-warning)] text-white shadow-lg shadow-[var(--ember)]/30 mb-6"
                                 >
                                     <Flame className="w-6 h-6" />
                                     <span className="text-2xl font-black">{milestone}</span>
@@ -180,13 +180,13 @@ export const MilestoneCelebration = ({
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.6 }}
-                                    className="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-800 mb-6"
+                                    className="p-4 rounded-xl bg-[var(--forge-info)]/10 border border-[var(--forge-info)]/20 mb-6"
                                 >
-                                    <div className="flex items-center justify-center gap-2 text-cyan-700 dark:text-cyan-400">
+                                    <div className="flex items-center justify-center gap-2 text-[var(--forge-info)]">
                                         <Snowflake className="w-5 h-5" />
                                         <span className="font-bold">{config.reward}</span>
                                     </div>
-                                    <p className="text-xs text-cyan-600 dark:text-cyan-500 mt-1">
+                                    <p className="text-xs text-[var(--forge-info)] mt-1">
                                         Reward added to your account
                                     </p>
                                 </motion.div>
@@ -201,7 +201,7 @@ export const MilestoneCelebration = ({
                                     onClick={onClose}
                                     className={cn(
                                         "w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r shadow-lg transition-all",
-                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--forge-accent)] focus-visible:ring-offset-2",
                                         config.color
                                     )}
                                     data-testid="milestone-continue-btn"

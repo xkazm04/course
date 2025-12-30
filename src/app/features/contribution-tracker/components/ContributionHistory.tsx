@@ -23,7 +23,7 @@ export const ContributionHistory: React.FC<ContributionHistoryProps> = ({
 }) => {
     if (contributions.length === 0) {
         return (
-            <div className="text-center py-12 text-[var(--text-muted)]">
+            <div className="text-center py-12 text-[var(--forge-text-muted)]">
                 <Clock size={ICON_SIZES.xl} className="mx-auto mb-3 opacity-50" />
                 <p>No completed contributions yet</p>
                 <p className="text-sm mt-1">Complete your first contribution to see it here</p>
@@ -51,20 +51,20 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
         merged: {
             icon: GitMerge,
             label: "Merged",
-            color: "text-emerald-400",
-            bgColor: "bg-emerald-500/20",
+            color: "text-[var(--forge-success)]",
+            bgColor: "bg-[var(--forge-success)]/20",
         },
         closed: {
             icon: XCircle,
             label: "Closed",
-            color: "text-red-400",
-            bgColor: "bg-red-500/20",
+            color: "text-[var(--forge-error)]",
+            bgColor: "bg-[var(--forge-error)]/20",
         },
         abandoned: {
             icon: AlertTriangle,
             label: "Abandoned",
-            color: "text-amber-400",
-            bgColor: "bg-amber-500/20",
+            color: "text-[var(--forge-warning)]",
+            bgColor: "bg-[var(--forge-warning)]/20",
         },
     };
 
@@ -78,8 +78,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] p-4"
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] p-4"
             )}
         >
             <div className="flex items-start gap-4">
@@ -94,7 +94,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs text-[var(--text-muted)]">
+                        <span className="text-xs text-[var(--forge-text-muted)]">
                             {contribution.repositoryOwner}/{contribution.repositoryName}
                         </span>
                         <span className={cn(
@@ -106,12 +106,12 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
                         </span>
                     </div>
 
-                    <h4 className="font-medium text-[var(--text-primary)] line-clamp-1">
+                    <h4 className="font-medium text-[var(--forge-text-primary)] line-clamp-1">
                         {contribution.issueTitle}
                     </h4>
 
                     {/* Meta info */}
-                    <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[var(--text-muted)]">
+                    <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[var(--forge-text-muted)]">
                         <span className="flex items-center gap-1">
                             <Clock size={ICON_SIZES.xs} />
                             {contribution.totalTimeSpentHours}h spent
@@ -124,7 +124,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
                                 href={contribution.prUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-1 text-purple-400 hover:underline"
+                                className="flex items-center gap-1 text-[var(--ember)] hover:underline"
                             >
                                 PR #{contribution.prNumber}
                                 <ExternalLink size={ICON_SIZES.xs} />
@@ -135,12 +135,12 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
                     {/* Skills gained */}
                     {contribution.skillsGained.length > 0 && (
                         <div className="flex items-center gap-2 mt-3">
-                            <Award size={ICON_SIZES.sm} className="text-amber-400" />
+                            <Award size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                             <div className="flex flex-wrap gap-1">
                                 {contribution.skillsGained.map(skill => (
                                     <span
                                         key={skill}
-                                        className="px-2 py-0.5 rounded text-xs bg-amber-500/20 text-amber-400"
+                                        className="px-2 py-0.5 rounded text-xs bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]"
                                     >
                                         {skill}
                                     </span>
@@ -151,8 +151,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ contribution, index }) => {
 
                     {/* Reflection */}
                     {contribution.reflection && (
-                        <div className="mt-3 p-3 rounded-lg bg-[var(--surface-overlay)]">
-                            <p className="text-sm text-[var(--text-secondary)] italic">
+                        <div className="mt-3 p-3 rounded-lg bg-[var(--forge-bg-anvil)]">
+                            <p className="text-sm text-[var(--forge-text-secondary)] italic">
                                 "{contribution.reflection}"
                             </p>
                         </div>

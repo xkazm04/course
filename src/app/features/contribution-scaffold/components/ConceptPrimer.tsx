@@ -24,7 +24,7 @@ export const ConceptPrimer: React.FC<ConceptPrimerProps> = ({ primer }) => {
             {/* Prerequisites */}
             <section>
                 <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                    <GraduationCap size={ICON_SIZES.sm} className="text-amber-400" />
+                    <GraduationCap size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                     Prerequisites
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -42,7 +42,7 @@ export const ConceptPrimer: React.FC<ConceptPrimerProps> = ({ primer }) => {
             {/* Main concepts */}
             <section>
                 <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                    <BookOpen size={ICON_SIZES.sm} className="text-indigo-400" />
+                    <BookOpen size={ICON_SIZES.sm} className="text-[var(--ember)]" />
                     Key Concepts
                 </h4>
                 <div className="space-y-3">
@@ -56,13 +56,13 @@ export const ConceptPrimer: React.FC<ConceptPrimerProps> = ({ primer }) => {
             {primer.recommendedReading.length > 0 && (
                 <section>
                     <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                        <Link size={ICON_SIZES.sm} className="text-emerald-400" />
+                        <Link size={ICON_SIZES.sm} className="text-[var(--forge-success)]" />
                         Recommended Reading
                     </h4>
                     <ul className="space-y-2">
                         {primer.recommendedReading.map((reading, index) => (
                             <li key={index} className="flex items-start gap-2">
-                                <span className="text-emerald-400 mt-1">•</span>
+                                <span className="text-[var(--forge-success)] mt-1">•</span>
                                 <span className="text-sm text-[var(--text-secondary)]">{reading}</span>
                             </li>
                         ))}
@@ -82,9 +82,9 @@ const ConceptCard: React.FC<ConceptCardProps> = ({ concept }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const difficultyColors = {
-        basic: "bg-emerald-500/20 text-emerald-400",
-        intermediate: "bg-amber-500/20 text-amber-400",
-        advanced: "bg-purple-500/20 text-purple-400",
+        basic: "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+        intermediate: "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+        advanced: "bg-[var(--ember)]/20 text-[var(--ember)]",
     };
 
     return (
@@ -155,7 +155,7 @@ const ConceptCard: React.FC<ConceptCardProps> = ({ concept }) => {
                                         {concept.relatedConcepts.map((related, index) => (
                                             <span
                                                 key={index}
-                                                className="px-2 py-0.5 rounded text-xs bg-indigo-500/20 text-indigo-400"
+                                                className="px-2 py-0.5 rounded text-xs bg-[var(--ember)]/20 text-[var(--ember)]"
                                             >
                                                 {related}
                                             </span>

@@ -17,7 +17,7 @@ export function VariantSwitcher() {
 
     return (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
-            <div className="flex items-center p-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-lg">
+            <div className="flex items-center p-1 bg-[var(--forge-bg-elevated)]/10 backdrop-blur-md border border-[var(--forge-border-subtle)]/20 rounded-full shadow-lg">
                 {variants.map((v) => (
                     <button
                         key={v.id}
@@ -26,13 +26,13 @@ export function VariantSwitcher() {
                             "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
                             variant === v.id
                                 ? "text-white"
-                                : "text-slate-400 hover:text-slate-200"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                         )}
                     >
                         {variant === v.id && (
                             <motion.div
                                 layoutId="activeVariant"
-                                className="absolute inset-0 bg-indigo-500/80 rounded-full"
+                                className="absolute inset-0 bg-[var(--ember)]/80 rounded-full"
                                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                             />
                         )}

@@ -44,7 +44,7 @@ export const SetupGuide: React.FC<SetupGuideProps> = ({ guide }) => {
                 <div className="flex items-center gap-2">
                     <div className="w-24 h-2 rounded-full bg-[var(--surface-overlay)]">
                         <motion.div
-                            className="h-full rounded-full bg-emerald-500"
+                            className="h-full rounded-full bg-[var(--forge-success)]"
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
                         />
@@ -69,7 +69,7 @@ export const SetupGuide: React.FC<SetupGuideProps> = ({ guide }) => {
             {guide.commonIssues.length > 0 && (
                 <section>
                     <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                        <AlertTriangle size={ICON_SIZES.sm} className="text-amber-400" />
+                        <AlertTriangle size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                         Common Issues
                     </h4>
                     <div className="space-y-2">
@@ -106,7 +106,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isCompleted, onToggle }) => {
             className={cn(
                 "rounded-lg border overflow-hidden transition-colors",
                 isCompleted
-                    ? "border-emerald-500/30 bg-emerald-500/5"
+                    ? "border-[var(--forge-success)]/30 bg-[var(--forge-success)]/5"
                     : "border-[var(--border-subtle)] bg-[var(--surface-overlay)]"
             )}
         >
@@ -116,8 +116,8 @@ const StepCard: React.FC<StepCardProps> = ({ step, isCompleted, onToggle }) => {
                     className={cn(
                         "flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors",
                         isCompleted
-                            ? "bg-emerald-500 text-white"
-                            : "border-2 border-[var(--border-default)] text-transparent hover:border-emerald-500"
+                            ? "bg-[var(--forge-success)] text-white"
+                            : "border-2 border-[var(--border-default)] text-transparent hover:border-[var(--forge-success)]"
                     )}
                 >
                     <Check size={ICON_SIZES.sm} />
@@ -129,7 +129,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isCompleted, onToggle }) => {
                         <h5 className={cn(
                             "font-medium",
                             isCompleted
-                                ? "text-emerald-400 line-through"
+                                ? "text-[var(--forge-success)] line-through"
                                 : "text-[var(--text-primary)]"
                         )}>
                             {step.title}
@@ -152,7 +152,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isCompleted, onToggle }) => {
                                 className={cn(
                                     "p-2 rounded-lg transition-colors",
                                     copied
-                                        ? "bg-emerald-500/20 text-emerald-400"
+                                        ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)]"
                                         : "bg-[var(--surface-base)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
                                 )}
                             >
@@ -163,7 +163,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isCompleted, onToggle }) => {
 
                     {step.expectedOutput && (
                         <div className="mt-2 text-xs text-[var(--text-muted)]">
-                            Expected: <code className="text-emerald-400">{step.expectedOutput}</code>
+                            Expected: <code className="text-[var(--forge-success)]">{step.expectedOutput}</code>
                         </div>
                     )}
                 </div>
@@ -181,12 +181,12 @@ const IssueCard: React.FC<IssueCardProps> = ({ issue }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <div className="rounded-lg border border-amber-500/20 bg-amber-500/5">
+        <div className="rounded-lg border border-[var(--forge-warning)]/20 bg-[var(--forge-warning)]/5">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="w-full flex items-center gap-3 p-3"
             >
-                <AlertTriangle size={ICON_SIZES.sm} className="text-amber-400 flex-shrink-0" />
+                <AlertTriangle size={ICON_SIZES.sm} className="text-[var(--forge-warning)] flex-shrink-0" />
                 <span className="text-sm text-[var(--text-secondary)] flex-1 text-left">
                     {issue.symptom}
                 </span>
@@ -197,14 +197,14 @@ const IssueCard: React.FC<IssueCardProps> = ({ issue }) => {
                 )}
             </button>
             {isExpanded && (
-                <div className="px-3 pb-3 border-t border-amber-500/20 space-y-2">
+                <div className="px-3 pb-3 border-t border-[var(--forge-warning)]/20 space-y-2">
                     <div className="pt-2">
                         <span className="text-xs text-[var(--text-muted)]">Cause:</span>
                         <p className="text-sm text-[var(--text-secondary)]">{issue.cause}</p>
                     </div>
                     <div>
-                        <span className="text-xs text-emerald-400">Solution:</span>
-                        <p className="text-sm text-emerald-300">{issue.solution}</p>
+                        <span className="text-xs text-[var(--forge-success)]">Solution:</span>
+                        <p className="text-sm text-[var(--forge-success)]">{issue.solution}</p>
                     </div>
                 </div>
             )}

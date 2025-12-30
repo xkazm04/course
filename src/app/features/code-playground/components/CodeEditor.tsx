@@ -101,21 +101,21 @@ export function CodeEditor({
         <div
             ref={containerRef}
             className={cn(
-                "relative font-mono text-sm bg-[#1e1e1e] rounded overflow-hidden",
+                "relative font-mono text-sm bg-[var(--forge-bg-void)] rounded overflow-hidden",
                 className
             )}
             data-testid="code-editor-container"
         >
             {/* Line numbers */}
             <div
-                className="absolute left-0 top-0 bottom-0 w-12 bg-[#1e1e1e] border-r border-[#3e3e42] select-none z-10 overflow-hidden"
+                className="absolute left-0 top-0 bottom-0 w-12 bg-[var(--forge-bg-void)] border-r border-[var(--forge-border-subtle)] select-none z-10 overflow-hidden"
                 data-testid="code-editor-line-numbers"
             >
                 <div className="p-3 text-right">
                     {Array.from({ length: lineCount }, (_, i) => (
                         <div
                             key={i}
-                            className="text-neutral-600 leading-6 h-6"
+                            className="text-[var(--forge-text-muted)] leading-6 h-6"
                         >
                             {i + 1}
                         </div>
@@ -128,7 +128,7 @@ export function CodeEditor({
                 {/* Highlighted code layer (background) */}
                 <pre
                     ref={highlightRef}
-                    className="absolute inset-0 p-3 m-0 text-neutral-300 overflow-hidden pointer-events-none leading-6"
+                    className="absolute inset-0 p-3 m-0 text-[var(--forge-text-secondary)] overflow-hidden pointer-events-none leading-6"
                     aria-hidden="true"
                 >
                     <code
@@ -150,8 +150,8 @@ export function CodeEditor({
                     autoComplete="off"
                     autoCorrect="off"
                     className={cn(
-                        "relative w-full h-full p-3 m-0 resize-none bg-transparent text-transparent caret-white outline-none leading-6",
-                        "selection:bg-indigo-500/30",
+                        "relative w-full h-full p-3 m-0 resize-none bg-transparent text-transparent caret-[var(--forge-text-bright)] outline-none leading-6",
+                        "selection:bg-[var(--ember)]/30",
                         readOnly && "cursor-default"
                     )}
                     style={{

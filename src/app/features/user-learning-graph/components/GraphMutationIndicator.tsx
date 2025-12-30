@@ -35,38 +35,38 @@ const STATUS_CONFIG: Record<
 > = {
     completed: {
         icon: Check,
-        color: "text-emerald-500",
-        bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
+        color: "text-[var(--forge-success)]",
+        bgColor: "bg-[var(--forge-success)]/10",
         label: "Completed",
     },
     in_progress: {
         icon: Play,
-        color: "text-indigo-500",
-        bgColor: "bg-indigo-100 dark:bg-indigo-900/30",
+        color: "text-[var(--ember)]",
+        bgColor: "bg-[var(--ember)]/10",
         label: "In Progress",
     },
     bookmarked: {
         icon: Bookmark,
-        color: "text-amber-500",
-        bgColor: "bg-amber-100 dark:bg-amber-900/30",
+        color: "text-[var(--forge-warning)]",
+        bgColor: "bg-[var(--forge-warning)]/10",
         label: "Bookmarked",
     },
     skipped: {
         icon: SkipForward,
-        color: "text-slate-400",
-        bgColor: "bg-slate-100 dark:bg-slate-800/50",
+        color: "text-[var(--forge-text-muted)]",
+        bgColor: "bg-[var(--forge-bg-elevated)]",
         label: "Skipped",
     },
     unlocked: {
         icon: GitBranch,
-        color: "text-cyan-500",
-        bgColor: "bg-cyan-100 dark:bg-cyan-900/30",
+        color: "text-[var(--forge-info)]",
+        bgColor: "bg-[var(--forge-info)]/10",
         label: "Available",
     },
     not_started: {
         icon: RotateCcw,
-        color: "text-slate-300 dark:text-slate-600",
-        bgColor: "bg-slate-50 dark:bg-slate-800/30",
+        color: "text-[var(--forge-text-muted)]",
+        bgColor: "bg-[var(--forge-bg-workshop)]",
         label: "Not Started",
     },
 };
@@ -125,27 +125,27 @@ const MUTATION_MESSAGES: Record<string, { icon: typeof Check; message: string; c
     path_selected: {
         icon: GitBranch,
         message: "Learning path selected!",
-        color: "text-indigo-500",
+        color: "text-[var(--ember)]",
     },
     node_started: {
         icon: Play,
         message: "Started learning",
-        color: "text-indigo-500",
+        color: "text-[var(--ember)]",
     },
     node_completed: {
         icon: Check,
         message: "Node completed!",
-        color: "text-emerald-500",
+        color: "text-[var(--forge-success)]",
     },
     node_skipped: {
         icon: SkipForward,
         message: "Prerequisite skipped",
-        color: "text-slate-400",
+        color: "text-[var(--forge-text-muted)]",
     },
     node_bookmarked: {
         icon: Bookmark,
         message: "Added to bookmarks",
-        color: "text-amber-500",
+        color: "text-[var(--forge-warning)]",
     },
 };
 
@@ -176,36 +176,36 @@ export function MutationToast({
                     className={cn(
                         "fixed bottom-6 right-6 z-50",
                         "flex items-center gap-3 px-4 py-3",
-                        "bg-white dark:bg-slate-800",
-                        "rounded-xl shadow-lg border border-slate-200 dark:border-slate-700"
+                        "bg-[var(--forge-bg-elevated)]",
+                        "rounded-xl shadow-lg border border-[var(--forge-border-default)]"
                     )}
                     data-testid="mutation-toast"
                 >
                     <div
                         className={cn(
                             "w-8 h-8 rounded-full flex items-center justify-center",
-                            "bg-slate-100 dark:bg-slate-700"
+                            "bg-[var(--forge-bg-workshop)]"
                         )}
                     >
                         <Icon size={16} className={config.color} />
                     </div>
                     <div>
-                        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                        <p className="text-sm font-medium text-[var(--forge-text-primary)]">
                             {config.message}
                         </p>
                         {(nodeId || pathId) && (
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                            <p className="text-xs text-[var(--forge-text-muted)]">
                                 {pathId || nodeId}
                             </p>
                         )}
                     </div>
                     <button
                         onClick={onClose}
-                        className="ml-2 p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
+                        className="ml-2 p-1 hover:bg-[var(--forge-bg-workshop)] rounded"
                         data-testid="mutation-toast-close-btn"
                     >
                         <span className="sr-only">Close</span>
-                        <span className="text-slate-400">&times;</span>
+                        <span className="text-[var(--forge-text-muted)]">&times;</span>
                     </button>
                 </motion.div>
             )}
@@ -244,7 +244,7 @@ export function PathProgressIndicator({
             {/* Background bar */}
             <div
                 className={cn(
-                    "rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden",
+                    "rounded-full bg-[var(--forge-bg-workshop)] overflow-hidden",
                     size === "sm" && "h-1.5",
                     size === "md" && "h-2",
                     size === "lg" && "h-3"
@@ -258,10 +258,10 @@ export function PathProgressIndicator({
                     className={cn(
                         "h-full rounded-full",
                         isPrimary
-                            ? "bg-gradient-to-r from-indigo-500 to-purple-500"
+                            ? "bg-gradient-forge"
                             : isSelected
-                                ? "bg-indigo-500"
-                                : "bg-slate-400"
+                                ? "bg-[var(--ember)]"
+                                : "bg-[var(--forge-text-muted)]"
                     )}
                 />
             </div>
@@ -271,7 +271,7 @@ export function PathProgressIndicator({
                 <div
                     className={cn(
                         "absolute -top-1 -right-1 w-3 h-3 rounded-full",
-                        "bg-amber-400 border-2 border-white dark:border-slate-800"
+                        "bg-[var(--forge-warning)] border-2 border-[var(--forge-bg-elevated)]"
                     )}
                     title="Primary path"
                 />
@@ -282,7 +282,7 @@ export function PathProgressIndicator({
                 <span
                     className={cn(
                         "absolute right-0 -top-5",
-                        "text-xs font-medium text-slate-500 dark:text-slate-400"
+                        "text-xs font-medium text-[var(--forge-text-muted)]"
                     )}
                 >
                     {Math.round(progress)}%
@@ -316,10 +316,10 @@ export function StrategyProfileBadge({
             : "Balanced";
 
     const color = isDepthFocused
-        ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
+        ? "bg-[var(--ember)]/10 text-[var(--ember)]"
         : isBreadthFocused
-            ? "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300"
-            : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
+            ? "bg-[var(--forge-info)]/10 text-[var(--forge-info)]"
+            : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)]";
 
     return (
         <div
@@ -355,7 +355,7 @@ export function ActivityFeedItem({ mutation, className }: ActivityFeedItemProps)
     const config = MUTATION_MESSAGES[mutation.type as keyof typeof MUTATION_MESSAGES] || {
         icon: GitBranch,
         message: "Graph updated",
-        color: "text-slate-400",
+        color: "text-[var(--forge-text-muted)]",
     };
     const Icon = config.icon;
 
@@ -365,7 +365,7 @@ export function ActivityFeedItem({ mutation, className }: ActivityFeedItemProps)
         <div
             className={cn(
                 "flex items-center gap-3 p-2 rounded-lg",
-                "hover:bg-slate-50 dark:hover:bg-slate-800/50",
+                "hover:bg-[var(--forge-bg-workshop)]",
                 "transition-colors",
                 className
             )}
@@ -374,20 +374,20 @@ export function ActivityFeedItem({ mutation, className }: ActivityFeedItemProps)
             <div
                 className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center",
-                    "bg-slate-100 dark:bg-slate-700"
+                    "bg-[var(--forge-bg-workshop)]"
                 )}
             >
                 <Icon size={14} className={config.color} />
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm text-slate-700 dark:text-slate-300 truncate">
+                <p className="text-sm text-[var(--forge-text-secondary)] truncate">
                     {config.message}
                 </p>
-                <p className="text-xs text-slate-400 truncate">
+                <p className="text-xs text-[var(--forge-text-muted)] truncate">
                     {mutation.pathId || mutation.nodeId}
                 </p>
             </div>
-            <span className="text-xs text-slate-400 whitespace-nowrap">{timeAgo}</span>
+            <span className="text-xs text-[var(--forge-text-muted)] whitespace-nowrap">{timeAgo}</span>
         </div>
     );
 }

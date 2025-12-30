@@ -56,7 +56,7 @@ export const RepositoryBrowser: React.FC<RepositoryBrowserProps> = ({
                 <div className="relative flex-1">
                     <Search
                         size={ICON_SIZES.sm}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                     />
                     <input
                         type="text"
@@ -65,9 +65,9 @@ export const RepositoryBrowser: React.FC<RepositoryBrowserProps> = ({
                         onChange={e => setSearchQuery(e.target.value)}
                         className={cn(
                             "w-full pl-9 pr-4 py-2 rounded-lg",
-                            "bg-[var(--surface-elevated)] border border-[var(--border-default)]",
-                            "text-[var(--text-primary)] placeholder:text-[var(--text-muted)]",
-                            "focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/50"
+                            "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)]",
+                            "text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)]",
+                            "focus:outline-none focus:ring-2 focus:ring-[var(--ember)]/50"
                         )}
                     />
                 </div>
@@ -84,7 +84,7 @@ export const RepositoryBrowser: React.FC<RepositoryBrowserProps> = ({
                                 "px-3 py-2 rounded-lg text-xs font-medium transition-colors",
                                 filterFriendliness === level
                                     ? `bg-${FRIENDLINESS_CONFIG[level].color}-500/20 text-${FRIENDLINESS_CONFIG[level].color}-400`
-                                    : "bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             {FRIENDLINESS_CONFIG[level].label}
@@ -110,7 +110,7 @@ export const RepositoryBrowser: React.FC<RepositoryBrowserProps> = ({
             </div>
 
             {filteredRepos.length === 0 && (
-                <div className="text-center py-12 text-[var(--text-muted)]">
+                <div className="text-center py-12 text-[var(--forge-text-muted)]">
                     <Search size={ICON_SIZES.xl} className="mx-auto mb-3 opacity-50" />
                     <p>No repositories match your search</p>
                 </div>
@@ -146,8 +146,8 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
             className={cn(
                 "rounded-xl border overflow-hidden transition-colors",
                 isSelected
-                    ? "border-[var(--accent-primary)] bg-[var(--accent-primary)]/5"
-                    : "border-[var(--border-default)] bg-[var(--surface-elevated)]",
+                    ? "border-[var(--ember)] bg-[var(--ember)]/5"
+                    : "border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)]",
                 elevation.hoverable
             )}
         >
@@ -156,15 +156,15 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs text-[var(--text-muted)]">
+                            <span className="text-xs text-[var(--forge-text-muted)]">
                                 {repository.owner}
                             </span>
                             <FriendlinessBadge level={repository.learnerFriendliness} />
                         </div>
-                        <h3 className="font-semibold text-[var(--text-primary)] truncate">
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] truncate">
                             {repository.name}
                         </h3>
-                        <p className="text-sm text-[var(--text-secondary)] line-clamp-2 mt-1">
+                        <p className="text-sm text-[var(--forge-text-secondary)] line-clamp-2 mt-1">
                             {repository.description}
                         </p>
                     </div>
@@ -178,8 +178,8 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
                         className={cn(
                             "p-2 rounded-lg transition-colors",
                             isWatched
-                                ? "bg-[var(--accent-primary)]/20 text-[var(--accent-primary)]"
-                                : "bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                ? "bg-[var(--ember)]/20 text-[var(--ember)]"
+                                : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                         )}
                     >
                         {isWatched ? (
@@ -195,7 +195,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
                     {repository.languages.slice(0, 4).map(lang => (
                         <span
                             key={lang}
-                            className="px-2 py-0.5 rounded text-xs bg-[var(--surface-overlay)] text-[var(--text-secondary)]"
+                            className="px-2 py-0.5 rounded text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
                         >
                             {lang}
                         </span>
@@ -203,9 +203,9 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 mt-3 text-xs text-[var(--text-muted)]">
+                <div className="flex items-center gap-4 mt-3 text-xs text-[var(--forge-text-muted)]">
                     <span className="flex items-center gap-1">
-                        <Star size={ICON_SIZES.xs} className="text-amber-400" />
+                        <Star size={ICON_SIZES.xs} className="text-[var(--forge-warning)]" />
                         {formatNumber(repository.stars)}
                     </span>
                     <span className="flex items-center gap-1">
@@ -220,9 +220,9 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
             </div>
 
             {/* Footer actions */}
-            <div className="flex items-center gap-2 px-4 py-3 border-t border-[var(--border-subtle)] bg-[var(--surface-base)]">
+            <div className="flex items-center gap-2 px-4 py-3 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]">
                 {repository.mentorshipAvailable && (
-                    <span className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs bg-emerald-500/20 text-emerald-400">
+                    <span className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs bg-[var(--forge-success)]/20 text-[var(--forge-success)]">
                         <Shield size={ICON_SIZES.xs} />
                         Mentorship
                     </span>
@@ -232,7 +232,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
                         href={repository.contributingGuidelinesUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs bg-[var(--surface-overlay)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] transition-colors"
                         onClick={e => e.stopPropagation()}
                     >
                         <BookOpen size={ICON_SIZES.xs} />
@@ -243,7 +243,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({
                     href={repository.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-auto flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+                    className="ml-auto flex items-center gap-1 text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors"
                     onClick={e => e.stopPropagation()}
                 >
                     <GitBranch size={ICON_SIZES.xs} />
@@ -263,9 +263,9 @@ interface FriendlinessBadgeProps {
 const FriendlinessBadge: React.FC<FriendlinessBadgeProps> = ({ level }) => {
     const config = FRIENDLINESS_CONFIG[level];
     const colorClasses = {
-        emerald: "bg-emerald-500/20 text-emerald-400",
-        amber: "bg-amber-500/20 text-amber-400",
-        purple: "bg-purple-500/20 text-purple-400",
+        emerald: "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+        amber: "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]",
+        purple: "bg-[var(--ember)]/20 text-[var(--ember)]",
     };
 
     return (

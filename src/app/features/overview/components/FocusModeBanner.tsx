@@ -29,20 +29,20 @@ export const FocusModeBanner: React.FC<FocusModeBannerProps> = ({
             exit={{ opacity: 0, y: -10 }}
             className={cn(
                 "flex items-center justify-between px-4 py-3 rounded-xl",
-                "bg-indigo-50 dark:bg-indigo-950/40",
-                "border border-indigo-200 dark:border-indigo-800"
+                "bg-[var(--ember)]/10",
+                "border border-[var(--ember)]/30"
             )}
             data-testid="focus-mode-banner"
         >
             <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
-                    <Focus className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                <div className="p-1.5 bg-[var(--ember)]/20 rounded-lg">
+                    <Focus className="w-4 h-4 text-[var(--ember)]" />
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-indigo-700 dark:text-indigo-300">
+                    <p className="text-sm font-medium text-[var(--ember)]">
                         Focus Mode Active
                     </p>
-                    <p className="text-xs text-indigo-600/70 dark:text-indigo-400/70">
+                    <p className="text-xs text-[var(--ember)]/70">
                         {selectedNodeTitle
                             ? `Showing path for "${selectedNodeTitle}" - ${focusedNodeCount} connected nodes`
                             : "Select a node to focus on its learning path"}
@@ -53,9 +53,9 @@ export const FocusModeBanner: React.FC<FocusModeBannerProps> = ({
                 onClick={onExit}
                 className={cn(
                     "px-3 py-1.5 text-xs font-medium rounded-lg",
-                    "bg-indigo-100 dark:bg-indigo-900/50",
-                    "text-indigo-700 dark:text-indigo-300",
-                    "hover:bg-indigo-200 dark:hover:bg-indigo-800/50",
+                    "bg-[var(--ember)]/20",
+                    "text-[var(--ember)]",
+                    "hover:bg-[var(--ember)]/30",
                     "transition-colors"
                 )}
                 data-testid="exit-focus-mode-btn"

@@ -133,23 +133,23 @@ export const DIFFICULTY_CONFIG: Record<
 > = {
     beginner: {
         label: "Beginner",
-        color: "text-emerald-400",
-        bgColor: "bg-emerald-500/20",
+        color: "text-[var(--forge-success)]",
+        bgColor: "bg-[var(--forge-success)]/20",
     },
     intermediate: {
         label: "Intermediate",
-        color: "text-blue-400",
-        bgColor: "bg-blue-500/20",
+        color: "text-[var(--forge-info)]",
+        bgColor: "bg-[var(--forge-info)]/20",
     },
     advanced: {
         label: "Advanced",
-        color: "text-purple-400",
-        bgColor: "bg-purple-500/20",
+        color: "text-[var(--ember-glow)]",
+        bgColor: "bg-[var(--ember-glow)]/20",
     },
     expert: {
         label: "Expert",
-        color: "text-red-400",
-        bgColor: "bg-red-500/20",
+        color: "text-[var(--forge-error)]",
+        bgColor: "bg-[var(--forge-error)]/20",
     },
 };
 

@@ -50,32 +50,32 @@ export const timeCommitmentRanges: SemanticRange[] = [
         max: 10,
         zone: "low",
         label: "Casual",
-        color: "text-emerald-600 dark:text-emerald-400",
-        trackColor: "bg-emerald-500",
+        color: "text-[var(--forge-success)]",
+        trackColor: "bg-[var(--forge-success)]",
     },
     {
         min: 10,
         max: 20,
         zone: "optimal",
         label: "Balanced",
-        color: "text-emerald-600 dark:text-emerald-400",
-        trackColor: "bg-emerald-500",
+        color: "text-[var(--forge-success)]",
+        trackColor: "bg-[var(--forge-success)]",
     },
     {
         min: 20,
         max: 30,
         zone: "high",
         label: "Ambitious",
-        color: "text-amber-600 dark:text-amber-400",
-        trackColor: "bg-amber-500",
+        color: "text-[var(--forge-warning)]",
+        trackColor: "bg-[var(--forge-warning)]",
     },
     {
         min: 30,
         max: 40,
         zone: "extreme",
         label: "Intensive",
-        color: "text-red-600 dark:text-red-400",
-        trackColor: "bg-red-500",
+        color: "text-[var(--forge-error)]",
+        trackColor: "bg-[var(--forge-error)]",
     },
 ];
 
@@ -92,32 +92,32 @@ export const deadlineRanges: SemanticRange[] = [
         max: 3,
         zone: "extreme",
         label: "Sprint",
-        color: "text-red-600 dark:text-red-400",
-        trackColor: "bg-red-500",
+        color: "text-[var(--forge-error)]",
+        trackColor: "bg-[var(--forge-error)]",
     },
     {
         min: 3,
         max: 6,
         zone: "high",
         label: "Fast Track",
-        color: "text-amber-600 dark:text-amber-400",
-        trackColor: "bg-amber-500",
+        color: "text-[var(--forge-warning)]",
+        trackColor: "bg-[var(--forge-warning)]",
     },
     {
         min: 6,
         max: 12,
         zone: "optimal",
         label: "Steady",
-        color: "text-emerald-600 dark:text-emerald-400",
-        trackColor: "bg-emerald-500",
+        color: "text-[var(--forge-success)]",
+        trackColor: "bg-[var(--forge-success)]",
     },
     {
         min: 12,
         max: 24,
         zone: "low",
         label: "Relaxed",
-        color: "text-emerald-600 dark:text-emerald-400",
-        trackColor: "bg-emerald-500",
+        color: "text-[var(--forge-success)]",
+        trackColor: "bg-[var(--forge-success)]",
     },
 ];
 
@@ -154,12 +154,12 @@ const calculateGradient = (ranges: SemanticRange[], min: number, max: number): s
 
         // Get the color class and extract the color
         const colorMap: Record<string, string> = {
-            "bg-emerald-500": "#10b981",
-            "bg-amber-500": "#f59e0b",
-            "bg-red-500": "#ef4444",
+            "bg-[var(--forge-success)]": "var(--forge-success)",
+            "bg-[var(--forge-warning)]": "var(--forge-warning)",
+            "bg-[var(--forge-error)]": "var(--forge-error)",
         };
 
-        const color = colorMap[range.trackColor] || "#6366f1";
+        const color = colorMap[range.trackColor] || "var(--ember)";
 
         gradientStops.push(`${color} ${startPercent}%`);
         gradientStops.push(`${color} ${endPercent}%`);
@@ -227,10 +227,10 @@ export const SemanticSlider = ({
                         className={cn(
                             "px-2 py-0.5 rounded-full text-xs font-semibold transition-colors duration-300",
                             currentRange.zone === "optimal" || currentRange.zone === "low"
-                                ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                                ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)]"
                                 : currentRange.zone === "high"
-                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                                : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                                ? "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]"
+                                : "bg-[var(--forge-error)]/10 text-[var(--forge-error)]"
                         )}
                         data-testid={testId ? `${testId}-label` : undefined}
                     >
@@ -266,13 +266,13 @@ export const SemanticSlider = ({
                     onChange={(e) => onChange(Number(e.target.value))}
                     className={cn(
                         "relative w-full h-2 bg-transparent rounded-full appearance-none cursor-pointer",
-                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--ember)]",
                         // Thumb styling
                         "[&::-webkit-slider-thumb]:appearance-none",
                         "[&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5",
                         "[&::-webkit-slider-thumb]:rounded-full",
                         "[&::-webkit-slider-thumb]:bg-white",
-                        "[&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-slate-300 dark:[&::-webkit-slider-thumb]:border-slate-600",
+                        "[&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[var(--forge-border-default)]",
                         "[&::-webkit-slider-thumb]:shadow-lg",
                         "[&::-webkit-slider-thumb]:cursor-pointer",
                         "[&::-webkit-slider-thumb]:transition-transform",
@@ -282,7 +282,7 @@ export const SemanticSlider = ({
                         "[&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5",
                         "[&::-moz-range-thumb]:rounded-full",
                         "[&::-moz-range-thumb]:bg-white",
-                        "[&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-slate-300 dark:[&::-moz-range-thumb]:border-slate-600",
+                        "[&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-[var(--forge-border-default)]",
                         "[&::-moz-range-thumb]:shadow-lg",
                         "[&::-moz-range-thumb]:cursor-pointer"
                     )}
@@ -296,7 +296,7 @@ export const SemanticSlider = ({
 
             {/* Min/Max Labels */}
             {showMinMaxLabels && (
-                <div className="flex justify-between text-xs text-[var(--text-muted)]">
+                <div className="flex justify-between text-xs text-[var(--forge-text-muted)]">
                     <span data-testid={testId ? `${testId}-min-label` : undefined}>
                         {minLabel || `${min}${unit}`}
                     </span>

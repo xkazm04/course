@@ -67,7 +67,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             {/* Input area */}
             <form
                 onSubmit={handleSubmit}
-                className="p-4 border-t border-[var(--border-subtle)]"
+                className="p-4 border-t border-[var(--forge-border-subtle)]"
             >
                 <div className="flex gap-2">
                     <textarea
@@ -80,9 +80,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                         rows={1}
                         className={cn(
                             "flex-1 px-4 py-3 rounded-xl resize-none",
-                            "bg-[var(--surface-overlay)] border border-[var(--border-default)]",
-                            "text-[var(--text-primary)] placeholder:text-[var(--text-muted)]",
-                            "focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/50",
+                            "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)]",
+                            "text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)]",
+                            "focus:outline-none focus:ring-2 focus:ring-[var(--ember)]/50",
                             "disabled:opacity-50 disabled:cursor-not-allowed"
                         )}
                     />
@@ -93,15 +93,15 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                         whileTap={{ scale: 0.95 }}
                         className={cn(
                             "px-4 py-3 rounded-xl",
-                            "bg-[var(--accent-primary)] text-white",
-                            "hover:bg-[var(--accent-primary-hover)] transition-colors",
+                            "bg-[var(--ember)] text-white",
+                            "hover:bg-[var(--ember-glow)] transition-colors",
                             "disabled:opacity-50 disabled:cursor-not-allowed"
                         )}
                     >
                         <Send size={ICON_SIZES.md} />
                     </motion.button>
                 </div>
-                <p className="text-xs text-[var(--text-muted)] mt-2">
+                <p className="text-xs text-[var(--forge-text-muted)] mt-2">
                     Press Enter to send, Shift+Enter for new line
                 </p>
             </form>
@@ -118,10 +118,10 @@ const EmptyChat: React.FC<EmptyChatProps> = ({ persona }) => {
     return (
         <div className="flex flex-col items-center justify-center h-full text-center p-8">
             <div className="text-6xl mb-4">{persona.avatar}</div>
-            <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+            <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
                 Start your conversation with {persona.name}
             </h3>
-            <p className="text-sm text-[var(--text-muted)] mt-2 max-w-md">
+            <p className="text-sm text-[var(--forge-text-muted)] mt-2 max-w-md">
                 {persona.name} is a {persona.role} at a {persona.companySize} {persona.industry.name} company.
                 Ask questions, discuss requirements, and build their project!
             </p>
@@ -141,7 +141,7 @@ interface SuggestionChipProps {
 
 const SuggestionChip: React.FC<SuggestionChipProps> = ({ text }) => {
     return (
-        <span className="px-3 py-1.5 rounded-full text-xs bg-[var(--surface-overlay)] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
+        <span className="px-3 py-1.5 rounded-full text-xs bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] border border-[var(--forge-border-subtle)]">
             "{text}"
         </span>
     );
@@ -164,7 +164,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, persona }) => {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex justify-center"
             >
-                <div className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm">
+                <div className="px-4 py-2 rounded-lg bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/20 text-[var(--forge-warning)] text-sm">
                     {message.content}
                 </div>
             </motion.div>
@@ -189,8 +189,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, persona }) => {
                 className={cn(
                     "max-w-[70%] rounded-2xl px-4 py-3",
                     isClient
-                        ? "bg-[var(--surface-overlay)] border border-[var(--border-subtle)] rounded-tl-md"
-                        : "bg-[var(--accent-primary)] text-white rounded-tr-md"
+                        ? "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] rounded-tl-md"
+                        : "bg-[var(--ember)] text-white rounded-tr-md"
                 )}
             >
                 {message.isTyping ? (
@@ -199,13 +199,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, persona }) => {
                     <>
                         <p className={cn(
                             "text-sm leading-relaxed whitespace-pre-wrap",
-                            isClient ? "text-[var(--text-primary)]" : "text-white"
+                            isClient ? "text-[var(--forge-text-primary)]" : "text-white"
                         )}>
                             {message.content}
                         </p>
                         <span className={cn(
                             "text-xs mt-1 block",
-                            isClient ? "text-[var(--text-muted)]" : "text-white/70"
+                            isClient ? "text-[var(--forge-text-muted)]" : "text-white/70"
                         )}>
                             {formatTime(new Date(message.timestamp))}
                         </span>
@@ -214,7 +214,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, persona }) => {
             </div>
 
             {!isClient && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--accent-primary)] flex items-center justify-center text-white text-sm font-medium">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--ember)] flex items-center justify-center text-white text-sm font-medium">
                     You
                 </div>
             )}
@@ -229,7 +229,7 @@ const TypingIndicator: React.FC = () => {
             {[0, 1, 2].map(i => (
                 <motion.div
                     key={i}
-                    className="w-2 h-2 rounded-full bg-[var(--text-muted)]"
+                    className="w-2 h-2 rounded-full bg-[var(--forge-text-muted)]"
                     animate={{
                         y: [0, -4, 0],
                         opacity: [0.5, 1, 0.5],

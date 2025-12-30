@@ -16,7 +16,6 @@ import { SocialProofStats, SocialProofStatsCompact } from "./SocialProofStats";
 
 export interface SocialProofVisualizationProps {
   className?: string;
-  theme?: "light" | "dark";
   compact?: boolean;
 }
 
@@ -36,14 +35,11 @@ export interface SocialProofVisualizationProps {
  */
 export function SocialProofVisualization({
   className,
-  theme = "dark",
   compact = false,
 }: SocialProofVisualizationProps) {
   const prefersReducedMotion = useReducedMotion();
   const [selectedFilter, setSelectedFilter] = useState<LearnerStartingPoint | null>(null);
   const [selectedJourney, setSelectedJourney] = useState<string | null>(null);
-
-  const isDark = theme === "dark";
 
   // Filter journeys based on selected starting point
   const filteredJourneys = useMemo(() => {
@@ -93,20 +89,10 @@ export function SocialProofVisualization({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
       >
-        <h2
-          className={cn(
-            "text-3xl md:text-4xl font-bold mb-3",
-            isDark ? "text-white" : "text-slate-900"
-          )}
-        >
+        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-[var(--forge-text-primary)]">
           Real Learner Journeys
         </h2>
-        <p
-          className={cn(
-            "text-lg max-w-2xl mx-auto",
-            isDark ? "text-slate-400" : "text-slate-600"
-          )}
-        >
+        <p className="text-lg max-w-2xl mx-auto text-[var(--forge-text-secondary)]">
           See how others like you transformed their careers through our platform.
           Each path represents a real success story.
         </p>
@@ -117,17 +103,13 @@ export function SocialProofVisualization({
         <SocialProofStats
           stats={stats}
           reducedMotion={prefersReducedMotion}
-          theme={theme}
         />
       </div>
 
       {/* Filter */}
       <div className="mb-8">
         <motion.p
-          className={cn(
-            "text-center text-sm mb-4",
-            isDark ? "text-slate-400" : "text-slate-500"
-          )}
+          className="text-center text-sm mb-4 text-[var(--forge-text-muted)]"
           initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}
@@ -138,7 +120,6 @@ export function SocialProofVisualization({
           selectedFilter={selectedFilter}
           onFilterChange={handleFilterChange}
           reducedMotion={prefersReducedMotion}
-          theme={theme}
         />
       </div>
 
@@ -146,24 +127,16 @@ export function SocialProofVisualization({
       <div className="flex flex-col lg:flex-row gap-8">
         {/* SVG Path Visualization */}
         <div
-          className={cn(
-            "flex-1 relative rounded-2xl overflow-hidden border",
-            isDark
-              ? "bg-slate-900/50 border-white/10"
-              : "bg-white/50 border-slate-200"
-          )}
+          className="flex-1 relative rounded-2xl overflow-hidden border bg-[var(--forge-bg-anvil)]/50 border-[var(--forge-border-subtle)]"
           style={{ minHeight: "400px" }}
         >
           {/* Background grid */}
           <div
-            className={cn(
-              "absolute inset-0",
-              isDark ? "opacity-20" : "opacity-30"
-            )}
+            className="absolute inset-0 opacity-20"
             style={{
               backgroundImage: `
-                linear-gradient(to right, ${isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"} 1px, transparent 1px),
-                linear-gradient(to bottom, ${isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"} 1px, transparent 1px)
+                linear-gradient(to right, var(--forge-border-subtle) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--forge-border-subtle) 1px, transparent 1px)
               `,
               backgroundSize: "40px 40px",
             }}
@@ -213,10 +186,7 @@ export function SocialProofVisualization({
             <text
               x="5"
               y="95"
-              className={cn(
-                "text-[4px] font-medium",
-                isDark ? "fill-slate-500" : "fill-slate-400"
-              )}
+              className="text-[4px] font-medium fill-[var(--forge-text-muted)]"
             >
               START
             </text>
@@ -225,10 +195,7 @@ export function SocialProofVisualization({
             <text
               x="90"
               y="95"
-              className={cn(
-                "text-[4px] font-medium",
-                isDark ? "fill-slate-500" : "fill-slate-400"
-              )}
+              className="text-[4px] font-medium fill-[var(--forge-text-muted)]"
             >
               CAREER GOAL
             </text>
@@ -237,12 +204,7 @@ export function SocialProofVisualization({
           {/* Empty state */}
           {filteredJourneys.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <p
-                className={cn(
-                  "text-lg",
-                  isDark ? "text-slate-400" : "text-slate-500"
-                )}
-              >
+              <p className="text-lg text-[var(--forge-text-muted)]">
                 No paths found for this filter
               </p>
             </div>
@@ -259,7 +221,6 @@ export function SocialProofVisualization({
                 isSelected={selectedJourney === journey.id}
                 onSelect={() => handleJourneySelect(journey.id)}
                 reducedMotion={prefersReducedMotion}
-                theme={theme}
               />
             ))}
           </AnimatePresence>
@@ -301,7 +262,7 @@ function CompactVisualization({
       {/* Header with stats */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-bold text-white mb-1">
+          <h3 className="text-lg font-bold text-[var(--forge-text-primary)] mb-1">
             Active Learning Paths
           </h3>
           <SocialProofStatsCompact stats={stats} reducedMotion={reducedMotion} />
@@ -316,7 +277,7 @@ function CompactVisualization({
       />
 
       {/* Mini visualization */}
-      <div className="mt-4 relative rounded-xl overflow-hidden bg-slate-900/50 border border-white/10 h-48">
+      <div className="mt-4 relative rounded-xl overflow-hidden bg-[var(--forge-bg-anvil)]/50 border border-[var(--forge-border-subtle)] h-48">
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid meet"

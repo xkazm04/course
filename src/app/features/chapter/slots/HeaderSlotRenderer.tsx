@@ -36,14 +36,14 @@ const HeaderSlotRendererComponent: React.FC<HeaderSlotRendererProps> = ({ slot, 
         return (
             <PrismaticCard className={className}>
                 <div style={{ padding: "var(--slot-padding-lg)" }}>
-                    <div className="flex items-center gap-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+                    <div className="flex items-center gap-2 text-sm font-bold text-[var(--ember)] mb-2">
                         <BookOpen size={ICON_SIZES.sm} />
                         CHAPTER
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">
+                    <h1 className="text-3xl font-black text-[var(--forge-text-primary)] mb-2">
                         {chapterTitle}
                     </h1>
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="text-[var(--forge-text-secondary)]">
                         {courseName}
                     </p>
                 </div>

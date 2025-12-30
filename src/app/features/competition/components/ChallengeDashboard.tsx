@@ -97,16 +97,16 @@ export const ChallengeDashboard: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+                    <h2 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         Competitions
                     </h2>
-                    <p className="text-[var(--text-muted)] mt-1">
+                    <p className="text-[var(--forge-text-muted)] mt-1">
                         Build solutions, compete on metrics, climb the ranks
                     </p>
                 </div>
                 <button
                     onClick={refresh}
-                    className="p-2 rounded-lg hover:bg-[var(--surface-overlay)] text-[var(--text-muted)] transition-colors"
+                    className="p-2 rounded-lg hover:bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] transition-colors"
                 >
                     <RefreshCw size={ICON_SIZES.md} className={isLoading ? "animate-spin" : ""} />
                 </button>
@@ -115,8 +115,8 @@ export const ChallengeDashboard: React.FC = () => {
             {/* User tier card */}
             <div
                 className={cn(
-                    "rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] p-6",
+                    "rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] p-6",
                     elevation.elevated
                 )}
             >
@@ -152,7 +152,7 @@ export const ChallengeDashboard: React.FC = () => {
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-4">
                 {/* Status filter */}
-                <div className="flex rounded-lg bg-[var(--surface-elevated)] p-1">
+                <div className="flex rounded-lg bg-[var(--forge-bg-elevated)] p-1">
                     {(["all", "active", "upcoming", "completed"] as FilterMode[]).map((filter) => (
                         <button
                             key={filter}
@@ -160,8 +160,8 @@ export const ChallengeDashboard: React.FC = () => {
                             className={cn(
                                 "px-3 py-1.5 rounded-md text-sm font-medium transition-colors capitalize",
                                 filterMode === filter
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)] text-white shadow-ember-sm"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             {filter}
@@ -171,11 +171,11 @@ export const ChallengeDashboard: React.FC = () => {
 
                 {/* Difficulty filter */}
                 <div className="flex items-center gap-2">
-                    <Filter size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
+                    <Filter size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                     <select
                         value={difficultyFilter}
                         onChange={(e) => setDifficultyFilter(e.target.value as ChallengeDifficulty | "all")}
-                        className="px-3 py-1.5 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] text-sm"
+                        className="px-3 py-1.5 rounded-lg bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-default)] text-[var(--forge-text-primary)] text-sm"
                     >
                         <option value="all">All Difficulties</option>
                         <option value="beginner">Beginner</option>
@@ -185,7 +185,7 @@ export const ChallengeDashboard: React.FC = () => {
                     </select>
                 </div>
 
-                <span className="text-sm text-[var(--text-muted)]">
+                <span className="text-sm text-[var(--forge-text-muted)]">
                     {filteredChallenges.length} challenges
                 </span>
             </div>
@@ -193,8 +193,8 @@ export const ChallengeDashboard: React.FC = () => {
             {/* Active challenges highlight */}
             {filterMode === "all" && activeChallenges.length > 0 && (
                 <section>
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-                        <Zap size={ICON_SIZES.md} className="text-amber-400" />
+                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 flex items-center gap-2">
+                        <Zap size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />
                         Active Challenges
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -215,13 +215,13 @@ export const ChallengeDashboard: React.FC = () => {
             {/* All challenges / filtered results */}
             <section>
                 {filterMode !== "all" && (
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4 capitalize">
+                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 capitalize">
                         {filterMode} Challenges
                     </h3>
                 )}
                 {filterMode === "all" && (
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-                        <Clock size={ICON_SIZES.md} className="text-blue-400" />
+                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4 flex items-center gap-2">
+                        <Clock size={ICON_SIZES.md} className="text-[var(--forge-info)]" />
                         Upcoming Challenges
                     </h3>
                 )}
@@ -261,9 +261,9 @@ interface StatBoxProps {
 
 const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, value, label, color }) => {
     const colorClasses = {
-        amber: "bg-amber-500/10 text-amber-400",
-        emerald: "bg-emerald-500/10 text-emerald-400",
-        blue: "bg-blue-500/10 text-blue-400",
+        amber: "bg-[var(--forge-warning)]/10 text-[var(--forge-warning)]",
+        emerald: "bg-[var(--forge-success)]/10 text-[var(--forge-success)]",
+        blue: "bg-[var(--forge-info)]/10 text-[var(--forge-info)]",
     }[color];
 
     return (
@@ -271,8 +271,8 @@ const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, value, label, color }) =>
             <div className={cn("inline-flex p-2 rounded-lg mb-1", colorClasses)}>
                 <Icon size={ICON_SIZES.md} />
             </div>
-            <p className="text-xl font-bold text-[var(--text-primary)]">{value}</p>
-            <p className="text-xs text-[var(--text-muted)]">{label}</p>
+            <p className="text-xl font-bold text-[var(--forge-text-primary)]">{value}</p>
+            <p className="text-xs text-[var(--forge-text-muted)]">{label}</p>
         </div>
     );
 };
@@ -283,7 +283,7 @@ const LoadingState: React.FC = () => (
         {[1, 2, 3].map((i) => (
             <div
                 key={i}
-                className="h-64 rounded-xl bg-[var(--surface-elevated)] animate-pulse"
+                className="h-64 rounded-xl bg-[var(--forge-bg-elevated)] animate-pulse"
             />
         ))}
     </div>
@@ -296,11 +296,11 @@ interface EmptyStateProps {
 
 const EmptyState: React.FC<EmptyStateProps> = ({ filterMode }) => (
     <div className="text-center py-12">
-        <Trophy size={ICON_SIZES.xl} className="text-[var(--text-muted)] mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+        <Trophy size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)] mx-auto mb-3" />
+        <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
             No {filterMode !== "all" ? filterMode : ""} challenges found
         </h3>
-        <p className="text-[var(--text-muted)] mt-1">
+        <p className="text-[var(--forge-text-muted)] mt-1">
             {filterMode === "active"
                 ? "Check back soon for new challenges!"
                 : filterMode === "completed"

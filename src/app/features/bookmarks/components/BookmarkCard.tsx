@@ -89,7 +89,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+            className="bg-[var(--forge-bg-elevated)] rounded-2xl border border-[var(--forge-border-subtle)] overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             data-testid={`bookmark-card-${bookmark.id}`}
         >
             <div className="p-5">
@@ -97,28 +97,28 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                 <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex-1 min-w-0">
                         {showCourse && (
-                            <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1 truncate">
+                            <p className="text-xs font-medium text-[var(--ember)] mb-1 truncate">
                                 {bookmark.courseName}
                             </p>
                         )}
-                        <h4 className="font-semibold text-slate-900 dark:text-slate-100 truncate">
+                        <h4 className="font-semibold text-[var(--forge-text-primary)] truncate">
                             {bookmark.chapterTitle}
                         </h4>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 truncate">
+                        <p className="text-sm text-[var(--forge-text-secondary)] truncate">
                             {bookmark.sectionTitle}
                         </p>
                     </div>
                     <div className="flex items-center gap-1">
                         <button
                             onClick={() => setIsEditing(!isEditing)}
-                            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                            className="p-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] rounded-lg hover:bg-[var(--forge-bg-anvil)] transition-colors"
                             data-testid={`bookmark-edit-${bookmark.id}`}
                         >
                             <Edit2 size={ICON_SIZES.sm} />
                         </button>
                         <button
                             onClick={() => setShowDeleteConfirm(true)}
-                            className="p-2 text-slate-400 hover:text-red-500 dark:hover:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                            className="p-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-error)] rounded-lg hover:bg-[var(--forge-error)]/10 transition-colors"
                             data-testid={`bookmark-delete-${bookmark.id}`}
                         >
                             <Trash2 size={ICON_SIZES.sm} />
@@ -128,8 +128,8 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
 
                 {/* Highlighted Text */}
                 {bookmark.highlightedText && (
-                    <div className="mb-3 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border-l-4 border-indigo-500">
-                        <p className="text-sm text-indigo-800 dark:text-indigo-200 italic line-clamp-3">
+                    <div className="mb-3 p-3 bg-[var(--ember-dim)]/10 rounded-xl border-l-4 border-[var(--ember)]">
+                        <p className="text-sm text-[var(--forge-text-primary)] italic line-clamp-3">
                             "{bookmark.highlightedText}"
                         </p>
                     </div>
@@ -148,7 +148,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                             <textarea
                                 value={editNote}
                                 onChange={(e) => setEditNote(e.target.value)}
-                                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-sm"
+                                className="w-full px-3 py-2 rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ember)] resize-none text-sm"
                                 rows={3}
                                 placeholder="Add your notes..."
                                 data-testid={`bookmark-edit-note-${bookmark.id}`}
@@ -168,12 +168,12 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                                             }
                                         }}
                                         placeholder="Add tag..."
-                                        className="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                                        className="flex-1 px-3 py-1.5 rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)] text-[var(--forge-text-primary)] placeholder-[var(--forge-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ember)] text-sm"
                                         data-testid={`bookmark-edit-tag-input-${bookmark.id}`}
                                     />
                                     <button
                                         onClick={handleAddTag}
-                                        className="px-3 py-1.5 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600 transition-colors"
+                                        className="px-3 py-1.5 bg-[var(--ember)] text-[var(--forge-text-primary)] rounded-lg text-sm hover:opacity-90 transition-colors"
                                     >
                                         Add
                                     </button>
@@ -183,12 +183,12 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                                         {editTags.map((tag) => (
                                             <span
                                                 key={tag}
-                                                className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-xs font-medium text-slate-600 dark:text-slate-300"
+                                                className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--forge-bg-anvil)] rounded text-xs font-medium text-[var(--forge-text-secondary)]"
                                             >
                                                 #{tag}
                                                 <button
                                                     onClick={() => handleRemoveTag(tag)}
-                                                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                                                    className="text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                                                 >
                                                     <X size={ICON_SIZES.xs} />
                                                 </button>
@@ -201,14 +201,14 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                             <div className="flex items-center justify-end gap-2">
                                 <button
                                     onClick={handleCancel}
-                                    className="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                    className="px-3 py-1.5 text-sm font-medium text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                     data-testid={`bookmark-edit-cancel-${bookmark.id}`}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleSave}
-                                    className="px-3 py-1.5 text-sm font-medium bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors flex items-center gap-1"
+                                    className="px-3 py-1.5 text-sm font-medium bg-[var(--ember)] text-[var(--forge-text-primary)] rounded-lg hover:opacity-90 transition-colors flex items-center gap-1"
                                     data-testid={`bookmark-edit-save-${bookmark.id}`}
                                 >
                                     <Check size={ICON_SIZES.sm} />
@@ -224,7 +224,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                             exit={{ opacity: 0 }}
                         >
                             {bookmark.note && (
-                                <p className="text-sm text-slate-700 dark:text-slate-300 mb-3 whitespace-pre-wrap">
+                                <p className="text-sm text-[var(--forge-text-secondary)] mb-3 whitespace-pre-wrap">
                                     {bookmark.note}
                                 </p>
                             )}
@@ -235,7 +235,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                                     {bookmark.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-xs font-medium text-slate-600 dark:text-slate-300"
+                                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--forge-bg-anvil)] rounded text-xs font-medium text-[var(--forge-text-secondary)]"
                                         >
                                             <Tag size={ICON_SIZES.xs} />
                                             {tag}
@@ -248,15 +248,15 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                 </AnimatePresence>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
-                    <div className="flex items-center gap-1 text-xs text-slate-400">
+                <div className="flex items-center justify-between pt-3 border-t border-[var(--forge-border-subtle)]">
+                    <div className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)]">
                         <Clock size={ICON_SIZES.xs} />
                         {formatDate(bookmark.createdAt)}
                     </div>
                     {onNavigate && (
                         <button
                             onClick={() => onNavigate(bookmark)}
-                            className="flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                            className="flex items-center gap-1 text-xs font-medium text-[var(--ember)] hover:opacity-80 transition-colors"
                             data-testid={`bookmark-navigate-${bookmark.id}`}
                         >
                             <BookOpen size={ICON_SIZES.xs} />
@@ -276,21 +276,21 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                         exit={{ opacity: 0, height: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-4 bg-red-50 dark:bg-red-900/20 border-t border-red-200 dark:border-red-800">
-                            <p className="text-sm text-red-700 dark:text-red-300 mb-3">
+                        <div className="p-4 bg-[var(--forge-error)]/10 border-t border-[var(--forge-error)]/30">
+                            <p className="text-sm text-[var(--forge-error)] mb-3">
                                 Delete this bookmark? This action cannot be undone.
                             </p>
                             <div className="flex items-center justify-end gap-2">
                                 <button
                                     onClick={() => setShowDeleteConfirm(false)}
-                                    className="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                                    className="px-3 py-1.5 text-sm font-medium text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors"
                                     data-testid={`bookmark-delete-cancel-${bookmark.id}`}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleDelete}
-                                    className="px-3 py-1.5 text-sm font-medium bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                                    className="px-3 py-1.5 text-sm font-medium bg-[var(--forge-error)] text-[var(--forge-text-primary)] rounded-lg hover:opacity-90 transition-colors"
                                     data-testid={`bookmark-delete-confirm-${bookmark.id}`}
                                 >
                                     Delete

@@ -55,13 +55,13 @@ export function PathModuleCard({
                 "hover:shadow-md",
                 isHypothetical
                     ? [
-                        "border-dashed border-indigo-300 dark:border-indigo-600",
-                        "bg-indigo-50/50 dark:bg-indigo-900/20",
+                        "border-dashed border-[var(--ember)]/50",
+                        "bg-[var(--ember)]/5",
                     ]
                     : [
-                        "border-slate-200 dark:border-slate-700",
-                        "bg-white dark:bg-slate-800",
-                        "hover:border-slate-300 dark:hover:border-slate-600",
+                        "border-[var(--forge-border-subtle)]",
+                        "bg-[var(--forge-bg-elevated)]",
+                        "hover:border-[var(--forge-text-muted)]",
                     ]
             )}
             data-testid={`module-card-${index}`}
@@ -75,8 +75,8 @@ export function PathModuleCard({
                     "text-xs font-bold",
                     "shadow-sm",
                     isHypothetical
-                        ? "bg-indigo-500 text-white"
-                        : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+                        ? "bg-[var(--ember)] text-white"
+                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
                 )}
             >
                 {index + 1}
@@ -85,16 +85,16 @@ export function PathModuleCard({
             {/* Header */}
             <div className="flex items-start justify-between mb-2 pl-3">
                 <div className="flex-1">
-                    <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 line-clamp-1">
+                    <h4 className="text-sm font-semibold text-[var(--forge-text-primary)] line-clamp-1">
                         {module.title}
                     </h4>
                     <div className="flex items-center gap-2 mt-0.5">
-                        <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+                        <span className="flex items-center gap-1 text-xs text-[var(--forge-text-secondary)]">
                             <Clock size={10} />
                             {duration}
                         </span>
                         {isHypothetical && (
-                            <span className="flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400">
+                            <span className="flex items-center gap-1 text-xs text-[var(--ember)]">
                                 <Sparkles size={10} />
                                 New
                             </span>
@@ -106,10 +106,10 @@ export function PathModuleCard({
                 <div
                     className={cn(
                         "px-1.5 py-0.5 rounded text-xs font-medium",
-                        demandIndicator.color === "emerald" && "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300",
-                        demandIndicator.color === "blue" && "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
-                        demandIndicator.color === "amber" && "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
-                        demandIndicator.color === "slate" && "bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300"
+                        demandIndicator.color === "emerald" && "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
+                        demandIndicator.color === "blue" && "bg-[var(--forge-info)]/20 text-[var(--forge-info)]",
+                        demandIndicator.color === "amber" && "bg-[var(--gold)]/20 text-[var(--gold)]",
+                        demandIndicator.color === "slate" && "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
                     )}
                 >
                     {demandIndicator.label}
@@ -121,13 +121,13 @@ export function PathModuleCard({
                 {module.skills.slice(0, 3).map(skill => (
                     <span
                         key={skill}
-                        className="px-1.5 py-0.5 rounded text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+                        className="px-1.5 py-0.5 rounded text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
                     >
                         {skill}
                     </span>
                 ))}
                 {module.skills.length > 3 && (
-                    <span className="px-1.5 py-0.5 rounded text-xs bg-slate-100 dark:bg-slate-700 text-slate-500">
+                    <span className="px-1.5 py-0.5 rounded text-xs bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)]">
                         +{module.skills.length - 3}
                     </span>
                 )}
@@ -140,7 +140,7 @@ export function PathModuleCard({
                     whileHover={{ height: "auto", opacity: 1 }}
                     className="overflow-hidden pl-3 mt-2"
                 >
-                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">
+                    <p className="text-xs text-[var(--forge-text-secondary)] line-clamp-2">
                         {module.reasoning}
                     </p>
                 </motion.div>

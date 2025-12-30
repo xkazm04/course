@@ -72,7 +72,7 @@ export function StateTransitionCelebration({
                         className={`relative overflow-hidden rounded-xl border backdrop-blur-md shadow-2xl ${
                             isPositiveTransition
                                 ? `${toStateDef.color.bg} ${toStateDef.color.border}`
-                                : "bg-slate-800/90 border-slate-700/50"
+                                : "bg-[var(--forge-bg-anvil)] border-[var(--forge-border-subtle)]"
                         }`}
                     >
                         {/* Celebration particles for positive transitions */}
@@ -115,11 +115,11 @@ export function StateTransitionCelebration({
                                         <Sparkles className={`w-5 h-5 ${toStateDef.color.text}`} />
                                     </motion.div>
                                 ) : (
-                                    <Minus className="w-5 h-5 text-slate-400" />
+                                    <Minus className="w-5 h-5 text-[var(--forge-text-muted)]" />
                                 )}
                                 <span
                                     className={`font-semibold ${
-                                        isPositiveTransition ? toStateDef.color.text : "text-slate-300"
+                                        isPositiveTransition ? toStateDef.color.text : "text-[var(--forge-text-secondary)]"
                                     }`}
                                 >
                                     {message.title}
@@ -127,10 +127,10 @@ export function StateTransitionCelebration({
                             </div>
                             <button
                                 onClick={handleDismiss}
-                                className="p-1 rounded-full hover:bg-slate-700/50 transition-colors"
+                                className="p-1 rounded-full hover:bg-[var(--forge-bg-elevated)] transition-colors"
                                 data-testid="dismiss-celebration-btn"
                             >
-                                <X className="w-4 h-4 text-slate-400" />
+                                <X className="w-4 h-4 text-[var(--forge-text-muted)]" />
                             </button>
                         </div>
 
@@ -139,7 +139,7 @@ export function StateTransitionCelebration({
                             <div className="flex items-center gap-3 justify-center">
                                 <div className="flex items-center gap-1.5">
                                     <span className="text-lg">{fromStateDef.icon}</span>
-                                    <span className="text-xs text-slate-400">{fromStateDef.label}</span>
+                                    <span className="text-xs text-[var(--forge-text-muted)]">{fromStateDef.label}</span>
                                 </div>
                                 <motion.div
                                     initial={{ scale: 0 }}
@@ -149,7 +149,7 @@ export function StateTransitionCelebration({
                                     {isPositiveTransition ? (
                                         <ArrowUp className={`w-5 h-5 ${toStateDef.color.text}`} />
                                     ) : (
-                                        <ArrowDown className="w-5 h-5 text-slate-400" />
+                                        <ArrowDown className="w-5 h-5 text-[var(--forge-text-muted)]" />
                                     )}
                                 </motion.div>
                                 <motion.div
@@ -168,8 +168,8 @@ export function StateTransitionCelebration({
 
                         {/* Message */}
                         <div className="px-4 pb-4">
-                            <p className="text-sm text-slate-300 mb-1">{message.message}</p>
-                            <p className="text-xs text-slate-400">{message.encouragement}</p>
+                            <p className="text-sm text-[var(--forge-text-secondary)] mb-1">{message.message}</p>
+                            <p className="text-xs text-[var(--forge-text-muted)]">{message.encouragement}</p>
                         </div>
 
                         {/* Progress bar animation */}
@@ -180,7 +180,7 @@ export function StateTransitionCelebration({
                             className={`h-0.5 ${
                                 isPositiveTransition
                                     ? toStateDef.color.bg.replace("/10", "")
-                                    : "bg-slate-600"
+                                    : "bg-[var(--forge-border-default)]"
                             }`}
                         />
                     </div>
@@ -214,7 +214,7 @@ export function StateProgress({
 
     return (
         <div
-            className={`rounded-lg border border-slate-700/50 bg-slate-800/30 p-4 ${className}`}
+            className={`rounded-lg border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)] p-4 ${className}`}
             data-testid="state-progress"
         >
             {/* Current to Next State */}
@@ -225,7 +225,7 @@ export function StateProgress({
                         {currentDef.label}
                     </span>
                 </div>
-                <span className="text-xs text-slate-400">→</span>
+                <span className="text-xs text-[var(--forge-text-muted)]">→</span>
                 <div className="flex items-center gap-2">
                     <span className="text-lg">{nextDef.icon}</span>
                     <span className={`text-sm font-medium ${nextDef.color.text}`}>
@@ -235,7 +235,7 @@ export function StateProgress({
             </div>
 
             {/* Progress bar */}
-            <div className="relative h-2 bg-slate-700/50 rounded-full overflow-hidden mb-3">
+            <div className="relative h-2 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden mb-3">
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
@@ -247,10 +247,10 @@ export function StateProgress({
             {/* Requirements */}
             {requirements.length > 0 && currentState !== nextState && (
                 <div className="space-y-1">
-                    <span className="text-xs text-slate-500">To advance:</span>
+                    <span className="text-xs text-[var(--forge-text-muted)]">To advance:</span>
                     {requirements.map((req, i) => (
-                        <div key={i} className="flex items-center gap-2 text-xs text-slate-400">
-                            <div className="w-1 h-1 rounded-full bg-slate-500" />
+                        <div key={i} className="flex items-center gap-2 text-xs text-[var(--forge-text-muted)]">
+                            <div className="w-1 h-1 rounded-full bg-[var(--forge-text-muted)]" />
                             <span>{req}</span>
                         </div>
                     ))}
@@ -258,7 +258,7 @@ export function StateProgress({
             )}
 
             {currentState === nextState && (
-                <div className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="flex items-center gap-2 text-xs text-[var(--forge-text-muted)]">
                     <Sparkles className="w-3 h-3" />
                     <span>You've reached the highest state!</span>
                 </div>
@@ -290,7 +290,7 @@ export function StateJourneyTimeline({
 
     return (
         <div className={`space-y-2 ${className}`} data-testid="state-journey-timeline">
-            <span className="text-xs font-medium text-slate-400">Recent Journey</span>
+            <span className="text-xs font-medium text-[var(--forge-text-muted)]">Recent Journey</span>
             <div className="space-y-1">
                 {recentTransitions.map((t) => {
                     const message = TRANSITION_MESSAGES[t.transition];
@@ -305,7 +305,7 @@ export function StateJourneyTimeline({
                         >
                             <span>{toDef.icon}</span>
                             <span className={toDef.color.text}>{message.title}</span>
-                            <span className="text-slate-500">{timeAgo}</span>
+                            <span className="text-[var(--forge-text-muted)]">{timeAgo}</span>
                         </div>
                     );
                 })}

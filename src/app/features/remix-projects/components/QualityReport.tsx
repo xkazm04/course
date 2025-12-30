@@ -27,18 +27,18 @@ export const QualityReport: React.FC<QualityReportProps> = ({ submission }) => {
     return (
         <div className="space-y-6">
             {/* Overall Score */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-gradient-to-br from-[var(--surface-elevated)] to-[var(--accent-primary)]/10 p-6 text-center", elevation.elevated)}>
-                <Award size={48} className="mx-auto mb-3 text-amber-400" />
-                <div className="text-4xl font-bold text-[var(--text-primary)] mb-1">
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-gradient-to-br from-[var(--forge-bg-elevated)] to-[var(--ember)]/10 p-6 text-center", elevation.elevated)}>
+                <Award size={48} className="mx-auto mb-3 text-[var(--forge-warning)]" />
+                <div className="text-4xl font-bold text-[var(--forge-text-primary)] mb-1">
                     {scores.overall}
                 </div>
-                <p className="text-sm text-[var(--text-muted)]">Overall Score</p>
+                <p className="text-sm text-[var(--forge-text-muted)]">Overall Score</p>
                 <ScoreGrade score={scores.overall} />
             </div>
 
             {/* Score Breakdown */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                <h4 className="font-semibold text-[var(--text-primary)] mb-4">Score Breakdown</h4>
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                <h4 className="font-semibold text-[var(--forge-text-primary)] mb-4">Score Breakdown</h4>
                 <div className="space-y-3">
                     <ScoreBar
                         icon={Target}
@@ -73,8 +73,8 @@ export const QualityReport: React.FC<QualityReportProps> = ({ submission }) => {
                 </div>
 
                 {scores.penalties > 0 && (
-                    <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                        <div className="flex items-center gap-2 text-red-400">
+                    <div className="mt-4 p-3 rounded-lg bg-[var(--forge-error)]/10 border border-[var(--forge-error)]/20">
+                        <div className="flex items-center gap-2 text-[var(--forge-error)]">
                             <AlertTriangle size={ICON_SIZES.sm} />
                             <span className="text-sm font-medium">Penalties: -{scores.penalties}%</span>
                         </div>
@@ -83,8 +83,8 @@ export const QualityReport: React.FC<QualityReportProps> = ({ submission }) => {
             </div>
 
             {/* Analysis Details */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                <h4 className="font-semibold text-[var(--text-primary)] mb-4">Analysis</h4>
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                <h4 className="font-semibold text-[var(--forge-text-primary)] mb-4">Analysis</h4>
                 <div className="grid grid-cols-2 gap-4">
                     <AnalysisStat label="Objectives Met" value={`${analysis.objectivesMet}/${analysis.objectivesTotal}`} />
                     <AnalysisStat label="Issues Fixed" value={`${analysis.issuesFixed}/${analysis.issuesTotal}`} />
@@ -103,11 +103,11 @@ export const QualityReport: React.FC<QualityReportProps> = ({ submission }) => {
 // Score grade badge
 const ScoreGrade: React.FC<{ score: number }> = ({ score }) => {
     const getGrade = () => {
-        if (score >= 90) return { label: "Excellent", color: "text-emerald-400 bg-emerald-500/20" };
-        if (score >= 80) return { label: "Great", color: "text-blue-400 bg-blue-500/20" };
-        if (score >= 70) return { label: "Good", color: "text-amber-400 bg-amber-500/20" };
-        if (score >= 60) return { label: "Fair", color: "text-orange-400 bg-orange-500/20" };
-        return { label: "Needs Work", color: "text-red-400 bg-red-500/20" };
+        if (score >= 90) return { label: "Excellent", color: "text-[var(--forge-success)] bg-[var(--forge-success)]/20" };
+        if (score >= 80) return { label: "Great", color: "text-[var(--forge-info)] bg-[var(--forge-info)]/20" };
+        if (score >= 70) return { label: "Good", color: "text-[var(--forge-warning)] bg-[var(--forge-warning)]/20" };
+        if (score >= 60) return { label: "Fair", color: "text-[var(--ember)] bg-[var(--ember)]/20" };
+        return { label: "Needs Work", color: "text-[var(--forge-error)] bg-[var(--forge-error)]/20" };
     };
 
     const grade = getGrade();
@@ -130,22 +130,22 @@ interface ScoreBarProps {
 const ScoreBar: React.FC<ScoreBarProps> = ({ icon: Icon, label, score, maxScore, color }) => {
     const percentage = Math.min((score / maxScore) * 100, 100);
     const colorClasses = {
-        blue: "bg-blue-500",
-        emerald: "bg-emerald-500",
-        purple: "bg-purple-500",
-        amber: "bg-amber-500",
+        blue: "bg-[var(--forge-info)]",
+        emerald: "bg-[var(--forge-success)]",
+        purple: "bg-[var(--ember)]",
+        amber: "bg-[var(--forge-warning)]",
     }[color];
 
     return (
         <div>
             <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
-                    <Icon size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
-                    <span className="text-sm text-[var(--text-secondary)]">{label}</span>
+                    <Icon size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
+                    <span className="text-sm text-[var(--forge-text-secondary)]">{label}</span>
                 </div>
-                <span className="text-sm font-medium text-[var(--text-primary)]">{score}</span>
+                <span className="text-sm font-medium text-[var(--forge-text-primary)]">{score}</span>
             </div>
-            <div className="h-2 rounded-full bg-[var(--surface-overlay)] overflow-hidden">
+            <div className="h-2 rounded-full bg-[var(--forge-bg-anvil)] overflow-hidden">
                 <motion.div
                     className={cn("h-full rounded-full", colorClasses)}
                     initial={{ width: 0 }}
@@ -165,9 +165,9 @@ interface AnalysisStatProps {
 }
 
 const AnalysisStat: React.FC<AnalysisStatProps> = ({ label, value, warning }) => (
-    <div className="p-3 rounded-lg bg-[var(--surface-overlay)]">
-        <p className="text-xs text-[var(--text-muted)] mb-1">{label}</p>
-        <p className={cn("text-lg font-semibold", warning ? "text-amber-400" : "text-[var(--text-primary)]")}>
+    <div className="p-3 rounded-lg bg-[var(--forge-bg-anvil)]">
+        <p className="text-xs text-[var(--forge-text-muted)] mb-1">{label}</p>
+        <p className={cn("text-lg font-semibold", warning ? "text-[var(--forge-warning)]" : "text-[var(--forge-text-primary)]")}>
             {value}
         </p>
     </div>
@@ -179,26 +179,26 @@ interface QualityGatesProps {
 }
 
 export const QualityGates: React.FC<QualityGatesProps> = ({ gates }) => (
-    <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-        <h4 className="font-semibold text-[var(--text-primary)] mb-3">Quality Gates</h4>
+    <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+        <h4 className="font-semibold text-[var(--forge-text-primary)] mb-3">Quality Gates</h4>
         <div className="space-y-2">
             {gates.map((gate, i) => (
                 <div
                     key={i}
                     className={cn(
                         "flex items-center justify-between p-2 rounded-lg",
-                        gate.passed ? "bg-emerald-500/10" : "bg-red-500/10"
+                        gate.passed ? "bg-[var(--forge-success)]/10" : "bg-[var(--forge-error)]/10"
                     )}
                 >
                     <div className="flex items-center gap-2">
                         {gate.passed ? (
-                            <CheckCircle size={ICON_SIZES.sm} className="text-emerald-400" />
+                            <CheckCircle size={ICON_SIZES.sm} className="text-[var(--forge-success)]" />
                         ) : (
-                            <XCircle size={ICON_SIZES.sm} className="text-red-400" />
+                            <XCircle size={ICON_SIZES.sm} className="text-[var(--forge-error)]" />
                         )}
-                        <span className="text-sm text-[var(--text-primary)]">{gate.name}</span>
+                        <span className="text-sm text-[var(--forge-text-primary)]">{gate.name}</span>
                     </div>
-                    <span className="text-xs text-[var(--text-muted)]">{gate.message}</span>
+                    <span className="text-xs text-[var(--forge-text-muted)]">{gate.message}</span>
                 </div>
             ))}
         </div>

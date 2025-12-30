@@ -45,7 +45,7 @@ export const SpeedIndicator: React.FC<SpeedIndicatorProps> = ({
                         {isNotNormalSpeed && (
                             <span className="text-sm font-bold text-white">{speed}x</span>
                         )}
-                        {skipSilence && <Zap size={ICON_SIZES.sm} className="text-yellow-400" />}
+                        {skipSilence && <Zap size={ICON_SIZES.sm} className="text-[var(--gold)]" />}
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -57,13 +57,13 @@ export const SpeedIndicator: React.FC<SpeedIndicatorProps> = ({
             <span
                 className={cn(
                     "inline-flex items-center gap-1 text-xs font-medium",
-                    isNotNormalSpeed ? "text-indigo-400" : "text-white/50",
+                    isNotNormalSpeed ? "text-[var(--ember)]" : "text-white/50",
                     className
                 )}
                 data-testid="speed-indicator-minimal"
             >
                 {speed}x
-                {skipSilence && <Zap size={ICON_SIZES.xs} className="text-yellow-400" />}
+                {skipSilence && <Zap size={ICON_SIZES.xs} className="text-[var(--gold)]" />}
             </span>
         );
     }
@@ -74,14 +74,14 @@ export const SpeedIndicator: React.FC<SpeedIndicatorProps> = ({
             className={cn(
                 "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium",
                 isNotNormalSpeed
-                    ? "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
+                    ? "bg-[var(--ember)]/20 text-[var(--ember)] border border-[var(--ember)]/30"
                     : "bg-white/10 text-white/60",
                 className
             )}
             data-testid="speed-indicator-badge"
         >
             <span>{formatSpeed(speed)}</span>
-            {skipSilence && <Zap size={ICON_SIZES.xs} className="text-yellow-400" />}
+            {skipSilence && <Zap size={ICON_SIZES.xs} className="text-[var(--gold)]" />}
         </div>
     );
 };

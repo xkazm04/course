@@ -54,21 +54,21 @@ const INTERVENTION_ICONS: Record<InterventionType, React.ReactNode> = {
 
 const SEVERITY_CONFIG = {
     mild: {
-        color: "text-blue-400",
-        bg: "bg-blue-500/10",
-        border: "border-blue-500/30",
+        color: "text-[var(--forge-info)]",
+        bg: "bg-[var(--forge-info)]/10",
+        border: "border-[var(--forge-info)]/30",
         label: "Helpful Tip",
     },
     moderate: {
-        color: "text-amber-400",
-        bg: "bg-amber-500/10",
-        border: "border-amber-500/30",
+        color: "text-[var(--forge-warning)]",
+        bg: "bg-[var(--forge-warning)]/10",
+        border: "border-[var(--forge-warning)]/30",
         label: "Recommended",
     },
     severe: {
-        color: "text-rose-400",
-        bg: "bg-rose-500/10",
-        border: "border-rose-500/30",
+        color: "text-[var(--forge-error)]",
+        bg: "bg-[var(--forge-error)]/10",
+        border: "border-[var(--forge-error)]/30",
         label: "Strongly Suggested",
     },
 };
@@ -133,7 +133,7 @@ export function PredictiveInterventionPanel({
             data-testid="predictive-intervention-panel"
         >
             {/* Proactive Indicator */}
-            <div className="absolute top-0 right-0 px-2 py-1 text-xs font-medium bg-gradient-to-r from-purple-500/20 to-violet-500/20 text-purple-300 rounded-bl-lg flex items-center gap-1">
+            <div className="absolute top-0 right-0 px-2 py-1 text-xs font-medium bg-gradient-to-r from-[var(--ember)]/20 to-[var(--gold)]/20 text-[var(--ember-glow)] rounded-bl-lg flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
                 <span>Proactive Help</span>
             </div>
@@ -153,20 +153,20 @@ export function PredictiveInterventionPanel({
                             >
                                 {severityConfig.label}
                             </span>
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-[var(--forge-text-muted)]">
                                 {Math.round(prediction.probability * 100)}% confidence
                             </span>
                         </div>
-                        <h3 className="text-sm font-semibold text-slate-200 line-clamp-1">
+                        <h3 className="text-sm font-semibold text-[var(--forge-text-primary)] line-clamp-1">
                             {intervention.content.title}
                         </h3>
-                        <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">
+                        <p className="text-xs text-[var(--forge-text-muted)] mt-0.5 line-clamp-2">
                             {intervention.content.description}
                         </p>
                     </div>
                     <button
                         onClick={handleDismiss}
-                        className="absolute top-3 right-3 p-1 text-slate-500 hover:text-slate-300 transition-colors"
+                        className="absolute top-3 right-3 p-1 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors"
                         data-testid="intervention-dismiss-btn"
                     >
                         <X className="w-4 h-4" />
@@ -175,7 +175,7 @@ export function PredictiveInterventionPanel({
             </div>
 
             {/* Stats Row */}
-            <div className="px-4 py-2 flex items-center gap-4 text-xs text-slate-500 border-t border-slate-700/30">
+            <div className="px-4 py-2 flex items-center gap-4 text-xs text-[var(--forge-text-muted)] border-t border-[var(--forge-border-subtle)]">
                 <div className="flex items-center gap-1">
                     <Users className="w-3.5 h-3.5" />
                     <span>
@@ -205,11 +205,11 @@ export function PredictiveInterventionPanel({
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="px-4 py-3 border-t border-slate-700/30 space-y-3">
+                        <div className="px-4 py-3 border-t border-[var(--forge-border-subtle)] space-y-3">
                             {/* Code Example */}
                             {intervention.content.code && (
-                                <div className="rounded-lg bg-slate-900/50 p-3 overflow-x-auto">
-                                    <pre className="text-xs text-slate-300 font-mono">
+                                <div className="rounded-lg bg-[var(--forge-bg-void)] p-3 overflow-x-auto">
+                                    <pre className="text-xs text-[var(--forge-text-secondary)] font-mono">
                                         <code>{intervention.content.code}</code>
                                     </pre>
                                 </div>
@@ -221,9 +221,9 @@ export function PredictiveInterventionPanel({
                                     {intervention.content.points.map((point, i) => (
                                         <li
                                             key={i}
-                                            className="flex items-start gap-2 text-xs text-slate-400"
+                                            className="flex items-start gap-2 text-xs text-[var(--forge-text-muted)]"
                                         >
-                                            <ChevronRight className="w-3 h-3 mt-0.5 text-slate-500 flex-shrink-0" />
+                                            <ChevronRight className="w-3 h-3 mt-0.5 text-[var(--forge-text-muted)] flex-shrink-0" />
                                             <span>{point}</span>
                                         </li>
                                     ))}
@@ -232,8 +232,8 @@ export function PredictiveInterventionPanel({
 
                             {/* Contributing Factors */}
                             {prediction.contributingFactors.length > 0 && (
-                                <div className="pt-2 border-t border-slate-700/30">
-                                    <div className="flex items-center gap-1 text-xs text-slate-500 mb-1.5">
+                                <div className="pt-2 border-t border-[var(--forge-border-subtle)]">
+                                    <div className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)] mb-1.5">
                                         <AlertTriangle className="w-3 h-3" />
                                         <span>Based on:</span>
                                     </div>
@@ -241,7 +241,7 @@ export function PredictiveInterventionPanel({
                                         {prediction.contributingFactors.map((factor, i) => (
                                             <span
                                                 key={i}
-                                                className="text-xs px-2 py-0.5 rounded-full bg-slate-700/50 text-slate-400"
+                                                className="text-xs px-2 py-0.5 rounded-full bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
                                             >
                                                 {factor}
                                             </span>
@@ -252,7 +252,7 @@ export function PredictiveInterventionPanel({
 
                             {/* Duration */}
                             {intervention.content.duration && (
-                                <div className="flex items-center gap-1 text-xs text-slate-500">
+                                <div className="flex items-center gap-1 text-xs text-[var(--forge-text-muted)]">
                                     <Clock className="w-3 h-3" />
                                     <span>~{Math.ceil(intervention.content.duration / 60)} min</span>
                                 </div>
@@ -269,13 +269,13 @@ export function PredictiveInterventionPanel({
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="px-4 py-3 border-t border-slate-700/30 bg-slate-800/30"
+                        className="px-4 py-3 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-anvil)]"
                     >
-                        <p className="text-xs text-slate-400 mb-2">Was this helpful?</p>
+                        <p className="text-xs text-[var(--forge-text-muted)] mb-2">Was this helpful?</p>
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => handleFeedback(true)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-lg transition-colors"
+                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--forge-success)] bg-[var(--forge-success)]/10 hover:bg-[var(--forge-success)]/20 rounded-lg transition-colors"
                                 data-testid="intervention-feedback-helpful-btn"
                             >
                                 <ThumbsUp className="w-3.5 h-3.5" />
@@ -283,7 +283,7 @@ export function PredictiveInterventionPanel({
                             </button>
                             <button
                                 onClick={() => handleFeedback(false)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-400 bg-slate-700/50 hover:bg-slate-700 rounded-lg transition-colors"
+                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--forge-text-muted)] bg-[var(--forge-bg-elevated)] hover:bg-[var(--forge-border-default)] rounded-lg transition-colors"
                                 data-testid="intervention-feedback-not-helpful-btn"
                             >
                                 <ThumbsDown className="w-3.5 h-3.5" />
@@ -296,7 +296,7 @@ export function PredictiveInterventionPanel({
 
             {/* Action Button */}
             {!isExpanded && !showFeedback && (
-                <div className="px-4 py-3 border-t border-slate-700/30">
+                <div className="px-4 py-3 border-t border-[var(--forge-border-subtle)]">
                     <button
                         onClick={handleEngage}
                         className={`w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${severityConfig.color} ${severityConfig.bg} hover:opacity-80 rounded-lg transition-all`}
@@ -401,20 +401,20 @@ export function InlineInterventionCard({
                 className="w-full p-3 flex items-center gap-3 text-left hover:bg-white/5 transition-colors"
                 data-testid="inline-intervention-toggle-btn"
             >
-                <div className="flex-shrink-0 text-slate-300">{icon}</div>
+                <div className="flex-shrink-0 text-[var(--forge-text-secondary)]">{icon}</div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-purple-400 flex items-center gap-1">
+                        <span className="text-xs font-medium text-[var(--ember)] flex items-center gap-1">
                             <Sparkles className="w-3 h-3" />
                             Proactive Help
                         </span>
                     </div>
-                    <h4 className="text-sm font-medium text-slate-200 truncate">
+                    <h4 className="text-sm font-medium text-[var(--forge-text-primary)] truncate">
                         {intervention.content.title}
                     </h4>
                 </div>
                 <ChevronRight
-                    className={`w-4 h-4 text-slate-500 transition-transform ${
+                    className={`w-4 h-4 text-[var(--forge-text-muted)] transition-transform ${
                         isExpanded ? "rotate-90" : ""
                     }`}
                 />
@@ -428,14 +428,14 @@ export function InlineInterventionCard({
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="px-3 pb-3 space-y-2 border-t border-slate-700/30 pt-2">
-                            <p className="text-xs text-slate-400">
+                        <div className="px-3 pb-3 space-y-2 border-t border-[var(--forge-border-subtle)] pt-2">
+                            <p className="text-xs text-[var(--forge-text-muted)]">
                                 {intervention.content.description}
                             </p>
 
                             {intervention.content.code && (
-                                <div className="rounded-lg bg-slate-900/50 p-2 overflow-x-auto">
-                                    <pre className="text-xs text-slate-300 font-mono">
+                                <div className="rounded-lg bg-[var(--forge-bg-void)] p-2 overflow-x-auto">
+                                    <pre className="text-xs text-[var(--forge-text-secondary)] font-mono">
                                         <code>{intervention.content.code}</code>
                                     </pre>
                                 </div>
@@ -446,9 +446,9 @@ export function InlineInterventionCard({
                                     {intervention.content.points.map((point, i) => (
                                         <li
                                             key={i}
-                                            className="flex items-start gap-1.5 text-xs text-slate-400"
+                                            className="flex items-start gap-1.5 text-xs text-[var(--forge-text-muted)]"
                                         >
-                                            <span className="text-slate-500">•</span>
+                                            <span className="text-[var(--forge-text-muted)]">•</span>
                                             <span>{point}</span>
                                         </li>
                                     ))}
@@ -456,7 +456,7 @@ export function InlineInterventionCard({
                             )}
 
                             <div className="flex items-center justify-between pt-2">
-                                <span className="text-xs text-slate-500 flex items-center gap-1">
+                                <span className="text-xs text-[var(--forge-text-muted)] flex items-center gap-1">
                                     <Users className="w-3 h-3" />
                                     {Math.round(intervention.collectiveSuccessRate * 100)}% found helpful
                                 </span>
@@ -466,7 +466,7 @@ export function InlineInterventionCard({
                                             e.stopPropagation();
                                             onDismiss();
                                         }}
-                                        className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                                        className="text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors"
                                         data-testid="inline-intervention-dismiss-btn"
                                     >
                                         Dismiss
@@ -541,24 +541,24 @@ export function PredictionStats({
 }: PredictionStatsProps) {
     return (
         <div
-            className={`grid grid-cols-3 gap-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 ${className}`}
+            className={`grid grid-cols-3 gap-3 p-3 rounded-lg bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] ${className}`}
             data-testid="prediction-stats"
         >
             <div className="text-center">
-                <div className="text-lg font-semibold text-emerald-400">
+                <div className="text-lg font-semibold text-[var(--forge-success)]">
                     {Math.round(predictionAccuracy * 100)}%
                 </div>
-                <div className="text-xs text-slate-500">Prediction Accuracy</div>
+                <div className="text-xs text-[var(--forge-text-muted)]">Prediction Accuracy</div>
             </div>
-            <div className="text-center border-x border-slate-700/50">
-                <div className="text-lg font-semibold text-blue-400">
+            <div className="text-center border-x border-[var(--forge-border-subtle)]">
+                <div className="text-lg font-semibold text-[var(--forge-info)]">
                     {Math.round(interventionSuccessRate * 100)}%
                 </div>
-                <div className="text-xs text-slate-500">Help Success Rate</div>
+                <div className="text-xs text-[var(--forge-text-muted)]">Help Success Rate</div>
             </div>
             <div className="text-center">
-                <div className="text-lg font-semibold text-purple-400">{totalPredictions}</div>
-                <div className="text-xs text-slate-500">Predictions Made</div>
+                <div className="text-lg font-semibold text-[var(--ember)]">{totalPredictions}</div>
+                <div className="text-xs text-[var(--forge-text-muted)]">Predictions Made</div>
             </div>
         </div>
     );

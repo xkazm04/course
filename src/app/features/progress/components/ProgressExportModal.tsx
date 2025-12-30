@@ -89,31 +89,31 @@ export function ProgressExportModal({
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div
-                            className="w-full max-w-lg bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden"
+                            className="w-full max-w-lg bg-[var(--forge-bg-elevated)] rounded-2xl shadow-2xl overflow-hidden"
                             data-testid="progress-export-modal"
                         >
-                            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-                                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                            <div className="flex items-center justify-between p-4 border-b border-[var(--forge-border-subtle)]">
+                                <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                                     Progress Data
                                 </h2>
                                 <button
                                     onClick={onClose}
-                                    className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                    className="p-2 text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-anvil)] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                                     data-testid="modal-close-btn"
                                 >
                                     <X size={ICON_SIZES.md} />
                                 </button>
                             </div>
 
-                            <div className="flex border-b border-slate-200 dark:border-slate-700">
+                            <div className="flex border-b border-[var(--forge-border-subtle)]">
                                 <button
                                     onClick={() => setActiveTab("export")}
                                     className={cn(
                                         "flex-1 py-3 text-sm font-medium transition-colors",
-                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500",
+                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ember)]",
                                         activeTab === "export"
-                                            ? "text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400"
-                                            : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                                            ? "text-[var(--ember)] border-b-2 border-[var(--ember)]"
+                                            : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                                     )}
                                     data-testid="export-tab-btn"
                                 >
@@ -124,10 +124,10 @@ export function ProgressExportModal({
                                     onClick={() => setActiveTab("import")}
                                     className={cn(
                                         "flex-1 py-3 text-sm font-medium transition-colors",
-                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500",
+                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ember)]",
                                         activeTab === "import"
-                                            ? "text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400"
-                                            : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                                            ? "text-[var(--ember)] border-b-2 border-[var(--ember)]"
+                                            : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                                     )}
                                     data-testid="import-tab-btn"
                                 >
@@ -139,13 +139,13 @@ export function ProgressExportModal({
                             <div className="p-4">
                                 {activeTab === "export" ? (
                                     <div className="space-y-4">
-                                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                                        <p className="text-sm text-[var(--forge-text-secondary)]">
                                             Export your learning progress to keep a backup or transfer to another device.
                                         </p>
                                         <div className="flex gap-3">
                                             <button
                                                 onClick={handleDownload}
-                                                className="flex-1 flex items-center justify-center gap-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                                className="flex-1 flex items-center justify-center gap-2 py-3 bg-[var(--ember)] hover:opacity-90 text-[var(--forge-text-primary)] rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                                                 data-testid="download-json-btn"
                                             >
                                                 <Download size={ICON_SIZES.md} />
@@ -153,7 +153,7 @@ export function ProgressExportModal({
                                             </button>
                                             <button
                                                 onClick={handleCopy}
-                                                className="flex-1 flex items-center justify-center gap-2 py-3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                                className="flex-1 flex items-center justify-center gap-2 py-3 bg-[var(--forge-bg-anvil)] hover:bg-[var(--forge-bg-workshop)] text-[var(--forge-text-primary)] rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                                                 data-testid="copy-json-btn"
                                             >
                                                 {copied ? (
@@ -172,7 +172,7 @@ export function ProgressExportModal({
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
-                                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                                        <p className="text-sm text-[var(--forge-text-secondary)]">
                                             Import progress data from a backup file or paste JSON directly.
                                         </p>
 
@@ -187,7 +187,7 @@ export function ProgressExportModal({
                                             />
                                             <button
                                                 onClick={() => fileInputRef.current?.click()}
-                                                className="w-full py-3 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-slate-600 dark:text-slate-400 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                                className="w-full py-3 border-2 border-dashed border-[var(--forge-border-subtle)] rounded-xl text-[var(--forge-text-secondary)] hover:border-[var(--ember)] hover:text-[var(--ember)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2"
                                                 data-testid="upload-file-btn"
                                             >
                                                 <Upload size={ICON_SIZES.md} className="inline-block mr-2" />
@@ -195,7 +195,7 @@ export function ProgressExportModal({
                                             </button>
                                         </div>
 
-                                        <div className="text-center text-xs text-slate-500 dark:text-slate-400">
+                                        <div className="text-center text-xs text-[var(--forge-text-muted)]">
                                             or paste JSON below
                                         </div>
 
@@ -203,19 +203,19 @@ export function ProgressExportModal({
                                             value={importText}
                                             onChange={(e) => setImportText(e.target.value)}
                                             placeholder="Paste your progress JSON here..."
-                                            className="w-full h-32 p-3 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full h-32 p-3 text-sm bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-subtle)] rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[var(--ember)]"
                                             data-testid="import-textarea"
                                         />
 
                                         {importError && (
-                                            <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
+                                            <div className="flex items-center gap-2 text-sm text-[var(--forge-error)]">
                                                 <AlertCircle size={ICON_SIZES.sm} />
                                                 {importError}
                                             </div>
                                         )}
 
                                         {importSuccess && (
-                                            <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+                                            <div className="flex items-center gap-2 text-sm text-[var(--forge-success)]">
                                                 <Check size={ICON_SIZES.sm} />
                                                 Progress imported successfully!
                                             </div>
@@ -226,10 +226,10 @@ export function ProgressExportModal({
                                             disabled={!importText.trim()}
                                             className={cn(
                                                 "w-full py-3 rounded-xl font-medium transition-colors",
-                                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ember)] focus-visible:ring-offset-2",
                                                 importText.trim()
-                                                    ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                                                    : "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed"
+                                                    ? "bg-[var(--ember)] hover:opacity-90 text-[var(--forge-text-primary)]"
+                                                    : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] cursor-not-allowed"
                                             )}
                                             data-testid="import-btn"
                                         >

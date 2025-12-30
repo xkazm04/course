@@ -179,7 +179,7 @@ function OverviewTab({ project }: { project: typeof mockProjects[0] }) {
                         {project.skillsTaught.map((skill) => (
                             <span
                                 key={skill}
-                                className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-sm text-emerald-500"
+                                className="px-3 py-1.5 rounded-lg bg-[var(--forge-success)]/10 text-sm text-[var(--forge-success)]"
                             >
                                 {skill}
                             </span>
@@ -225,9 +225,9 @@ function ChallengesTab({ project }: { project: typeof mockProjects[0] }) {
     const projectChallenges = mockChallenges.filter((c) => c.projectId === project.id);
 
     const difficultyColors = {
-        beginner: "text-emerald-500 bg-emerald-500/10",
-        intermediate: "text-amber-500 bg-amber-500/10",
-        advanced: "text-rose-500 bg-rose-500/10",
+        beginner: "text-[var(--forge-success)] bg-[var(--forge-success)]/10",
+        intermediate: "text-[var(--gold)] bg-[var(--gold)]/10",
+        advanced: "text-[var(--forge-error)] bg-[var(--forge-error)]/10",
     };
 
     const typeIcons: Record<string, string> = {
@@ -299,7 +299,7 @@ function ChallengesTab({ project }: { project: typeof mockProjects[0] }) {
                             </div>
                             <div className="flex items-center gap-6 text-sm">
                                 <div className="text-center">
-                                    <div className="font-medium text-amber-500">+{challenge.xpReward}</div>
+                                    <div className="font-medium text-[var(--gold)]">+{challenge.xpReward}</div>
                                     <div className="text-xs text-[var(--text-muted)]">XP</div>
                                 </div>
                                 <div className="text-center">
@@ -357,9 +357,9 @@ function ContributorsTab({ project }: { project: typeof mockProjects[0] }) {
                                 <div
                                     className={cn(
                                         "absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold",
-                                        index === 0 && "bg-amber-500 text-white",
-                                        index === 1 && "bg-gray-400 text-white",
-                                        index === 2 && "bg-orange-600 text-white"
+                                        index === 0 && "bg-[var(--gold)] text-white",
+                                        index === 1 && "bg-[var(--forge-text-muted)] text-white",
+                                        index === 2 && "bg-[var(--ember)] text-white"
                                     )}
                                 >
                                     {index + 1}
@@ -403,9 +403,9 @@ function RoadmapTab({ project }: { project: typeof mockProjects[0] }) {
     ];
 
     const statusColors = {
-        planned: "bg-gray-500/20 text-gray-400",
-        in_progress: "bg-blue-500/20 text-blue-400",
-        completed: "bg-emerald-500/20 text-emerald-400",
+        planned: "bg-[var(--forge-text-muted)]/20 text-[var(--forge-text-muted)]",
+        in_progress: "bg-[var(--forge-info)]/20 text-[var(--forge-info)]",
+        completed: "bg-[var(--forge-success)]/20 text-[var(--forge-success)]",
     };
 
     return (
@@ -418,9 +418,9 @@ function RoadmapTab({ project }: { project: typeof mockProjects[0] }) {
                     <div
                         className={cn(
                             "w-3 h-3 rounded-full",
-                            feature.status === "completed" && "bg-emerald-500",
-                            feature.status === "in_progress" && "bg-blue-500",
-                            feature.status === "planned" && "bg-gray-500"
+                            feature.status === "completed" && "bg-[var(--forge-success)]",
+                            feature.status === "in_progress" && "bg-[var(--forge-info)]",
+                            feature.status === "planned" && "bg-[var(--forge-text-muted)]"
                         )}
                     />
                     <div className="flex-1">
@@ -476,9 +476,9 @@ export default function ProjectDetailPage() {
     }
 
     const statusColors = {
-        planning: "text-blue-500 bg-blue-500/10",
-        active: "text-emerald-500 bg-emerald-500/10",
-        mature: "text-purple-500 bg-purple-500/10",
+        planning: "text-[var(--forge-info)] bg-[var(--forge-info)]/10",
+        active: "text-[var(--forge-success)] bg-[var(--forge-success)]/10",
+        mature: "text-[var(--ember-glow)] bg-[var(--ember-glow)]/10",
     };
 
     return (

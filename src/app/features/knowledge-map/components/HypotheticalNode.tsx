@@ -113,18 +113,18 @@ export function HypotheticalNode({
             <div className={cn(
                 "flex items-center gap-3 p-2 rounded-lg",
                 // Ghost style: Semi-transparent background and border
-                "bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm",
-                "border border-slate-200/60 dark:border-slate-700/60",
+                "bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm",
+                "border border-[var(--forge-border-subtle)]/60",
                 "border-dashed", // Dashed to indicate "proposed"
                 "shadow-sm hover:shadow-md transition-all",
-                isSelected && "ring-2 ring-indigo-500 bg-white/80 dark:bg-slate-800/80"
+                isSelected && "ring-2 ring-[var(--ember)] bg-[var(--forge-bg-elevated)]/80"
             )}>
-                <div className="w-8 h-8 rounded bg-indigo-50/50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <div className="w-8 h-8 rounded bg-[var(--ember)]/10 flex items-center justify-center text-[var(--ember)]">
                     <Plus size={16} />
                 </div>
                 <div className="flex-1 min-w-0 opacity-80">
-                    <div className="text-xs font-medium truncate">{node.name}</div>
-                    <div className="text-[10px] text-slate-500">{duration}</div>
+                    <div className="text-xs font-medium truncate text-[var(--forge-text-primary)]">{node.name}</div>
+                    <div className="text-[10px] text-[var(--forge-text-secondary)]">{duration}</div>
                 </div>
             </div>
         </motion.div>

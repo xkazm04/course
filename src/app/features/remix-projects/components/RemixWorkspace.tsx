@@ -69,18 +69,18 @@ export const RemixWorkspace: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--surface-base)]">
+        <div className="min-h-screen bg-[var(--forge-bg-workshop)]">
             {/* Header */}
-            <header className="border-b border-[var(--border-default)] bg-[var(--surface-elevated)]">
+            <header className="border-b border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)]">
                 <div className="max-w-7xl mx-auto px-6 py-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <GitFork size={ICON_SIZES.lg} className="text-[var(--accent-primary)]" />
+                            <GitFork size={ICON_SIZES.lg} className="text-[var(--ember)]" />
                             <div>
-                                <h1 className="text-xl font-bold text-[var(--text-primary)]">
+                                <h1 className="text-xl font-bold text-[var(--forge-text-primary)]">
                                     Remix & Extend
                                 </h1>
-                                <p className="text-sm text-[var(--text-muted)]">
+                                <p className="text-sm text-[var(--forge-text-muted)]">
                                     Inherit, improve, and evolve real-world codebases
                                 </p>
                             </div>
@@ -212,9 +212,9 @@ const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
     return (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar - File Explorer */}
-            <div className="lg:col-span-1 rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] overflow-hidden">
-                <div className="p-3 border-b border-[var(--border-subtle)]">
-                    <h3 className="text-sm font-semibold text-[var(--text-primary)]">Files</h3>
+            <div className="lg:col-span-1 rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] overflow-hidden">
+                <div className="p-3 border-b border-[var(--forge-border-subtle)]">
+                    <h3 className="text-sm font-semibold text-[var(--forge-text-primary)]">Files</h3>
                 </div>
                 <CodeExplorer
                     structure={project.repository.structure}
@@ -228,7 +228,7 @@ const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
             {/* Main Content */}
             <div className="lg:col-span-3 space-y-4">
                 {/* Tabs */}
-                <div className="flex items-center gap-2 p-1 rounded-lg bg-[var(--surface-overlay)] w-fit">
+                <div className="flex items-center gap-2 p-1 rounded-lg bg-[var(--forge-bg-anvil)] w-fit">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
@@ -236,8 +236,8 @@ const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
                             className={cn(
                                 "flex items-center gap-2 px-4 py-2 rounded-md text-sm transition-colors",
                                 activeTab === tab.id
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                                    ? "bg-gradient-forge text-white"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                             )}
                         >
                             <tab.icon size={ICON_SIZES.sm} />
@@ -254,14 +254,14 @@ const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4 min-h-[400px]"
+                            className="rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4 min-h-[400px]"
                         >
                             {selectedFile ? (
                                 <CodePreview
                                     file={fork.files.find((f) => f.path === selectedFile)}
                                 />
                             ) : (
-                                <div className="text-center py-12 text-[var(--text-muted)]">
+                                <div className="text-center py-12 text-[var(--forge-text-muted)]">
                                     Select a file to view
                                 </div>
                             )}
@@ -312,10 +312,10 @@ const CodePreview: React.FC<CodePreviewProps> = ({ file }) => {
 
     return (
         <div className="font-mono text-sm">
-            <div className="text-xs text-[var(--text-muted)] mb-3 pb-2 border-b border-[var(--border-subtle)]">
+            <div className="text-xs text-[var(--forge-text-muted)] mb-3 pb-2 border-b border-[var(--forge-border-subtle)]">
                 {file.path}
             </div>
-            <pre className="overflow-x-auto text-[var(--text-secondary)] whitespace-pre-wrap">
+            <pre className="overflow-x-auto text-[var(--forge-text-secondary)] whitespace-pre-wrap">
                 {file.currentContent}
             </pre>
         </div>

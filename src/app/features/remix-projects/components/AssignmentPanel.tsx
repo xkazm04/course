@@ -41,16 +41,16 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({
     return (
         <div className="space-y-4">
             {/* Progress */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-[var(--text-primary)]">Progress</span>
-                    <span className="text-sm text-[var(--text-muted)]">
+                    <span className="text-sm font-medium text-[var(--forge-text-primary)]">Progress</span>
+                    <span className="text-sm text-[var(--forge-text-muted)]">
                         {completedCount}/{assignment.objectives.length} objectives
                     </span>
                 </div>
-                <div className="h-2 rounded-full bg-[var(--surface-overlay)] overflow-hidden">
+                <div className="h-2 rounded-full bg-[var(--forge-bg-anvil)] overflow-hidden">
                     <motion.div
-                        className="h-full bg-emerald-500"
+                        className="h-full bg-[var(--forge-success)]"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                     />
@@ -58,9 +58,9 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({
             </div>
 
             {/* Objectives */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
-                <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                    <Target size={ICON_SIZES.sm} className="text-blue-400" />
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
+                <h4 className="text-sm font-semibold text-[var(--forge-text-primary)] mb-3 flex items-center gap-2">
+                    <Target size={ICON_SIZES.sm} className="text-[var(--forge-info)]" />
                     Objectives
                 </h4>
                 <div className="space-y-2">
@@ -75,16 +75,16 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({
             </div>
 
             {/* Hints */}
-            <div className={cn("rounded-xl border border-[var(--border-default)] bg-[var(--surface-elevated)] p-4", elevation.elevated)}>
+            <div className={cn("rounded-xl border border-[var(--forge-border-default)] bg-[var(--forge-bg-elevated)] p-4", elevation.elevated)}>
                 <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-sm font-semibold text-[var(--text-primary)] flex items-center gap-2">
-                        <Lightbulb size={ICON_SIZES.sm} className="text-amber-400" />
+                    <h4 className="text-sm font-semibold text-[var(--forge-text-primary)] flex items-center gap-2">
+                        <Lightbulb size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                         Hints
                     </h4>
                     {hiddenHints.length > 0 && (
                         <button
                             onClick={onRevealHint}
-                            className="flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 transition-colors"
+                            className="flex items-center gap-1 text-xs text-[var(--forge-warning)] hover:opacity-80 transition-colors"
                         >
                             <Eye size={ICON_SIZES.xs} />
                             Reveal ({hiddenHints.length} left)
@@ -93,7 +93,7 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({
                 </div>
                 <AnimatePresence>
                     {revealedHints.length === 0 ? (
-                        <p className="text-sm text-[var(--text-muted)] italic">
+                        <p className="text-sm text-[var(--forge-text-muted)] italic">
                             No hints revealed yet. Each hint costs points!
                         </p>
                     ) : (
@@ -113,8 +113,8 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({
                 className={cn(
                     "w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-colors",
                     canSubmit
-                        ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                        : "bg-[var(--surface-overlay)] text-[var(--text-muted)] cursor-not-allowed"
+                        ? "bg-[var(--forge-success)] text-white hover:opacity-90"
+                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] cursor-not-allowed"
                 )}
             >
                 {isSubmitting ? (
@@ -135,7 +135,7 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({
             </button>
 
             {!canSubmit && assignment.status !== "submitted" && (
-                <p className="text-xs text-[var(--text-muted)] text-center flex items-center justify-center gap-1">
+                <p className="text-xs text-[var(--forge-text-muted)] text-center flex items-center justify-center gap-1">
                     <AlertCircle size={ICON_SIZES.xs} />
                     Make changes to the code to enable submission
                 </p>
@@ -157,24 +157,24 @@ const ObjectiveItem: React.FC<ObjectiveItemProps> = ({ objective, onComplete }) 
         className={cn(
             "w-full flex items-start gap-2 p-2 rounded-lg text-left transition-colors",
             objective.completed
-                ? "bg-emerald-500/10"
-                : "hover:bg-[var(--surface-overlay)]"
+                ? "bg-[var(--forge-success)]/10"
+                : "hover:bg-[var(--forge-bg-anvil)]"
         )}
         whileHover={{ x: 2 }}
     >
         {objective.completed ? (
-            <CheckCircle size={ICON_SIZES.sm} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+            <CheckCircle size={ICON_SIZES.sm} className="text-[var(--forge-success)] mt-0.5 flex-shrink-0" />
         ) : (
-            <Circle size={ICON_SIZES.sm} className="text-[var(--text-muted)] mt-0.5 flex-shrink-0" />
+            <Circle size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)] mt-0.5 flex-shrink-0" />
         )}
         <div className="flex-1">
             <p className={cn(
                 "text-sm",
-                objective.completed ? "text-emerald-400 line-through" : "text-[var(--text-primary)]"
+                objective.completed ? "text-[var(--forge-success)] line-through" : "text-[var(--forge-text-primary)]"
             )}>
                 {objective.description}
             </p>
-            <span className="text-xs text-[var(--text-muted)]">+{objective.points} pts</span>
+            <span className="text-xs text-[var(--forge-text-muted)]">+{objective.points} pts</span>
         </div>
     </motion.button>
 );
@@ -188,9 +188,9 @@ const HintItem: React.FC<HintItemProps> = ({ hint }) => (
     <motion.div
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: "auto" }}
-        className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20"
+        className="p-2 rounded-lg bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/20"
     >
-        <p className="text-sm text-amber-200">{hint.content}</p>
-        <span className="text-xs text-amber-400/60">-{hint.penaltyPercent}% penalty</span>
+        <p className="text-sm text-[var(--forge-warning)]">{hint.content}</p>
+        <span className="text-xs text-[var(--forge-warning)]/60">-{hint.penaltyPercent}% penalty</span>
     </motion.div>
 );

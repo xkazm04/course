@@ -110,15 +110,15 @@ export const GoalPathWithIntentResolver = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 text-indigo-600 font-bold tracking-wide text-xs uppercase mb-4"
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--ember)]/10 text-[var(--ember)] font-bold tracking-wide text-xs uppercase mb-4"
                 >
                     <Zap size={ICON_SIZES.sm} />
                     Intent-Based Path Generator
                 </motion.div>
-                <h2 className="text-3xl font-black text-slate-900 mb-2">
+                <h2 className="text-3xl font-black text-[var(--forge-text-primary)] mb-2">
                     Create Your Learning Path
                 </h2>
-                <p className="text-slate-600">
+                <p className="text-[var(--forge-text-secondary)]">
                     Powered by the Intent Resolver system for personalized curriculum
                     generation
                 </p>
@@ -131,7 +131,7 @@ export const GoalPathWithIntentResolver = () => {
                         <div className="p-6 space-y-6">
                             {/* Goal Input */}
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-2">
+                                <label className="block text-sm font-bold text-[var(--forge-text-secondary)] mb-2">
                                     <Target size={ICON_SIZES.sm} className="inline mr-2" />
                                     Your End Goal
                                 </label>
@@ -140,17 +140,17 @@ export const GoalPathWithIntentResolver = () => {
                                     value={goal}
                                     onChange={(e) => setGoal(e.target.value)}
                                     data-testid="goal-input"
-                                    className="w-full p-4 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all text-lg"
+                                    className="w-full p-4 rounded-xl border border-[var(--forge-border-subtle)] focus:border-[var(--ember)] focus:ring-2 focus:ring-[var(--ember)]/20 outline-none transition-all text-lg bg-[var(--forge-bg-elevated)]"
                                     placeholder="e.g., Become a Senior Backend Developer"
                                 />
                             </div>
 
                             {/* Time Commitment Slider */}
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-2">
+                                <label className="block text-sm font-bold text-[var(--forge-text-secondary)] mb-2">
                                     <Clock size={ICON_SIZES.sm} className="inline mr-2" />
                                     Hours per Week:{" "}
-                                    <span className="text-indigo-600">{timeCommitment}h</span>
+                                    <span className="text-[var(--ember)]">{timeCommitment}h</span>
                                 </label>
                                 <input
                                     type="range"
@@ -159,9 +159,9 @@ export const GoalPathWithIntentResolver = () => {
                                     value={timeCommitment}
                                     onChange={(e) => setTimeCommitment(Number(e.target.value))}
                                     data-testid="time-commitment-slider"
-                                    className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer accent-indigo-500"
+                                    className="w-full h-2 bg-[var(--forge-bg-elevated)] rounded-full appearance-none cursor-pointer accent-[var(--ember)]"
                                 />
-                                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                                <div className="flex justify-between text-xs text-[var(--forge-text-muted)] mt-1">
                                     <span>5h (Casual)</span>
                                     <span>40h (Intensive)</span>
                                 </div>
@@ -169,10 +169,10 @@ export const GoalPathWithIntentResolver = () => {
 
                             {/* Deadline Slider */}
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-2">
+                                <label className="block text-sm font-bold text-[var(--forge-text-secondary)] mb-2">
                                     <Rocket size={ICON_SIZES.sm} className="inline mr-2" />
                                     Target Timeline:{" "}
-                                    <span className="text-indigo-600">{deadline} months</span>
+                                    <span className="text-[var(--ember)]">{deadline} months</span>
                                 </label>
                                 <input
                                     type="range"
@@ -181,9 +181,9 @@ export const GoalPathWithIntentResolver = () => {
                                     value={deadline}
                                     onChange={(e) => setDeadline(Number(e.target.value))}
                                     data-testid="deadline-slider"
-                                    className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer accent-indigo-500"
+                                    className="w-full h-2 bg-[var(--forge-bg-elevated)] rounded-full appearance-none cursor-pointer accent-[var(--ember)]"
                                 />
-                                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                                <div className="flex justify-between text-xs text-[var(--forge-text-muted)] mt-1">
                                     <span>1 month</span>
                                     <span>24 months</span>
                                 </div>
@@ -191,7 +191,7 @@ export const GoalPathWithIntentResolver = () => {
 
                             {/* Focus Areas */}
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-3">
+                                <label className="block text-sm font-bold text-[var(--forge-text-secondary)] mb-3">
                                     <Sparkles size={ICON_SIZES.sm} className="inline mr-2" />
                                     Focus Areas
                                 </label>
@@ -204,8 +204,8 @@ export const GoalPathWithIntentResolver = () => {
                                             className={cn(
                                                 "p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1",
                                                 focus.includes(area.id)
-                                                    ? "bg-indigo-50 border-indigo-500 text-indigo-700"
-                                                    : "bg-white border-slate-100 text-slate-600 hover:border-slate-200"
+                                                    ? "bg-[var(--ember)]/10 border-[var(--ember)] text-[var(--ember)]"
+                                                    : "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:border-[var(--forge-border-default)]"
                                             )}
                                         >
                                             <area.icon size={ICON_SIZES.md} />
@@ -219,7 +219,7 @@ export const GoalPathWithIntentResolver = () => {
                             <button
                                 onClick={() => setShowAdvanced(!showAdvanced)}
                                 data-testid="advanced-options-toggle"
-                                className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors"
+                                className="flex items-center gap-2 text-sm font-medium text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] transition-colors"
                             >
                                 <ChevronDown
                                     size={ICON_SIZES.sm}
@@ -242,7 +242,7 @@ export const GoalPathWithIntentResolver = () => {
                                     >
                                         {/* Learning Style */}
                                         <div>
-                                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                                            <label className="block text-sm font-bold text-[var(--forge-text-secondary)] mb-2">
                                                 <BookOpen size={ICON_SIZES.sm} className="inline mr-2" />
                                                 Learning Style
                                             </label>
@@ -255,8 +255,8 @@ export const GoalPathWithIntentResolver = () => {
                                                         className={cn(
                                                             "p-2 rounded-lg border-2 transition-all flex flex-col items-center gap-1",
                                                             learningStyle === style.value
-                                                                ? "bg-purple-50 border-purple-500 text-purple-700"
-                                                                : "bg-white border-slate-100 text-slate-600 hover:border-slate-200"
+                                                                ? "bg-[var(--ember-glow)]/10 border-[var(--ember-glow)] text-[var(--ember-glow)]"
+                                                                : "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:border-[var(--forge-border-default)]"
                                                         )}
                                                     >
                                                         <span className="text-lg">{style.icon}</span>
@@ -270,7 +270,7 @@ export const GoalPathWithIntentResolver = () => {
 
                                         {/* Skill Level */}
                                         <div>
-                                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                                            <label className="block text-sm font-bold text-[var(--forge-text-secondary)] mb-2">
                                                 <BarChart3 size={ICON_SIZES.sm} className="inline mr-2" />
                                                 Current Skill Level
                                             </label>
@@ -283,8 +283,8 @@ export const GoalPathWithIntentResolver = () => {
                                                         className={cn(
                                                             "p-2 rounded-lg border-2 transition-all text-center",
                                                             currentLevel === level.value
-                                                                ? "bg-emerald-50 border-emerald-500 text-emerald-700"
-                                                                : "bg-white border-slate-100 text-slate-600 hover:border-slate-200"
+                                                                ? "bg-[var(--forge-success)]/10 border-[var(--forge-success)] text-[var(--forge-success)]"
+                                                                : "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:border-[var(--forge-border-default)]"
                                                         )}
                                                     >
                                                         <span className="text-xs font-bold">
@@ -303,8 +303,8 @@ export const GoalPathWithIntentResolver = () => {
 
                 {/* Preview / Results */}
                 <div className="space-y-6">
-                    <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
-                        <Zap size={ICON_SIZES.sm} className="text-amber-500" />
+                    <div className="flex items-center gap-2 text-sm font-bold text-[var(--forge-text-muted)]">
+                        <Zap size={ICON_SIZES.sm} className="text-[var(--gold)]" />
                         {plan ? "GENERATED PATH" : "LIVE PREVIEW"}
                     </div>
 
@@ -312,14 +312,14 @@ export const GoalPathWithIntentResolver = () => {
                         <div className="p-6">
                             {/* Header */}
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center text-white">
+                                <div className="w-12 h-12 bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)] rounded-2xl flex items-center justify-center text-[var(--forge-text-primary)]">
                                     <Target size={ICON_SIZES.lg} />
                                 </div>
                                 <div>
-                                    <h3 className="font-black text-slate-900 text-lg">
+                                    <h3 className="font-black text-[var(--forge-text-primary)] text-lg">
                                         {(plan?.title ?? goal) || "Your Learning Path"}
                                     </h3>
-                                    <p className="text-sm text-slate-500">
+                                    <p className="text-sm text-[var(--forge-text-muted)]">
                                         {plan ? "AI-Generated Curriculum" : "Preview updates as you type"}
                                     </p>
                                 </div>
@@ -327,29 +327,29 @@ export const GoalPathWithIntentResolver = () => {
 
                             {/* Metrics */}
                             <div className="grid grid-cols-4 gap-3 mb-6">
-                                <div className="text-center p-3 bg-slate-50 rounded-xl">
-                                    <div className="text-xl font-black text-slate-900">
+                                <div className="text-center p-3 bg-[var(--forge-bg-elevated)] rounded-xl">
+                                    <div className="text-xl font-black text-[var(--forge-text-primary)]">
                                         {plan?.metrics.totalHours ?? metrics.totalHours}
                                     </div>
-                                    <div className="text-xs text-slate-500">Hours</div>
+                                    <div className="text-xs text-[var(--forge-text-muted)]">Hours</div>
                                 </div>
-                                <div className="text-center p-3 bg-slate-50 rounded-xl">
-                                    <div className="text-xl font-black text-slate-900">
+                                <div className="text-center p-3 bg-[var(--forge-bg-elevated)] rounded-xl">
+                                    <div className="text-xl font-black text-[var(--forge-text-primary)]">
                                         {plan?.metrics.moduleCount ?? metrics.modules}
                                     </div>
-                                    <div className="text-xs text-slate-500">Modules</div>
+                                    <div className="text-xs text-[var(--forge-text-muted)]">Modules</div>
                                 </div>
-                                <div className="text-center p-3 bg-slate-50 rounded-xl">
-                                    <div className="text-xl font-black text-slate-900">
+                                <div className="text-center p-3 bg-[var(--forge-bg-elevated)] rounded-xl">
+                                    <div className="text-xl font-black text-[var(--forge-text-primary)]">
                                         {plan?.metrics.topicCount ?? metrics.topics}
                                     </div>
-                                    <div className="text-xs text-slate-500">Topics</div>
+                                    <div className="text-xs text-[var(--forge-text-muted)]">Topics</div>
                                 </div>
-                                <div className="text-center p-3 bg-slate-50 rounded-xl">
-                                    <div className="text-xl font-black text-slate-900">
+                                <div className="text-center p-3 bg-[var(--forge-bg-elevated)] rounded-xl">
+                                    <div className="text-xl font-black text-[var(--forge-text-primary)]">
                                         {plan?.metrics.estimatedWeeks ?? metrics.estimatedWeeks}
                                     </div>
-                                    <div className="text-xs text-slate-500">Weeks</div>
+                                    <div className="text-xs text-[var(--forge-text-muted)]">Weeks</div>
                                 </div>
                             </div>
 
@@ -362,22 +362,22 @@ export const GoalPathWithIntentResolver = () => {
                                 >
                                     {/* Modules */}
                                     <div className="space-y-2">
-                                        <h4 className="text-sm font-bold text-slate-700">
+                                        <h4 className="text-sm font-bold text-[var(--forge-text-secondary)]">
                                             Curriculum Modules
                                         </h4>
                                         {plan.modules.slice(0, 4).map((module, i) => (
                                             <div
                                                 key={module.id}
-                                                className="p-3 bg-white rounded-xl border border-slate-100 flex items-center gap-3"
+                                                className="p-3 bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] flex items-center gap-3"
                                             >
-                                                <div className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm font-bold">
+                                                <div className="w-8 h-8 bg-[var(--ember)]/10 text-[var(--ember)] rounded-lg flex items-center justify-center text-sm font-bold">
                                                     {i + 1}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <span className="font-medium text-slate-700 block truncate">
+                                                    <span className="font-medium text-[var(--forge-text-secondary)] block truncate">
                                                         {module.name}
                                                     </span>
-                                                    <span className="text-xs text-slate-500">
+                                                    <span className="text-xs text-[var(--forge-text-muted)]">
                                                         {module.topics.length} topics •{" "}
                                                         {module.estimatedHours}h
                                                     </span>
@@ -385,7 +385,7 @@ export const GoalPathWithIntentResolver = () => {
                                             </div>
                                         ))}
                                         {plan.modules.length > 4 && (
-                                            <div className="text-sm text-slate-500 text-center">
+                                            <div className="text-sm text-[var(--forge-text-muted)] text-center">
                                                 + {plan.modules.length - 4} more modules
                                             </div>
                                         )}
@@ -393,24 +393,24 @@ export const GoalPathWithIntentResolver = () => {
 
                                     {/* Milestones */}
                                     <div className="space-y-2">
-                                        <h4 className="text-sm font-bold text-slate-700">
+                                        <h4 className="text-sm font-bold text-[var(--forge-text-secondary)]">
                                             Key Milestones
                                         </h4>
                                         {plan.milestones.map((milestone) => (
                                             <div
                                                 key={milestone.id}
-                                                className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl flex items-center gap-3"
+                                                className="p-3 bg-gradient-to-r from-[var(--forge-success)]/10 to-[var(--forge-success)]/20 rounded-xl flex items-center gap-3"
                                             >
                                                 <CheckCircle2
                                                     size={ICON_SIZES.md}
-                                                    className="text-emerald-500"
+                                                    className="text-[var(--forge-success)]"
                                                 />
                                                 <div className="flex-1">
-                                                    <span className="font-medium text-slate-700">
+                                                    <span className="font-medium text-[var(--forge-text-secondary)]">
                                                         {milestone.title}
                                                     </span>
                                                 </div>
-                                                <span className="text-xs text-slate-500">
+                                                <span className="text-xs text-[var(--forge-text-muted)]">
                                                     Week {milestone.targetWeek}
                                                 </span>
                                             </div>
@@ -419,8 +419,8 @@ export const GoalPathWithIntentResolver = () => {
 
                                     {/* Recommendations */}
                                     {plan.recommendations.length > 0 && (
-                                        <div className="p-4 bg-amber-50 rounded-xl">
-                                            <div className="flex items-center gap-2 text-sm font-bold text-amber-700 mb-2">
+                                        <div className="p-4 bg-[var(--forge-warning)]/10 rounded-xl">
+                                            <div className="flex items-center gap-2 text-sm font-bold text-[var(--forge-warning)] mb-2">
                                                 <Info size={ICON_SIZES.sm} />
                                                 Recommendations
                                             </div>
@@ -428,7 +428,7 @@ export const GoalPathWithIntentResolver = () => {
                                                 {plan.recommendations.slice(0, 2).map((rec, i) => (
                                                     <li
                                                         key={i}
-                                                        className="text-sm text-amber-800"
+                                                        className="text-sm text-[var(--forge-warning)]"
                                                     >
                                                         <span className="font-medium">{rec.title}:</span>{" "}
                                                         {rec.message}
@@ -439,18 +439,18 @@ export const GoalPathWithIntentResolver = () => {
                                     )}
 
                                     {/* Confidence Score */}
-                                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                                        <span className="text-sm text-slate-600">Plan Confidence</span>
+                                    <div className="flex items-center justify-between p-3 bg-[var(--forge-bg-elevated)] rounded-xl">
+                                        <span className="text-sm text-[var(--forge-text-secondary)]">Plan Confidence</span>
                                         <div className="flex items-center gap-2">
-                                            <div className="w-24 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                            <div className="w-24 h-2 bg-[var(--forge-bg-anvil)] rounded-full overflow-hidden">
                                                 <div
-                                                    className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                                                    className="h-full bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] rounded-full"
                                                     style={{
                                                         width: `${plan.metrics.confidenceScore}%`,
                                                     }}
                                                 />
                                             </div>
-                                            <span className="text-sm font-bold text-slate-700">
+                                            <span className="text-sm font-bold text-[var(--forge-text-secondary)]">
                                                 {plan.metrics.confidenceScore}%
                                             </span>
                                         </div>
@@ -460,7 +460,7 @@ export const GoalPathWithIntentResolver = () => {
 
                             {/* Error State */}
                             {error && (
-                                <div className="p-4 bg-red-50 rounded-xl text-red-700 mb-6">
+                                <div className="p-4 bg-[var(--forge-error)]/10 rounded-xl text-[var(--forge-error)] mb-6">
                                     <span className="font-bold">Error:</span> {error}
                                 </div>
                             )}
@@ -468,7 +468,7 @@ export const GoalPathWithIntentResolver = () => {
                             {/* Focus Areas Preview (when no plan) */}
                             {!plan && focus.length > 0 && (
                                 <div className="space-y-3 mb-6">
-                                    <h4 className="text-sm font-bold text-slate-700">
+                                    <h4 className="text-sm font-bold text-[var(--forge-text-secondary)]">
                                         Selected Focus Areas
                                     </h4>
                                     {focus.map((f, i) => (
@@ -477,12 +477,12 @@ export const GoalPathWithIntentResolver = () => {
                                             initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: i * 0.1 }}
-                                            className="p-3 bg-white rounded-xl border border-slate-100 flex items-center gap-3"
+                                            className="p-3 bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] flex items-center gap-3"
                                         >
-                                            <div className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm font-bold">
+                                            <div className="w-8 h-8 bg-[var(--ember)]/10 text-[var(--ember)] rounded-lg flex items-center justify-center text-sm font-bold">
                                                 {i + 1}
                                             </div>
-                                            <span className="font-medium text-slate-700 capitalize">
+                                            <span className="font-medium text-[var(--forge-text-secondary)] capitalize">
                                                 {f} Development
                                             </span>
                                         </motion.div>
@@ -497,13 +497,13 @@ export const GoalPathWithIntentResolver = () => {
                                         <button
                                             onClick={handleReset}
                                             data-testid="reset-path-btn"
-                                            className="flex-1 py-4 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors"
+                                            className="flex-1 py-4 border-2 border-[var(--forge-border-default)] text-[var(--forge-text-secondary)] rounded-xl font-bold hover:bg-[var(--forge-bg-elevated)] transition-colors"
                                         >
                                             Start Over
                                         </button>
                                         <button
                                             data-testid="start-learning-btn"
-                                            className="flex-1 py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
+                                            className="flex-1 py-4 bg-[var(--ember)] text-[var(--forge-text-primary)] rounded-xl font-bold hover:bg-[var(--ember-glow)] transition-colors flex items-center justify-center gap-2"
                                         >
                                             Start Learning <ArrowRight size={ICON_SIZES.md} />
                                         </button>
@@ -513,7 +513,7 @@ export const GoalPathWithIntentResolver = () => {
                                         onClick={handleGeneratePath}
                                         disabled={isGenerating || focus.length === 0}
                                         data-testid="generate-path-btn"
-                                        className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full py-4 bg-[var(--ember)] text-[var(--forge-text-primary)] rounded-xl font-bold hover:bg-[var(--ember-glow)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {isGenerating ? (
                                             <>

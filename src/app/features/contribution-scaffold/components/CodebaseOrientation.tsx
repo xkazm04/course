@@ -65,8 +65,8 @@ export const CodebaseOrientation: React.FC<CodebaseOrientationProps> = ({
                     <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2">
                         Architecture Notes
                     </h4>
-                    <div className="p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
-                        <p className="text-sm text-indigo-300">
+                    <div className="p-3 rounded-lg bg-[var(--ember)]/10 border border-[var(--ember)]/20">
+                        <p className="text-sm text-[var(--ember)]">
                             {orientation.architectureNotes}
                         </p>
                     </div>
@@ -99,9 +99,9 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ directory }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const importanceColors = {
-        critical: "text-red-400 bg-red-500/20",
-        relevant: "text-amber-400 bg-amber-500/20",
-        contextual: "text-slate-400 bg-slate-500/20",
+        critical: "text-[var(--forge-error)] bg-[var(--forge-error)]/20",
+        relevant: "text-[var(--forge-warning)] bg-[var(--forge-warning)]/20",
+        contextual: "text-[var(--forge-text-muted)] bg-[var(--forge-bg-elevated)]",
     };
 
     return (
@@ -115,7 +115,7 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ directory }) => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="w-full flex items-center gap-3 p-3"
             >
-                <div className="text-amber-400">
+                <div className="text-[var(--forge-warning)]">
                     {isExpanded ? (
                         <FolderOpen size={ICON_SIZES.md} />
                     ) : (
@@ -158,9 +158,9 @@ const FileCard: React.FC<FileCardProps> = ({ file }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const likelihoodConfig = {
-        high: { icon: AlertCircle, color: "text-red-400", bg: "bg-red-500/20", label: "Will modify" },
-        medium: { icon: Circle, color: "text-amber-400", bg: "bg-amber-500/20", label: "May modify" },
-        low: { icon: CheckCircle, color: "text-emerald-400", bg: "bg-emerald-500/20", label: "Reference only" },
+        high: { icon: AlertCircle, color: "text-[var(--forge-error)]", bg: "bg-[var(--forge-error)]/20", label: "Will modify" },
+        medium: { icon: Circle, color: "text-[var(--forge-warning)]", bg: "bg-[var(--forge-warning)]/20", label: "May modify" },
+        low: { icon: CheckCircle, color: "text-[var(--forge-success)]", bg: "bg-[var(--forge-success)]/20", label: "Reference only" },
     };
 
     const config = likelihoodConfig[file.modifyLikelihood];
@@ -177,7 +177,7 @@ const FileCard: React.FC<FileCardProps> = ({ file }) => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="w-full flex items-center gap-3 p-3"
             >
-                <FileCode size={ICON_SIZES.md} className="text-blue-400" />
+                <FileCode size={ICON_SIZES.md} className="text-[var(--forge-info)]" />
                 <div className="flex-1 text-left min-w-0">
                     <code className="text-sm text-[var(--text-primary)] font-mono truncate block">
                         {file.path}
@@ -211,7 +211,7 @@ const FileCard: React.FC<FileCardProps> = ({ file }) => {
                             <span className="text-xs text-[var(--text-muted)]">Key sections:</span>
                             {file.lineRanges.map((range, i) => (
                                 <div key={i} className="flex items-center gap-2 text-xs">
-                                    <code className="text-indigo-400">L{range.start}-{range.end}</code>
+                                    <code className="text-[var(--ember)]">L{range.start}-{range.end}</code>
                                     <span className="text-[var(--text-secondary)]">{range.purpose}</span>
                                 </div>
                             ))}

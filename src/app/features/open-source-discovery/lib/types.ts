@@ -1,4 +1,5 @@
-import type { SkillLevel } from "../../skill-progress/lib/types";
+// Skill levels for matching
+export type SkillLevel = "beginner" | "intermediate" | "advanced" | "expert";
 
 // Repository types
 export type LearnerFriendliness = "beginner" | "intermediate" | "advanced";
@@ -117,36 +118,36 @@ export const COMPLEXITY_CONFIG: Record<TaskComplexity, {
 }> = {
     trivial: {
         label: "Trivial",
-        color: "text-emerald-400",
-        bgColor: "bg-emerald-500/20",
+        color: "text-[var(--forge-success)]",
+        bgColor: "bg-[var(--forge-success)]/20",
         hours: "< 1h",
         icon: "Zap",
     },
     simple: {
         label: "Simple",
-        color: "text-green-400",
-        bgColor: "bg-green-500/20",
+        color: "text-[var(--forge-success)]",
+        bgColor: "bg-[var(--forge-success)]/20",
         hours: "1-3h",
         icon: "Leaf",
     },
     moderate: {
         label: "Moderate",
-        color: "text-amber-400",
-        bgColor: "bg-amber-500/20",
+        color: "text-[var(--forge-warning)]",
+        bgColor: "bg-[var(--forge-warning)]/20",
         hours: "3-8h",
         icon: "Target",
     },
     complex: {
         label: "Complex",
-        color: "text-orange-400",
-        bgColor: "bg-orange-500/20",
+        color: "text-[var(--ember)]",
+        bgColor: "bg-[var(--ember)]/20",
         hours: "8-24h",
         icon: "Flame",
     },
     expert: {
         label: "Expert",
-        color: "text-red-400",
-        bgColor: "bg-red-500/20",
+        color: "text-[var(--forge-error)]",
+        bgColor: "bg-[var(--forge-error)]/20",
         hours: "24h+",
         icon: "Rocket",
     },

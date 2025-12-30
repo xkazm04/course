@@ -77,8 +77,8 @@ export function PathPreviewSidebar({
         <div
             className={cn(
                 "w-[320px] h-full flex flex-col",
-                "bg-white dark:bg-slate-900",
-                "border-l border-slate-200 dark:border-slate-800",
+                "bg-[var(--forge-bg-elevated)]",
+                "border-l border-[var(--forge-border-subtle)]",
                 "shadow-lg z-40 overflow-hidden"
             )}
             data-testid="path-preview-sidebar"
@@ -86,20 +86,20 @@ export function PathPreviewSidebar({
             {/* Header */}
             <div className={cn(
                 "p-4 border-b flex items-center justify-between",
-                "border-slate-200 dark:border-slate-700",
-                "bg-slate-50/50 dark:bg-slate-800/50"
+                "border-[var(--forge-border-subtle)]",
+                "bg-[var(--forge-bg-anvil)]"
             )}>
                 <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                    <h3 className="font-semibold text-[var(--forge-text-primary)]">
                         Your Learning Path
                     </h3>
-                    <p className="text-xs mt-0.5 text-slate-500 dark:text-slate-400">
+                    <p className="text-xs mt-0.5 text-[var(--forge-text-secondary)]">
                         {path.modules.length} modules • {stats.totalHours} hours
                     </p>
                 </div>
                 <button
                     onClick={onClose}
-                    className="p-1.5 rounded-lg transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                    className="p-1.5 rounded-lg transition-colors hover:bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                 >
                     <X size={ICON_SIZES.sm} />
                 </button>
@@ -107,32 +107,32 @@ export function PathPreviewSidebar({
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-2 p-4 pt-0 mt-4">
-                <div className="text-center p-2 rounded-lg bg-slate-50 dark:bg-slate-700/50">
-                    <div className="flex items-center justify-center gap-1 mb-0.5 text-slate-500 dark:text-slate-400">
+                <div className="text-center p-2 rounded-lg bg-[var(--forge-bg-anvil)]">
+                    <div className="flex items-center justify-center gap-1 mb-0.5 text-[var(--forge-text-secondary)]">
                         <BookOpen size={12} />
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    <p className="text-sm font-bold text-[var(--forge-text-primary)]">
                         {stats.moduleCount}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Modules</p>
+                    <p className="text-xs text-[var(--forge-text-secondary)]">Modules</p>
                 </div>
-                <div className="text-center p-2 rounded-lg bg-slate-50 dark:bg-slate-700/50">
-                    <div className="flex items-center justify-center gap-1 mb-0.5 text-slate-500 dark:text-slate-400">
+                <div className="text-center p-2 rounded-lg bg-[var(--forge-bg-anvil)]">
+                    <div className="flex items-center justify-center gap-1 mb-0.5 text-[var(--forge-text-secondary)]">
                         <Clock size={12} />
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    <p className="text-sm font-bold text-[var(--forge-text-primary)]">
                         {stats.totalHours}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Hours</p>
+                    <p className="text-xs text-[var(--forge-text-secondary)]">Hours</p>
                 </div>
-                <div className="text-center p-2 rounded-lg bg-slate-50 dark:bg-slate-700/50">
-                    <div className="flex items-center justify-center gap-1 mb-0.5 text-slate-500 dark:text-slate-400">
+                <div className="text-center p-2 rounded-lg bg-[var(--forge-bg-anvil)]">
+                    <div className="flex items-center justify-center gap-1 mb-0.5 text-[var(--forge-text-secondary)]">
                         <Sparkles size={12} />
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    <p className="text-sm font-bold text-[var(--forge-text-primary)]">
                         {stats.newNodesCount}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">New</p>
+                    <p className="text-xs text-[var(--forge-text-secondary)]">New</p>
                 </div>
             </div>
 
@@ -171,7 +171,7 @@ export function PathPreviewSidebar({
             </div>
 
             {/* Footer with confirm button */}
-            <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+            <div className="p-4 border-t border-[var(--forge-border-subtle)]">
                 <button
                     onClick={onConfirm}
                     disabled={isConfirming}
@@ -181,8 +181,8 @@ export function PathPreviewSidebar({
                         "text-sm font-semibold",
                         "transition-all duration-200",
                         isConfirming
-                            ? "bg-slate-200 dark:bg-slate-700 text-slate-500 cursor-wait"
-                            : "bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90"
+                            ? "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] cursor-wait"
+                            : "bg-[var(--ember)] text-white hover:opacity-90"
                     )}
                     data-testid="confirm-path-btn"
                 >
@@ -199,7 +199,7 @@ export function PathPreviewSidebar({
                     )}
                 </button>
 
-                <p className="text-xs text-center mt-2 text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-center mt-2 text-[var(--forge-text-secondary)]">
                     This will add {stats.newNodesCount} new courses to your knowledge map
                 </p>
             </div>

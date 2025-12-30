@@ -25,10 +25,10 @@ const DOMAINS: { value: ProjectDomain | "all"; label: string; icon: string }[] =
 ];
 
 const DIFFICULTIES: { value: ProjectDifficulty | "all"; label: string; color: string }[] = [
-    { value: "all", label: "All Levels", color: "text-[var(--text-muted)]" },
-    { value: "beginner", label: "Beginner", color: "text-emerald-400" },
-    { value: "intermediate", label: "Intermediate", color: "text-amber-400" },
-    { value: "advanced", label: "Advanced", color: "text-red-400" },
+    { value: "all", label: "All Levels", color: "text-[var(--forge-text-muted)]" },
+    { value: "beginner", label: "Beginner", color: "text-[var(--forge-success)]" },
+    { value: "intermediate", label: "Intermediate", color: "text-[var(--forge-warning)]" },
+    { value: "advanced", label: "Advanced", color: "text-[var(--forge-error)]" },
 ];
 
 export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
@@ -71,24 +71,24 @@ export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
                 <div className="flex-1 relative">
                     <Search
                         size={ICON_SIZES.sm}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--forge-text-muted)]"
                     />
                     <input
                         type="text"
                         placeholder="Search projects..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--surface-overlay)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)]"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--forge-bg-anvil)] border border-[var(--forge-border-default)] text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)] focus:outline-none focus:border-[var(--ember)]"
                     />
                 </div>
-                <div className="flex items-center gap-1 p-1 rounded-lg bg-[var(--surface-overlay)]">
+                <div className="flex items-center gap-1 p-1 rounded-lg bg-[var(--forge-bg-anvil)]">
                     <button
                         onClick={() => setViewMode("grid")}
                         className={cn(
                             "p-2 rounded transition-colors",
                             viewMode === "grid"
-                                ? "bg-[var(--accent-primary)] text-white"
-                                : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                                ? "bg-gradient-forge text-white"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                         )}
                     >
                         <Grid size={ICON_SIZES.sm} />
@@ -98,8 +98,8 @@ export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
                         className={cn(
                             "p-2 rounded transition-colors",
                             viewMode === "list"
-                                ? "bg-[var(--accent-primary)] text-white"
-                                : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                                ? "bg-gradient-forge text-white"
+                                : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                         )}
                     >
                         <List size={ICON_SIZES.sm} />
@@ -110,7 +110,7 @@ export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
             {/* Filters */}
             <div className="space-y-3">
                 <div className="flex items-center gap-2 flex-wrap">
-                    <Filter size={ICON_SIZES.sm} className="text-[var(--text-muted)]" />
+                    <Filter size={ICON_SIZES.sm} className="text-[var(--forge-text-muted)]" />
                     {DOMAINS.map((domain) => (
                         <button
                             key={domain.value}
@@ -118,8 +118,8 @@ export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
                             className={cn(
                                 "px-3 py-1.5 rounded-lg text-sm transition-colors",
                                 activeDomain === domain.value
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                                    ? "bg-gradient-forge text-white"
+                                    : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
                             )}
                         >
                             <span className="mr-1">{domain.icon}</span>
@@ -136,8 +136,8 @@ export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
                             className={cn(
                                 "px-3 py-1.5 rounded-lg text-sm transition-colors",
                                 activeDifficulty === diff.value
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "bg-[var(--surface-overlay)]",
+                                    ? "bg-gradient-forge text-white"
+                                    : "bg-[var(--forge-bg-anvil)]",
                                 activeDifficulty !== diff.value && diff.color
                             )}
                         >
@@ -149,9 +149,9 @@ export const ProjectBrowser: React.FC<ProjectBrowserProps> = ({
 
             {/* Results */}
             {isLoading ? (
-                <div className="text-center py-12 text-[var(--text-muted)]">Loading projects...</div>
+                <div className="text-center py-12 text-[var(--forge-text-muted)]">Loading projects...</div>
             ) : filteredProjects.length === 0 ? (
-                <div className="text-center py-12 text-[var(--text-muted)]">
+                <div className="text-center py-12 text-[var(--forge-text-muted)]">
                     No projects match your filters
                 </div>
             ) : (

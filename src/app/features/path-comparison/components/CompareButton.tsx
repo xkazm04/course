@@ -56,10 +56,10 @@ export const CompareButton: React.FC<CompareButtonProps> = ({
                 "flex items-center gap-1.5 rounded-full font-medium transition-all",
                 size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm",
                 isSelected
-                    ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30 hover:bg-green-500/20"
+                    ? "bg-[var(--forge-success)]/10 text-[var(--forge-success)] border border-[var(--forge-success)]/30 hover:bg-[var(--forge-success)]/20"
                     : isDisabled
-                      ? "bg-[var(--surface-inset)] text-[var(--text-muted)] cursor-not-allowed opacity-50"
-                      : "bg-[var(--surface-inset)] text-[var(--text-secondary)] border border-[var(--border-default)] hover:bg-[var(--surface-overlay)] hover:border-[var(--accent-primary)]",
+                      ? "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] cursor-not-allowed opacity-50"
+                      : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] border border-[var(--forge-border-default)] hover:bg-[var(--forge-bg-elevated)] hover:border-[var(--ember)]",
                 className
             )}
             data-testid={`compare-toggle-${path.id}`}
@@ -127,22 +127,22 @@ export const ComparisonBadge: React.FC<ComparisonBadgeProps> = ({
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-3 bg-[var(--surface-elevated)] backdrop-blur-xl border border-[var(--border-default)] rounded-2xl shadow-xl"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-3 bg-[var(--forge-bg-elevated)] backdrop-blur-xl border border-[var(--forge-border-default)] rounded-2xl shadow-xl"
             data-testid="comparison-badge"
         >
             <div className="flex items-center gap-2 text-sm">
-                <GitCompare size={ICON_SIZES.md} className="text-[var(--accent-primary)]" />
-                <span className="font-medium text-[var(--text-primary)]">
+                <GitCompare size={ICON_SIZES.md} className="text-[var(--ember)]" />
+                <span className="font-medium text-[var(--forge-text-primary)]">
                     {selectedCount} of {maxPaths}
                 </span>
-                <span className="text-[var(--text-muted)]">paths selected</span>
+                <span className="text-[var(--forge-text-muted)]">paths selected</span>
             </div>
 
-            <div className="h-6 w-px bg-[var(--border-default)]" />
+            <div className="h-6 w-px bg-[var(--forge-border-default)]" />
 
             <button
                 onClick={onClear}
-                className="px-3 py-1.5 text-sm text-[var(--text-muted)] hover:text-red-500 transition-colors"
+                className="px-3 py-1.5 text-sm text-[var(--forge-text-muted)] hover:text-[var(--forge-error)] transition-colors"
                 data-testid="clear-comparison-btn"
             >
                 Clear
@@ -154,8 +154,8 @@ export const ComparisonBadge: React.FC<ComparisonBadgeProps> = ({
                 className={cn(
                     "px-4 py-1.5 rounded-xl text-sm font-bold transition-all",
                     canCompare
-                        ? "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] hover:opacity-90"
-                        : "bg-[var(--surface-inset)] text-[var(--text-muted)] cursor-not-allowed"
+                        ? "bg-gradient-forge text-white shadow-ember hover:opacity-90"
+                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] cursor-not-allowed"
                 )}
                 data-testid="open-comparison-modal-btn"
             >

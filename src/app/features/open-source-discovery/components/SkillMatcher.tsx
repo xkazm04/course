@@ -66,8 +66,8 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
         <motion.div
             layout
             className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)]",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)]",
                 elevation.elevated
             )}
         >
@@ -77,20 +77,20 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
                 className="w-full p-4 flex items-center justify-between"
             >
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-purple-500/20">
-                        <Filter size={ICON_SIZES.md} className="text-purple-400" />
+                    <div className="p-2 rounded-lg bg-[var(--ember)]/20">
+                        <Filter size={ICON_SIZES.md} className="text-[var(--ember)]" />
                     </div>
                     <div className="text-left">
-                        <h3 className="font-semibold text-[var(--text-primary)]">
+                        <h3 className="font-semibold text-[var(--forge-text-primary)]">
                             Skill Matcher
                         </h3>
-                        <p className="text-xs text-[var(--text-muted)]">
+                        <p className="text-xs text-[var(--forge-text-muted)]">
                             Find issues that match your skills
                         </p>
                     </div>
                 </div>
                 {matchCount !== undefined && (
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-medium">
+                    <span className="px-3 py-1 rounded-full bg-[var(--forge-success)]/20 text-[var(--forge-success)] text-sm font-medium">
                         {matchCount} matches
                     </span>
                 )}
@@ -102,11 +102,11 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="px-4 pb-4 space-y-4 border-t border-[var(--border-subtle)]"
+                    className="px-4 pb-4 space-y-4 border-t border-[var(--forge-border-subtle)]"
                 >
                     {/* Complexity preference */}
                     <div className="pt-4">
-                        <label className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] mb-3">
+                        <label className="flex items-center gap-2 text-sm font-medium text-[var(--forge-text-secondary)] mb-3">
                             <BarChart3 size={ICON_SIZES.sm} />
                             Preferred Complexity
                         </label>
@@ -123,8 +123,8 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
                                         className={cn(
                                             "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                                             isSelected
-                                                ? `${config.bgColor} ${config.color} ring-2 ring-current ring-offset-2 ring-offset-[var(--surface-elevated)]`
-                                                : "bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                                ? `${config.bgColor} ${config.color} ring-2 ring-current ring-offset-2 ring-offset-[var(--forge-bg-elevated)]`
+                                                : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                                         )}
                                     >
                                         {config.label}
@@ -136,7 +136,7 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
 
                     {/* Languages */}
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] mb-3">
+                        <label className="flex items-center gap-2 text-sm font-medium text-[var(--forge-text-secondary)] mb-3">
                             <Languages size={ICON_SIZES.sm} />
                             Preferred Languages
                         </label>
@@ -152,8 +152,8 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
                                         className={cn(
                                             "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                                             isSelected
-                                                ? "bg-indigo-500/20 text-indigo-400 ring-2 ring-indigo-500/50 ring-offset-2 ring-offset-[var(--surface-elevated)]"
-                                                : "bg-[var(--surface-overlay)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                                ? "bg-[var(--ember)]/20 text-[var(--ember)] ring-2 ring-[var(--ember)]/50 ring-offset-2 ring-offset-[var(--forge-bg-elevated)]"
+                                                : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                                         )}
                                     >
                                         {lang}
@@ -165,7 +165,7 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
 
                     {/* Time availability */}
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] mb-3">
+                        <label className="flex items-center gap-2 text-sm font-medium text-[var(--forge-text-secondary)] mb-3">
                             <Clock size={ICON_SIZES.sm} />
                             Max Time Available
                         </label>
@@ -176,9 +176,9 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
                                 max="40"
                                 value={preferences.maxEstimatedHours}
                                 onChange={e => updatePreference("maxEstimatedHours", parseInt(e.target.value))}
-                                className="flex-1 accent-[var(--accent-primary)]"
+                                className="flex-1 accent-[var(--ember)]"
                             />
-                            <span className="text-sm font-medium text-[var(--text-primary)] min-w-[60px] text-right">
+                            <span className="text-sm font-medium text-[var(--forge-text-primary)] min-w-[60px] text-right">
                                 {preferences.maxEstimatedHours}h
                             </span>
                         </div>
@@ -209,8 +209,8 @@ export const SkillMatcher: React.FC<SkillMatcherProps> = ({
                         onClick={onFindMatches}
                         className={cn(
                             "w-full py-3 rounded-xl font-semibold text-sm",
-                            "bg-gradient-to-r from-purple-500 to-indigo-500 text-white",
-                            "hover:from-purple-600 hover:to-indigo-600 transition-all",
+                            "bg-gradient-forge text-white",
+                            "hover:brightness-110 transition-all",
                             "flex items-center justify-center gap-2"
                         )}
                     >
@@ -245,24 +245,24 @@ const ToggleOption: React.FC<ToggleOptionProps> = ({
             className={cn(
                 "flex items-start gap-3 p-3 rounded-xl flex-1 min-w-[200px] text-left transition-colors",
                 checked
-                    ? "bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/30"
-                    : "bg-[var(--surface-overlay)] border border-transparent hover:border-[var(--border-default)]"
+                    ? "bg-[var(--ember)]/10 border border-[var(--ember)]/30"
+                    : "bg-[var(--forge-bg-anvil)] border border-transparent hover:border-[var(--forge-border-default)]"
             )}
         >
             <div className={cn(
                 "p-1.5 rounded-lg",
-                checked ? "bg-[var(--accent-primary)]/20 text-[var(--accent-primary)]" : "bg-[var(--surface-elevated)] text-[var(--text-muted)]"
+                checked ? "bg-[var(--ember)]/20 text-[var(--ember)]" : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
             )}>
                 {icon}
             </div>
             <div>
                 <div className={cn(
                     "text-sm font-medium",
-                    checked ? "text-[var(--accent-primary)]" : "text-[var(--text-primary)]"
+                    checked ? "text-[var(--ember)]" : "text-[var(--forge-text-primary)]"
                 )}>
                     {label}
                 </div>
-                <div className="text-xs text-[var(--text-muted)]">
+                <div className="text-xs text-[var(--forge-text-muted)]">
                     {description}
                 </div>
             </div>

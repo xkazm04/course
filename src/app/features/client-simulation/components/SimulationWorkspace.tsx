@@ -69,7 +69,7 @@ export const SimulationWorkspace: React.FC = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 >
-                    <Users size={ICON_SIZES.xl} className="text-[var(--accent-primary)]" />
+                    <Users size={ICON_SIZES.xl} className="text-[var(--ember)]" />
                 </motion.div>
             </div>
         );
@@ -80,36 +80,36 @@ export const SimulationWorkspace: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+                    <h2 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                         Client Simulation
                     </h2>
-                    <p className="text-[var(--text-muted)] mt-1">
+                    <p className="text-[var(--forge-text-muted)] mt-1">
                         Practice client communication with AI-generated scenarios
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
                     {/* Stats */}
-                    <div className="flex items-center gap-4 px-4 py-2 rounded-lg bg-[var(--surface-elevated)]">
+                    <div className="flex items-center gap-4 px-4 py-2 rounded-lg bg-[var(--forge-bg-elevated)]">
                         <div className="text-center">
-                            <div className="text-lg font-bold text-[var(--text-primary)]">{stats.completed}</div>
-                            <div className="text-xs text-[var(--text-muted)]">Completed</div>
+                            <div className="text-lg font-bold text-[var(--forge-text-primary)]">{stats.completed}</div>
+                            <div className="text-xs text-[var(--forge-text-muted)]">Completed</div>
                         </div>
-                        <div className="w-px h-8 bg-[var(--border-subtle)]" />
+                        <div className="w-px h-8 bg-[var(--forge-border-subtle)]" />
                         <div className="text-center">
-                            <div className="text-lg font-bold text-emerald-400">{stats.avgSatisfaction}%</div>
-                            <div className="text-xs text-[var(--text-muted)]">Avg. Satisfaction</div>
+                            <div className="text-lg font-bold text-[var(--forge-success)]">{stats.avgSatisfaction}%</div>
+                            <div className="text-xs text-[var(--forge-text-muted)]">Avg. Satisfaction</div>
                         </div>
                     </div>
 
                     {/* View toggle */}
-                    <div className="flex rounded-lg bg-[var(--surface-elevated)] p-1">
+                    <div className="flex rounded-lg bg-[var(--forge-bg-elevated)] p-1">
                         <button
                             onClick={() => setViewMode("workspace")}
                             className={cn(
                                 "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                                 viewMode === "workspace"
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)] text-white"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             Workspace
@@ -119,8 +119,8 @@ export const SimulationWorkspace: React.FC = () => {
                             className={cn(
                                 "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                                 viewMode === "gallery"
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                                    ? "bg-[var(--ember)] text-white"
+                                    : "text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)]"
                             )}
                         >
                             Clients
@@ -196,8 +196,8 @@ const WorkspaceView: React.FC<WorkspaceViewProps> = ({
         >
             {/* Client header */}
             <div className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)] p-4",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)] p-4",
                 elevation.elevated
             )}>
                 <div className="flex items-center justify-between">
@@ -207,14 +207,14 @@ const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                         <div className="flex gap-2">
                             <button
                                 onClick={onComplete}
-                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium bg-[var(--forge-success)]/20 text-[var(--forge-success)] hover:bg-[var(--forge-success)]/30 transition-colors"
                             >
                                 <CheckCircle size={ICON_SIZES.sm} />
                                 Complete
                             </button>
                             <button
                                 onClick={onAbandon}
-                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium bg-[var(--forge-error)]/20 text-[var(--forge-error)] hover:bg-[var(--forge-error)]/30 transition-colors"
                             >
                                 <XCircle size={ICON_SIZES.sm} />
                                 Abandon
@@ -228,8 +228,8 @@ const WorkspaceView: React.FC<WorkspaceViewProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[600px]">
                 {/* Chat panel */}
                 <div className={cn(
-                    "lg:col-span-2 rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] overflow-hidden",
+                    "lg:col-span-2 rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] overflow-hidden",
                     elevation.elevated
                 )}>
                     <ChatInterface
@@ -247,8 +247,8 @@ const WorkspaceView: React.FC<WorkspaceViewProps> = ({
 
                 {/* Requirements panel */}
                 <div className={cn(
-                    "rounded-xl border border-[var(--border-default)]",
-                    "bg-[var(--surface-elevated)] overflow-hidden",
+                    "rounded-xl border border-[var(--forge-border-default)]",
+                    "bg-[var(--forge-bg-elevated)] overflow-hidden",
                     elevation.elevated
                 )}>
                     <RequirementsPanel
@@ -265,8 +265,8 @@ const WorkspaceView: React.FC<WorkspaceViewProps> = ({
 
             {/* Timeline */}
             <div className={cn(
-                "rounded-xl border border-[var(--border-default)]",
-                "bg-[var(--surface-elevated)]",
+                "rounded-xl border border-[var(--forge-border-default)]",
+                "bg-[var(--forge-bg-elevated)]",
                 elevation.elevated
             )}>
                 <TimelineView
@@ -294,19 +294,20 @@ interface SatisfactionMeterProps {
 }
 
 const SatisfactionMeter: React.FC<SatisfactionMeterProps> = ({ value }) => {
-    const color = value >= 70 ? "emerald" : value >= 40 ? "amber" : "red";
+    const colorClass = value >= 70 ? "bg-[var(--forge-success)]" : value >= 40 ? "bg-[var(--forge-warning)]" : "bg-[var(--forge-error)]";
+    const textColorClass = value >= 70 ? "text-[var(--forge-success)]" : value >= 40 ? "text-[var(--forge-warning)]" : "text-[var(--forge-error)]";
 
     return (
         <div className="flex items-center gap-2">
-            <span className="text-xs text-[var(--text-muted)]">Satisfaction</span>
-            <div className="w-24 h-2 rounded-full bg-[var(--surface-overlay)]">
+            <span className="text-xs text-[var(--forge-text-muted)]">Satisfaction</span>
+            <div className="w-24 h-2 rounded-full bg-[var(--forge-bg-elevated)]">
                 <motion.div
-                    className={`h-full rounded-full bg-${color}-500`}
+                    className={`h-full rounded-full ${colorClass}`}
                     initial={{ width: 0 }}
                     animate={{ width: `${value}%` }}
                 />
             </div>
-            <span className={`text-sm font-medium text-${color}-400`}>{value}%</span>
+            <span className={`text-sm font-medium ${textColorClass}`}>{value}%</span>
         </div>
     );
 };
@@ -323,18 +324,18 @@ const EmptyWorkspace: React.FC<EmptyWorkspaceProps> = ({ onSelectClient }) => {
             animate={{ opacity: 1 }}
             className="text-center py-16"
         >
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--surface-elevated)] mb-4">
-                <MessageSquare size={ICON_SIZES.xl} className="text-[var(--text-muted)]" />
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--forge-bg-elevated)] mb-4">
+                <MessageSquare size={ICON_SIZES.xl} className="text-[var(--forge-text-muted)]" />
             </div>
-            <h3 className="text-xl font-semibold text-[var(--text-primary)]">
+            <h3 className="text-xl font-semibold text-[var(--forge-text-primary)]">
                 No Active Simulation
             </h3>
-            <p className="text-[var(--text-muted)] mt-2 max-w-md mx-auto">
+            <p className="text-[var(--forge-text-muted)] mt-2 max-w-md mx-auto">
                 Select a client from the gallery to start a new simulation and practice your communication skills.
             </p>
             <button
                 onClick={onSelectClient}
-                className="mt-6 px-6 py-3 rounded-xl bg-[var(--accent-primary)] text-white font-medium hover:bg-[var(--accent-primary-hover)] transition-colors"
+                className="mt-6 px-6 py-3 rounded-xl bg-[var(--ember)] text-white font-medium hover:bg-[var(--ember-glow)] transition-colors"
             >
                 Browse Clients
             </button>
@@ -366,8 +367,8 @@ const ClientGallery: React.FC<ClientGalleryProps> = ({ onStartSimulation }) => {
                             key={persona.id}
                             whileHover={{ scale: 1.02, y: -4 }}
                             className={cn(
-                                "rounded-xl border border-[var(--border-default)]",
-                                "bg-[var(--surface-elevated)] overflow-hidden cursor-pointer",
+                                "rounded-xl border border-[var(--forge-border-default)]",
+                                "bg-[var(--forge-bg-elevated)] overflow-hidden cursor-pointer",
                                 elevation.hoverable
                             )}
                             onClick={() => scenario && onStartSimulation(persona.id, scenario.id)}
@@ -375,23 +376,23 @@ const ClientGallery: React.FC<ClientGalleryProps> = ({ onStartSimulation }) => {
                             <div className="p-4">
                                 <ClientProfile persona={persona} compact showDetails={false} />
                                 {scenario && (
-                                    <div className="mt-3 p-3 rounded-lg bg-[var(--surface-overlay)]">
+                                    <div className="mt-3 p-3 rounded-lg bg-[var(--forge-bg-workshop)]">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="text-xs font-medium text-[var(--text-muted)]">
+                                            <span className="text-xs font-medium text-[var(--forge-text-muted)]">
                                                 Project:
                                             </span>
-                                            <span className="text-xs text-[var(--accent-primary)]">
+                                            <span className="text-xs text-[var(--ember)]">
                                                 {PROJECT_TYPE_CONFIG[scenario.projectType].label}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-[var(--text-secondary)] line-clamp-2">
+                                        <p className="text-sm text-[var(--forge-text-secondary)] line-clamp-2">
                                             "{scenario.brief}"
                                         </p>
                                     </div>
                                 )}
                             </div>
-                            <div className="px-4 py-3 border-t border-[var(--border-subtle)] bg-[var(--surface-base)]">
-                                <button className="w-full py-2 rounded-lg bg-[var(--accent-primary)] text-white text-sm font-medium hover:bg-[var(--accent-primary-hover)] transition-colors">
+                            <div className="px-4 py-3 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]">
+                                <button className="w-full py-2 rounded-lg bg-[var(--ember)] text-white text-sm font-medium hover:bg-[var(--ember-glow)] transition-colors">
                                     Start Simulation
                                 </button>
                             </div>

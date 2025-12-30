@@ -62,14 +62,14 @@ export const ContributionStats = ({
             {/* Header */}
             <PrismaticCard className="p-6">
                 <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                    <div className="w-16 h-16 bg-gradient-forge rounded-2xl flex items-center justify-center shadow-ember">
                         <Trophy size={ICON_SIZES.xl} className="text-white" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100">
+                        <h1 className="text-2xl font-black text-[var(--forge-text-primary)]">
                             Your Contribution Journey
                         </h1>
-                        <p className="text-slate-600 dark:text-slate-400">
+                        <p className="text-[var(--forge-text-secondary)]">
                             Track your open-source impact
                         </p>
                     </div>
@@ -81,29 +81,29 @@ export const ContributionStats = ({
                         icon={GitMerge}
                         label="Merged PRs"
                         value={stats.mergedPRs}
-                        color="text-purple-500"
-                        bgColor="bg-purple-100 dark:bg-purple-900/30"
+                        color="text-[var(--ember)]"
+                        bgColor="bg-[var(--ember)]/10"
                     />
                     <QuickStatCard
                         icon={FolderGit2}
                         label="Repositories"
                         value={stats.repositoriesCount}
-                        color="text-indigo-500"
-                        bgColor="bg-indigo-100 dark:bg-indigo-900/30"
+                        color="text-[var(--ember)]"
+                        bgColor="bg-[var(--ember)]/10"
                     />
                     <QuickStatCard
                         icon={FileCode}
                         label="Lines Added"
                         value={stats.totalAdditions.toLocaleString()}
-                        color="text-emerald-500"
-                        bgColor="bg-emerald-100 dark:bg-emerald-900/30"
+                        color="text-[var(--forge-success)]"
+                        bgColor="bg-[var(--forge-success)]/10"
                     />
                     <QuickStatCard
                         icon={Flame}
                         label="Day Streak"
                         value={stats.currentStreak}
-                        color="text-orange-500"
-                        bgColor="bg-orange-100 dark:bg-orange-900/30"
+                        color="text-[var(--forge-warning)]"
+                        bgColor="bg-[var(--forge-warning)]/10"
                     />
                 </div>
             </PrismaticCard>
@@ -155,12 +155,12 @@ interface QuickStatCardProps {
 
 const QuickStatCard = ({ icon: Icon, label, value, color, bgColor }: QuickStatCardProps) => {
     return (
-        <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div className="p-4 rounded-xl bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)]">
             <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-3", bgColor)}>
                 <Icon size={ICON_SIZES.md} className={color} />
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-slate-100">{value}</div>
-            <div className="text-sm text-slate-500 dark:text-slate-400">{label}</div>
+            <div className="text-2xl font-black text-[var(--forge-text-primary)]">{value}</div>
+            <div className="text-sm text-[var(--forge-text-muted)]">{label}</div>
         </div>
     );
 };
@@ -184,8 +184,8 @@ const TabButton = ({ isActive, onClick, label, testId }: TabButtonProps) => {
             className={cn(
                 "px-4 py-2 rounded-xl font-medium transition-all",
                 isActive
-                    ? "bg-indigo-600 text-white"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                    ? "bg-gradient-forge text-white shadow-ember-sm"
+                    : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-secondary)] hover:bg-[var(--ember)]/10"
             )}
         >
             {label}
@@ -208,7 +208,7 @@ const StatsTab = ({ stats }: StatsTabProps) => {
         <div className="space-y-6">
             {/* Detailed Stats */}
             <PrismaticCard className="p-6">
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+                <h2 className="text-lg font-bold text-[var(--forge-text-primary)] mb-4">
                     Contribution Details
                 </h2>
 
@@ -226,7 +226,7 @@ const StatsTab = ({ stats }: StatsTabProps) => {
 
             {/* Skills Used */}
             <PrismaticCard className="p-6">
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+                <h2 className="text-lg font-bold text-[var(--forge-text-primary)] mb-4">
                     Skills Demonstrated
                 </h2>
 
@@ -235,13 +235,13 @@ const StatsTab = ({ stats }: StatsTabProps) => {
                         stats.skillsUsed.map((skill) => (
                             <span
                                 key={skill}
-                                className="px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium rounded-lg border border-indigo-200 dark:border-indigo-800"
+                                className="px-3 py-1.5 bg-[var(--ember)]/10 text-[var(--ember)] font-medium rounded-lg border border-[var(--forge-border-subtle)]"
                             >
                                 {skill}
                             </span>
                         ))
                     ) : (
-                        <p className="text-slate-500 dark:text-slate-400">
+                        <p className="text-[var(--forge-text-muted)]">
                             Complete contributions to demonstrate skills
                         </p>
                     )}
@@ -251,14 +251,14 @@ const StatsTab = ({ stats }: StatsTabProps) => {
             {/* Streak Progress */}
             <PrismaticCard className="p-6">
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center">
-                        <Flame size={ICON_SIZES.lg} className="text-orange-500" />
+                    <div className="w-12 h-12 bg-[var(--forge-warning)]/10 rounded-2xl flex items-center justify-center">
+                        <Flame size={ICON_SIZES.lg} className="text-[var(--forge-warning)]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                        <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                             Contribution Streak
                         </h2>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="text-sm text-[var(--forge-text-secondary)]">
                             Keep contributing daily to build your streak
                         </p>
                     </div>
@@ -266,18 +266,18 @@ const StatsTab = ({ stats }: StatsTabProps) => {
 
                 <div className="flex items-end gap-4">
                     <div>
-                        <div className="text-4xl font-black text-orange-500">{stats.currentStreak}</div>
-                        <div className="text-sm text-slate-500 dark:text-slate-400">Current Streak</div>
+                        <div className="text-4xl font-black text-[var(--forge-warning)]">{stats.currentStreak}</div>
+                        <div className="text-sm text-[var(--forge-text-muted)]">Current Streak</div>
                     </div>
                     <div className="flex-1">
-                        <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-3 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
                             <motion.div
-                                className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"
+                                className="h-full bg-gradient-forge rounded-full"
                                 initial={prefersReducedMotion ? false : { width: 0 }}
                                 animate={{ width: `${Math.min((stats.currentStreak / stats.longestStreak) * 100, 100)}%` }}
                             />
                         </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 text-right">
+                        <div className="text-xs text-[var(--forge-text-muted)] mt-1 text-right">
                             Best: {stats.longestStreak} days
                         </div>
                     </div>
@@ -294,9 +294,9 @@ interface DetailStatRowProps {
 
 const DetailStatRow = ({ label, value }: DetailStatRowProps) => {
     return (
-        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-            <span className="text-slate-600 dark:text-slate-400">{label}</span>
-            <span className="font-bold text-slate-900 dark:text-slate-100">{value}</span>
+        <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--forge-bg-elevated)]">
+            <span className="text-[var(--forge-text-secondary)]">{label}</span>
+            <span className="font-bold text-[var(--forge-text-primary)]">{value}</span>
         </div>
     );
 };
@@ -316,8 +316,8 @@ const BadgesTab = ({ badges, certificates }: BadgesTabProps) => {
             {/* Badges */}
             <PrismaticCard className="p-6">
                 <div className="flex items-center gap-2 mb-4">
-                    <Award size={ICON_SIZES.md} className="text-amber-500" />
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <Award size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />
+                    <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         Badges ({badges.length})
                     </h2>
                 </div>
@@ -330,8 +330,8 @@ const BadgesTab = ({ badges, certificates }: BadgesTabProps) => {
                     </div>
                 ) : (
                     <div className="text-center py-8">
-                        <Medal size={ICON_SIZES.xl} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-                        <p className="text-slate-500 dark:text-slate-400">
+                        <Medal size={ICON_SIZES.xl} className="mx-auto text-[var(--forge-text-muted)] mb-3" />
+                        <p className="text-[var(--forge-text-muted)]">
                             Complete contributions to earn badges
                         </p>
                     </div>
@@ -341,8 +341,8 @@ const BadgesTab = ({ badges, certificates }: BadgesTabProps) => {
             {/* Certificates */}
             <PrismaticCard className="p-6">
                 <div className="flex items-center gap-2 mb-4">
-                    <Briefcase size={ICON_SIZES.md} className="text-indigo-500" />
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <Briefcase size={ICON_SIZES.md} className="text-[var(--ember)]" />
+                    <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">
                         Certificates ({certificates.length})
                     </h2>
                 </div>
@@ -355,8 +355,8 @@ const BadgesTab = ({ badges, certificates }: BadgesTabProps) => {
                     </div>
                 ) : (
                     <div className="text-center py-8">
-                        <Briefcase size={ICON_SIZES.xl} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-                        <p className="text-slate-500 dark:text-slate-400">
+                        <Briefcase size={ICON_SIZES.xl} className="mx-auto text-[var(--forge-text-muted)] mb-3" />
+                        <p className="text-[var(--forge-text-muted)]">
                             Earn certificates by making consistent contributions
                         </p>
                     </div>
@@ -372,14 +372,14 @@ interface BadgeCardProps {
 
 const BadgeCard = ({ badge }: BadgeCardProps) => {
     const levelColors = {
-        bronze: "from-amber-600 to-orange-700",
-        silver: "from-slate-400 to-slate-500",
-        gold: "from-amber-400 to-yellow-500",
-        platinum: "from-cyan-400 to-indigo-500",
+        bronze: "from-[var(--ember)] to-[var(--forge-error)]",
+        silver: "from-[var(--forge-text-muted)] to-[var(--forge-text-secondary)]",
+        gold: "from-[var(--gold)] to-[var(--forge-warning)]",
+        platinum: "bg-gradient-forge",
     };
 
     return (
-        <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex items-start gap-4">
+        <div className="p-4 rounded-xl bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] flex items-start gap-4">
             <div
                 className={cn(
                     "w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br",
@@ -389,9 +389,9 @@ const BadgeCard = ({ badge }: BadgeCardProps) => {
                 <Award size={ICON_SIZES.lg} className="text-white" />
             </div>
             <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-900 dark:text-slate-100">{badge.name}</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">{badge.description}</p>
-                <div className="flex items-center gap-2 mt-2 text-xs text-slate-500 dark:text-slate-400">
+                <h3 className="font-bold text-[var(--forge-text-primary)]">{badge.name}</h3>
+                <p className="text-sm text-[var(--forge-text-secondary)]">{badge.description}</p>
+                <div className="flex items-center gap-2 mt-2 text-xs text-[var(--forge-text-muted)]">
                     <span className="capitalize">{badge.level}</span>
                     <span>•</span>
                     <span>{new Date(badge.earnedAt).toLocaleDateString()}</span>
@@ -407,16 +407,16 @@ interface CertificateCardProps {
 
 const CertificateCard = ({ certificate }: CertificateCardProps) => {
     return (
-        <div className="p-5 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800">
+        <div className="p-5 rounded-xl bg-[var(--ember)]/5 border border-[var(--forge-border-subtle)]">
             <div className="flex items-start justify-between">
                 <div>
-                    <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{certificate.title}</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{certificate.description}</p>
+                    <h3 className="font-bold text-lg text-[var(--forge-text-primary)]">{certificate.title}</h3>
+                    <p className="text-sm text-[var(--forge-text-secondary)]">{certificate.description}</p>
                 </div>
                 {certificate.shareable && (
                     <button
                         data-testid={`share-cert-${certificate.id}-btn`}
-                        className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50 transition-colors"
+                        className="p-2 rounded-lg bg-[var(--ember)]/10 text-[var(--ember)] hover:bg-[var(--ember)]/20 transition-colors"
                     >
                         <Share2 size={ICON_SIZES.sm} />
                     </button>
@@ -427,15 +427,15 @@ const CertificateCard = ({ certificate }: CertificateCardProps) => {
                 {certificate.skills.map((skill) => (
                     <span
                         key={skill}
-                        className="px-2 py-1 bg-white/50 dark:bg-slate-800/50 text-indigo-700 dark:text-indigo-400 text-xs font-medium rounded-full"
+                        className="px-2 py-1 bg-[var(--forge-bg-elevated)] text-[var(--ember)] text-xs font-medium rounded-full"
                     >
                         {skill}
                     </span>
                 ))}
             </div>
 
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-indigo-200 dark:border-indigo-800">
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-[var(--forge-border-subtle)]">
+                <div className="text-sm text-[var(--forge-text-secondary)]">
                     Issued by <span className="font-medium">{certificate.issuer}</span>
                 </div>
                 <a
@@ -443,7 +443,7 @@ const CertificateCard = ({ certificate }: CertificateCardProps) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid={`verify-cert-${certificate.id}-link`}
-                    className="flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+                    className="flex items-center gap-1 text-sm text-[var(--ember)] hover:underline"
                 >
                     <Link2 size={ICON_SIZES.sm} />
                     Verify
@@ -466,8 +466,8 @@ const LeaderboardTab = ({ leaderboard, userId }: LeaderboardTabProps) => {
     return (
         <PrismaticCard className="p-6">
             <div className="flex items-center gap-2 mb-6">
-                <Crown size={ICON_SIZES.md} className="text-amber-500" />
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Top Contributors</h2>
+                <Crown size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />
+                <h2 className="text-lg font-bold text-[var(--forge-text-primary)]">Top Contributors</h2>
             </div>
 
             {leaderboard.length > 0 ? (
@@ -483,8 +483,8 @@ const LeaderboardTab = ({ leaderboard, userId }: LeaderboardTabProps) => {
                 </div>
             ) : (
                 <div className="text-center py-8">
-                    <Trophy size={ICON_SIZES.xl} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-                    <p className="text-slate-500 dark:text-slate-400">
+                    <Trophy size={ICON_SIZES.xl} className="mx-auto text-[var(--forge-text-muted)] mb-3" />
+                    <p className="text-[var(--forge-text-muted)]">
                         Leaderboard data not available
                     </p>
                 </div>
@@ -501,9 +501,9 @@ interface LeaderboardRowProps {
 
 const LeaderboardRow = ({ entry, isCurrentUser, position }: LeaderboardRowProps) => {
     const getRankIcon = (rank: number) => {
-        if (rank === 1) return <Crown size={ICON_SIZES.md} className="text-amber-500" />;
-        if (rank === 2) return <Medal size={ICON_SIZES.md} className="text-slate-400" />;
-        if (rank === 3) return <Medal size={ICON_SIZES.md} className="text-amber-600" />;
+        if (rank === 1) return <Crown size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />;
+        if (rank === 2) return <Medal size={ICON_SIZES.md} className="text-[var(--forge-text-muted)]" />;
+        if (rank === 3) return <Medal size={ICON_SIZES.md} className="text-[var(--forge-warning)]" />;
         return null;
     };
 
@@ -512,14 +512,14 @@ const LeaderboardRow = ({ entry, isCurrentUser, position }: LeaderboardRowProps)
             className={cn(
                 "p-4 rounded-xl flex items-center gap-4",
                 isCurrentUser
-                    ? "bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-300 dark:border-indigo-700"
-                    : "bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
+                    ? "bg-[var(--ember)]/10 border-2 border-[var(--ember)]"
+                    : "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)]"
             )}
         >
             {/* Rank */}
             <div className="w-10 text-center">
                 {getRankIcon(entry.rank) || (
-                    <span className="text-lg font-bold text-slate-400">#{entry.rank}</span>
+                    <span className="text-lg font-bold text-[var(--forge-text-muted)]">#{entry.rank}</span>
                 )}
             </div>
 
@@ -527,7 +527,7 @@ const LeaderboardRow = ({ entry, isCurrentUser, position }: LeaderboardRowProps)
             <img
                 src={entry.avatarUrl}
                 alt={entry.username}
-                className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700"
+                className="w-10 h-10 rounded-full bg-[var(--forge-bg-anvil)]"
             />
 
             {/* Info */}
@@ -537,14 +537,14 @@ const LeaderboardRow = ({ entry, isCurrentUser, position }: LeaderboardRowProps)
                         className={cn(
                             "font-semibold truncate",
                             isCurrentUser
-                                ? "text-indigo-700 dark:text-indigo-400"
-                                : "text-slate-900 dark:text-slate-100"
+                                ? "text-[var(--ember)]"
+                                : "text-[var(--forge-text-primary)]"
                         )}
                     >
                         {entry.username}
                     </span>
                     {isCurrentUser && (
-                        <span className="px-2 py-0.5 bg-indigo-600 text-white text-xs font-medium rounded-full">
+                        <span className="px-2 py-0.5 bg-gradient-forge text-white text-xs font-medium rounded-full shadow-ember-sm">
                             You
                         </span>
                     )}
@@ -553,7 +553,7 @@ const LeaderboardRow = ({ entry, isCurrentUser, position }: LeaderboardRowProps)
                     {entry.topSkills.slice(0, 2).map((skill) => (
                         <span
                             key={skill}
-                            className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs rounded-full"
+                            className="px-2 py-0.5 bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)] text-xs rounded-full"
                         >
                             {skill}
                         </span>
@@ -563,11 +563,11 @@ const LeaderboardRow = ({ entry, isCurrentUser, position }: LeaderboardRowProps)
 
             {/* Stats */}
             <div className="text-right">
-                <div className="flex items-center gap-1 text-lg font-bold text-slate-900 dark:text-slate-100">
-                    <Star size={ICON_SIZES.sm} className="text-amber-500" />
+                <div className="flex items-center gap-1 text-lg font-bold text-[var(--forge-text-primary)]">
+                    <Star size={ICON_SIZES.sm} className="text-[var(--forge-warning)]" />
                     {entry.points.toLocaleString()}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-xs text-[var(--forge-text-muted)]">
                     {entry.mergedPRs} PRs merged
                 </div>
             </div>

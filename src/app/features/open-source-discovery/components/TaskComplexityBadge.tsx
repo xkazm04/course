@@ -110,7 +110,7 @@ export const ComplexityIndicator: React.FC<ComplexityIndicatorProps> = ({
                 <span className={cn("font-medium", config.color, size === "sm" ? "text-xs" : "text-sm")}>
                     {config.label}
                 </span>
-                <span className="text-[var(--text-muted)] text-xs">
+                <span className="text-[var(--forge-text-muted)] text-xs">
                     ~{estimatedHours}h
                 </span>
             </div>
@@ -146,7 +146,7 @@ export const ComplexityBar: React.FC<ComplexityBarProps> = ({
                                 "flex-1 rounded-full transition-colors",
                                 isActive
                                     ? config.bgColor.replace("/20", "/60")
-                                    : "bg-[var(--surface-elevated)]"
+                                    : "bg-[var(--forge-bg-elevated)]"
                             )}
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
@@ -155,7 +155,7 @@ export const ComplexityBar: React.FC<ComplexityBarProps> = ({
                     );
                 })}
             </div>
-            <div className="flex justify-between text-xs text-[var(--text-muted)]">
+            <div className="flex justify-between text-xs text-[var(--forge-text-muted)]">
                 <span>Trivial</span>
                 <span className="flex items-center gap-1">
                     <span className={COMPLEXITY_CONFIG[complexity].color}>

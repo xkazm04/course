@@ -42,7 +42,7 @@ function HintSection({ hints }: { hints: ChallengeHint[] }) {
     return (
         <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] p-6">
             <div className="flex items-center gap-2 mb-4">
-                <Lightbulb size={20} className="text-amber-500" />
+                <Lightbulb size={20} className="text-[var(--gold)]" />
                 <h3 className="font-semibold text-[var(--text-primary)]">Hints</h3>
             </div>
             <p className="text-sm text-[var(--text-secondary)] mb-4">
@@ -65,7 +65,7 @@ function HintSection({ hints }: { hints: ChallengeHint[] }) {
                                 <span className="text-sm font-medium text-[var(--text-primary)]">
                                     Hint {hint.level}
                                 </span>
-                                <span className="text-xs text-rose-500">
+                                <span className="text-xs text-[var(--forge-error)]">
                                     -{hint.xpPenalty} XP
                                 </span>
                             </div>
@@ -76,7 +76,7 @@ function HintSection({ hints }: { hints: ChallengeHint[] }) {
                             ) : (
                                 <button
                                     onClick={() => revealHint(hint.level)}
-                                    className="flex items-center gap-2 text-sm text-amber-500 hover:text-amber-400"
+                                    className="flex items-center gap-2 text-sm text-[var(--gold)] hover:text-[var(--gold)]/80"
                                 >
                                     <Eye size={14} />
                                     Reveal hint
@@ -148,9 +148,9 @@ export default function ChallengeDetailPage() {
     }
 
     const difficultyColors = {
-        beginner: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-        intermediate: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-        advanced: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+        beginner: "text-[var(--forge-success)] bg-[var(--forge-success)]/10 border-[var(--forge-success)]/20",
+        intermediate: "text-[var(--gold)] bg-[var(--gold)]/10 border-[var(--gold)]/20",
+        advanced: "text-[var(--forge-error)] bg-[var(--forge-error)]/10 border-[var(--forge-error)]/20",
     };
 
     const typeEmojis: Record<string, string> = {
@@ -215,7 +215,7 @@ export default function ChallengeDetailPage() {
                         {/* Stats Row */}
                         <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-[var(--border-subtle)]">
                             <div className="flex items-center gap-2">
-                                <Zap size={16} className="text-amber-500" />
+                                <Zap size={16} className="text-[var(--gold)]" />
                                 <span className="text-sm font-medium text-[var(--text-primary)]">
                                     +{challenge.xpReward} XP
                                 </span>
@@ -284,8 +284,8 @@ export default function ChallengeDetailPage() {
                         <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
                             Expected Outcome
                         </h2>
-                        <div className="flex items-start gap-3 p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                            <Check size={20} className="text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-3 p-4 bg-[var(--forge-success)]/10 rounded-lg border border-[var(--forge-success)]/20">
+                            <Check size={20} className="text-[var(--forge-success)] flex-shrink-0 mt-0.5" />
                             <p className="text-[var(--text-secondary)]">
                                 {challenge.expectedOutcome}
                             </p>
@@ -325,8 +325,8 @@ export default function ChallengeDetailPage() {
                             )}
                         </button>
                         {!user.githubConnected && (
-                            <div className="flex items-start gap-2 mt-4 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                                <AlertCircle size={16} className="text-amber-500 flex-shrink-0 mt-0.5" />
+                            <div className="flex items-start gap-2 mt-4 p-3 bg-[var(--gold)]/10 rounded-lg border border-[var(--gold)]/20">
+                                <AlertCircle size={16} className="text-[var(--gold)] flex-shrink-0 mt-0.5" />
                                 <p className="text-xs text-[var(--text-secondary)]">
                                     Connect your GitHub account to start contributing.
                                 </p>
@@ -396,7 +396,7 @@ export default function ChallengeDetailPage() {
                             {challenge.skillsTaught.map((skill) => (
                                 <span
                                     key={skill}
-                                    className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-sm text-emerald-500"
+                                    className="px-3 py-1.5 rounded-lg bg-[var(--forge-success)]/10 text-sm text-[var(--forge-success)]"
                                 >
                                     {skill}
                                 </span>

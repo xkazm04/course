@@ -32,7 +32,7 @@ export const MapBreadcrumb: React.FC<MapBreadcrumbProps> = memo(function MapBrea
     return (
         <nav
             className={cn(
-                "flex items-center gap-1 px-3 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-lg border border-slate-200 dark:border-slate-700 shadow-md",
+                "flex items-center gap-1 px-3 py-2 bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-lg border border-[var(--forge-border-subtle)] shadow-md",
                 className
             )}
             aria-label="Breadcrumb navigation"
@@ -47,7 +47,7 @@ export const MapBreadcrumb: React.FC<MapBreadcrumbProps> = memo(function MapBrea
                         {index > 0 && (
                             <ChevronRight
                                 size={ICON_SIZES.xs}
-                                className="text-slate-400 dark:text-slate-500 flex-shrink-0"
+                                className="text-[var(--forge-text-muted)] flex-shrink-0"
                             />
                         )}
 
@@ -58,8 +58,8 @@ export const MapBreadcrumb: React.FC<MapBreadcrumbProps> = memo(function MapBrea
                             className={cn(
                                 "flex items-center gap-1.5 px-2 py-1 rounded-md text-sm transition-colors",
                                 isLast
-                                    ? "text-slate-900 dark:text-slate-100 font-medium cursor-default"
-                                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                    ? "text-[var(--forge-text-primary)] font-medium cursor-default"
+                                    : "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-anvil)]"
                             )}
                             whileHover={!isLast ? { scale: 1.02 } : {}}
                             whileTap={!isLast ? { scale: 0.98 } : {}}

@@ -168,10 +168,10 @@ export const STATE_DEFINITIONS: Record<ComprehensionState, StateDefinition> = {
         description: "Taking time to understand the fundamentals",
         icon: "🌊",
         color: {
-            text: "text-blue-400",
-            bg: "bg-blue-500/10",
-            border: "border-blue-500/30",
-            gradient: "from-blue-500/20 to-blue-600/20",
+            text: "text-[var(--forge-info)]",
+            bg: "bg-[var(--forge-info)]/10",
+            border: "border-[var(--forge-info)]/30",
+            gradient: "from-[var(--forge-info)]/20 to-[var(--forge-info)]/20",
         },
         entryConditions: [
             {
@@ -209,10 +209,10 @@ export const STATE_DEFINITIONS: Record<ComprehensionState, StateDefinition> = {
         description: "Working through challenges, learning from mistakes",
         icon: "🔧",
         color: {
-            text: "text-amber-400",
-            bg: "bg-amber-500/10",
-            border: "border-amber-500/30",
-            gradient: "from-amber-500/20 to-orange-500/20",
+            text: "text-[var(--forge-warning)]",
+            bg: "bg-[var(--forge-warning)]/10",
+            border: "border-[var(--forge-warning)]/30",
+            gradient: "from-[var(--forge-warning)]/20 to-[var(--ember)]/20",
         },
         entryConditions: [
             {
@@ -252,10 +252,10 @@ export const STATE_DEFINITIONS: Record<ComprehensionState, StateDefinition> = {
         description: "Making steady progress, concepts are clicking",
         icon: "🌱",
         color: {
-            text: "text-emerald-400",
-            bg: "bg-emerald-500/10",
-            border: "border-emerald-500/30",
-            gradient: "from-emerald-500/20 to-green-500/20",
+            text: "text-[var(--forge-success)]",
+            bg: "bg-[var(--forge-success)]/10",
+            border: "border-[var(--forge-success)]/30",
+            gradient: "from-[var(--forge-success)]/20 to-[var(--forge-success)]/20",
         },
         entryConditions: [
             {
@@ -291,10 +291,10 @@ export const STATE_DEFINITIONS: Record<ComprehensionState, StateDefinition> = {
         description: "Concepts just clicked - building momentum!",
         icon: "💡",
         color: {
-            text: "text-yellow-400",
-            bg: "bg-yellow-500/10",
-            border: "border-yellow-500/30",
-            gradient: "from-yellow-500/20 to-amber-500/20",
+            text: "text-[var(--gold)]",
+            bg: "bg-[var(--gold)]/10",
+            border: "border-[var(--gold)]/30",
+            gradient: "from-[var(--gold)]/20 to-[var(--ember)]/20",
         },
         entryConditions: [
             {
@@ -332,10 +332,10 @@ export const STATE_DEFINITIONS: Record<ComprehensionState, StateDefinition> = {
         description: "Deep understanding achieved - ready for challenges",
         icon: "🚀",
         color: {
-            text: "text-purple-400",
-            bg: "bg-purple-500/10",
-            border: "border-purple-500/30",
-            gradient: "from-purple-500/20 to-violet-500/20",
+            text: "text-[var(--ember-glow)]",
+            bg: "bg-[var(--ember-glow)]/10",
+            border: "border-[var(--ember-glow)]/30",
+            gradient: "from-[var(--ember-glow)]/20 to-[var(--ember)]/20",
         },
         entryConditions: [
             {
