@@ -13,11 +13,5 @@ export type { ModeSelectorProps } from './ModeSelector';
 export { ClaudeCliPanel } from './ClaudeCliPanel';
 export type { ClaudeCliPanelProps } from './ClaudeCliPanel';
 
-export { AIDecisionLog } from './AIDecisionLog';
-export type { AIDecisionLogProps } from './AIDecisionLog';
-
 export { GitHubIssueCard } from './GitHubIssueCard';
 export type { GitHubIssueCardProps } from './GitHubIssueCard';
-
-export { LearningObjectives } from './LearningObjectives';
-export type { LearningObjectivesProps } from './LearningObjectives';

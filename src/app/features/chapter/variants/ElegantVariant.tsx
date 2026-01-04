@@ -995,7 +995,7 @@ export function ElegantVariant({
         />
 
         {/* Chapter Content - Full width with tab switcher */}
-        <div className={cn('reading-content', fontSizeClass)}>
+        <div className={cn('reading-content max-w-none', fontSizeClass)}>
           <div className="bg-[var(--forge-bg-elevated)]/80 backdrop-blur-sm rounded-2xl border border-[var(--forge-border-subtle)] overflow-hidden">
             {/* Tab Bar */}
             <div className="flex border-b border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)]/30 overflow-x-auto">

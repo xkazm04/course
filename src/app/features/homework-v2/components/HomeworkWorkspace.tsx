@@ -12,11 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Settings,
   Eye,
-  EyeOff,
-  Lightbulb,
   Send,
-  ChevronDown,
-  ChevronUp,
   PanelLeftClose,
   PanelLeft,
   Clock,
@@ -31,9 +27,7 @@ import type {
 import { DEFAULT_WORKSPACE_SETTINGS } from '../lib/mockHomeworkData';
 import { ModeSelector } from './ModeSelector';
 import { ClaudeCliPanel } from './ClaudeCliPanel';
-import { AIDecisionLog } from './AIDecisionLog';
 import { GitHubIssueCard } from './GitHubIssueCard';
-import { LearningObjectives } from './LearningObjectives';
 
 export interface HomeworkWorkspaceProps {
   homework: HomeworkDefinition;
@@ -55,17 +49,10 @@ export function HomeworkWorkspace({
   );
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isDecisionLogExpanded, setIsDecisionLogExpanded] = useState(true);
 
   // Use session data or mock defaults
   const currentMode = session?.mode || settings.mode;
   const claudeSession = session?.claudeSession;
-  const decisionLog = session?.decisionLog || {
-    sessionId: 'mock',
-    steps: [],
-    currentStepIndex: 0,
-    isVisible: settings.showDecisionLog,
-  };
 
   const handleModeChange = useCallback(
     (mode: HomeworkMode) => {
@@ -74,10 +61,6 @@ export function HomeworkWorkspace({
     },
     [onModeChange]
   );
-
-  const toggleDecisionLogVisibility = useCallback(() => {
-    setSettings((prev) => ({ ...prev, showDecisionLog: !prev.showDecisionLog }));
-  }, []);
 
   const handlePromptSubmit = useCallback((prompt: string) => {
     console.log('Prompt submitted:', prompt);
@@ -130,14 +113,6 @@ export function HomeworkWorkspace({
                   branch={session?.branch}
                   pr={session?.pr}
                 />
-
-                {/* Learning objectives */}
-                <LearningObjectives objectives={homework.learningObjectives} />
-
-                {/* Hints section */}
-                {homework.starterHints.length > 0 && (
-                  <HintsSection hints={homework.starterHints} />
-                )}
               </div>
             </motion.aside>
           )}
@@ -160,58 +135,13 @@ export function HomeworkWorkspace({
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* AI-Assisted mode content */}
           {currentMode === 'ai_assisted' && claudeSession && (
-            <div className="flex-1 flex flex-col overflow-hidden">
-              {/* Claude CLI Panel */}
-              <div
-                className={`flex-1 overflow-hidden ${
-                  isDecisionLogExpanded ? 'max-h-[60%]' : ''
-                }`}
-              >
-                <ClaudeCliPanel
-                  session={claudeSession}
-                  onPromptSubmit={handlePromptSubmit}
-                  showThinkingBlocks={settings.showThinkingBlocks}
-                  showToolCalls={settings.showToolCalls}
-                  className="h-full m-4 mb-2"
-                />
-              </div>
-
-              {/* AI Decision Log */}
-              {settings.showDecisionLog && decisionLog.steps.length > 0 && (
-                <div className="flex-shrink-0 px-4 pb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <button
-                      onClick={() => setIsDecisionLogExpanded(!isDecisionLogExpanded)}
-                      className="flex items-center gap-1.5 text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] transition-colors"
-                    >
-                      {isDecisionLogExpanded ? (
-                        <ChevronDown className="w-3.5 h-3.5" />
-                      ) : (
-                        <ChevronUp className="w-3.5 h-3.5" />
-                      )}
-                      {isDecisionLogExpanded ? 'Collapse' : 'Expand'} Decision Log
-                    </button>
-                  </div>
-                  <AnimatePresence>
-                    {isDecisionLogExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                      >
-                        <AIDecisionLog
-                          log={{
-                            ...decisionLog,
-                            isVisible: settings.showDecisionLog,
-                          }}
-                          onToggleVisibility={toggleDecisionLogVisibility}
-                        />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-            </div>
+            <ClaudeCliPanel
+              session={claudeSession}
+              onPromptSubmit={handlePromptSubmit}
+              showThinkingBlocks={settings.showThinkingBlocks}
+              showToolCalls={settings.showToolCalls}
+              className="flex-1 m-4"
+            />
           )}
 
           {/* Browser IDE mode */}
@@ -321,21 +251,13 @@ function SettingsPanel({
           <Eye className="w-4 h-4 text-[var(--ember)]" />
           AI Transparency Settings
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           <ToggleSetting
             label="Thinking Blocks"
             description="Show Claude's reasoning"
             checked={settings.showThinkingBlocks}
             onChange={(checked) =>
               onSettingsChange({ ...settings, showThinkingBlocks: checked })
-            }
-          />
-          <ToggleSetting
-            label="Decision Log"
-            description="Show step-by-step plan"
-            checked={settings.showDecisionLog}
-            onChange={(checked) =>
-              onSettingsChange({ ...settings, showDecisionLog: checked })
             }
           />
           <ToggleSetting
@@ -424,60 +346,6 @@ function DifficultyBadge({
     >
       {config[difficulty].label}
     </span>
-  );
-}
-
-interface HintsSectionProps {
-  hints: HomeworkDefinition['starterHints'];
-}
-
-function HintsSection({ hints }: HintsSectionProps) {
-  const [revealedHints, setRevealedHints] = useState<Set<number>>(
-    new Set(hints.filter((h) => h.revealed).map((h) => h.level))
-  );
-
-  const revealHint = (level: number) => {
-    setRevealedHints((prev) => new Set([...prev, level]));
-  };
-
-  return (
-    <div className="bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)] overflow-hidden">
-      <div className="px-4 py-3 border-b border-[var(--forge-border-subtle)] flex items-center gap-2">
-        <Lightbulb className="w-4 h-4 text-amber-500" />
-        <span className="text-sm font-medium text-[var(--forge-text-primary)]">
-          Hints
-        </span>
-        <span className="text-xs text-[var(--forge-text-muted)]">
-          ({revealedHints.size}/{hints.length})
-        </span>
-      </div>
-      <div className="divide-y divide-[var(--forge-border-subtle)]">
-        {hints.map((hint) => {
-          const isRevealed = revealedHints.has(hint.level);
-          return (
-            <div key={hint.level} className="px-4 py-3">
-              {isRevealed ? (
-                <p className="text-sm text-[var(--forge-text-secondary)]">
-                  {hint.hint}
-                </p>
-              ) : (
-                <button
-                  onClick={() => revealHint(hint.level)}
-                  className="flex items-center justify-between w-full text-left group"
-                >
-                  <span className="text-sm text-[var(--forge-text-muted)] group-hover:text-[var(--forge-text-primary)] transition-colors">
-                    Hint {hint.level}
-                  </span>
-                  <span className="text-xs text-amber-500 font-medium">
-                    -{hint.costPercent}% XP
-                  </span>
-                </button>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
   );
 }
 

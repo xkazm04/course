@@ -10,18 +10,14 @@ export {
   HomeworkWorkspace,
   ModeSelector,
   ClaudeCliPanel,
-  AIDecisionLog,
   GitHubIssueCard,
-  LearningObjectives,
 } from './components';
 
 export type {
   HomeworkWorkspaceProps,
   ModeSelectorProps,
   ClaudeCliPanelProps,
-  AIDecisionLogProps,
   GitHubIssueCardProps,
-  LearningObjectivesProps,
 } from './components';
 
 // Types
