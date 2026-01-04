@@ -1,0 +1,23 @@
+{
+  "name": "[LLM] Gemini Response Latency Critical",
+  "type": "metric alert",
+  "query": "avg(last_5m):avg:llm.gemini.request.latency{*} > 10000",
+  "message": "## High LLM Response Latency Detected\n\n**Current Latency:** {{value}} ms\n**Threshold:** 10,000ms\n\n### Impact\n- User experience degradation\n- Potential timeouts for learning path generation\n- Content generation jobs may fail\n\n### Runbook\n1. Check Gemini API status: https://status.cloud.google.com\n2. Review recent deployment changes\n3. Check for prompt complexity increases\n4. Consider implementing request caching\n5. Escalate if persists > 15 minutes\n\n@slack-llm-alerts",
+  "tags": [
+    "service:llm-observability",
+    "severity:high",
+    "team:ai-platform",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 10000,
+      "warning": 5000
+    },
+    "notify_no_data": true,
+    "no_data_timeframe": 10,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 2
+}

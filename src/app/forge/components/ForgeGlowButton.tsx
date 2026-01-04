@@ -5,11 +5,19 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Flame, Sparkles } from "lucide-react";
 
+// Seeded pseudo-random number generator for deterministic values
+function seededRandom(seed: number): number {
+    const x = Math.sin(seed * 9999) * 10000;
+    return x - Math.floor(x);
+}
+
 function ButtonSparkle({ delay, index }: { delay: number; index: number }) {
-    const randomDuration = useMemo(() => 1.2 + Math.random() * 1.2, []);
-    const randomSize = useMemo(() => 2 + Math.random() * 3, []);
-    const startX = useMemo(() => (index % 2 === 0 ? -1 : 1) * (10 + Math.random() * 30), [index]);
-    const endX = useMemo(() => startX + (Math.random() - 0.5) * 40, [startX]);
+    // Use seeded random values based on index for deterministic server/client rendering
+    const randomDuration = useMemo(() => 1.2 + seededRandom(index * 4 + 1) * 1.2, [index]);
+    const randomSize = useMemo(() => 2 + seededRandom(index * 4 + 2) * 3, [index]);
+    const startX = useMemo(() => (index % 2 === 0 ? -1 : 1) * (10 + seededRandom(index * 4 + 3) * 30), [index]);
+    const endX = useMemo(() => startX + (seededRandom(index * 4 + 4) - 0.5) * 40, [index, startX]);
+    const endY = useMemo(() => -50 - seededRandom(index * 4 + 5) * 30, [index]);
 
     return (
         <motion.div
@@ -25,7 +33,7 @@ function ButtonSparkle({ delay, index }: { delay: number; index: number }) {
             initial={{ opacity: 0, y: 20, x: startX, scale: 0 }}
             animate={{
                 opacity: [0, 1, 1, 0],
-                y: -50 - Math.random() * 30,
+                y: endY,
                 x: endX,
                 scale: [0, 1.2, 0.6, 0],
             }}

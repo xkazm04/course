@@ -1,9 +1,16 @@
 /**
  * Oracle API Client
- * Communicates with the Oracle Cloud Function for learning path generation
+ * Communicates with the Oracle API for learning path generation
+ *
+ * Flow:
+ * 1. Client calls local /api/oracle/generate endpoint
+ * 2. Local endpoint fetches map_nodes context from Supabase
+ * 3. Local endpoint calls external Oracle AI (if configured) with full context
+ * 4. Falls back to local generation if no external Oracle configured
  */
 
-const ORACLE_API_URL = process.env.NEXT_PUBLIC_ORACLE_API_URL || "http://localhost:8080";
+// External Oracle serverless function URL (optional - for AI-powered generation)
+const EXTERNAL_ORACLE_URL = process.env.NEXT_PUBLIC_ORACLE_API_URL || "";
 
 export interface OracleQuestion {
     id?: string;
@@ -17,16 +24,29 @@ export interface OracleQuestion {
     type?: "question" | "path_suggestion";
 }
 
+/**
+ * PathNode represents a node in the generated learning path
+ * Maps to the 5-level map_nodes hierarchy:
+ * - depth 0: domain
+ * - depth 1: topic
+ * - depth 2: skill
+ * - depth 3: course (creates courses table entry)
+ * - depth 4: lesson (creates chapters table entry as course content)
+ */
 export interface PathNode {
-    id: string;
+    id: string;                     // Generated ID for tracking within path
+    map_node_id?: string;           // If existing: actual UUID from map_nodes table
+    slug?: string;                  // If existing: actual slug from map_nodes
     name: string;
     description?: string;
-    level: number;           // 0=domain, 1=topic, 2=subtopic
-    parent_id: string | null;
+    depth: number;                  // 0-4 matching map_nodes hierarchy
+    node_type: string;              // "domain", "topic", "skill", "course", "lesson"
+    parent_id: string | null;       // Reference to parent node in this path
+    parent_slug?: string;           // Parent map_node slug for new nodes
     difficulty?: string;
     estimated_hours?: number;
     order: number;
-    is_existing: boolean;    // true if node already exists in the system
+    is_existing: boolean;           // true if node exists in map_nodes table
 }
 
 export interface OraclePath {
@@ -98,17 +118,26 @@ export interface GeneratePathsResponse {
 }
 
 class OracleApiClient {
-    private baseUrl: string;
+    private externalUrl: string;
 
-    constructor(baseUrl: string = ORACLE_API_URL) {
-        this.baseUrl = baseUrl;
+    constructor(externalUrl: string = EXTERNAL_ORACLE_URL) {
+        this.externalUrl = externalUrl;
     }
 
     /**
-     * Generate learning paths from collected answers (single API call)
+     * Generate learning paths from collected answers
+     *
+     * Routes through local /api/oracle/generate endpoint which:
+     * 1. Fetches map_nodes context from Supabase
+     * 2. Calls external Oracle AI if ORACLE_API_URL is configured
+     * 3. Falls back to local generation based on existing map structure
+     *
+     * This ensures the Oracle always has proper map_nodes context for
+     * generating paths that align with the 5-level hierarchy.
      */
     async generatePaths(payload: GeneratePathsRequest): Promise<GeneratePathsResponse> {
-        const response = await fetch(`${this.baseUrl}/oracle/generate`, {
+        // Always route through local API which handles map_nodes context
+        const response = await fetch("/api/oracle/generate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -121,14 +150,31 @@ class OracleApiClient {
             throw new Error(error.error || `Failed to generate paths: ${response.statusText}`);
         }
 
-        return response.json();
+        const data = await response.json();
+
+        // Validate response has proper structure
+        if (!data.paths || !Array.isArray(data.paths)) {
+            throw new Error("Invalid response from Oracle: missing paths array");
+        }
+
+        // Check if fallback was used (indicates external Oracle not available)
+        if (data.metadata?.model_used === "fallback") {
+            console.info("Oracle using local fallback generation based on existing map structure");
+        }
+
+        return data;
     }
 
     /**
      * Start a new Oracle session (legacy - for backward compatibility)
+     * Requires external Oracle API to be configured
      */
     async startSession(userId?: string): Promise<StartSessionResponse> {
-        const response = await fetch(`${this.baseUrl}/oracle/start`, {
+        if (!this.externalUrl) {
+            throw new Error("External Oracle API not configured for session-based flow");
+        }
+
+        const response = await fetch(`${this.externalUrl}/oracle/start`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -144,14 +190,19 @@ class OracleApiClient {
     }
 
     /**
-     * Submit an answer and get the next question or paths
+     * Submit an answer and get the next question or paths (legacy)
+     * Requires external Oracle API to be configured
      */
     async submitAnswer(
         sessionId: string,
         answer: string,
         questionIndex: number
     ): Promise<AnswerResponse> {
-        const response = await fetch(`${this.baseUrl}/oracle/answer`, {
+        if (!this.externalUrl) {
+            throw new Error("External Oracle API not configured for session-based flow");
+        }
+
+        const response = await fetch(`${this.externalUrl}/oracle/answer`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -171,13 +222,18 @@ class OracleApiClient {
     }
 
     /**
-     * Get session details
+     * Get session details (legacy)
+     * Requires external Oracle API to be configured
      */
     async getSession(sessionId: string): Promise<{
         session: OracleSession;
         paths: OraclePath[];
     }> {
-        const response = await fetch(`${this.baseUrl}/oracle/session/${sessionId}`, {
+        if (!this.externalUrl) {
+            throw new Error("External Oracle API not configured for session-based flow");
+        }
+
+        const response = await fetch(`${this.externalUrl}/oracle/session/${sessionId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -192,13 +248,18 @@ class OracleApiClient {
     }
 
     /**
-     * Select a generated path
+     * Select a generated path (legacy)
+     * Requires external Oracle API to be configured
      */
     async selectPath(
         sessionId: string,
         pathId: string
     ): Promise<{ success: boolean; path: OraclePath }> {
-        const response = await fetch(`${this.baseUrl}/oracle/paths/${sessionId}/select`, {
+        if (!this.externalUrl) {
+            throw new Error("External Oracle API not configured for session-based flow");
+        }
+
+        const response = await fetch(`${this.externalUrl}/oracle/paths/${sessionId}/select`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -214,10 +275,15 @@ class OracleApiClient {
     }
 
     /**
-     * Health check
+     * Health check for external Oracle API
      */
     async healthCheck(): Promise<{ status: string; timestamp: string }> {
-        const response = await fetch(`${this.baseUrl}/health`, {
+        if (!this.externalUrl) {
+            // Return local health status if no external URL
+            return { status: "ok", timestamp: new Date().toISOString() };
+        }
+
+        const response = await fetch(`${this.externalUrl}/health`, {
             method: "GET",
         });
 

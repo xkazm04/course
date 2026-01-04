@@ -233,14 +233,14 @@ export async function POST(request: NextRequest) {
       supabase
         .from('courses')
         .select('id, slug, title, description, difficulty, estimated_hours')
-        .eq('status', 'published'),
+        .eq('status', 'published') as unknown as Promise<{ data: Array<{ id: string; slug: string; title: string; description: string | null; difficulty: string; estimated_hours: number }> | null; error: any }>,
       supabase
         .from('skills')
-        .select('id, name, category')
+        .select('id, name, category') as unknown as Promise<{ data: Array<{ id: string; name: string; category: string | null }> | null; error: any }>
     ])
 
-    const courses = coursesResult.data || []
-    const skills = skillsResult.data || []
+    const courses = (coursesResult.data || []).map(c => ({ ...c, description: c.description || '' }))
+    const skills = (skillsResult.data || []).map(s => ({ ...s, category: s.category || '' }))
 
     if (courses.length === 0) {
       return NextResponse.json(
@@ -276,9 +276,9 @@ export async function POST(request: NextRequest) {
 
     const { data: path, error: pathError } = await supabase
       .from('learning_paths')
-      .insert(pathData)
+      .insert(pathData as any)
       .select()
-      .single()
+      .single() as { data: { id: string; slug: string; title: string; description: string | null } | null; error: any }
 
     if (pathError || !path) {
       return NextResponse.json(
@@ -308,7 +308,7 @@ export async function POST(request: NextRequest) {
         milestone_description: milestone?.description || null
       }
 
-      await supabase.from('learning_path_courses').insert(courseInsert)
+      await supabase.from('learning_path_courses').insert(courseInsert as any)
 
       pathCourses.push({
         course_id: courseId,
@@ -333,7 +333,7 @@ export async function POST(request: NextRequest) {
         focus_areas: body.focus_areas || [],
         generated_path: { path_id: path.id, courses: pathCourses },
         ai_reasoning: generated.reasoning
-      })
+      } as any)
 
     // Build skill gaps response
     const skillGaps: SkillGap[] = generated.skill_gaps.map(gap => ({

@@ -8,4 +8,7 @@ export { LayerTransition } from "./LayerTransition";
 export { Legend } from "./Legend";
 export { MiniProgress } from "./MiniProgress";
 export { MapNotification, useMapNotification } from "./MapNotification";
+export { AcceptedPathSidebar } from "./AcceptedPathSidebar";
+export { NodeContextMenu } from "./NodeContextMenu";
+export { GenerationProgressOverlay } from "./GenerationProgressOverlay";
 export type { MapNotificationData, NotificationType } from "./MapNotification";

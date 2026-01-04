@@ -9,3 +9,22 @@ export { MetricsDisplay } from "./MetricsDisplay";
 export { SubmissionEditor } from "./SubmissionEditor";
 export { PeerReviewPanel } from "./PeerReviewPanel";
 export { ChallengeDashboard } from "./ChallengeDashboard";
+
+// 3D Championship Arena
+export {
+    ChampionshipArena,
+    ArenaEnvironment,
+    Podiums,
+    CompetitorAvatar,
+    RankAnimationWrapper,
+    CelebrationEffect,
+    ClimbTrail,
+    LightningEffect,
+    VRModeManager,
+    VRController,
+    VREntryButton,
+    VRInfoPanel,
+    VRTeleportFloor,
+    TeleportIndicator,
+    DesktopCameraControls,
+} from "./Arena3D";

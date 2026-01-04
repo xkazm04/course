@@ -209,6 +209,7 @@ export {
     useChapterAvailability,
     useCourseProgress,
     useLearningPathRecommendations,
+    useCombinedPrerequisites,
 } from "./useChapterGraph";
 export type { ChapterGraphData, UseChapterGraphOptions } from "./useChapterGraph";
 
@@ -295,3 +296,149 @@ export {
     DEFAULT_SECTION_BEHAVIOR,
     DEFAULT_LEARNER_PROFILE,
 } from "./conductorTypes";
+
+// Chapter Homework System
+export { useChapterHomework } from "./useChapterHomework";
+export type {
+    HomeworkDefinition,
+    HomeworkType,
+    Difficulty,
+    AssignmentStatus,
+    PRStatus,
+    HomeworkGroups,
+    ChapterHomeworkData,
+    PRStatusResponse,
+    AssignmentDetails,
+    AcceptanceCriterion,
+    ProgressiveHint,
+    FileScope,
+    UseChapterHomeworkConfig,
+    UseChapterHomeworkReturn,
+} from "./useChapterHomework";
+
+// Collective Intelligence - Emergent Curriculum System
+export {
+    // Types
+    type LearnerJourney,
+    type ChapterAttempt,
+    type ImplicitPrerequisite,
+    type StrugglePoint,
+    type OptimalPath,
+    type EmergentCurriculum,
+    type CurriculumRecommendation,
+    type CollectiveIntelligenceConfig,
+    DEFAULT_COLLECTIVE_INTELLIGENCE_CONFIG,
+    // Storage
+    learnerJourneyStorage,
+    implicitPrerequisiteStorage,
+    strugglePointStorage,
+    optimalPathStorage,
+    emergentCurriculumStore,
+    // Derivation
+    deriveImplicitPrerequisites,
+    identifyStrugglePoints,
+    discoverOptimalPaths,
+    // Curriculum Generation
+    generateEmergentCurriculum,
+    getEmergentCurriculum,
+    getImplicitPrerequisitesForChapter,
+    getStrugglePointsForChapter,
+    mergeWithStaticPrerequisites,
+    // Hook
+    useCollectiveIntelligence,
+    type UseCollectiveIntelligenceOptions,
+    type UseCollectiveIntelligenceReturn,
+} from "./collectiveIntelligence";
+
+// Slot Provider Protocol - Third-party content injection
+export {
+    // Types
+    type SlotProviderId,
+    type SlotPriority,
+    type SlotInjectionTarget,
+    type InjectedSlotMetadata,
+    type InjectedSlot,
+    type SlotProviderContext,
+    type SlotProviderResult,
+    type SlotProviderError,
+    type SlotProviderConfig,
+    type ISlotProvider,
+    type SlotProviderRegistryEvent,
+    type SlotProviderRegistryListener,
+    type SlotProviderRegistryOptions,
+    type ISlotProviderRegistry,
+    // Priority helpers
+    PRIORITY_VALUES,
+    comparePriorities,
+    // Registry
+    SlotProviderRegistry,
+    getSlotProviderRegistry,
+    resetSlotProviderRegistry,
+    createSlotProviderRegistry,
+    // React integration
+    SlotProviderProvider,
+    useSlotProvider,
+    useInjectedSlots,
+    useAnchoredSlots,
+    useProviderStatus,
+    useInjectedSlotContext,
+    type SlotProviderProviderProps,
+    // Slot builders
+    InjectedSlotBuilder,
+    createSlotBuilder,
+    type InjectedSlotBuilderConfig,
+    // Built-in providers
+    createAIHintProvider,
+    aiHintProvider,
+    createCommunityPracticeProvider,
+    communityPracticeProvider,
+} from "./slotProvider";
+
+// Living Graph - Unified graph with behavior edge weights
+export {
+    // Types
+    type BehaviorEdgeWeight,
+    type LivingEdge,
+    type TraversabilityScore,
+    type TraversabilityRecommendation,
+    type TraversabilityFactor,
+    type TraversabilityFactorType,
+    type TraversabilityParams,
+    type LivingNode,
+    type NodeVisibility,
+    type AdaptivePath,
+    type AdaptivePathMetrics,
+    type AdaptivePathParams,
+    type PathDerivation,
+    type LearnerProfileSummary,
+    type AdaptivePathAlternative,
+    type PathCheckpoint,
+    type CheckpointAction,
+    type PathOptimizationTarget,
+    type LivingGraphState,
+    type LivingGraphMetrics,
+    type GraphPosition,
+    type GraphHealthIndicators,
+    type LivingGraphConfig,
+    type LivingGraphEvent,
+    type GraphHealthWarning,
+    type UseLivingGraphOptions,
+    type UseLivingGraphReturn,
+    DEFAULT_LIVING_GRAPH_CONFIG,
+    // Computation functions
+    computeTraversability,
+    computeTraversabilityBatch,
+    sortByTraversability,
+    computeBehaviorEdgeWeight,
+    createLivingEdge,
+    createEmergentEdge,
+    computeAllLivingEdges,
+    getHighStruggleEdges,
+    getEdgesBySuccessImprovement,
+    findMostBeneficialPrerequisite,
+    computeAdaptivePath,
+    getRecommendedNextNode,
+    findLowStrugglePath,
+    // React hook
+    useLivingGraph,
+} from "./livingGraph";

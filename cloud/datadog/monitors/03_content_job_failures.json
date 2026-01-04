@@ -1,0 +1,21 @@
+{
+  "name": "[Jobs] Content Generation Failure Rate",
+  "type": "query alert",
+  "query": "sum(last_15m):sum:content.job.failed{*}.as_count() > 5",
+  "message": "## Content Generation Jobs Failing\n\n**Failed Jobs:** {{value}}\n**Threshold:** 5 failures in 15 minutes\n\n### Impact\n- Users cannot generate course content\n- Map nodes remain without courses\n- Platform value proposition degraded\n\n### Runbook\n1. Check job error messages in logs\n2. Review Gemini API response quality\n3. Verify database connectivity\n4. Check for prompt format issues\n5. Retry failed jobs if transient\n\n@slack-content-team",
+  "tags": [
+    "service:content-generator",
+    "severity:high",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 5,
+      "warning": 3
+    },
+    "notify_no_data": false,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 2
+}

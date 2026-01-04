@@ -192,7 +192,7 @@ function SuggestedResources({ resources }: { resources: { type: string; title: s
 export default function ReviewPage() {
     const params = useParams();
     const router = useRouter();
-    const { user, setUser } = useForge();
+    const { user } = useForge();
     const challengeId = params.id as string;
 
     const [isLoading, setIsLoading] = useState(true);

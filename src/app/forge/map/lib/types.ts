@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 
 // Re-export for convenience
 export type { MapNode, NodeStatus };
+export type { NodeGenerationStatus } from "./contentApi";
 
 // ============================================================================
 // VIEW & NAVIGATION TYPES
@@ -26,9 +27,22 @@ export interface Point {
     y: number;
 }
 
-export interface HexLayoutNode extends MapNode {
+export interface HexLayoutNode {
+    // Core properties from MapNode (explicit for TypeScript)
+    id: string;
+    level: "domain" | "course" | "chapter" | "section" | "concept";
+    name: string;
+    description: string;
+    status: NodeStatus;
+    progress: number;
+    parentId: string | null;
+    childIds: string[];
+    estimatedHours?: number;
+    // HexLayoutNode specific
     hex: HexCoord;
     pixel: Point;
+    // Allow other properties from MapNode variants
+    [key: string]: unknown;
 }
 
 // ============================================================================
@@ -36,7 +50,7 @@ export interface HexLayoutNode extends MapNode {
 // ============================================================================
 
 export type OracleStep = "idle" | "domain" | "experience" | "focus" | "generating" | "paths" | "complete";
-export type LearningPath = "frontend" | "fullstack" | "backend" | "mobile" | "games" | "databases";
+export type LearningPath = "frontend" | "fullstack" | "backend" | "mobile" | "games" | "databases" | "data" | "devops";
 export type ExperienceLevel = "beginner" | "intermediate" | "advanced";
 
 export interface GeneratedPath {

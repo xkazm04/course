@@ -89,6 +89,30 @@ export interface StarNode extends UniverseNodeBase {
 }
 
 /**
+ * Asteroid node - represents optional/bonus content
+ */
+export interface AsteroidNode extends UniverseNodeBase {
+    type: "asteroid";
+    parentMoonId: string;
+    contentId: string;
+    contentType: "bonus" | "deep-dive" | "reference";
+    fragmentCount: number;
+}
+
+/**
+ * Comet node - represents time-limited challenges
+ */
+export interface CometNode extends UniverseNodeBase {
+    type: "comet";
+    parentMoonId: string;
+    challengeId: string;
+    expiresAt: number; // Unix timestamp
+    tailLength: number;
+    tailAngle: number;
+    difficulty: "easy" | "medium" | "hard";
+}
+
+/**
  * Connection between nodes (learning paths)
  */
 export interface UniverseConnection {
@@ -103,7 +127,7 @@ export interface UniverseConnection {
 /**
  * Union type for all node types
  */
-export type UniverseNode = PlanetNode | MoonNode | StarNode;
+export type UniverseNode = PlanetNode | MoonNode | StarNode | AsteroidNode | CometNode;
 
 // ============================================================================
 // VIEWPORT & CAMERA

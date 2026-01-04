@@ -7,6 +7,12 @@ export { ProjectBrowser } from "./ProjectBrowser";
 export { ProjectDetail } from "./ProjectDetail";
 export { AssignmentPanel } from "./AssignmentPanel";
 export { DiffViewer, DiffSummary } from "./DiffViewer";
+export { DiffHunkViewer, EnhancedDiffHunkViewer } from "./DiffHunkViewer";
 export { QualityReport, QualityGates } from "./QualityReport";
 export { RemixWorkspace } from "./RemixWorkspace";
 export { ScannedProjects } from "./ScannedProjects";
+export {
+    ObjectiveVerificationIndicator,
+    InlineVerificationBadge,
+    VerificationTooltipContent,
+} from "./ObjectiveVerificationIndicator";

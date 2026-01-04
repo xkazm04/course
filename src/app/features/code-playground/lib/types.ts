@@ -25,6 +25,16 @@ export interface ConsoleMessage {
     type: "log" | "error" | "warn" | "info";
     content: string;
     timestamp: number;
+    /** Parsed line number from error message, if available */
+    lineNumber?: number;
+    /** Parsed column number from error message, if available */
+    columnNumber?: number;
+}
+
+export interface ErrorLineInfo {
+    lineNumber: number;
+    columnNumber?: number;
+    messageId: string;
 }
 
 export type SupportedLanguage = "javascript" | "jsx" | "typescript" | "tsx" | "css" | "html" | "json";

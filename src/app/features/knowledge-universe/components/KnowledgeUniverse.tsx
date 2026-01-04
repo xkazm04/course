@@ -4,21 +4,34 @@
  * Knowledge Universe Component
  *
  * The main component that assembles the zoomable knowledge universe.
- * Combines the canvas renderer, camera controls, and navigation UI.
+ * Uses WorldCoordinator for unified camera/spatial management,
+ * SemanticZoomController for progressive disclosure, and navigation UI.
+ *
+ * SEMANTIC ZOOM PATTERN:
+ * The zoom levels (galaxy/solar/constellation/star) represent progressive
+ * information disclosure, not just visual scales. This component integrates:
+ * - Data fetching granularity (lazy-load details only at star level)
+ * - Interaction affordances (hover shows different info per level)
+ * - Learning context ("you are here" breadcrumbs)
  */
 
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { UniverseCanvas, NodeTooltip } from "./UniverseCanvas";
+import { Loader2 } from "lucide-react";
+import { UniverseCanvas } from "./UniverseCanvas";
 import {
     UniverseControls,
     ZoomLevelIndicator,
     StatsDisplay,
 } from "./UniverseControls";
-import { useUniverseCamera } from "../lib/useUniverseCamera";
-import { generateUniverseData, type UniverseData } from "../lib/universeData";
+import { SemanticTooltip } from "./SemanticTooltip";
+import { SemanticBreadcrumb, PositionIndicator } from "./SemanticBreadcrumb";
+import { useWorldCoordinator } from "../lib/useWorldCoordinator";
+import { useSemanticZoom } from "../lib/useSemanticZoom";
+import { useUniverseDataProvider, createMockUniverseData } from "../lib/universeDataProvider";
 import type { UniverseNode, ZoomLevel } from "../lib/types";
+import type { NodeDetailData } from "../lib/semanticZoomController";
+import type { UniverseDataSourceType, LayoutStrategyType } from "../lib/universeDataProvider";
 import { cn } from "@/app/shared/lib/utils";
 import { useReducedMotion } from "@/app/shared/lib/motionPrimitives";
 
@@ -30,9 +43,21 @@ interface KnowledgeUniverseProps {
     className?: string;
     showControls?: boolean;
     showStats?: boolean;
+    showBreadcrumbs?: boolean;
+    showPositionIndicator?: boolean;
     interactive?: boolean;
     initialZoomLevel?: ZoomLevel;
     onNodeSelect?: (node: UniverseNode) => void;
+    onNodeSelectChange?: (node: UniverseNode | null) => void;
+    onNavigateToContent?: (node: UniverseNode) => void;
+    /** @deprecated Use dataSource instead */
+    useRealData?: boolean;
+    /** Data source: "auto" tries Supabase first, falls back to mock */
+    dataSource?: UniverseDataSourceType;
+    /** Layout strategy for positioning nodes */
+    layoutStrategy?: LayoutStrategyType;
+    /** Optional function to fetch node details for progressive disclosure */
+    fetchNodeDetails?: (nodeId: string, level: ZoomLevel) => Promise<NodeDetailData>;
 }
 
 // ============================================================================
@@ -43,23 +68,63 @@ export function KnowledgeUniverse({
     className,
     showControls = true,
     showStats = false,
+    showBreadcrumbs = true,
+    showPositionIndicator = false,
     interactive = true,
     initialZoomLevel = "solar",
     onNodeSelect,
+    onNodeSelectChange,
+    onNavigateToContent,
+    useRealData = true,
+    dataSource,
+    layoutStrategy = "orbital",
+    fetchNodeDetails: fetchNodeDetailsFn,
 }: KnowledgeUniverseProps) {
-    const router = useRouter();
     const containerRef = useRef<HTMLDivElement>(null);
     const prefersReducedMotion = useReducedMotion();
 
     // Viewport dimensions
     const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
 
-    // Generate universe data (memoized)
-    const universeData = useMemo(() => generateUniverseData(1000), []);
+    // Determine data source - support deprecated useRealData prop
+    const effectiveDataSource: UniverseDataSourceType = useMemo(() => {
+        if (dataSource) return dataSource;
+        return useRealData ? "auto" : "mock";
+    }, [dataSource, useRealData]);
 
-    // Camera state
-    const camera = useUniverseCamera({
+    // Use unified data provider
+    const {
+        data: universeData,
+        isLoading: isLoadingData,
+        error: dataError,
+        activeSource,
+    } = useUniverseDataProvider({
+        source: effectiveDataSource,
+        layoutStrategy,
+        worldScale: 1000,
+    });
+
+    // Fallback to mock data if provider returns null
+    const effectiveUniverseData = useMemo(() => {
+        if (universeData) return universeData;
+        // Generate fallback mock data synchronously
+        return createMockUniverseData({ worldScale: 1000 }, layoutStrategy);
+    }, [universeData, layoutStrategy]);
+
+    // World coordinator (unified camera + spatial system)
+    const world = useWorldCoordinator({
         initialScale: initialZoomLevel === "galaxy" ? 0.2 : initialZoomLevel === "solar" ? 0.5 : 1.0,
+    });
+
+    // Semantic zoom controller (progressive disclosure)
+    const semanticZoom = useSemanticZoom({
+        initialLevel: initialZoomLevel,
+        nodes: effectiveUniverseData.allNodes,
+        fetchNodeDetails: fetchNodeDetailsFn,
+        onZoomLevelChange: (newLevel, oldLevel) => {
+            // Sync world coordinator with semantic zoom level changes
+            world.setZoomLevel(newLevel);
+        },
     });
 
     // Interaction state
@@ -72,6 +137,13 @@ export function KnowledgeUniverse({
     const frameTimesRef = useRef<number[]>([]);
     const lastFrameTimeRef = useRef<number>(performance.now());
 
+    // Sync semantic zoom level with world coordinator zoom level
+    useEffect(() => {
+        if (world.zoomLevel !== semanticZoom.currentLevel) {
+            semanticZoom.setZoomLevel(world.zoomLevel);
+        }
+    }, [world.zoomLevel, semanticZoom]);
+
     // ========================================================================
     // VIEWPORT SIZING
     // ========================================================================
@@ -81,6 +153,8 @@ export function KnowledgeUniverse({
             if (containerRef.current) {
                 const rect = containerRef.current.getBoundingClientRect();
                 setDimensions({ width: rect.width, height: rect.height });
+                // Update coordinator viewport for consistent world-to-screen transforms
+                world.setViewport(rect.width, rect.height);
             }
         };
 
@@ -88,7 +162,7 @@ export function KnowledgeUniverse({
         window.addEventListener("resize", updateDimensions);
 
         return () => window.removeEventListener("resize", updateDimensions);
-    }, []);
+    }, [world]);
 
     // ========================================================================
     // FPS TRACKING
@@ -124,86 +198,157 @@ export function KnowledgeUniverse({
 
     const handleNodeHover = useCallback((nodeId: string | null) => {
         setHoveredNodeId(nodeId);
-    }, []);
+
+        // Fetch details for hovered node at deeper zoom levels (progressive disclosure)
+        if (nodeId && semanticZoom.isHoverPreviewEnabled()) {
+            semanticZoom.fetchNodeDetails(nodeId);
+        }
+    }, [semanticZoom]);
 
     const handleNodeClick = useCallback(
         (nodeId: string) => {
-            const node = universeData.allNodes.find((n) => n.id === nodeId);
+            const node = effectiveUniverseData.allNodes.find((n) => n.id === nodeId);
             if (!node) return;
 
             setSelectedNodeId(nodeId);
             onNodeSelect?.(node);
+            onNodeSelectChange?.(node);
 
-            // Focus on the node
-            camera.focusOn(node.x, node.y, camera.camera.scale * 1.5);
+            // Update semantic zoom focus for breadcrumb navigation
+            semanticZoom.setFocusedNode(node);
 
-            // Navigate for planets (domains)
-            if (node.type === "planet") {
-                const planet = node as { domainId: string };
-                router.push(`/overview?domain=${planet.domainId}`);
+            // Get the click action from semantic zoom controller
+            const clickAction = semanticZoom.getClickAction(node);
+
+            switch (clickAction) {
+                case "navigate-to-content":
+                    // At star level, navigate to actual content
+                    onNavigateToContent?.(node);
+                    break;
+
+                case "zoom-to-children":
+                default:
+                    // Zoom in to focus on the node
+                    world.focusOn(node.x, node.y, world.scale * 1.5);
+                    break;
             }
         },
-        [universeData.allNodes, camera, onNodeSelect, router]
+        [effectiveUniverseData.allNodes, world, onNodeSelect, onNodeSelectChange, onNavigateToContent, semanticZoom]
+    );
+
+    // Handle breadcrumb navigation
+    const handleBreadcrumbNavigate = useCallback(
+        (breadcrumbId: string) => {
+            const { node, zoomLevel } = semanticZoom.navigateToBreadcrumb(breadcrumbId);
+
+            // Update world coordinator to match navigation
+            world.setZoomLevel(zoomLevel);
+
+            if (node) {
+                world.focusOn(node.x, node.y);
+                setSelectedNodeId(node.id);
+            } else {
+                // Navigate to root (galaxy view)
+                world.reset();
+                setSelectedNodeId(null);
+            }
+        },
+        [semanticZoom, world]
     );
 
     const handleMouseMove = useCallback((e: React.MouseEvent) => {
-        setMousePosition({ x: e.clientX, y: e.clientY });
+        // Use container-relative coordinates for tooltip positioning
+        if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            setMousePosition({
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top,
+            });
+        }
     }, []);
 
     const handleWheel = useCallback(
         (e: React.WheelEvent) => {
             if (!interactive) return;
             e.preventDefault();
-            camera.zoom(e.deltaY);
+            world.zoom(e.deltaY);
         },
-        [interactive, camera]
+        [interactive, world]
     );
 
     const handleMouseDown = useCallback(
         (e: React.MouseEvent) => {
             if (!interactive) return;
-            camera.handlePanStart(e.clientX, e.clientY);
+            world.handlePanStart(e.clientX, e.clientY);
         },
-        [interactive, camera]
+        [interactive, world]
     );
 
     const handleMouseUp = useCallback(() => {
-        camera.handlePanEnd();
-    }, [camera]);
+        world.handlePanEnd();
+    }, [world]);
 
     const handleMouseMoveCanvas = useCallback(
         (e: React.MouseEvent) => {
             if (!interactive) return;
-            camera.handlePanMove(e.clientX, e.clientY);
+            world.handlePanMove(e.clientX, e.clientY);
         },
-        [interactive, camera]
+        [interactive, world]
     );
 
     const handleZoomIn = useCallback(() => {
-        camera.zoomTo(camera.camera.scale * 1.5);
-    }, [camera]);
+        world.zoomTo(world.scale * 1.5);
+    }, [world]);
 
     const handleZoomOut = useCallback(() => {
-        camera.zoomTo(camera.camera.scale * 0.7);
-    }, [camera]);
+        world.zoomTo(world.scale * 0.7);
+    }, [world]);
 
     // Get hovered node for tooltip
     const hoveredNode = hoveredNodeId
-        ? universeData.allNodes.find((n) => n.id === hoveredNodeId)
+        ? effectiveUniverseData.allNodes.find((n) => n.id === hoveredNodeId)
         : null;
+
+    // Get semantic tooltip content for hovered node
+    const tooltipContent = hoveredNode
+        ? semanticZoom.getTooltipContent(hoveredNode)
+        : null;
+
+    // Get fetch state for tooltip loading indicator
+    const tooltipFetchState = hoveredNodeId
+        ? semanticZoom.getFetchState(hoveredNodeId)
+        : "loaded";
 
     // Count visible nodes
     const visibleCount = useMemo(() => {
-        return universeData.allNodes.filter((n) =>
-            n.visibleAtZoom.includes(camera.zoomLevel)
+        return effectiveUniverseData.allNodes.filter((n) =>
+            n.visibleAtZoom.includes(world.zoomLevel)
         ).length;
-    }, [universeData.allNodes, camera.zoomLevel]);
+    }, [effectiveUniverseData.allNodes, world.zoomLevel]);
+
+    // Loading state
+    if (effectiveDataSource !== "mock" && isLoadingData) {
+        return (
+            <div className={cn(
+                "relative w-full h-full overflow-hidden flex items-center justify-center",
+                "bg-gradient-to-br from-[var(--forge-bg-workshop)] via-[var(--forge-bg-anvil)] to-[var(--forge-bg-void)]",
+                className
+            )}>
+                <div className="text-center">
+                    <Loader2 size={48} className="animate-spin text-[var(--ember)] mx-auto mb-4" />
+                    <p className="text-[var(--forge-text-secondary)]">Loading Knowledge Universe...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div
             ref={containerRef}
             className={cn(
-                "relative w-full h-full overflow-hidden bg-[var(--forge-bg-workshop)]",
+                "relative w-full h-full overflow-hidden",
+                // Forge theme background with gradient
+                "bg-gradient-to-br from-[var(--forge-bg-workshop)] via-[var(--forge-bg-anvil)] to-[var(--forge-bg-void)]",
                 interactive && "cursor-grab active:cursor-grabbing",
                 className
             )}
@@ -219,11 +364,9 @@ export function KnowledgeUniverse({
         >
             {/* Canvas Renderer */}
             <UniverseCanvas
-                nodes={universeData.allNodes}
-                connections={universeData.connections}
-                cameraX={camera.camera.x}
-                cameraY={camera.camera.y}
-                scale={camera.camera.scale}
+                nodes={effectiveUniverseData.allNodes}
+                connections={effectiveUniverseData.connections}
+                coordinator={world.coordinator}
                 width={dimensions.width}
                 height={dimensions.height}
                 hoveredNodeId={hoveredNodeId}
@@ -235,36 +378,58 @@ export function KnowledgeUniverse({
 
             {/* Zoom Level Indicator */}
             <AnimatePresence mode="wait">
-                <ZoomLevelIndicator key={camera.zoomLevel} level={camera.zoomLevel} />
+                <ZoomLevelIndicator key={world.zoomLevel} level={world.zoomLevel} />
             </AnimatePresence>
 
             {/* Controls */}
             {showControls && (
                 <UniverseControls
-                    currentZoomLevel={camera.zoomLevel}
-                    scale={camera.camera.scale}
+                    currentZoomLevel={world.zoomLevel}
+                    scale={world.scale}
                     onZoomIn={handleZoomIn}
                     onZoomOut={handleZoomOut}
-                    onZoomLevelChange={camera.setZoomLevel}
-                    onReset={camera.reset}
+                    onZoomLevelChange={world.setZoomLevel}
+                    onReset={world.reset}
                 />
             )}
 
             {/* Stats */}
             {showStats && (
                 <StatsDisplay
-                    nodeCount={universeData.nodeCount}
+                    nodeCount={effectiveUniverseData.nodeCount}
                     visibleCount={visibleCount}
                     fps={fps}
                 />
             )}
 
-            {/* Node Tooltip */}
-            {hoveredNode && (
-                <NodeTooltip
-                    node={hoveredNode}
+            {/* Semantic Breadcrumb Navigation (you are here) */}
+            {showBreadcrumbs && semanticZoom.breadcrumbs.length > 1 && (
+                <div className="absolute top-6 left-6" data-testid="universe-breadcrumb-container">
+                    <SemanticBreadcrumb
+                        breadcrumbs={semanticZoom.breadcrumbs}
+                        currentLevel={semanticZoom.currentLevel}
+                        onNavigate={handleBreadcrumbNavigate}
+                    />
+                </div>
+            )}
+
+            {/* Position Indicator (compact alternative to breadcrumbs) */}
+            {showPositionIndicator && (
+                <div className="absolute top-6 left-6" data-testid="universe-position-container">
+                    <PositionIndicator
+                        positionDescription={semanticZoom.positionDescription}
+                    />
+                </div>
+            )}
+
+            {/* Semantic Tooltip (zoom-level-aware) */}
+            {hoveredNode && tooltipContent && (
+                <SemanticTooltip
+                    content={tooltipContent}
+                    zoomLevel={semanticZoom.currentLevel}
                     x={mousePosition.x}
                     y={mousePosition.y}
+                    fetchState={tooltipFetchState}
                 />
             )}
 
@@ -303,17 +468,18 @@ export function KnowledgeUniversePreview({
     const [dimensions, setDimensions] = useState({ width: 400, height: 300 });
     const prefersReducedMotion = useReducedMotion();
 
-    // Generate universe data
-    const universeData = useMemo(() => generateUniverseData(800), []);
+    // Generate universe data using unified provider
+    const universeData = useMemo(() => createMockUniverseData({ worldScale: 800 }), []);
 
-    // Simple animated camera
-    const [camera, setCamera] = useState({ x: 0, y: 0, scale: 0.4 });
+    // Use world coordinator for unified camera/spatial management
+    const world = useWorldCoordinator({ initialScale: 0.4 });
 
     useEffect(() => {
         const updateDimensions = () => {
             if (containerRef.current) {
                 const rect = containerRef.current.getBoundingClientRect();
                 setDimensions({ width: rect.width, height: rect.height });
+                world.setViewport(rect.width, rect.height);
             }
         };
 
@@ -321,28 +487,28 @@ export function KnowledgeUniversePreview({
         window.addEventListener("resize", updateDimensions);
 
         return () => window.removeEventListener("resize", updateDimensions);
-    }, []);
+    }, [world]);
 
     // Gentle auto-rotation (disabled if reduced motion)
     useEffect(() => {
         if (prefersReducedMotion) return;
 
         const interval = setInterval(() => {
-            setCamera((prev) => ({
-                ...prev,
-                x: Math.sin(Date.now() * 0.0001) * 50,
-                y: Math.cos(Date.now() * 0.00015) * 30,
-            }));
+            const x = Math.sin(Date.now() * 0.0001) * 50;
+            const y = Math.cos(Date.now() * 0.00015) * 30;
+            world.coordinator.setCameraImmediate(x, y, 0.4);
         }, 50);
 
         return () => clearInterval(interval);
-    }, [prefersReducedMotion]);
+    }, [prefersReducedMotion, world.coordinator]);
 
     return (
         <motion.div
             ref={containerRef}
             className={cn(
-                "relative w-full h-full overflow-hidden rounded-2xl bg-[var(--forge-bg-workshop)] border border-[var(--forge-border-subtle)] cursor-pointer group",
+                "relative w-full h-full overflow-hidden rounded-2xl cursor-pointer group",
+                "bg-gradient-to-br from-[var(--forge-bg-workshop)] via-[var(--forge-bg-anvil)] to-[var(--forge-bg-void)]",
+                "border border-[var(--forge-border-subtle)]",
                 className
             )}
             onClick={onEnter}
@@ -353,9 +519,7 @@ export function KnowledgeUniversePreview({
             <UniverseCanvas
                 nodes={universeData.allNodes}
                 connections={universeData.connections}
-                cameraX={camera.x}
-                cameraY={camera.y}
-                scale={camera.scale}
+                coordinator={world.coordinator}
                 width={dimensions.width}
                 height={dimensions.height}
                 hoveredNodeId={null}
@@ -365,8 +529,8 @@ export function KnowledgeUniversePreview({
                 reducedMotion={prefersReducedMotion}
             />
 
-            {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--forge-bg-workshop)] via-transparent to-transparent pointer-events-none" />
+            {/* Overlay gradient - Forge theme */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--forge-bg-void)] via-transparent to-transparent pointer-events-none" />
 
             {/* Call to action */}
             <motion.div

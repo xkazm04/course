@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal, RefreshCw, AlertCircle, CheckCircle2, Info } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import type { ConsoleMessage } from "../lib/types";
+import { useConsoleFilters, type ConsoleLogType } from "../lib/useConsoleFilters";
 
 interface PreviewPaneProps {
     html: string;
@@ -15,6 +16,39 @@ interface PreviewPaneProps {
     onClearConsole: () => void;
     activeTab: "preview" | "console";
     onTabChange: (tab: "preview" | "console") => void;
+    /** Callback when a console message with line number is clicked */
+    onErrorClick?: (lineNumber: number) => void;
+    /** Playground ID for persisting filter preferences */
+    playgroundId?: string;
+}
+
+/** Format relative timestamp (e.g., "2s ago", "1m ago") */
+function formatRelativeTime(timestamp: number, now: number): string {
+    const diffMs = now - timestamp;
+    const diffSec = Math.floor(diffMs / 1000);
+
+    if (diffSec < 1) return "now";
+    if (diffSec < 60) return `${diffSec}s ago`;
+
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+
+    const diffHr = Math.floor(diffMin / 60);
+    return `${diffHr}h ago`;
+}
+
+/** Hook to get current time that updates every second */
+function useCurrentTime() {
+    const [now, setNow] = useState(() => Date.now());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setNow(Date.now());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return now;
 }
 
 export function PreviewPane({
@@ -25,10 +59,18 @@ export function PreviewPane({
     onClearConsole,
     activeTab,
     onTabChange,
+    onErrorClick,
+    playgroundId = "default",
 }: PreviewPaneProps) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [isReady, setIsReady] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const now = useCurrentTime();
+    const { filters, toggleFilter, filterMessages, getMessageCounts } = useConsoleFilters(playgroundId);
+
+    // Get filtered messages and counts
+    const filteredMessages = filterMessages(consoleMessages);
+    const messageCounts = getMessageCounts(consoleMessages);
 
     // Listen for messages from iframe
     useEffect(() => {
@@ -186,34 +228,124 @@ export function PreviewPane({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-[var(--forge-bg-void)] p-3 font-mono text-xs overflow-auto"
+                            className="absolute inset-0 bg-[var(--forge-bg-void)] flex flex-col"
                             data-testid="console-output"
                         >
-                            {consoleMessages.length === 0 ? (
-                                <span className="text-[var(--forge-text-muted)] italic">
-                                    Console output will appear here...
-                                </span>
-                            ) : (
-                                <div className="space-y-1">
-                                    {consoleMessages.map((msg, i) => (
-                                        <motion.div
-                                            key={`${msg.timestamp}-${i}`}
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            className={cn(
-                                                "flex items-start gap-2 py-0.5",
-                                                getConsoleColor(msg.type)
-                                            )}
-                                        >
-                                            {getConsoleIcon(msg.type)}
-                                            <span className="break-all">{msg.content}</span>
-                                        </motion.div>
-                                    ))}
+                            {/* Filter Pills */}
+                            {consoleMessages.length > 0 && (
+                                <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--forge-border-subtle)] bg-[var(--forge-bg-workshop)]/50">
+                                    <span className="text-[10px] text-[var(--forge-text-muted)] mr-1">Filter:</span>
+                                    {(["error", "warn", "info", "log"] as ConsoleLogType[]).map((type) => {
+                                        const count = messageCounts[type];
+                                        const isActive = filters[type];
+                                        const colorMap: Record<ConsoleLogType, string> = {
+                                            error: "var(--forge-error)",
+                                            warn: "var(--forge-warning)",
+                                            info: "var(--forge-info)",
+                                            log: "var(--forge-success)",
+                                        };
+                                        const labelMap: Record<ConsoleLogType, string> = {
+                                            error: "Errors",
+                                            warn: "Warnings",
+                                            info: "Info",
+                                            log: "Log",
+                                        };
+
+                                        return (
+                                            <button
+                                                key={type}
+                                                onClick={() => toggleFilter(type)}
+                                                className={cn(
+                                                    "flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium transition-all",
+                                                    isActive
+                                                        ? "bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)]"
+                                                        : "bg-transparent border border-transparent text-[var(--forge-text-muted)] opacity-50 hover:opacity-75"
+                                                )}
+                                                style={{
+                                                    color: isActive ? colorMap[type] : undefined,
+                                                }}
+                                                data-testid={`console-filter-${type}`}
+                                            >
+                                                <span
+                                                    className="w-1.5 h-1.5 rounded-full"
+                                                    style={{ backgroundColor: colorMap[type], opacity: isActive ? 1 : 0.5 }}
+                                                />
+                                                {labelMap[type]}
+                                                {count > 0 && (
+                                                    <span className="ml-0.5 opacity-70">({count})</span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             )}
-                            <div className="mt-2 flex items-center gap-2 text-[var(--forge-text-muted)]">
-                                <span className="text-[var(--ember)]">&gt;</span>
-                                <span className="animate-pulse">_</span>
+
+                            {/* Console Messages */}
+                            <div className="flex-1 overflow-auto p-3 font-mono text-xs">
+                                {consoleMessages.length === 0 ? (
+                                    <span className="text-[var(--forge-text-muted)] italic">
+                                        Console output will appear here...
+                                    </span>
+                                ) : filteredMessages.length === 0 ? (
+                                    <span className="text-[var(--forge-text-muted)] italic">
+                                        No messages match current filters
+                                    </span>
+                                ) : (
+                                    <div className="space-y-1">
+                                        {filteredMessages.map((msg, i) => {
+                                            const hasLineNumber = msg.lineNumber !== undefined && msg.lineNumber > 0;
+                                            const isClickable = hasLineNumber && (msg.type === "error" || msg.type === "warn");
+                                            const relativeTime = formatRelativeTime(msg.timestamp, now);
+
+                                            return (
+                                                <motion.div
+                                                    key={`${msg.timestamp}-${i}`}
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    className={cn(
+                                                        "flex items-start gap-2 py-0.5",
+                                                        getConsoleColor(msg.type),
+                                                        isClickable && "cursor-pointer hover:bg-[var(--forge-bg-elevated)] rounded px-1 -mx-1 transition-colors"
+                                                    )}
+                                                    onClick={isClickable ? () => onErrorClick?.(msg.lineNumber!) : undefined}
+                                                    data-testid={`console-message-${i}`}
+                                                >
+                                                    {/* Timestamp */}
+                                                    <span
+                                                        className="text-[10px] text-[var(--forge-text-muted)] shrink-0 w-12 text-right tabular-nums"
+                                                        title={new Date(msg.timestamp).toLocaleTimeString()}
+                                                        data-testid={`console-timestamp-${i}`}
+                                                    >
+                                                        {relativeTime}
+                                                    </span>
+                                                    {getConsoleIcon(msg.type)}
+                                                    <div className="flex-1 break-all">
+                                                        {hasLineNumber && (
+                                                            <span
+                                                                className={cn(
+                                                                    "inline-flex items-center gap-1 mr-2 text-[10px] px-1.5 py-0.5 rounded font-medium",
+                                                                    msg.type === "error" && "bg-[var(--forge-error)]/20 text-[var(--forge-error)]",
+                                                                    msg.type === "warn" && "bg-[var(--forge-warning)]/20 text-[var(--forge-warning)]"
+                                                                )}
+                                                                data-testid={`line-indicator-${msg.lineNumber}`}
+                                                            >
+                                                                Line {msg.lineNumber}
+                                                                {isClickable && (
+                                                                    <span className="opacity-60">→</span>
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                        <span>{msg.content}</span>
+                                                    </div>
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                                <div className="mt-2 flex items-center gap-2 text-[var(--forge-text-muted)]">
+                                    <span className="text-[var(--ember)]">&gt;</span>
+                                    <span className="animate-pulse">_</span>
+                                </div>
                             </div>
                         </motion.div>
                     )}

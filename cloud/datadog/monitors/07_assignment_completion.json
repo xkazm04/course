@@ -1,0 +1,21 @@
+{
+  "name": "[Assignments] Low Completion Rate",
+  "type": "query alert",
+  "query": "sum(last_1d):sum:project.assignment.completed{*}.as_count() < 1",
+  "message": "## Homework Assignment Completion Rate Low\n\n**Completed in 24h:** {{value}}\n**Threshold:** Below 1 completion per day\n\n### Potential Causes\n- Assignments too difficult\n- Poor instructions or acceptance criteria\n- Technical blockers preventing submission\n- User engagement issues\n\n### Runbook\n1. Review assignment difficulty distribution\n2. Check for common failure points in submissions\n3. Analyze hint usage patterns (high hints = too hard)\n4. Review user feedback on specific assignments\n5. Consider adding more beginner-friendly options\n\n@slack-learning-team",
+  "tags": [
+    "service:project-scanner",
+    "team:learning",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 0,
+      "warning": 1
+    },
+    "notify_no_data": false,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 3
+}

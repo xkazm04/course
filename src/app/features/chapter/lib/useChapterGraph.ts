@@ -302,3 +302,87 @@ export function useLearningPathRecommendations(
         entryPoints,
     };
 }
+
+// ============================================================================
+// COLLECTIVE INTELLIGENCE INTEGRATION
+// ============================================================================
+
+/**
+ * Hook to get combined static and emergent prerequisites for a chapter.
+ * Merges hand-crafted prerequisites with those derived from collective
+ * learner behavior.
+ */
+export function useCombinedPrerequisites(
+    chapterNodeId: string,
+    options: {
+        includeEmergent?: boolean;
+        minEmergentConfidence?: number;
+    } = {}
+): {
+    staticPrerequisites: ChapterCurriculumNode[];
+    emergentPrerequisites: Array<{
+        chapter: ChapterCurriculumNode;
+        confidence: number;
+        improvement: number;
+    }>;
+    allPrerequisites: ChapterCurriculumNode[];
+    hasEmergentInsights: boolean;
+} {
+    const { includeEmergent = true, minEmergentConfidence = 0.7 } = options;
+
+    // Get static prerequisites
+    const staticPrerequisites = useMemo(
+        () => getChapterPrerequisites(chapterNodeId),
+        [chapterNodeId]
+    );
+
+    // Import emergent prerequisites dynamically to avoid circular deps
+    const emergentPrerequisites = useMemo(() => {
+        if (!includeEmergent) return [];
+
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const { getImplicitPrerequisitesForChapter } = require("./collectiveIntelligence");
+            const implicit = getImplicitPrerequisitesForChapter(
+                chapterNodeId,
+                minEmergentConfidence
+            );
+
+            return implicit
+                .map((prereq: { prerequisiteChapterId: string; confidence: number; evidence: { successRateWithPrereq: number; successRateWithoutPrereq: number } }) => {
+                    const chapter = getChapterNode(prereq.prerequisiteChapterId);
+                    if (!chapter) return null;
+                    return {
+                        chapter,
+                        confidence: prereq.confidence,
+                        improvement:
+                            prereq.evidence.successRateWithPrereq -
+                            prereq.evidence.successRateWithoutPrereq,
+                    };
+                })
+                .filter(Boolean) as Array<{
+                    chapter: ChapterCurriculumNode;
+                    confidence: number;
+                    improvement: number;
+                }>;
+        } catch {
+            return [];
+        }
+    }, [chapterNodeId, includeEmergent, minEmergentConfidence]);
+
+    // Combine and deduplicate prerequisites
+    const allPrerequisites = useMemo(() => {
+        const staticIds = new Set(staticPrerequisites.map((p) => p.id));
+        const emergentOnly = emergentPrerequisites.filter(
+            (e) => !staticIds.has(e.chapter.id)
+        );
+        return [...staticPrerequisites, ...emergentOnly.map((e) => e.chapter)];
+    }, [staticPrerequisites, emergentPrerequisites]);
+
+    return {
+        staticPrerequisites,
+        emergentPrerequisites,
+        allPrerequisites,
+        hasEmergentInsights: emergentPrerequisites.length > 0,
+    };
+}

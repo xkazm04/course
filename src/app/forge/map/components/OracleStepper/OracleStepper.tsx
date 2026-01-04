@@ -153,16 +153,57 @@ export function OracleStepper({
   const showNavigation = isInputStep;
 
   return (
-    <div className="flex flex-col h-full bg-[var(--forge-bg-void)]">
+    <div className="flex flex-col h-full pt-14 bg-[var(--forge-bg-void)] relative overflow-hidden">
+      {/* Background patterns (non-animated) */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Base gradient - uses theme tokens */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--oracle-gradient-from)] via-[var(--oracle-gradient-via)] to-[var(--oracle-gradient-to)]" />
+
+        {/* Subtle radial glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--ember)_0%,_transparent_50%)] opacity-5" />
+
+        {/* Grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `
+              linear-gradient(var(--ember) 1px, transparent 1px),
+              linear-gradient(90deg, var(--ember) 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        {/* Secondary grid */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `
+              linear-gradient(var(--gold) 1px, transparent 1px),
+              linear-gradient(90deg, var(--gold) 1px, transparent 1px)
+            `,
+            backgroundSize: "180px 180px",
+          }}
+        />
+
+        {/* Vignette - uses theme token */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse at center, transparent 40%, var(--oracle-vignette) 100%)`
+          }}
+        />
+      </div>
+
       {/* Header */}
-      <div className="flex-shrink-0 px-6 pt-6 pb-4 border-b border-[var(--forge-border-subtle)]">
+      <div className="relative z-10 flex-shrink-0 px-6 pt-6 pb-4 border-b border-[var(--forge-border-subtle)]">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)] flex items-center justify-center">
               <span className="text-xl">🔮</span>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Learning Oracle</h2>
+              <h2 className="text-lg font-semibold text-[var(--oracle-text-heading)]">Learning Oracle</h2>
               <p className="text-sm text-[var(--forge-text-secondary)]">
                 {getStepLabel(state.currentStep, state.experience || undefined)}
               </p>
@@ -171,7 +212,7 @@ export function OracleStepper({
           {onClose && (
             <button
               onClick={onClose}
-              className="p-2 rounded-lg text-[var(--forge-text-secondary)] hover:text-white hover:bg-[var(--forge-bg-elevated)] transition-colors"
+              className="p-2 rounded-lg text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -191,7 +232,7 @@ export function OracleStepper({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="relative z-10 flex-1 overflow-y-auto px-6 py-6">
         {state.error && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -217,12 +258,12 @@ export function OracleStepper({
 
       {/* Navigation Footer */}
       {showNavigation && (
-        <div className="flex-shrink-0 px-6 py-4 border-t border-[var(--forge-border-subtle)]">
+        <div className="relative z-10 flex-shrink-0 px-6 py-4 border-t border-[var(--forge-border-subtle)]">
           <div className="flex items-center justify-between">
             <button
               onClick={actions.back}
               disabled={!state.canGoBack}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--forge-text-secondary)] hover:text-white hover:bg-[var(--forge-bg-elevated)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-elevated)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Back
             </button>
@@ -230,7 +271,7 @@ export function OracleStepper({
             <button
               onClick={state.currentStep === 'free_input' ? actions.generate : actions.next}
               disabled={!state.canGoNext && state.currentStep !== 'free_input'}
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[var(--ember)]/20"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-[var(--oracle-text-on-ember)] hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[var(--ember)]/20"
             >
               {state.currentStep === 'free_input' ? 'Generate My Path' : 'Continue'}
             </button>

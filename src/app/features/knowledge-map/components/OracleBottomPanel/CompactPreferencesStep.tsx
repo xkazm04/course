@@ -55,9 +55,9 @@ export function CompactPreferencesStep({
     onPreferencesChange,
 }: CompactPreferencesStepProps) {
     return (
-        <div className="h-full flex flex-col gap-3" data-testid="compact-preferences-step">
+        <div className="h-full flex flex-col gap-4" data-testid="compact-preferences-step">
             {/* Header */}
-            <div>
+            <div className="flex flex-col gap-0.5 py-1">
                 <h3 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                     Set your preferences
                 </h3>
@@ -66,10 +66,11 @@ export function CompactPreferencesStep({
                 </p>
             </div>
 
+            {/* Preference sections - major sections use gap-4 */}
             <div className="flex-1 flex flex-col sm:flex-row gap-4 overflow-y-auto">
-                {/* Weekly hours */}
-                <div className="flex-1">
-                    <div className="flex items-center gap-1.5 mb-2">
+                {/* Weekly hours - subsection uses gap-2 */}
+                <div className="flex-1 flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5">
                         <Clock size={12} className="text-[var(--forge-text-muted)]" />
                         <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Hours per week
@@ -94,9 +95,9 @@ export function CompactPreferencesStep({
                     </div>
                 </div>
 
-                {/* Learning style */}
-                <div className="flex-1">
-                    <div className="flex items-center gap-1.5 mb-2">
+                {/* Learning style - subsection uses gap-2 */}
+                <div className="flex-1 flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5">
                         <BookOpen size={12} className="text-[var(--forge-text-muted)]" />
                         <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Learning style
@@ -127,9 +128,9 @@ export function CompactPreferencesStep({
                     </div>
                 </div>
 
-                {/* Focus areas */}
-                <div className="flex-1">
-                    <div className="flex items-center gap-1.5 mb-2">
+                {/* Focus areas - subsection uses gap-2 */}
+                <div className="flex-1 flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5">
                         <Target size={12} className="text-[var(--forge-text-muted)]" />
                         <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
                             Focus areas

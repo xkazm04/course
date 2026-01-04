@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Play,
@@ -14,15 +14,20 @@ import {
     X,
     Maximize2,
     Minimize2,
-    Save,
     AlertCircle,
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import { CodeEditor } from "./CodeEditor";
+import type { CodeEditorHandle } from "./CodeEditor";
 import { PreviewPane } from "./PreviewPane";
+import { DragHandle } from "./DragHandle";
 import { usePlaygroundStorage } from "../lib/usePlaygroundStorage";
+import { useSplitPaneStorage } from "../lib/useSplitPaneStorage";
 import { generatePreviewHtml } from "../lib/iframeExecutor";
+import { getPrimaryErrorLine } from "../lib/errorLineParser";
+import { useConceptBridge } from "../lib/useConceptBridge";
+import type { Concept } from "../lib/conceptBridge";
 import type { CodeFile, ConsoleMessage, SupportedLanguage } from "../lib/types";
 
 interface CodePlaygroundProps {
@@ -38,6 +43,16 @@ interface CodePlaygroundProps {
     height?: string;
     /** Callback when code changes */
     onCodeChange?: (files: CodeFile[]) => void;
+    /** Enable concept linking feature */
+    enableConceptBridge?: boolean;
+    /** Map of concept definitions (id -> Concept) */
+    conceptDefinitions?: Map<string, Concept>;
+    /** Currently active concept ID (from external curriculum content) */
+    activeConceptId?: string | null;
+    /** Callback when a concept is clicked in the code */
+    onConceptClick?: (concept: Concept) => void;
+    /** Callback when hovering over a concept region */
+    onConceptHover?: (conceptIds: string[] | null) => void;
 }
 
 const FILE_ICONS: Record<SupportedLanguage, string> = {
@@ -53,11 +68,17 @@ const FILE_ICONS: Record<SupportedLanguage, string> = {
 export function CodePlayground({
     playgroundId,
     initialFiles,
-    title = "Code Playground",
+    title: _title = "Code Playground",
     showFileExplorer = true,
     height = "600px",
     onCodeChange,
+    enableConceptBridge = false,
+    conceptDefinitions,
+    activeConceptId: externalActiveConceptId = null,
+    onConceptClick,
+    onConceptHover,
 }: CodePlaygroundProps) {
+    void _title; // Title prop preserved for API compatibility
     // State management
     const { files, updateFile, resetToOriginal, hasUnsavedChanges } = usePlaygroundStorage(
         playgroundId,
@@ -73,6 +94,78 @@ export function CodePlayground({
     const [consoleMessages, setConsoleMessages] = useState<ConsoleMessage[]>([]);
     const [activeTab, setActiveTab] = useState<"preview" | "console">("preview");
     const [previewHtml, setPreviewHtml] = useState("");
+    const [errorLines, setErrorLines] = useState<Set<number>>(new Set());
+    const [highlightedLine, setHighlightedLine] = useState<number | null>(null);
+
+    // Ref to the code editor for scroll-to-line functionality
+    const editorRef = useRef<CodeEditorHandle>(null);
+
+    // Ref to the split pane container for calculating ratios
+    const splitContainerRef = useRef<HTMLDivElement>(null);
+
+    // Split pane storage and state
+    const {
+        ratio: splitRatio,
+        isDragging,
+        updateRatio,
+        resetToDefault: resetSplitRatio,
+        startDragging,
+        stopDragging,
+    } = useSplitPaneStorage({ storageId: playgroundId });
+
+    // Concept bridge integration
+    const conceptBridge = useConceptBridge({
+        files,
+        conceptDefinitions,
+        initialEnabled: enableConceptBridge,
+        onConceptActivate: () => {
+            // When a concept is activated internally, we could sync with external state
+        },
+        onConceptHover,
+    });
+
+    // Sync external active concept ID with internal state
+    useEffect(() => {
+        if (externalActiveConceptId !== conceptBridge.state.activeConceptId) {
+            conceptBridge.setActiveConcept(externalActiveConceptId);
+        }
+    }, [externalActiveConceptId, conceptBridge]);
+
+    // Handle mouse move during drag
+    useEffect(() => {
+        if (!isDragging) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!splitContainerRef.current) return;
+
+            const containerRect = splitContainerRef.current.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const mouseX = e.clientX - containerRect.left;
+
+            // Calculate the new ratio based on mouse position
+            const newRatio = mouseX / containerWidth;
+            updateRatio(newRatio);
+        };
+
+        const handleMouseUp = () => {
+            stopDragging();
+        };
+
+        // Add listeners to document for drag handling outside component
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+
+        // Prevent text selection during drag
+        document.body.style.userSelect = "none";
+        document.body.style.cursor = "col-resize";
+
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+            document.body.style.userSelect = "";
+            document.body.style.cursor = "";
+        };
+    }, [isDragging, updateRatio, stopDragging]);
 
     // Get current active file
     const activeFile = useMemo(
@@ -93,6 +186,8 @@ export function CodePlayground({
     const handleRun = useCallback(() => {
         setIsRunning(true);
         setConsoleMessages([]);
+        setErrorLines(new Set()); // Clear error lines on re-run
+        setHighlightedLine(null);
         setActiveTab("preview");
 
         // Generate preview HTML
@@ -111,6 +206,8 @@ export function CodePlayground({
             resetToOriginal();
             setConsoleMessages([]);
             setPreviewHtml("");
+            setErrorLines(new Set()); // Clear error indicators on reset
+            setHighlightedLine(null);
         }
     }, [resetToOriginal]);
 
@@ -125,7 +222,24 @@ export function CodePlayground({
 
     // Handle console messages from iframe
     const handleConsoleMessage = useCallback((message: ConsoleMessage) => {
-        setConsoleMessages(prev => [...prev, message]);
+        // Parse error line numbers from the message content
+        const enrichedMessage = { ...message };
+        if (message.type === "error" || message.type === "warn") {
+            const errorLine = getPrimaryErrorLine(message.content);
+            if (errorLine) {
+                enrichedMessage.lineNumber = errorLine.lineNumber;
+                enrichedMessage.columnNumber = errorLine.columnNumber;
+
+                // Add to error lines set
+                setErrorLines(prev => {
+                    const newSet = new Set(prev);
+                    newSet.add(errorLine.lineNumber);
+                    return newSet;
+                });
+            }
+        }
+
+        setConsoleMessages(prev => [...prev, enrichedMessage]);
         if (message.type === "error") {
             setActiveTab("console");
         }
@@ -134,6 +248,15 @@ export function CodePlayground({
     // Clear console
     const handleClearConsole = useCallback(() => {
         setConsoleMessages([]);
+        setErrorLines(new Set()); // Clear error indicators when console is cleared
+        setHighlightedLine(null);
+    }, []);
+
+    // Handle clicking on an error line indicator or console error
+    const handleErrorLineClick = useCallback((lineNumber: number) => {
+        // Switch to preview/editor tab if in console and scroll to line
+        editorRef.current?.scrollToLine(lineNumber);
+        setHighlightedLine(lineNumber);
     }, []);
 
     // Get file icon color
@@ -306,10 +429,22 @@ export function CodePlayground({
                         </div>
                     </div>
 
-                    {/* Editor and Preview Split */}
-                    <div className="flex-1 flex flex-col md:flex-row min-h-0">
+                    {/* Editor and Preview Split - Resizable */}
+                    <div
+                        ref={splitContainerRef}
+                        className="flex-1 flex flex-col md:flex-row min-h-0"
+                        data-testid="split-pane-container"
+                    >
                         {/* Editor Pane */}
-                        <div className="flex-1 flex flex-col min-w-0 border-r border-[var(--forge-border-subtle)]">
+                        <div
+                            className="flex flex-col min-w-0 overflow-hidden"
+                            style={{
+                                // On mobile (flex-col), take full width
+                                // On desktop (flex-row), use the split ratio
+                                flex: `0 0 ${splitRatio * 100}%`,
+                            }}
+                            data-testid="editor-pane"
+                        >
                             {/* Editor Tab Bar */}
                             <div className="flex bg-[var(--forge-bg-forge)] overflow-x-auto">
                                 {files.map((file) => (
@@ -334,17 +469,40 @@ export function CodePlayground({
                             <div className="flex-1 overflow-hidden">
                                 {activeFile && (
                                     <CodeEditor
+                                        ref={editorRef}
                                         code={activeFile.content}
                                         language={activeFile.language}
                                         onChange={handleCodeChange}
                                         className="h-full"
+                                        errorLines={errorLines}
+                                        highlightedLine={highlightedLine}
+                                        onErrorLineClick={handleErrorLineClick}
+                                        conceptRegions={conceptBridge.getRegionsForFile(activeFile.id)}
+                                        activeConceptId={conceptBridge.state.activeConceptId}
+                                        conceptsEnabled={enableConceptBridge && conceptBridge.state.isEnabled}
+                                        getConceptsForLine={(lineNumber) => conceptBridge.getConceptsForLine(activeFile.id, lineNumber)}
+                                        onConceptClick={onConceptClick}
+                                        onConceptLineHover={conceptBridge.setHoveredLine}
                                     />
                                 )}
                             </div>
                         </div>
 
+                        {/* Drag Handle - only visible on md+ */}
+                        <div className="hidden md:block">
+                            <DragHandle
+                                isDragging={isDragging}
+                                onDragStart={startDragging}
+                                onDoubleClick={resetSplitRatio}
+                                className="h-full"
+                            />
+                        </div>
+
                         {/* Preview Pane */}
-                        <div className="w-full md:w-[400px] flex flex-col bg-[var(--forge-bg-void)]">
+                        <div
+                            className="flex-1 flex flex-col bg-[var(--forge-bg-void)] min-w-0 overflow-hidden"
+                            data-testid="preview-pane"
+                        >
                             <PreviewPane
                                 html={previewHtml}
                                 isRunning={isRunning}
@@ -353,6 +511,8 @@ export function CodePlayground({
                                 onClearConsole={handleClearConsole}
                                 activeTab={activeTab}
                                 onTabChange={setActiveTab}
+                                onErrorClick={handleErrorLineClick}
+                                playgroundId={playgroundId}
                             />
                         </div>
                     </div>

@@ -115,7 +115,7 @@ export function StreakWidgetEnhanced({
                 )}
 
                 {/* Streak Freeze Status */}
-                <StreakFreezeStatus freezesRemaining={streakData.freezesRemaining} />
+                <StreakFreezeStatus freezesRemaining={streakData.streakFreezeTokens} />
 
                 {/* Daily Goal Selector */}
                 <DailyGoalSelector

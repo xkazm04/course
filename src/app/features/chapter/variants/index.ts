@@ -16,6 +16,7 @@ export type { ChapterClassicVariantsProps } from './ChapterClassicVariants'
 
 // Individual variant (for advanced usage)
 export { ElegantVariant } from './ElegantVariant'
+export type { ElegantVariantProps } from './ElegantVariant'
 
 // Shared types
 export type { ChapterVariantProps } from './shared/types'

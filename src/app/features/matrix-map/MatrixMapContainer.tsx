@@ -5,13 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Home } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 
-// Import from knowledge-map for data and navigation
+// Import from knowledge-map for data and unified scene graph
 import { generateKnowledgeMapData } from "@/app/features/knowledge-map/lib/mapData";
-import { useMapNavigation } from "@/app/features/knowledge-map/lib/useMapNavigation";
+import { useSceneGraph } from "@/app/features/knowledge-map/lib/useSceneGraph";
 import { NodeDetailsPanel } from "@/app/features/knowledge-map/components/NodeDetailsPanel";
 
 // Local imports
-import type { MatrixVariant, MatrixMapContainerProps, ViewportState } from "./lib/types";
+import type { MatrixVariant, MatrixMapContainerProps } from "./lib/types";
 import { VIEWPORT } from "./lib/constants";
 import { MatrixTabSwitcher } from "./components/common/MatrixTabSwitcher";
 import { MatrixControls } from "./components/common/MatrixControls";
@@ -35,25 +35,20 @@ export function MatrixMapContainer({
     // Generate map data
     const mapData = useMemo(() => generateKnowledgeMapData(), []);
 
-    // Navigation hook (shared across all variants)
+    // Unified Scene Graph (combines navigation + viewport with animated transitions)
     const {
+        scene,
         navigation,
+        viewport,
         visibleNodes,
         breadcrumbItems,
         drillDown,
         drillUp,
         selectNode,
         selectedNode,
-        currentParent,
-    } = useMapNavigation(mapData, {
+        zoomTo,
+    } = useSceneGraph(mapData, {
         initialParentId: initialDomainId ? `domain-${initialDomainId}` : null,
-    });
-
-    // Viewport state (pan/zoom)
-    const [viewport, setViewport] = useState<ViewportState>({
-        scale: 1,
-        offsetX: 0,
-        offsetY: 0,
     });
 
     // Measure container
@@ -74,24 +69,20 @@ export function MatrixMapContainer({
         return () => observer.disconnect();
     }, []);
 
-    // Zoom handlers
+    // Zoom handlers using SceneGraph's unified viewport
     const handleZoomIn = useCallback(() => {
-        setViewport((prev) => ({
-            ...prev,
-            scale: Math.min(prev.scale * 1.2, VIEWPORT.MAX_SCALE),
-        }));
-    }, []);
+        const newScale = Math.min(scene.scale * 1.2, VIEWPORT.MAX_SCALE);
+        zoomTo(newScale);
+    }, [scene.scale, zoomTo]);
 
     const handleZoomOut = useCallback(() => {
-        setViewport((prev) => ({
-            ...prev,
-            scale: Math.max(prev.scale / 1.2, VIEWPORT.MIN_SCALE),
-        }));
-    }, []);
+        const newScale = Math.max(scene.scale / 1.2, VIEWPORT.MIN_SCALE);
+        zoomTo(newScale);
+    }, [scene.scale, zoomTo]);
 
     const handleResetViewport = useCallback(() => {
-        setViewport({ scale: 1, offsetX: 0, offsetY: 0 });
-    }, []);
+        zoomTo(1);
+    }, [zoomTo]);
 
     // Wheel zoom handler
     const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -99,10 +90,10 @@ export function MatrixMapContainer({
         const delta = -e.deltaY * VIEWPORT.ZOOM_SPEED;
         const newScale = Math.max(
             VIEWPORT.MIN_SCALE,
-            Math.min(VIEWPORT.MAX_SCALE, viewport.scale + delta)
+            Math.min(VIEWPORT.MAX_SCALE, scene.scale + delta)
         );
-        setViewport((prev) => ({ ...prev, scale: newScale }));
-    }, [viewport.scale]);
+        zoomTo(newScale);
+    }, [scene.scale, zoomTo]);
 
     // Node selection handler
     const handleNodeSelect = useCallback(
@@ -115,12 +106,12 @@ export function MatrixMapContainer({
     );
 
     // Node drill-down handler
+    // SceneGraph handles viewport reset with animated transition automatically
     const handleNodeDrillDown = useCallback(
         (nodeId: string) => {
             drillDown(nodeId);
-            handleResetViewport();
         },
-        [drillDown, handleResetViewport]
+        [drillDown]
     );
 
     // Background click handler
@@ -130,6 +121,7 @@ export function MatrixMapContainer({
     }, [selectNode, onNodeSelect]);
 
     // Breadcrumb click handler
+    // SceneGraph handles viewport reset with animated transition automatically
     const handleBreadcrumbClick = useCallback(
         (index: number) => {
             if (index === 0) {
@@ -137,9 +129,8 @@ export function MatrixMapContainer({
             } else {
                 drillUp(index - 1);
             }
-            handleResetViewport();
         },
-        [drillUp, handleResetViewport]
+        [drillUp]
     );
 
     // Render the appropriate canvas based on variant
@@ -168,11 +159,11 @@ export function MatrixMapContainer({
     };
 
     return (
-        <div className="relative flex flex-col" style={{ height }}>
+        <div className="relative flex flex-col" style={{ height }} data-testid="matrix-map-container">
             {/* Header with breadcrumb and tab switcher */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)]/50 backdrop-blur-sm">
                 {/* Breadcrumb */}
-                <nav className="flex items-center gap-1 text-sm overflow-x-auto">
+                <nav className="flex items-center gap-1 text-sm overflow-x-auto" data-testid="matrix-map-breadcrumb">
                     {breadcrumbItems.map((item, index) => (
                         <React.Fragment key={item.nodeId ?? "root"}>
                             {index > 0 && (
@@ -186,6 +177,7 @@ export function MatrixMapContainer({
                                         ? "text-[var(--forge-text-primary)] font-medium bg-[var(--forge-bg-anvil)]"
                                         : "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-anvil)]/50"
                                 )}
+                                data-testid={`matrix-breadcrumb-item-${index}`}
                             >
                                 {index === 0 && <Home size={14} />}
                                 <span className="max-w-[150px] truncate">{item.label}</span>
@@ -208,6 +200,7 @@ export function MatrixMapContainer({
                     ref={containerRef}
                     className="flex-1 relative overflow-hidden bg-[var(--forge-bg-workshop)]"
                     onWheel={handleWheel}
+                    data-testid="matrix-map-canvas-container"
                 >
                     {containerSize.width > 0 && containerSize.height > 0 && (
                         <AnimatePresence mode="wait">

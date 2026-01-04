@@ -74,10 +74,10 @@ export function PrerequisiteWarning({
                         <AlertTriangle className="h-5 w-5 text-[var(--forge-warning)]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-[var(--forge-warning)]">
+                        <h3 className="text-lg font-semibold text-[var(--forge-warning)]">
                             Prerequisites Required
                         </h3>
-                        <p className="mt-1 text-sm text-[var(--forge-text-secondary)]">
+                        <p className="mt-1 text-sm text-[var(--forge-text-secondary)] leading-relaxed">
                             Complete the following chapter{missingPrerequisites.length > 1 ? "s" : ""}{" "}
                             first for the best learning experience:
                         </p>
@@ -87,7 +87,7 @@ export function PrerequisiteWarning({
                                     <Lock className="h-3 w-3 text-[var(--forge-warning)]" />
                                     <button
                                         onClick={() => onNavigateToPrerequisite?.(prereq.id)}
-                                        className="text-sm text-[var(--forge-warning)] hover:underline font-medium flex items-center gap-1"
+                                        className="text-xs text-[var(--forge-warning)] hover:underline font-medium flex items-center gap-1"
                                         data-testid={`prereq-link-${prereq.id}`}
                                     >
                                         {prereq.title}
@@ -100,7 +100,7 @@ export function PrerequisiteWarning({
                             <div className="mt-3 flex gap-2">
                                 <button
                                     onClick={onSkip}
-                                    className="text-xs text-[var(--forge-warning)] hover:underline"
+                                    className="text-xs text-[var(--forge-text-muted)] hover:underline font-medium"
                                     data-testid="skip-prerequisites-btn"
                                 >
                                     Continue anyway (not recommended)
@@ -157,10 +157,10 @@ export function PrerequisiteWarning({
                     <Lock className="h-6 w-6 text-[var(--forge-warning)]" />
                 </div>
                 <div>
-                    <h3 className="font-semibold text-[var(--forge-text-primary)]">
+                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
                         Chapter Locked
                     </h3>
-                    <p className="text-sm text-[var(--forge-text-muted)]">
+                    <p className="text-xs text-[var(--forge-text-muted)]">
                         Complete prerequisites to unlock
                     </p>
                 </div>
@@ -175,7 +175,7 @@ export function PrerequisiteWarning({
                         data-testid={`prereq-card-${prereq.id}`}
                     >
                         <BookOpen className="h-5 w-5 text-[var(--forge-text-muted)] group-hover:text-[var(--forge-warning)]" />
-                        <span className="flex-1 text-left text-sm font-medium text-[var(--forge-text-secondary)]">
+                        <span className="flex-1 text-left text-sm font-medium text-[var(--forge-text-secondary)] leading-relaxed">
                             {prereq.title}
                         </span>
                         <ArrowRight className="h-4 w-4 text-[var(--forge-text-muted)] group-hover:text-[var(--forge-warning)] group-hover:translate-x-1 transition-transform" />
@@ -187,7 +187,7 @@ export function PrerequisiteWarning({
                 <div className="mt-4 pt-4 border-t border-[var(--forge-border-subtle)]">
                     <button
                         onClick={onSkip}
-                        className="text-sm text-[var(--forge-text-muted)] hover:text-[var(--forge-warning)]"
+                        className="text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-warning)] font-medium"
                         data-testid="skip-prerequisites-card-btn"
                     >
                         Skip prerequisites and continue anyway →
@@ -232,7 +232,7 @@ export function SuggestedNextChapters({
             )}
             data-testid="suggested-next-chapters"
         >
-            <h3 className="text-sm font-medium text-[var(--forge-success)] mb-3 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-[var(--forge-success)] mb-3 flex items-center gap-2">
                 <ArrowRight className="h-4 w-4" />
                 Suggested Next Steps
             </h3>
@@ -246,7 +246,7 @@ export function SuggestedNextChapters({
                     >
                         <BookOpen className="h-4 w-4 text-[var(--forge-success)]" />
                         <div className="flex-1 text-left">
-                            <span className="text-sm font-medium text-[var(--forge-text-secondary)] block">
+                            <span className="text-sm font-medium text-[var(--forge-text-secondary)] leading-relaxed block">
                                 {chapter.name}
                             </span>
                             <span className="text-xs text-[var(--forge-text-muted)]">

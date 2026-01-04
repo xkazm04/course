@@ -38,7 +38,7 @@ export function StepQuestion({ question, selectedAnswer, onSelect }: StepQuestio
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-white mb-2">{question.question}</h3>
+        <h3 className="text-xl font-semibold text-[var(--oracle-text-heading)] mb-2">{question.question}</h3>
         {question.subtitle && (
           <p className="text-sm text-[var(--forge-text-secondary)]">{question.subtitle}</p>
         )}
@@ -75,7 +75,7 @@ export function StepQuestion({ question, selectedAnswer, onSelect }: StepQuestio
                   {option.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className={`font-medium ${selected ? 'text-[var(--ember)]' : 'text-white'}`}>
+                  <h4 className={`font-medium ${selected ? 'text-[var(--ember)]' : 'text-[var(--forge-text-primary)]'}`}>
                     {option.label}
                   </h4>
                   <p className="text-sm text-[var(--forge-text-secondary)] mt-0.5">
@@ -98,7 +98,7 @@ export function StepQuestion({ question, selectedAnswer, onSelect }: StepQuestio
                     <motion.svg
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="w-3 h-3 text-white"
+                      className="w-3 h-3 text-[var(--oracle-text-on-ember)]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

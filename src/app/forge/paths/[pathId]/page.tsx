@@ -104,7 +104,7 @@ function ChapterCard({ chapter, pathId, isFirst }: { chapter: Chapter; pathId: s
 
             {isAccessible ? (
                 <Link
-                    href={`/module/${chapter.id}/variant/classic`}
+                    href={`/forge/chapter/${chapter.id}`}
                     className={cn(
                         "block p-4 rounded-xl border transition-all group",
                         chapter.status === "completed" && "bg-[var(--forge-success)]/5 border-[var(--forge-success)]/20 hover:bg-[var(--forge-success)]/10",
@@ -432,7 +432,7 @@ export default function LearningPathPage() {
                     .from("learning_paths")
                     .select("*")
                     .eq("id", pathId)
-                    .single();
+                    .single() as { data: any; error: any };
 
                 if (pathError) throw pathError;
 
@@ -459,7 +459,7 @@ export default function LearningPathPage() {
                         )
                     `)
                     .eq("learning_path_id", pathId)
-                    .order("sort_order");
+                    .order("sort_order") as { data: any[] | null; error: any };
 
                 if (coursesError) throw coursesError;
 
@@ -471,7 +471,7 @@ export default function LearningPathPage() {
                         .select("*")
                         .eq("learning_path_id", pathId)
                         .eq("user_id", user.id)
-                        .single();
+                        .single() as { data: any };
 
                     enrollment = enrollmentData ? {
                         id: enrollmentData.id,

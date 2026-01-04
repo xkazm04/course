@@ -7,7 +7,7 @@
 // TYPES
 // ============================================================================
 
-export type DomainId = 'frontend' | 'backend' | 'fullstack' | 'mobile' | 'data' | 'devops';
+export type DomainId = 'frontend' | 'backend' | 'fullstack' | 'mobile' | 'data' | 'devops' | 'databases' | 'games';
 export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced';
 export type QuestionType = 'card-select' | 'single-select' | 'multi-select' | 'textarea';
 
@@ -106,7 +106,7 @@ export const DOMAIN_QUESTION: Question = {
 // STEP 2: EXPERIENCE ASSESSMENT (Domain-specific scenarios)
 // ============================================================================
 
-export const EXPERIENCE_QUESTIONS: Record<DomainId, Question> = {
+export const EXPERIENCE_QUESTIONS: Partial<Record<DomainId, Question>> = {
   frontend: {
     id: 'experience',
     question: 'Which best describes where you are right now?',
@@ -725,7 +725,7 @@ export function getBranchQuestions(experienceLevel: ExperienceLevel): Question[]
 }
 
 export function getExperienceQuestion(domain: DomainId): Question {
-  return EXPERIENCE_QUESTIONS[domain] || EXPERIENCE_QUESTIONS.frontend;
+  return EXPERIENCE_QUESTIONS[domain] || EXPERIENCE_QUESTIONS.frontend!;
 }
 
 export interface OracleAnswers {

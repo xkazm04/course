@@ -147,12 +147,80 @@ export interface CourseInfo {
     chapterTitle: string;
 }
 
+// ============================================================================
+// Content Metadata Types (for showcase)
+// ============================================================================
+
+export interface VideoVariant {
+    id: string;
+    title: string;
+    youtubeId?: string;
+    searchQuery: string;
+    instructorName?: string;
+    style?: 'lecture' | 'tutorial' | 'walkthrough' | 'animated';
+    duration?: string;
+}
+
+export interface ContentMetadata {
+    key_takeaways?: string[];
+    video_variants?: VideoVariant[];
+    estimated_time_minutes?: number;
+    difficulty?: 'beginner' | 'intermediate' | 'advanced';
+    introduction?: string;
+}
+
 // Shared course metadata
 export const COURSE_INFO: CourseInfo = {
     courseId: "react-hooks",
     courseName: "React Hooks Mastery",
     chapterId: "custom-hooks",
     chapterTitle: "Building Your First Custom Hook",
+};
+
+// ============================================================================
+// Showcase Content Metadata
+// ============================================================================
+
+export const CONTENT_METADATA: ContentMetadata = {
+    difficulty: "intermediate",
+    estimated_time_minutes: 45,
+    introduction: `Custom Hooks are **JavaScript functions** that start with "use" and can call other Hooks. They let you extract component logic into reusable functions, making your code more modular and easier to test.
+
+In this chapter, you'll learn how to identify opportunities for custom hooks, build your first hook from scratch, and apply best practices for hook design.`,
+    key_takeaways: [
+        "Understand the motivation behind custom hooks",
+        "Extract component logic into reusable functions",
+        "Learn naming conventions and best practices",
+        "Build real-world hooks like useLocalStorage",
+        "Handle complex state and side effects",
+    ],
+    video_variants: [
+        {
+            id: "fireship-hooks",
+            title: "React Hooks in 100 Seconds",
+            youtubeId: "TNhaISOUy6Q",
+            searchQuery: "React custom hooks tutorial",
+            instructorName: "Fireship",
+            style: "animated",
+            duration: "2:15",
+        },
+        {
+            id: "jack-custom",
+            title: "Building Custom Hooks - Deep Dive",
+            searchQuery: "React custom hooks patterns Jack Herrington",
+            instructorName: "Jack Herrington",
+            style: "walkthrough",
+            duration: "24:15",
+        },
+        {
+            id: "net-ninja",
+            title: "Custom Hooks Tutorial",
+            searchQuery: "React custom hooks tutorial for beginners",
+            instructorName: "The Net Ninja",
+            style: "tutorial",
+            duration: "18:42",
+        },
+    ],
 };
 
 // Alternative course info for VariantC (hooks fundamentals focus)
@@ -168,72 +236,197 @@ export const CHAPTER_SECTIONS: ChapterSection[] = [
     {
         id: 1,
         sectionId: "intro",
-        title: "Introduction to Hooks",
+        title: "Introduction to Custom Hooks",
         duration: "5 min",
         time: "0:00",
         type: "video",
         completed: true,
         content: {
-            description: "Understand why Hooks were introduced and how they simplify React development.",
-            keyPoints: ["Why Hooks exist", "Rules of Hooks", "Benefits over class components"],
+            description: `Before diving into custom hooks, let's understand **why they exist** and what problems they solve.
+
+React Hooks were introduced in React 16.8 to solve the problem of sharing stateful logic between components. Before hooks, developers had to use:
+
+- **Higher-Order Components (HOCs)** - which led to "wrapper hell"
+- **Render props** - which made component trees complex and hard to follow
+
+Custom hooks provide a cleaner way to extract and share logic while keeping your components focused on what they render.`,
+            keyPoints: [
+                "Hooks solve the problem of sharing stateful logic",
+                "They replace HOCs and render props patterns",
+                "Custom hooks must start with 'use' prefix",
+            ],
         },
     },
     {
         id: 2,
         sectionId: "understanding",
-        title: "Understanding Hooks",
+        title: "Understanding Hook Rules",
         duration: "12 min",
-        time: "2:15",
+        time: "5:00",
         type: "lesson",
         completed: true,
         content: {
-            description: "Learn how to add state to functional components using the useState hook.",
-            code: `const [state, setState] = useState(initialValue);`,
-            keyPoints: ["Declaring state", "Updating state", "State with objects/arrays"],
+            description: `There are two fundamental rules you must follow when using hooks:
+
+### Rule 1: Only Call Hooks at the Top Level
+Don't call hooks inside loops, conditions, or nested functions. This ensures hooks are called in the same order each render.
+
+### Rule 2: Only Call Hooks from React Functions
+Call hooks from React function components or from custom hooks — not from regular JavaScript functions.`,
+            code: `// ✅ Good - hooks at top level
+function Counter() {
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState("");
+
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+
+// ❌ Bad - hook inside condition
+function BadCounter() {
+  if (someCondition) {
+    const [count, setCount] = useState(0); // This will break!
+  }
+}`,
+            keyPoints: [
+                "Always call hooks at the top level",
+                "Never call hooks inside conditions or loops",
+                "Only call hooks from React function components",
+            ],
         },
     },
     {
         id: 3,
         sectionId: "building",
-        title: "Building Custom Hooks",
-        duration: "8 min",
-        time: "8:30",
+        title: "Building Your First Hook",
+        duration: "15 min",
+        time: "17:00",
         type: "interactive",
         completed: false,
         content: {
-            description: "Build a counter application step by step using useState.",
+            description: `Let's build a practical custom hook: \`useLocalStorage\`. This hook will persist state to localStorage and sync it across browser tabs.
+
+The hook will:
+1. Initialize state from localStorage (or use a default value)
+2. Update localStorage whenever the state changes
+3. Handle JSON serialization/deserialization
+4. Provide error handling for storage failures`,
+            code: `import { useState, useEffect } from 'react';
+
+function useLocalStorage<T>(key: string, initialValue: T) {
+  // Get stored value or use initial
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error('Error reading localStorage:', error);
+      return initialValue;
+    }
+  });
+
+  // Sync to localStorage when value changes
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(storedValue));
+    } catch (error) {
+      console.error('Error writing to localStorage:', error);
+    }
+  }, [key, storedValue]);
+
+  return [storedValue, setStoredValue] as const;
+}`,
+            keyPoints: [
+                "Custom hooks can use other hooks",
+                "Return tuple for familiar useState-like API",
+                "Handle errors gracefully in production",
+            ],
             screenshot: true,
         },
     },
     {
         id: 4,
         sectionId: "best-practices",
-        title: "Best Practices",
-        duration: "15 min",
-        time: "15:45",
+        title: "Best Practices & Patterns",
+        duration: "10 min",
+        time: "32:00",
         type: "lesson",
         completed: false,
         content: {
-            description: "Master side effects in React with the useEffect hook.",
-            code: `useEffect(() => {
-  // Side effect code
-  return () => {
-    // Cleanup
-  };
-}, [dependencies]);`,
-            keyPoints: ["Effect timing", "Dependencies array", "Cleanup functions"],
+            description: `Follow these best practices to write maintainable custom hooks:
+
+### Naming Conventions
+- Always prefix with \`use\` (required by React)
+- Use descriptive names: \`useAuth\`, \`useWindowSize\`, \`useFetch\`
+
+### Single Responsibility
+Each hook should do one thing well. If your hook is getting complex, consider splitting it into smaller hooks.
+
+### Return Consistent Types
+Make your hooks predictable by returning consistent types and structures.`,
+            code: `// Pattern: Return object for complex hooks
+function useAuth() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const login = async (credentials) => { /* ... */ };
+  const logout = async () => { /* ... */ };
+
+  return { user, loading, error, login, logout };
+}
+
+// Pattern: Return tuple for simple state hooks
+function useToggle(initial = false) {
+  const [value, setValue] = useState(initial);
+  const toggle = () => setValue(v => !v);
+  return [value, toggle] as const;
+}`,
+            keyPoints: [
+                "Use descriptive hook names with 'use' prefix",
+                "Keep hooks focused on single responsibility",
+                "Return objects for complex hooks, tuples for simple ones",
+            ],
         },
     },
     {
         id: 5,
-        sectionId: "quiz",
-        title: "Quiz & Summary",
+        sectionId: "exercise",
+        title: "Practice Exercise",
         duration: "20 min",
-        time: "22:00",
+        time: "42:00",
         type: "exercise",
         completed: false,
         content: {
-            description: "Apply what you've learned by building a data fetching component.",
+            description: `Now it's your turn! Build a \`useDebounce\` hook that delays updating a value until a specified time has passed.
+
+**Requirements:**
+- Accept a value and delay (in milliseconds)
+- Return the debounced value
+- Reset the timer when the input value changes
+- Clean up the timer on unmount
+
+This is useful for search inputs, form validation, and preventing excessive API calls.`,
+            code: `// Your task: Implement useDebounce
+function useDebounce<T>(value: T, delay: number): T {
+  // TODO: Implement debouncing logic
+  // Hint: Use useState and useEffect
+}
+
+// Usage example:
+function SearchInput() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 500);
+
+  useEffect(() => {
+    // Only called 500ms after user stops typing
+    searchAPI(debouncedQuery);
+  }, [debouncedQuery]);
+}`,
+            keyPoints: [
+                "Use setTimeout for debouncing",
+                "Clean up timer in useEffect return",
+                "Consider edge cases like unmounting",
+            ],
         },
     },
 ];

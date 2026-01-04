@@ -117,12 +117,16 @@ const progressHeaderSlot = (id: string = "progress-header"): ProgressSlot => ({
     },
 });
 
-const actionsSlot = (id: string = "actions-main"): ActionsSlot => ({
+const actionsSlot = (
+    id: string = "actions-main",
+    options?: { showRegenerate?: boolean }
+): ActionsSlot => ({
     id,
     type: "actions",
     data: {
-        showBookmark: true,
-        showLike: true,
+        showBookmark: !options?.showRegenerate,
+        showLike: !options?.showRegenerate,
+        showRegenerate: options?.showRegenerate ?? false,
         variant: "full",
     },
 });
@@ -201,6 +205,7 @@ export const classicLayoutTemplate: LayoutTemplate = {
     name: "Classic",
     description: "Video player with content layout and sidebar progress",
     dataTestId: "chapter-view-classic",
+    wrapperClass: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6",
     enableVideoControls: true,
     gridConfig: {
         columns: 3,
@@ -227,7 +232,7 @@ export const classicLayoutTemplate: LayoutTemplate = {
 
         // Sidebar region (right 1/3)
         { slot: progressSidebarSlot("progress"), region: "sidebar", order: 1 },
-        { slot: actionsSlot("actions"), region: "sidebar", order: 2 },
+        { slot: actionsSlot("actions", { showRegenerate: true }), region: "sidebar", order: 2 },
         { slot: navigationSlot("navigation", true), region: "sidebar", order: 3 },
     ],
 };

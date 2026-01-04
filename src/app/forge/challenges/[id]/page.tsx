@@ -304,10 +304,10 @@ export default function ChallengeDetailPage() {
                     <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] p-6">
                         <button
                             onClick={handleStartChallenge}
-                            disabled={isStarting || !user.githubConnected}
+                            disabled={isStarting || !user}
                             className={cn(
                                 "w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all",
-                                user.githubConnected
+                                user
                                     ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:opacity-90"
                                     : "bg-[var(--surface-overlay)] text-[var(--text-muted)] cursor-not-allowed"
                             )}
@@ -324,11 +324,11 @@ export default function ChallengeDetailPage() {
                                 </>
                             )}
                         </button>
-                        {!user.githubConnected && (
+                        {!user && (
                             <div className="flex items-start gap-2 mt-4 p-3 bg-[var(--gold)]/10 rounded-lg border border-[var(--gold)]/20">
                                 <AlertCircle size={16} className="text-[var(--gold)] flex-shrink-0 mt-0.5" />
                                 <p className="text-xs text-[var(--text-secondary)]">
-                                    Connect your GitHub account to start contributing.
+                                    Sign in to start contributing.
                                 </p>
                             </div>
                         )}

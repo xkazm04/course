@@ -8,7 +8,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Clock, TrendingUp, Sparkles, BookOpen } from "lucide-react";
+import { Clock, Sparkles } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import type { PredictiveModule } from "@/app/features/goal-path/lib/predictiveTypes";
 import { getSkillDemandIndicator, formatModuleDuration } from "../../lib/oracleNodeMapping";
@@ -24,8 +24,12 @@ export interface PathModuleCardProps {
     index: number;
     /** Whether this creates a hypothetical node */
     isHypothetical: boolean;
+    /** Animation delay in seconds (overrides default stagger calculation) */
+    animationDelay?: number;
     /** Hover callback */
     onHover?: (isHovering: boolean) => void;
+    /** Whether to show the timeline node indicator */
+    showTimelineNode?: boolean;
 }
 
 // ============================================================================
@@ -36,16 +40,25 @@ export function PathModuleCard({
     module,
     index,
     isHypothetical,
+    animationDelay,
     onHover,
+    showTimelineNode = false,
 }: PathModuleCardProps) {
     const demandIndicator = getSkillDemandIndicator(module.skillDemand);
     const duration = formatModuleDuration(module.estimatedHours);
 
+    // Use provided delay or fallback to default stagger calculation
+    const delay = animationDelay ?? index * 0.05;
+
     return (
         <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.05 }}
+            transition={{
+                delay,
+                duration: 0.4,
+                ease: [0.25, 0.46, 0.45, 0.94] // Smooth ease-out curve
+            }}
             onMouseEnter={() => onHover?.(true)}
             onMouseLeave={() => onHover?.(false)}
             className={cn(
@@ -66,24 +79,50 @@ export function PathModuleCard({
             )}
             data-testid={`module-card-${index}`}
         >
-            {/* Sequence number */}
-            <div
-                className={cn(
-                    "absolute -left-2.5 top-3",
-                    "w-5 h-5 rounded-full",
-                    "flex items-center justify-center",
-                    "text-xs font-bold",
-                    "shadow-sm",
-                    isHypothetical
-                        ? "bg-[var(--ember)] text-white"
-                        : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
-                )}
-            >
-                {index + 1}
-            </div>
+            {/* Timeline Node - Sequence number positioned ON the timeline spine */}
+            {showTimelineNode ? (
+                <motion.div
+                    className={cn(
+                        "absolute -left-[32px] top-3",
+                        "w-6 h-6 rounded-full",
+                        "flex items-center justify-center",
+                        "text-xs font-bold",
+                        "shadow-md ring-2 ring-[var(--forge-bg-elevated)]",
+                        "z-10",
+                        isHypothetical
+                            ? "bg-[var(--ember)] text-white"
+                            : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-primary)] border border-[var(--forge-border-subtle)]"
+                    )}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{
+                        delay: delay + 0.05,
+                        duration: 0.3,
+                        ease: [0.34, 1.56, 0.64, 1] // Spring-like bounce
+                    }}
+                    data-testid={`timeline-node-${index}`}
+                >
+                    {index + 1}
+                </motion.div>
+            ) : (
+                <div
+                    className={cn(
+                        "absolute -left-2.5 top-3",
+                        "w-5 h-5 rounded-full",
+                        "flex items-center justify-center",
+                        "text-xs font-bold",
+                        "shadow-sm",
+                        isHypothetical
+                            ? "bg-[var(--ember)] text-white"
+                            : "bg-[var(--forge-bg-anvil)] text-[var(--forge-text-secondary)]"
+                    )}
+                >
+                    {index + 1}
+                </div>
+            )}
 
             {/* Header */}
-            <div className="flex items-start justify-between mb-2 pl-3">
+            <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
                     <h4 className="text-sm font-semibold text-[var(--forge-text-primary)] line-clamp-1">
                         {module.title}
@@ -117,7 +156,7 @@ export function PathModuleCard({
             </div>
 
             {/* Skills */}
-            <div className="flex flex-wrap gap-1 pl-3">
+            <div className="flex flex-wrap gap-1">
                 {module.skills.slice(0, 3).map(skill => (
                     <span
                         key={skill}
@@ -138,7 +177,7 @@ export function PathModuleCard({
                 <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     whileHover={{ height: "auto", opacity: 1 }}
-                    className="overflow-hidden pl-3 mt-2"
+                    className="overflow-hidden mt-2"
                 >
                     <p className="text-xs text-[var(--forge-text-secondary)] line-clamp-2">
                         {module.reasoning}

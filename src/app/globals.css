@@ -1,5 +1,140 @@
 @import "tailwindcss";
 
+/* === CODE SYNTAX HIGHLIGHTING (highlight.js compatible) === */
+/* Custom Forge theme for code blocks */
+.hljs {
+  color: var(--forge-text-primary);
+  background: transparent;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-addition {
+  color: #c026d3; /* Purple for keywords */
+}
+
+.hljs-number,
+.hljs-string,
+.hljs-meta .hljs-meta-string,
+.hljs-literal,
+.hljs-doctag,
+.hljs-regexp {
+  color: #059669; /* Green for strings/numbers */
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #2563eb; /* Blue for functions/classes */
+}
+
+.hljs-attribute,
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-class .hljs-title,
+.hljs-type {
+  color: #d97706; /* Amber for attributes */
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-subst,
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-link {
+  color: #dc2626; /* Red for symbols */
+}
+
+.hljs-built_in,
+.hljs-deletion {
+  color: #7c3aed; /* Violet for built-ins */
+}
+
+.hljs-formula {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+/* Dark mode syntax highlighting */
+.dark .hljs {
+  color: var(--forge-text-primary);
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote {
+  color: #9ca3af;
+}
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-addition {
+  color: #e879f9;
+}
+
+.dark .hljs-number,
+.dark .hljs-string,
+.dark .hljs-meta .hljs-meta-string,
+.dark .hljs-literal,
+.dark .hljs-doctag,
+.dark .hljs-regexp {
+  color: #34d399;
+}
+
+.dark .hljs-title,
+.dark .hljs-section,
+.dark .hljs-name,
+.dark .hljs-selector-id,
+.dark .hljs-selector-class {
+  color: #60a5fa;
+}
+
+.dark .hljs-attribute,
+.dark .hljs-attr,
+.dark .hljs-variable,
+.dark .hljs-template-variable,
+.dark .hljs-class .hljs-title,
+.dark .hljs-type {
+  color: #fbbf24;
+}
+
+.dark .hljs-symbol,
+.dark .hljs-bullet,
+.dark .hljs-subst,
+.dark .hljs-meta,
+.dark .hljs-meta .hljs-keyword,
+.dark .hljs-selector-attr,
+.dark .hljs-selector-pseudo,
+.dark .hljs-link {
+  color: #f87171;
+}
+
+.dark .hljs-built_in,
+.dark .hljs-deletion {
+  color: #a78bfa;
+}
+
+.dark .hljs-formula {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 :root {
   /* === OPENFORGE DESIGN SYSTEM === */
   /* Light Mode - "Daylight Workshop" - Warm, professional tones */
@@ -149,6 +284,14 @@
   --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);   /* For symmetric animations */
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy/spring-like */
 
+  /* === ORACLE/STEPPER THEME TOKENS === */
+  --oracle-gradient-from: #F7F5F3;
+  --oracle-gradient-via: #FAFAF8;
+  --oracle-gradient-to: #F7F5F3;
+  --oracle-vignette: rgba(0, 0, 0, 0.05);
+  --oracle-text-heading: #1A1816;
+  --oracle-text-on-ember: #FFFFFF;
+
   /* === LEGACY COMPATIBILITY === */
   --background: #F0F2F5;
   --foreground: #171717;
@@ -274,6 +417,14 @@
   --btn-secondary-text: #ffffff;
   --btn-secondary-border: rgba(51, 65, 85, 0.6);
 
+  /* === ORACLE/STEPPER THEME TOKENS === */
+  --oracle-gradient-from: #09090A;
+  --oracle-gradient-via: #0D0D0E;
+  --oracle-gradient-to: #09090A;
+  --oracle-vignette: rgba(0, 0, 0, 0.4);
+  --oracle-text-heading: #FAFAFA;
+  --oracle-text-on-ember: #FFFFFF;
+
   /* === LEGACY COMPATIBILITY === */
   --background: #0a0f1a;
   --foreground: #f1f5f9;
@@ -319,6 +470,17 @@ body {
 @keyframes pulse-indicator {
   0%, 100% { transform: scale(1); opacity: 0.8 }
   50% { transform: scale(1.3); opacity: 1 }
+}
+
+/* === HYPOTHETICAL NODE GRADIENT ANIMATION === */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 3s ease-in-out infinite;
 }
 
 /* === ENTRANCE ANIMATIONS === */
@@ -640,6 +802,50 @@ body {
 .animate-glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
 .animate-forge-shimmer { animation: forge-shimmer 2s infinite; }
 
+/* Forge Background Animations - Optimized for performance */
+@keyframes forge-grid-pulse {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.07; }
+}
+
+@keyframes forge-grid-drift {
+  0% { background-position: 0px 0px; }
+  100% { background-position: 240px 240px; }
+}
+
+@keyframes forge-ember-float {
+  0%, 100% { transform: translateY(0) scale(0.8); opacity: 0.3; }
+  50% { transform: translateY(-20px) scale(1.2); opacity: 0.6; }
+}
+
+@keyframes forge-glow-rotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.animate-forge-grid-pulse { animation: forge-grid-pulse 8s ease-in-out infinite; }
+.animate-forge-grid-drift { animation: forge-grid-drift 60s linear infinite; }
+.animate-forge-ember { animation: forge-ember-float 4s ease-in-out infinite; }
+.animate-forge-glow { animation: forge-glow-rotate 30s linear infinite; }
+
+/* Skill chip first selection celebration glow */
+@keyframes skill-chip-celebrate {
+  0% {
+    box-shadow: 0 0 0 0 rgba(194, 65, 12, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px rgba(194, 65, 12, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(194, 65, 12, 0);
+  }
+}
+
+.skill-chip-first-glow {
+  animation: skill-chip-celebrate 0.6s ease-out forwards;
+}
+
 /* Molten progress bar */
 .molten-progress {
   background: linear-gradient(90deg, #C2410C, #DC5A1A, #E86F35);
@@ -688,6 +894,104 @@ body {
 
 .dark .forge-card:hover {
   border-color: rgba(249, 115, 22, 0.3);
+}
+
+/* === READING MODE STYLES === */
+/* Focus Mode - Reduced distractions, dimmed UI elements */
+.reading-mode-focus {
+  /* Dim non-content elements */
+  --forge-text-muted: #9CA3AF;
+  --forge-border-subtle: rgba(0, 0, 0, 0.05);
+}
+
+.reading-mode-focus .chapter-sidebar,
+.reading-mode-focus .chapter-header-nav,
+.reading-mode-focus .chapter-meta {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.reading-mode-focus .chapter-sidebar:hover,
+.reading-mode-focus .chapter-sidebar:focus-within,
+.reading-mode-focus .chapter-header-nav:hover,
+.reading-mode-focus .chapter-meta:hover {
+  opacity: 1;
+}
+
+/* Night Mode - Warm tones, reduced blue light */
+.reading-mode-night {
+  /* Warmer background tones */
+  --forge-bg-void: #1A1510;
+  --forge-bg-daylight: #1F1914;
+  --forge-bg-elevated: #2A2219;
+  --forge-bg-bench: #352B20;
+
+  /* Warmer text tones */
+  --forge-text-primary: #F5E6D3;
+  --forge-text-secondary: #D4C4B0;
+  --forge-text-muted: #A89880;
+
+  /* Warmer border tones */
+  --forge-border-subtle: #3D3228;
+  --forge-border-default: #4D4238;
+
+  /* Warmer ember accent */
+  --ember: #E67E22;
+
+  /* Filter to reduce blue light */
+  filter: sepia(10%);
+}
+
+/* Light mode night reading */
+:root .reading-mode-night {
+  --forge-bg-void: #FDF8F0;
+  --forge-bg-daylight: #FFF9F2;
+  --forge-bg-elevated: #FFFAF5;
+  --forge-bg-bench: #FEF5EB;
+
+  --forge-text-primary: #3D2E1F;
+  --forge-text-secondary: #5D4E3F;
+  --forge-text-muted: #8D7E6F;
+
+  --forge-border-subtle: #E8DDD0;
+  --forge-border-default: #D8CCBF;
+
+  filter: sepia(5%);
+}
+
+/* Reading content typography enhancement */
+.reading-content {
+  max-width: 70ch;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font size utility classes */
+.reading-font-small {
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.reading-font-medium {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.reading-font-large {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.reading-font-xl {
+  font-size: 1.25rem;
+  line-height: 1.85;
+}
+
+/* Smooth transitions for reading preferences changes */
+.reading-transition {
+  transition: font-size 0.2s ease, line-height 0.2s ease, color 0.3s ease, background-color 0.3s ease;
 }
 
 /* === REDUCED MOTION SUPPORT === */

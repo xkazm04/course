@@ -12,3 +12,12 @@ export {
     NavigationBreadcrumb,
     StatsDisplay,
 } from "./UniverseControls";
+
+// Semantic Zoom Components (Progressive Disclosure UI)
+export { SemanticTooltip, MiniTooltip } from "./SemanticTooltip";
+export {
+    SemanticBreadcrumb,
+    LearningContextDisplay,
+    CompactBreadcrumb,
+    PositionIndicator,
+} from "./SemanticBreadcrumb";

@@ -236,9 +236,9 @@ export async function POST(request: NextRequest) {
 
     const { data: course, error: courseError } = await supabase
       .from('courses')
-      .insert(courseData)
+      .insert(courseData as any)
       .select()
-      .single()
+      .single() as { data: { id: string; slug: string; title: string; description: string | null } | null; error: any }
 
     if (courseError || !course) {
       return NextResponse.json(
@@ -256,7 +256,7 @@ export async function POST(request: NextRequest) {
         proficiency_gained: body.difficulty === 'beginner' ? 'beginner' : 'intermediate'
       }))
 
-      await supabase.from('course_skills').insert(skillInserts)
+      await supabase.from('course_skills').insert(skillInserts as any)
     }
 
     // Create chapters and sections
@@ -277,9 +277,9 @@ export async function POST(request: NextRequest) {
           estimated_minutes: chapter.estimated_minutes,
           xp_reward: chapter.xp_reward,
           is_ai_generated: true
-        })
+        } as any)
         .select()
-        .single()
+        .single() as { data: { id: string; title: string } | null; error: any }
 
       if (chapterError || !createdChapter) {
         console.error('Failed to create chapter:', chapterError)
@@ -300,7 +300,7 @@ export async function POST(request: NextRequest) {
         is_ai_generated: true
       }))
 
-      await supabase.from('sections').insert(sectionInserts)
+      await supabase.from('sections').insert(sectionInserts as any)
 
       createdChapters.push({
         id: createdChapter.id,

@@ -3,7 +3,7 @@
     {
       "name": "[LLM] Gemini Response Latency Critical",
       "type": "metric alert",
-      "query": "avg(last_5m):avg:llm.gemini.request.latency{service:oracle OR service:content-generator} > 10000",
+      "query": "avg(last_5m):avg:llm.gemini.request.latency{service:oracle OR service:content-generator OR service:project-scanner} > 10000",
       "message": "## High LLM Response Latency Detected\n\n**Current Latency:** {{value}} ms\n**Service:** {{service.name}}\n**Threshold:** 10,000ms\n\n### Impact\n- User experience degradation\n- Potential timeouts for learning path generation\n- Content generation jobs may fail\n\n### Runbook\n1. Check Gemini API status: https://status.cloud.google.com\n2. Review recent deployment changes\n3. Check for prompt complexity increases\n4. Consider implementing request caching\n5. Escalate if persists > 15 minutes\n\n@slack-llm-alerts",
       "tags": ["service:llm-observability", "severity:high", "team:ai-platform", "hackathon:datadog"],
       "options": {
@@ -71,6 +71,67 @@
         "thresholds": {
           "critical": 10,
           "warning": 5
+        },
+        "notify_no_data": false,
+        "include_tags": true
+      }
+    },
+    {
+      "name": "[Project Scanner] Feature Scan Failure Rate",
+      "type": "metric alert",
+      "query": "sum(last_15m):sum:project.scan.job.failed{*}.as_count() / (sum:project.scan.job.completed{*}.as_count() + sum:project.scan.job.failed{*}.as_count()) * 100 > 15",
+      "message": "## Project Scanner Failure Rate High\n\n**Failure Rate:** {{value}}%\n**Threshold:** 15%\n\n### Impact\n- Repository analysis jobs failing\n- Feature decomposition not working\n- Homework assignments cannot be created\n\n### Runbook\n1. Check scan job error messages in logs\n2. Verify GitHub API rate limits (project.github.rate_limit.remaining)\n3. Review Gemini API response quality\n4. Check for repository access issues\n5. Retry failed scans for transient errors\n\n@slack-project-scanner",
+      "tags": ["service:project-scanner", "severity:high", "hackathon:datadog"],
+      "options": {
+        "thresholds": {
+          "critical": 15,
+          "warning": 10
+        },
+        "notify_no_data": false,
+        "include_tags": true
+      }
+    },
+    {
+      "name": "[Project Scanner] Scan Latency Critical",
+      "type": "metric alert",
+      "query": "avg(last_5m):avg:project.scan.job.duration{*} > 180000",
+      "message": "## Project Scan Latency Critical\n\n**Current Latency:** {{value}} ms\n**Threshold:** 180,000ms (3 minutes)\n\n### Impact\n- Repository analysis taking too long\n- User experience degradation\n- Potential timeouts\n\n### Runbook\n1. Check GitHub API latency\n2. Review repository complexity (large repos take longer)\n3. Check Gemini API latency\n4. Consider implementing chunked scanning for large repos\n5. Audit recent changes to prompts\n\n@slack-project-scanner",
+      "tags": ["service:project-scanner", "severity:high", "hackathon:datadog"],
+      "options": {
+        "thresholds": {
+          "critical": 180000,
+          "warning": 120000
+        },
+        "notify_no_data": false,
+        "include_tags": true
+      }
+    },
+    {
+      "name": "[Project Scanner] GitHub API Rate Limit Warning",
+      "type": "metric alert",
+      "query": "avg(last_5m):avg:project.github.rate_limit.remaining{*} < 100",
+      "message": "## GitHub API Rate Limit Running Low\n\n**Remaining Calls:** {{value}}\n**Threshold:** 100 remaining\n\n### Impact\n- Repository scanning will fail if exhausted\n- Feature extraction blocked\n- New homework assignments cannot be created\n\n### Runbook\n1. Check reset time in project.github.rate_limit.reset_seconds\n2. Pause non-critical scanning jobs\n3. Consider using GitHub App authentication for higher limits\n4. Implement exponential backoff\n5. Cache repository data to reduce API calls\n\n@slack-project-scanner",
+      "tags": ["service:project-scanner", "severity:warning", "hackathon:datadog"],
+      "options": {
+        "thresholds": {
+          "critical": 50,
+          "warning": 100
+        },
+        "notify_no_data": true,
+        "no_data_timeframe": 15,
+        "include_tags": true
+      }
+    },
+    {
+      "name": "[Assignments] Low Completion Rate",
+      "type": "metric alert",
+      "query": "sum(last_24h):sum:project.assignment.completed{*}.as_count() / sum:project.assignment.created{*}.as_count() * 100 < 10",
+      "message": "## Homework Assignment Completion Rate Low\n\n**Completion Rate:** {{value}}%\n**Threshold:** Below 10%\n**Time Window:** Last 24 hours\n\n### Potential Causes\n- Assignments too difficult\n- Poor instructions or acceptance criteria\n- Technical blockers preventing submission\n- User engagement issues\n\n### Runbook\n1. Review assignment difficulty distribution\n2. Check for common failure points in submissions\n3. Analyze hint usage patterns (high hints = too hard)\n4. Review user feedback on specific assignments\n5. Consider adding more beginner-friendly options\n\n@slack-learning-team",
+      "tags": ["service:project-scanner", "team:learning", "hackathon:datadog"],
+      "options": {
+        "thresholds": {
+          "critical": 5,
+          "warning": 10
         },
         "notify_no_data": false,
         "include_tags": true

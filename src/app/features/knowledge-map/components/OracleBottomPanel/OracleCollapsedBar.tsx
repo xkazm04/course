@@ -57,14 +57,34 @@ export function OracleCollapsedBar({
     return (
         <div
             className={cn(
-                "h-12 px-4",
+                "relative h-12 px-4",
                 "flex items-center justify-between",
                 "cursor-pointer",
-                "group"
+                "group",
+                // Glassmorphism base
+                "backdrop-blur-xl",
+                "bg-gradient-to-r from-transparent to-[var(--forge-bg-elevated)]/50",
+                // Subtle inner border highlight
+                "border border-white/5",
+                "rounded-t-xl",
+                // Smooth transitions
+                "transition-all duration-300",
+                "hover:border-white/10",
+                "hover:bg-[var(--forge-bg-elevated)]/30"
             )}
             onClick={onToggle}
             data-testid="oracle-collapsed-bar"
         >
+            {/* Top highlight line - visual affordance for clickability */}
+            <div
+                className={cn(
+                    "absolute top-0 left-4 right-4 h-px",
+                    "bg-gradient-to-r from-transparent via-white/20 to-transparent",
+                    "group-hover:via-white/30",
+                    "transition-all duration-300"
+                )}
+                aria-hidden="true"
+            />
             {/* Left side - Oracle branding and status */}
             <div className="flex items-center gap-3">
                 <motion.div

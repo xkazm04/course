@@ -9,9 +9,17 @@
 export { SlotRenderer, SlotListRenderer } from "./SlotRenderer";
 export type { SlotRendererComponentProps, SlotListRendererProps } from "./SlotRenderer";
 
-// Layout component
+// Layout components
 export { SlotBasedLayout } from "./SlotBasedLayout";
 export type { SlotBasedLayoutProps } from "./SlotBasedLayout";
+
+// Enhanced layout with provider support
+export { EnhancedSlotBasedLayout } from "./EnhancedSlotBasedLayout";
+export type { EnhancedSlotBasedLayoutProps } from "./EnhancedSlotBasedLayout";
+
+// Injected slot renderers
+export { InjectedSlotRenderer, InjectedSlotList } from "./InjectedSlotRenderer";
+export type { InjectedSlotRendererProps, InjectedSlotListProps } from "./InjectedSlotRenderer";
 
 // Individual slot renderers
 export { VideoSlotRenderer } from "./VideoSlotRenderer";

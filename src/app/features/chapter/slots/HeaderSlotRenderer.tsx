@@ -53,16 +53,19 @@ const HeaderSlotRendererComponent: React.FC<HeaderSlotRendererProps> = ({ slot, 
 
     // Compact variant (in video player header)
     return (
-        <div className={className} data-testid={`header-slot-${slot.id}`}>
-            <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent-primary)] mb-2">
+        <div
+            className={`pb-4 border-b border-[var(--forge-border-subtle)] ${className ?? ""}`}
+            data-testid={`header-slot-${slot.id}`}
+        >
+            <div className="flex items-center gap-2 text-xs font-bold text-[var(--forge-ember)] mb-2 uppercase tracking-wide">
                 <BookOpen size={ICON_SIZES.sm} />
-                CHAPTER 3 • CUSTOM HOOKS
+                {courseName}
             </div>
-            <h1 className="text-2xl font-black text-[var(--text-primary)] mb-2">
+            <h1 className="text-xl sm:text-2xl font-black text-[var(--forge-text-primary)] mb-2">
                 {chapterTitle}
             </h1>
-            <p className="text-[var(--text-secondary)]">
-                Learn how to extract component logic into reusable custom hooks for cleaner, more maintainable code.
+            <p className="text-sm sm:text-base text-[var(--forge-text-secondary)]">
+                {courseName}
             </p>
         </div>
     );

@@ -26,8 +26,7 @@ from supabase import create_client, Client
 from pydantic import BaseModel
 from ddtrace import tracer
 
-# Add shared module to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+# Import shared metrics module (copied locally for deployment)
 from shared.metrics import OracleMetrics, estimate_tokens
 
 # Configure logging
@@ -520,12 +519,24 @@ RAW ANSWERS (for additional context):
 {json.dumps(profile.get("all_answers", {}), indent=2)}
 
 YOUR TASK:
-Generate 2-3 personalized learning paths. Each path should contain a COMPLETE HIERARCHICAL NODE STRUCTURE with:
-- Level 0: Domain node (the root - e.g., "Frontend Development")
-- Level 1: Topic nodes (major areas - e.g., "React", "CSS Mastery", "TypeScript")
-- Level 2: Subtopic nodes (specific skills - e.g., "React Hooks", "CSS Grid", "Type Safety")
+Generate 2-3 personalized learning paths. Each path must contain a COMPLETE HIERARCHICAL STRUCTURE:
 
-The user should not care whether content exists in our system - generate the IDEAL path structure and we will create any missing nodes dynamically.
+LEVEL DEFINITIONS (CRITICAL):
+- Level 0: DOMAIN (1 per path) - The broad area of study (e.g., "Frontend Development", "React Ecosystem")
+- Level 1: COURSE (3-6 per path) - A complete mini-course that can stand alone (e.g., "React Fundamentals", "State Management Patterns")
+- Level 2: CHAPTER (3-6 per course) - Individual lessons/chapters within a course. These are CONCRETE, ACTIONABLE learning units.
+
+CHAPTER NAMING CONVENTION (Level 2):
+Chapters should be named like actual course chapters, for example:
+- "Introduction to React Components"
+- "Setting Up Your Development Environment"
+- "Building Your First Interactive Form"
+- "Understanding the Virtual DOM"
+- "Implementing Authentication Flow"
+- "Deploying to Production"
+
+DO NOT name chapters as broad topics like "React Hooks" or "State Management" - those are COURSES (Level 1).
+Chapters should be specific lessons a student can complete in 30-90 minutes.
 
 RESPONSE FORMAT (valid JSON only):
 {{
@@ -537,24 +548,46 @@ RESPONSE FORMAT (valid JSON only):
             "nodes": [
                 {{
                     "id": "node-1",
-                    "name": "Node name",
-                    "description": "What this node covers",
+                    "name": "Frontend Development",
+                    "description": "Master modern frontend technologies",
                     "level": 0,
                     "parent_id": null,
                     "difficulty": "beginner",
-                    "estimated_hours": 20,
+                    "estimated_hours": 40,
                     "order": 1,
                     "is_existing": false
                 }},
                 {{
                     "id": "node-2",
-                    "name": "Child node",
-                    "description": "What this covers",
+                    "name": "React Fundamentals",
+                    "description": "Learn core React concepts and patterns",
                     "level": 1,
                     "parent_id": "node-1",
                     "difficulty": "beginner",
                     "estimated_hours": 10,
                     "order": 1,
+                    "is_existing": false
+                }},
+                {{
+                    "id": "node-3",
+                    "name": "Introduction to JSX and Components",
+                    "description": "Learn how to write JSX and create your first React components",
+                    "level": 2,
+                    "parent_id": "node-2",
+                    "difficulty": "beginner",
+                    "estimated_hours": 1.5,
+                    "order": 1,
+                    "is_existing": false
+                }},
+                {{
+                    "id": "node-4",
+                    "name": "Managing Component State with useState",
+                    "description": "Master state management in functional components",
+                    "level": 2,
+                    "parent_id": "node-2",
+                    "difficulty": "beginner",
+                    "estimated_hours": 1.5,
+                    "order": 2,
                     "is_existing": false
                 }}
             ],
@@ -567,18 +600,149 @@ RESPONSE FORMAT (valid JSON only):
 }}
 
 GUIDELINES:
-1. Generate COMPLETE node hierarchies with 3 levels (domain → topics → subtopics)
-2. Each path should have 4-8 topic nodes (level 1) with 2-4 subtopic nodes each (level 2)
-3. Prefer generating 6 nodes per level where appropriate for balanced learning
-4. Set is_existing: true ONLY if the node matches an existing node from the available list
-5. Make paths specific to their domain ({domain})
-6. Adjust complexity based on experience level ({profile.get("experience_level", "beginner")})
-7. Consider their time commitment when estimating duration
-8. Use Google Search to ground recommendations in current 2024-2025 industry trends
-9. Each path should offer a distinct approach (e.g., depth vs breadth, practical vs theoretical)
-10. Include realistic estimated_hours for each node
+1. Each path: 1 domain (level 0) → 3-6 courses (level 1) → 3-6 chapters each (level 2)
+2. Total chapters per path: 15-30 chapters for comprehensive learning
+3. Chapter estimated_hours: 0.5-2 hours each (these are individual lessons)
+4. Course estimated_hours: Sum of its chapters
+5. Set is_existing: true ONLY if matching an existing node from the available list
+6. Make paths specific to domain ({domain}) and experience ({profile.get("experience_level", "beginner")})
+7. Use Google Search to ground recommendations in 2024-2025 industry trends
+8. Chapter names must be SPECIFIC and ACTIONABLE (start with verbs like "Introduction to", "Building", "Implementing", "Understanding", "Deploying")
 
 IMPORTANT: Respond ONLY with valid JSON, no markdown code blocks or extra text."""
+
+
+def extract_json_from_llm_response(response_text: str) -> dict:
+    """
+    Robust JSON extraction from LLM responses.
+    Handles markdown blocks, truncated strings, trailing commas, etc.
+    """
+    import re
+
+    original_text = response_text
+
+    # Step 1: Remove markdown code blocks
+    if "```" in response_text:
+        # Try to extract content between ```json and ```
+        match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', response_text, re.DOTALL)
+        if match:
+            response_text = match.group(1).strip()
+        else:
+            # Just remove all ``` markers
+            response_text = response_text.replace("```json", "").replace("```", "").strip()
+
+    # Step 2: Find JSON object boundaries
+    if not response_text.startswith("{"):
+        start = response_text.find("{")
+        if start != -1:
+            response_text = response_text[start:]
+
+    # Step 3: Try direct parse first
+    try:
+        return json.loads(response_text)
+    except json.JSONDecodeError as e:
+        logger.warning(f"Direct JSON parse failed: {e}")
+
+    # Step 4: Fix common LLM JSON issues
+    fixed_text = response_text
+
+    # Fix trailing commas before ] or }
+    fixed_text = re.sub(r',(\s*[\]\}])', r'\1', fixed_text)
+
+    # Fix missing commas between array elements or object properties
+    fixed_text = re.sub(r'"\s*\n\s*"', '",\n"', fixed_text)
+    fixed_text = re.sub(r'(\d)\s*\n\s*"', r'\1,\n"', fixed_text)
+    fixed_text = re.sub(r'(true|false|null)\s*\n\s*"', r'\1,\n"', fixed_text)
+
+    try:
+        return json.loads(fixed_text)
+    except json.JSONDecodeError as e:
+        logger.warning(f"Fixed JSON parse failed: {e}")
+
+    # Step 5: Try to find complete "paths" array even if rest is truncated
+    # Look for pattern: {"paths": [...]}
+    paths_match = re.search(r'"paths"\s*:\s*\[', response_text)
+    if paths_match:
+        # Find where the paths array starts
+        start_pos = paths_match.end() - 1  # Position of [
+        bracket_count = 0
+        end_pos = start_pos
+
+        for i in range(start_pos, len(response_text)):
+            char = response_text[i]
+            if char == '[':
+                bracket_count += 1
+            elif char == ']':
+                bracket_count -= 1
+                if bracket_count == 0:
+                    end_pos = i + 1
+                    break
+
+        if end_pos > start_pos:
+            paths_array_text = response_text[start_pos:end_pos]
+            # Fix the extracted array
+            paths_array_text = re.sub(r',(\s*[\]\}])', r'\1', paths_array_text)
+
+            try:
+                paths_array = json.loads(paths_array_text)
+                logger.info(f"Successfully extracted paths array with {len(paths_array)} paths")
+                return {"paths": paths_array}
+            except json.JSONDecodeError as e:
+                logger.warning(f"Paths array extraction failed: {e}")
+
+    # Step 6: Try to repair truncated JSON by completing it
+    # Count unclosed braces and brackets
+    brace_count = 0
+    bracket_count = 0
+    in_string = False
+    escape_next = False
+
+    for char in response_text:
+        if escape_next:
+            escape_next = False
+            continue
+        if char == '\\':
+            escape_next = True
+            continue
+        if char == '"' and not escape_next:
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if char == '{':
+            brace_count += 1
+        elif char == '}':
+            brace_count -= 1
+        elif char == '[':
+            bracket_count += 1
+        elif char == ']':
+            bracket_count -= 1
+
+    # If we have unclosed structures, try to close them
+    if brace_count > 0 or bracket_count > 0:
+        # Find last complete structure we can salvage
+        # Remove the last incomplete element
+        last_comma = response_text.rfind(',')
+        if last_comma > 0:
+            truncated = response_text[:last_comma]
+            # Add closing brackets/braces
+            closing = ']' * bracket_count + '}' * brace_count
+            repaired = truncated + closing
+
+            try:
+                result = json.loads(repaired)
+                logger.info(f"JSON repair succeeded by truncating and closing")
+                return result
+            except json.JSONDecodeError:
+                pass
+
+    # Step 7: Last resort - try to parse individual path objects
+    path_objects = []
+    path_pattern = r'\{\s*"id"\s*:\s*"path-\d+"[^}]*\}'
+
+    # This is too simplistic for nested objects, skip it
+
+    raise json.JSONDecodeError(f"Could not extract valid JSON from LLM response", original_text[:100], 0)
 
 
 @app.route("/oracle/generate", methods=["POST"])
@@ -637,44 +801,73 @@ If relevant nodes exist in the available list, include their IDs. For topics not
 
 {nodes_context}
 
-Generate the paths now."""
+Generate the paths now. IMPORTANT: Return ONLY valid JSON, ensure all strings are properly terminated."""
 
         # Configure Google Search grounding
         google_search_tool = types.Tool(
             google_search=types.GoogleSearch()
         )
 
+        # Use gemini-3-flash-preview model
+        model_name = "gemini-3-flash-preview"
+
         # Generate response
         response = client.models.generate_content(
-            model="gemini-2.0-flash-exp",
+            model=model_name,
             contents=user_prompt,
             config=types.GenerateContentConfig(
                 system_instruction=system_prompt,
                 tools=[google_search_tool],
                 temperature=0.7,
-                max_output_tokens=3000,
+                max_output_tokens=10000,
             )
         )
 
-        # Parse response
-        response_text = response.text
-        if response_text.startswith("```"):
-            lines = response_text.split("\n")
-            lines = lines[1:]  # Remove first line
-            for i, line in enumerate(lines):
-                if line.strip() == "```":
-                    lines = lines[:i]
-                    break
-            response_text = "\n".join(lines)
-        response_text = response_text.strip()
+        # Parse response using robust extraction
+        response_text = response.text.strip()
+        logger.info(f"Raw LLM response length: {len(response_text)}")
+        logger.info(f"Response preview (first 500 chars): {response_text[:500]}")
+        logger.info(f"Response preview (last 200 chars): {response_text[-200:]}")
 
-        result = json.loads(response_text)
+        result = extract_json_from_llm_response(response_text)
         paths = result.get("paths", [])
 
-        # Assign IDs to paths if not present
+        # Validate and enhance path structure
         for i, path in enumerate(paths):
+            # Assign IDs to paths if not present
             if not path.get("id"):
                 path["id"] = f"path-{i + 1}"
+
+            # Ensure nodes array exists
+            if not path.get("nodes"):
+                path["nodes"] = []
+                logger.warning(f"Path {path.get('id')} missing nodes array")
+
+            # Ensure node_ids array exists
+            if not path.get("node_ids"):
+                path["node_ids"] = []
+
+            # Ensure forge_suggestions array exists
+            if not path.get("forge_suggestions"):
+                path["forge_suggestions"] = []
+
+            # Validate each node has required fields
+            for j, node in enumerate(path.get("nodes", [])):
+                if not node.get("id"):
+                    node["id"] = f"{path['id']}-node-{j + 1}"
+                if "level" not in node:
+                    node["level"] = 1
+                if "parent_id" not in node:
+                    node["parent_id"] = None
+                if "order" not in node:
+                    node["order"] = j + 1
+                if "is_existing" not in node:
+                    node["is_existing"] = False
+
+        # Log path stats for debugging
+        for path in paths:
+            node_count = len(path.get("nodes", []))
+            logger.info(f"Path '{path.get('name')}' has {node_count} nodes")
 
         # Extract grounding metadata
         grounding_sources = None
@@ -693,33 +886,21 @@ Generate the paths now."""
             "paths": paths,
             "overall_advice": result.get("overall_advice"),
             "metadata": {
-                "model_used": "gemini-2.0-flash-exp",
+                "model_used": model_name,
                 "grounding_sources": grounding_sources,
             }
         })
 
     except json.JSONDecodeError as e:
         logger.error(f"Failed to parse LLM response: {e}")
-        # Return fallback paths
+        logger.error(f"Raw response text: {response_text[:500] if response_text else 'None'}")
+
+        # Return error instead of fallback - let the client know AI generation failed
         return jsonify({
-            "paths": [
-                {
-                    "id": "path-1",
-                    "name": f"{data.get('domain', 'Software Development').title()} Foundations",
-                    "description": "A structured path to build strong fundamentals in your chosen domain.",
-                    "node_ids": [],
-                    "forge_suggestions": [
-                        {"name": "Core Concepts", "description": "Essential fundamentals", "difficulty": "beginner"},
-                        {"name": "Practical Projects", "description": "Hands-on experience", "difficulty": "beginner"},
-                    ],
-                    "estimated_weeks": 12,
-                    "reasoning": "Based on your profile, starting with fundamentals will give you the strongest foundation.",
-                    "confidence": 0.7
-                }
-            ],
-            "overall_advice": "Focus on building strong fundamentals before specializing.",
-            "metadata": {"model_used": "fallback"}
-        })
+            "error": "Failed to parse AI response. Please try again.",
+            "details": str(e),
+            "raw_preview": response_text[:200] if response_text else None
+        }), 500
 
     except Exception as e:
         logger.error(f"Error generating paths: {e}")

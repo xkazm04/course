@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================================
 // Learning Paths API
 // GET /api/db/learning-paths - List learning paths

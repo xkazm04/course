@@ -5,6 +5,9 @@
  *
  * Unified knowledge map with drill-down navigation, card-based nodes,
  * and 5-level hierarchy: Domain -> Course -> Chapter -> Section -> Concept
+ *
+ * Uses the unified SceneGraph abstraction to combine navigation (hierarchical position)
+ * with viewport (pan/zoom) into a single coherent state model with animated transitions.
  */
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
@@ -12,12 +15,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Search, X, Loader2, AlertCircle, Database } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
-import { LEARNING_DOMAINS, type LearningDomainId } from "@/app/shared/lib/learningDomains";
+import { LEARNING_DOMAINS } from "@/app/shared/lib/learningDomains";
 import type { KnowledgeMapProps, MapNode } from "./lib/types";
 import { generateKnowledgeMapData } from "./lib/mapData";
 import { useMapData } from "./lib/useMapData";
-import { useMapNavigation } from "./lib/useMapNavigation";
-import { useMapViewport } from "./lib/useMapViewport";
+import { useSceneGraph } from "./lib/useSceneGraph";
 import { MapCanvas } from "./components/MapCanvas";
 import { MapBreadcrumb } from "./components/MapBreadcrumb";
 import { MapControls } from "./components/MapControls";
@@ -37,7 +39,7 @@ export function KnowledgeMap({
 
 
     // Fetch map data from Supabase API with fallback to mock data
-    const { data: apiData, isLoading, error, isUsingMock, refetch } = useMapData({
+    const { data: apiData, isLoading, isUsingMock } = useMapData({
         domainId: initialDomainId,
         debug: process.env.NODE_ENV === 'development',
     });
@@ -66,30 +68,29 @@ export function KnowledgeMap({
     // Initial parent ID (if starting at a specific domain)
     const initialParentId = initialDomainId ? `domain-${initialDomainId}` : null;
 
-    // Navigation state
+    // Unified Scene Graph state (combines navigation + viewport with transitions)
     const {
-        navigation,
+        scene,
         visibleNodes,
         visibleConnections,
         breadcrumbItems,
         drillDown,
         drillUp,
         selectNode,
-        resetNavigation,
-        selectedNode,
-        currentParent,
-        currentDepth,
-    } = useMapNavigation(mapData, { initialParentId });
-
-    // Viewport state
-    const {
-        viewport,
-        setViewport,
+        reset,
         zoomTo,
-        resetViewport,
         handlers: viewportHandlers,
         isPanning,
-    } = useMapViewport();
+        isTransitioning,
+        transition,
+        // Legacy compat accessors
+        navigation,
+        viewport,
+        selectedNode,
+    } = useSceneGraph(mapData, {
+        initialParentId,
+        enableSemanticZoom: true,
+    });
 
     // Search state
     const [searchQuery, setSearchQuery] = useState("");
@@ -120,23 +121,20 @@ export function KnowledgeMap({
         [selectNode, mapData, onNodeSelect]
     );
 
-    // Handle node drill-down
+    // Handle node drill-down (SceneGraph handles viewport reset with animated transition)
     const handleNodeDrillDown = useCallback(
         (nodeId: string) => {
             drillDown(nodeId);
-            // Reset viewport when drilling
-            resetViewport();
         },
-        [drillDown, resetViewport]
+        [drillDown]
     );
 
-    // Handle breadcrumb navigation
+    // Handle breadcrumb navigation (SceneGraph handles viewport reset with animated transition)
     const handleBreadcrumbNavigate = useCallback(
         (index: number) => {
             drillUp(index);
-            resetViewport();
         },
-        [drillUp, resetViewport]
+        [drillUp]
     );
 
     // Handle details panel close
@@ -153,7 +151,7 @@ export function KnowledgeMap({
         [onStartLearning]
     );
 
-    // Handle search result click
+    // Handle search result click - use SceneGraph's navigateToNodeParent for direct navigation
     const handleSearchResultClick = useCallback(
         (node: MapNode) => {
             // Navigate to the node's parent level and select it
@@ -168,7 +166,7 @@ export function KnowledgeMap({
             // Navigate to parent, then select node
             if (node.parentId) {
                 // Reset and navigate through path
-                resetNavigation();
+                reset();
                 path.forEach((parentId) => {
                     drillDown(parentId);
                 });
@@ -178,7 +176,7 @@ export function KnowledgeMap({
             setSearchQuery("");
             onNodeSelect?.(node);
         },
-        [mapData, drillDown, selectNode, resetNavigation, onNodeSelect]
+        [mapData, drillDown, selectNode, reset, onNodeSelect]
     );
 
     // Handle background click
@@ -187,14 +185,19 @@ export function KnowledgeMap({
         onNodeSelect?.(null);
     }, [selectNode, onNodeSelect]);
 
-    // Zoom controls
+    // Zoom controls (using scene.scale from unified SceneGraph)
     const handleZoomIn = useCallback(() => {
-        zoomTo(viewport.scale + 0.2);
-    }, [viewport.scale, zoomTo]);
+        zoomTo(scene.scale + 0.2);
+    }, [scene.scale, zoomTo]);
 
     const handleZoomOut = useCallback(() => {
-        zoomTo(viewport.scale - 0.2);
-    }, [viewport.scale, zoomTo]);
+        zoomTo(scene.scale - 0.2);
+    }, [scene.scale, zoomTo]);
+
+    // Reset zoom handler that resets viewport only, not navigation
+    const handleResetZoom = useCallback(() => {
+        zoomTo(1);
+    }, [zoomTo]);
 
     // Calculate progress stats
     const progressStats = useMemo(() => {
@@ -359,15 +362,17 @@ export function KnowledgeMap({
                 viewportHandlers={viewportHandlers}
                 isPanning={isPanning}
                 className="pt-16"
+                transition={transition}
+                isTransitioning={isTransitioning}
             />
 
             {/* Zoom controls (left side) */}
             <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
                 <MapControls
-                    scale={viewport.scale}
+                    scale={scene.scale}
                     onZoomIn={handleZoomIn}
                     onZoomOut={handleZoomOut}
-                    onReset={resetViewport}
+                    onReset={handleResetZoom}
                 />
             </div>
 

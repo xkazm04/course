@@ -53,12 +53,12 @@ export function StepResults({
           <span className="text-3xl">😕</span>
         </div>
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-white mb-2">No paths generated</h3>
+          <h3 className="text-lg font-semibold text-[var(--oracle-text-heading)] mb-2">No paths generated</h3>
           <p className="text-sm text-[var(--forge-text-secondary)]">Something went wrong. Please try again.</p>
         </div>
         <button
           onClick={onReset}
-          className="px-6 py-2.5 rounded-xl text-sm font-medium bg-[var(--forge-bg-elevated)] text-white hover:bg-[var(--forge-bg-workshop)] transition-colors"
+          className="px-6 py-2.5 rounded-xl text-sm font-medium bg-[var(--forge-bg-elevated)] text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-workshop)] transition-colors"
         >
           Start Over
         </button>
@@ -73,7 +73,7 @@ export function StepResults({
         {/* Back button */}
         <button
           onClick={() => setViewMode('list')}
-          className="flex items-center gap-2 text-sm text-[var(--forge-text-secondary)] hover:text-white transition-colors"
+          className="flex items-center gap-2 text-sm text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] transition-colors"
         >
           <ArrowLeft size={16} />
           Back to paths
@@ -111,7 +111,7 @@ export function StepResults({
         >
           <span className="text-3xl">✨</span>
         </motion.div>
-        <h3 className="text-xl font-semibold text-white mb-2">Your Personalized Paths</h3>
+        <h3 className="text-xl font-semibold text-[var(--oracle-text-heading)] mb-2">Your Personalized Paths</h3>
         <p className="text-sm text-[var(--forge-text-secondary)]">
           Based on your profile, here are {paths.length} recommended learning paths
         </p>
@@ -150,7 +150,7 @@ export function StepResults({
                       </span>
                     )}
                   </div>
-                  <h4 className="text-lg font-semibold text-white mb-1">
+                  <h4 className="text-lg font-semibold text-[var(--oracle-text-heading)] mb-1">
                     {path.name}
                   </h4>
                   {path.description && (
@@ -211,7 +211,7 @@ export function StepResults({
       <div className="flex items-center justify-between pt-4">
         <button
           onClick={onReset}
-          className="px-4 py-2 rounded-lg text-sm text-[var(--forge-text-secondary)] hover:text-white hover:bg-[var(--forge-bg-elevated)] transition-colors"
+          className="px-4 py-2 rounded-lg text-sm text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-elevated)] transition-colors"
         >
           Start Over
         </button>
@@ -220,7 +220,7 @@ export function StepResults({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             onClick={() => setViewMode('detail')}
-            className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white hover:opacity-90 transition-all shadow-lg shadow-[var(--ember)]/20"
+            className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-[var(--oracle-text-on-ember)] hover:opacity-90 transition-all shadow-lg shadow-[var(--ember)]/20"
           >
             View Path Details
           </motion.button>

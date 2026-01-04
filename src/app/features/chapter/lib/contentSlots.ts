@@ -19,11 +19,24 @@ interface BaseSlot {
 // Video Slot - Video player with playback controls
 // ============================================================================
 
+export interface VideoVariant {
+    id: string;
+    title: string;
+    youtubeId?: string;
+    searchQuery: string;
+    instructorName?: string;
+    style?: 'lecture' | 'tutorial' | 'walkthrough' | 'animated';
+    duration?: string;
+}
+
 export interface VideoSlotData {
     currentTime?: string;
     totalTime?: string;
     progress?: number;
     resolution?: string;
+    videoUrl?: string;
+    videoVariants?: VideoVariant[];
+    selectedVariantIndex?: number;
 }
 
 export interface VideoSlot extends BaseSlot {
@@ -140,6 +153,7 @@ export interface ProgressSlot extends BaseSlot {
 export interface ActionsSlotData {
     showBookmark?: boolean;
     showLike?: boolean;
+    showRegenerate?: boolean;
     variant?: "icon" | "full";
 }
 
@@ -195,6 +209,34 @@ export interface HeaderSlot extends BaseSlot {
 }
 
 // ============================================================================
+// Homework Slot - Real-world project homework assignments
+// ============================================================================
+
+export interface HomeworkSlotData {
+    /** Feature ID from project_features table */
+    featureId: string;
+    /** Assignment ID if user has started this assignment */
+    assignmentId?: string;
+    /** Display variant based on assignment state */
+    variant?: "preview" | "active" | "completed";
+    /** Whether to show progressive hints */
+    showHints?: boolean;
+    /** Whether to show acceptance criteria checklist */
+    showAcceptanceCriteria?: boolean;
+    /** Override title (otherwise uses feature name) */
+    title?: string;
+    /** Show estimated time */
+    showEstimate?: boolean;
+    /** Show file scope explorer */
+    showFileScope?: boolean;
+}
+
+export interface HomeworkSlot extends BaseSlot {
+    type: "homework";
+    data: HomeworkSlotData;
+}
+
+// ============================================================================
 // Content Slot Union Type
 // ============================================================================
 
@@ -209,7 +251,8 @@ export type ContentSlot =
     | ActionsSlot
     | SectionListSlot
     | PlaygroundSlot
-    | HeaderSlot;
+    | HeaderSlot
+    | HomeworkSlot;
 
 // ============================================================================
 // Slot Type Helper
@@ -335,6 +378,10 @@ export function createHeaderSlot(id: string, data?: HeaderSlotData): HeaderSlot 
     return { id, type: "header", data };
 }
 
+export function createHomeworkSlot(id: string, data: HomeworkSlotData): HomeworkSlot {
+    return { id, type: "homework", data };
+}
+
 // ============================================================================
 // Type Guards
 // ============================================================================
@@ -381,4 +428,8 @@ export function isPlaygroundSlot(slot: ContentSlot): slot is PlaygroundSlot {
 
 export function isHeaderSlot(slot: ContentSlot): slot is HeaderSlot {
     return slot.type === "header";
+}
+
+export function isHomeworkSlot(slot: ContentSlot): slot is HomeworkSlot {
+    return slot.type === "homework";
 }

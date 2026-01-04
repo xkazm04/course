@@ -282,7 +282,5 @@ export type {
  */
 export const chapterVariants = [
     { name: "Classic", key: "A", mode: "classic" as const },
-    { name: "Expandable", key: "C", mode: "expandable" as const },
-    { name: "IDE", key: "D", mode: "ide" as const },
     { name: "AI Conductor", key: "conductor", mode: "classic" as const },
 ];

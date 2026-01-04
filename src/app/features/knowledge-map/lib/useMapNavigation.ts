@@ -37,6 +37,8 @@ export interface UseMapNavigationReturn {
     drillDown: (nodeId: string) => void;
     /** Drill up to a previous level (index in breadcrumb, -1 for root) */
     drillUp: (toIndex?: number) => void;
+    /** Navigate to show a node's parent level (replaces navigation, doesn't add) */
+    navigateToNodeParent: (nodeId: string) => void;
     /** Select a node for details panel */
     selectNode: (nodeId: string | null) => void;
     /** Reset to root level */
@@ -154,6 +156,41 @@ export function useMapNavigation(
         [navigation, updateNavigation]
     );
 
+    // Navigate directly to show a node's parent level (replaces entire navigation)
+    // This builds the path from root to the node's parent and sets it as the view
+    const navigateToNodeParent = useCallback(
+        (nodeId: string) => {
+            const node = data.nodes.get(nodeId);
+            if (!node) return;
+
+            // Build path from root to this node's parent
+            const ancestors = getNodeAncestors(data, nodeId);
+
+            // ancestors includes the node itself, we want to navigate to its parent level
+            // So if node is at depth 2, we want viewStack = [depth0, depth1] to show depth2 nodes
+            // Remove the node itself from ancestors to get the path to parent
+            const pathToParent = ancestors.slice(0, -1);
+
+            if (pathToParent.length === 0) {
+                // Node is at root level (domain), navigate to root
+                updateNavigation({
+                    viewStack: [],
+                    currentParentId: null,
+                    selectedNodeId: nodeId, // Select this node
+                });
+            } else {
+                // Navigate to parent level
+                const viewStack = pathToParent.map(n => n.id);
+                updateNavigation({
+                    viewStack,
+                    currentParentId: viewStack[viewStack.length - 1],
+                    selectedNodeId: nodeId, // Select the clicked node
+                });
+            }
+        },
+        [data, updateNavigation]
+    );
+
     // Select a node for details panel
     const selectNode = useCallback(
         (nodeId: string | null) => {
@@ -196,6 +233,7 @@ export function useMapNavigation(
         breadcrumbItems,
         drillDown,
         drillUp,
+        navigateToNodeParent,
         selectNode,
         resetNavigation,
         selectedNode,

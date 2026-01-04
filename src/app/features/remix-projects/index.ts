@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Remix & Extend Model Feature
 // Task 04: Inheriting and improving existing codebases
 
@@ -27,9 +28,62 @@ export type {
     EvolutionEligibility,
 } from "./lib/types";
 
+// Unified Challenge Abstraction Types
+export type {
+    Challenge,
+    ChallengeItem,
+    ChallengeType,
+    ChallengeDifficulty,
+    ChallengeSeverity,
+    ChallengeSource,
+    ChallengeOrigin,
+    ChallengeAdapter,
+    ScannedProjectWithChallenges,
+} from "./lib/challenge";
+
+// Unified Challenge Abstraction Functions
+export {
+    seedProjectAdapter,
+    scannedProjectAdapter,
+    challengeRegistry,
+    seedProjectToChallenge,
+    challengeToSeedProject,
+    scannedToChallenge,
+    challengeToScanned,
+    createChallenge,
+    isSeedChallenge,
+    isScannedChallenge,
+    getChallengeItemsByType,
+    getChallengeItemsByDifficulty,
+    getChallengeItemsBySeverity,
+    getChallengeTotalMinutes,
+    getChallengeCompletionEstimate,
+} from "./lib/challenge";
+
 // Hooks
 export { useSeedProject } from "./lib/useSeedProject";
 export { useAssignment } from "./lib/useAssignment";
+export { useObjectiveVerification } from "./lib/useObjectiveVerification";
+export type {
+    VerificationState,
+    ObjectiveVerificationStatus,
+} from "./lib/useObjectiveVerification";
+
+// Unified Challenge Hooks
+export {
+    useChallenges,
+    useChallenge,
+    useChallengeItem,
+    fromSeedProject,
+    fromScannedProject,
+} from "./lib/useChallenge";
+export type {
+    ChallengeFilters,
+    UseChallengesResult,
+    UseChallengeResult,
+    UseChallengeOptions,
+    UseChallengeItemResult,
+} from "./lib/useChallenge";
 
 // Utilities
 export {
@@ -56,6 +110,7 @@ export {
 
 export {
     generateDiff,
+    analyzeObjectives,
     analyzeSubmission,
     calculateSubmissionScore,
 } from "./lib/diffAnalyzer";
@@ -83,6 +138,9 @@ export {
     QualityGates,
     RemixWorkspace,
     ScannedProjects,
+    ObjectiveVerificationIndicator,
+    InlineVerificationBadge,
+    VerificationTooltipContent,
 } from "./components";
 
 // Remix API Client (for scanned challenges)

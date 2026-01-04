@@ -38,6 +38,12 @@ export interface ChapterViewProps {
      * Initial section index (for classic mode) or initial active section id
      */
     initialSection?: number;
+
+    /**
+     * Preview mode - hides completion buttons and progress tracking
+     * Used for community path previews
+     */
+    isPreviewMode?: boolean;
 }
 
 /**

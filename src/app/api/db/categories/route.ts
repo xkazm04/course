@@ -35,19 +35,19 @@ export async function GET() {
       supabase
         .from('categories')
         .select('*')
-        .order('sort_order'),
+        .order('sort_order') as unknown as Promise<{ data: Array<{ id: string; slug: string; name: string; description: string | null; icon: string | null; color: string | null; sort_order: number; is_featured: boolean }> | null; error: any }>,
       supabase
         .from('subcategories')
         .select('*')
-        .order('sort_order'),
+        .order('sort_order') as unknown as Promise<{ data: Array<{ id: string; slug: string; name: string; description: string | null; icon: string | null; sort_order: number; category_id: string }> | null; error: any }>,
       supabase
         .from('topics')
         .select('*')
-        .order('sort_order'),
+        .order('sort_order') as unknown as Promise<{ data: Array<{ id: string; slug: string; name: string; description: string | null; icon: string | null; sort_order: number; is_trending: boolean; subcategory_id: string }> | null; error: any }>,
       supabase
         .from('courses')
         .select('id, topic_id', { count: 'exact', head: false })
-        .eq('status', 'published')
+        .eq('status', 'published') as unknown as Promise<{ data: Array<{ id: string; topic_id: string | null }> | null; error: any }>
     ])
 
     if (categoriesResult.error) {

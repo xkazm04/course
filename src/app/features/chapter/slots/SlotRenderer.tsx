@@ -14,6 +14,7 @@ import { ActionsSlotRenderer } from "./ActionsSlotRenderer";
 import { SectionListSlotRenderer } from "./SectionListSlotRenderer";
 import { PlaygroundSlotRenderer } from "./PlaygroundSlotRenderer";
 import { HeaderSlotRenderer } from "./HeaderSlotRenderer";
+import { HomeworkSlotRenderer } from "./HomeworkSlotRenderer";
 
 export interface SlotRendererComponentProps {
     slot: ContentSlot;
@@ -53,6 +54,8 @@ const SlotRendererComponent: React.FC<SlotRendererComponentProps> = ({ slot, sta
             return <PlaygroundSlotRenderer slot={slot} state={state} className={className} />;
         case "header":
             return <HeaderSlotRenderer slot={slot} state={state} className={className} />;
+        case "homework":
+            return <HomeworkSlotRenderer slot={slot} state={state} className={className} />;
         default:
             console.warn(`Unknown slot type: ${(slot as ContentSlot).type}`);
             return null;

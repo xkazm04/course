@@ -6,6 +6,7 @@ import type { MapNode } from "@/app/features/knowledge-map/lib/types";
 import type { ViewportState, HexLayoutNode } from "../lib/types";
 import { layoutHexPuzzle, MIN_SCALE, MAX_SCALE } from "../lib/hexUtils";
 import { HexNode } from "./HexNode";
+import { NodeContextMenu } from "./NodeContextMenu";
 import type { NodeStatusMap } from "../lib/useNodeStatus";
 
 interface HexGridProps {
@@ -18,40 +19,16 @@ interface HexGridProps {
     allNodes?: Map<string, MapNode>;
     nodeStatuses?: NodeStatusMap;
     onRetryGeneration?: (nodeId: string) => void;
+    onOpenChapter?: (nodeId: string) => void;
+    onGenerateContent?: (nodeId: string) => void;
+    onRegenerateContent?: (nodeId: string) => void;
+    canGoBack?: boolean;
 }
 
 // Animated background component for visual polish
 function AnimatedBackground({ viewport }: { viewport: ViewportState }) {
     return (
         <>
-            {/* Ambient gradient blobs */}
-            <motion.div
-                animate={{
-                    rotate: 360,
-                    scale: [1, 1.1, 1],
-                }}
-                transition={{
-                    rotate: { duration: 60, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 20, repeat: Infinity },
-                }}
-                className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2
-                           bg-gradient-to-br from-[var(--ember)]/15 via-[var(--ember-glow)]/10 to-transparent
-                           rounded-full blur-3xl pointer-events-none"
-            />
-            <motion.div
-                animate={{
-                    rotate: -360,
-                    scale: [1, 1.15, 1],
-                }}
-                transition={{
-                    rotate: { duration: 80, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 25, repeat: Infinity },
-                }}
-                className="absolute top-1/4 -right-1/4 w-2/3 h-2/3
-                           bg-gradient-to-tl from-[var(--forge-info)]/12 via-[var(--forge-info)]/8 to-transparent
-                           rounded-full blur-3xl pointer-events-none"
-            />
-
             {/* Subtle radial vignette */}
             <div
                 className="absolute inset-0 pointer-events-none"
@@ -73,6 +50,10 @@ export function HexGrid({
     allNodes,
     nodeStatuses,
     onRetryGeneration,
+    onOpenChapter,
+    onGenerateContent,
+    onRegenerateContent,
+    canGoBack = true,
 }: HexGridProps) {
     const svgRef = useRef<SVGSVGElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -82,11 +63,53 @@ export function HexGrid({
     const [dragDistance, setDragDistance] = useState(0);
     const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
-    // Right-click handler to go back
+    // Context menu state
+    const [contextMenu, setContextMenu] = useState<{
+        node: HexLayoutNode;
+        position: { x: number; y: number };
+    } | null>(null);
+
+    // Handle node context menu (right-click on node)
+    const handleNodeContextMenu = useCallback((e: React.MouseEvent, node: HexLayoutNode) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setContextMenu({
+            node,
+            position: { x: e.clientX, y: e.clientY },
+        });
+    }, []);
+
+    // Close context menu
+    const closeContextMenu = useCallback(() => {
+        setContextMenu(null);
+    }, []);
+
+    // Handle open chapter from context menu
+    const handleOpenChapter = useCallback((nodeId: string) => {
+        onOpenChapter?.(nodeId);
+        closeContextMenu();
+    }, [onOpenChapter, closeContextMenu]);
+
+    // Handle generate content from context menu
+    const handleGenerateContent = useCallback((nodeId: string) => {
+        onGenerateContent?.(nodeId);
+        closeContextMenu();
+    }, [onGenerateContent, closeContextMenu]);
+
+    // Handle regenerate content from context menu
+    const handleRegenerateContent = useCallback((nodeId: string) => {
+        onRegenerateContent?.(nodeId);
+        closeContextMenu();
+    }, [onRegenerateContent, closeContextMenu]);
+
+    // Right-click on empty space goes back
     const handleContextMenu = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
-        onGoBack();
-    }, [onGoBack]);
+        // Only go back if not clicking on a node (node handles its own context menu)
+        if (canGoBack) {
+            onGoBack();
+        }
+    }, [onGoBack, canGoBack]);
 
     // Track dimensions
     useEffect(() => {
@@ -240,7 +263,7 @@ export function HexGrid({
             >
                 {/* Connection lines between adjacent hexes - curved paths */}
                 {layoutNodes.map((node, i) =>
-                    layoutNodes.slice(i + 1).map((other) => {
+                    layoutNodes.slice(i + 1).map((other, j) => {
                         const dist = Math.sqrt(
                             Math.pow(node.pixel.x - other.pixel.x, 2) +
                             Math.pow(node.pixel.y - other.pixel.y, 2)
@@ -255,7 +278,7 @@ export function HexGrid({
 
                             return (
                                 <motion.path
-                                    key={`${node.id}-${other.id}`}
+                                    key={`connection-${i}-${j}`}
                                     d={`M ${node.pixel.x} ${node.pixel.y} Q ${midX + offsetX} ${midY + offsetY} ${other.pixel.x} ${other.pixel.y}`}
                                     stroke="rgba(100,116,139,0.12)"
                                     strokeWidth={1.5}
@@ -293,6 +316,7 @@ export function HexGrid({
                                     generationStatus={status?.status}
                                     generationProgress={status?.progress}
                                     onRetryGeneration={onRetryGeneration}
+                                    onContextMenu={handleNodeContextMenu}
                                 />
                             );
                         })}
@@ -308,6 +332,29 @@ export function HexGrid({
                     <span>Zoom</span>
                 </div>
             </div>
+
+            {/* Context menu */}
+            {contextMenu && (
+                <NodeContextMenu
+                    node={contextMenu.node}
+                    position={contextMenu.position}
+                    onClose={closeContextMenu}
+                    onOpenChapter={handleOpenChapter}
+                    onGenerateContent={handleGenerateContent}
+                    onRegenerateContent={handleRegenerateContent}
+                    onDrillDown={(nodeId) => {
+                        onDrillDown(nodeId);
+                        closeContextMenu();
+                    }}
+                    onGoBack={() => {
+                        onGoBack();
+                        closeContextMenu();
+                    }}
+                    generationStatus={nodeStatuses?.[contextMenu.node.id]?.status}
+                    generationProgress={nodeStatuses?.[contextMenu.node.id]?.progress}
+                    canGoBack={canGoBack}
+                />
+            )}
         </div>
     );
 }

@@ -11,6 +11,13 @@
  * - Star system view: Lessons as individual stars
  * - 60fps canvas rendering with spatial indexing
  * - Smooth zoom and pan transitions
+ *
+ * SEMANTIC ZOOM (Progressive Disclosure):
+ * The zoom levels are not just visual scales—they represent progressive
+ * information disclosure. The SemanticZoomController manages:
+ * - Data fetching granularity (lazy-load lesson details only at star level)
+ * - Interaction affordances (hover shows different info per level)
+ * - Learning context ("you are here" breadcrumbs)
  */
 
 // Components
@@ -23,6 +30,13 @@ export {
     ZoomLevelIndicator,
     NavigationBreadcrumb,
     StatsDisplay,
+    // Semantic Zoom UI Components
+    SemanticTooltip,
+    MiniTooltip,
+    SemanticBreadcrumb,
+    LearningContextDisplay,
+    CompactBreadcrumb,
+    PositionIndicator,
 } from "./components";
 
 // Library
@@ -59,4 +73,23 @@ export {
     useUniverseCamera,
     getZoomLevelFromScale,
     getScaleForZoomLevel,
+
+    // Semantic Zoom (Progressive Disclosure)
+    SemanticZoomController,
+    createSemanticZoomController,
+    useSemanticZoom,
+    ZOOM_LEVEL_FETCH_STRATEGIES,
+    ZOOM_LEVEL_INTERACTIONS,
+    type SemanticZoomControllerConfig,
+    type SemanticZoomState,
+    type NodeDetailData,
+    type FetchState,
+    type ZoomLevelFetchStrategy,
+    type ZoomLevelInteraction,
+    type TooltipInfo,
+    type KeyboardShortcut,
+    type BreadcrumbItem,
+    type LearningContext,
+    type UseSemanticZoomOptions,
+    type UseSemanticZoomReturn,
 } from "./lib";

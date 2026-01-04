@@ -5,7 +5,9 @@
 
 import type { OraclePath } from "./oracleApi";
 
-const CONTENT_API_URL = process.env.NEXT_PUBLIC_CONTENT_GENERATOR_URL || "http://localhost:8081";
+// Use local API as fallback if external content generator is not configured
+const CONTENT_API_URL = process.env.NEXT_PUBLIC_CONTENT_GENERATOR_URL || "";
+const USE_LOCAL_API = !process.env.NEXT_PUBLIC_CONTENT_GENERATOR_URL;
 
 export type GenerationType = "full_course" | "chapters_only" | "description" | "learning_outcomes" | "chapter_content";
 export type JobStatus = "pending" | "processing" | "completed" | "failed";
@@ -245,10 +247,14 @@ class ContentApiClient {
     }
 
     /**
-     * Accept an Oracle path and start content generation for new nodes
+     * Accept an Oracle path and save to Supabase
+     * Always uses local API route for path acceptance
      */
     async acceptPath(path: OraclePath, domain: string): Promise<AcceptPathResponse> {
-        const response = await fetch(`${this.baseUrl}/api/path/accept`, {
+        // Always use local NextJS API route for path acceptance
+        const apiUrl = "/api/oracle/accept-path";
+
+        const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -266,9 +272,11 @@ class ContentApiClient {
 
     /**
      * Get status of all jobs in a batch
+     * Uses LOCAL NextJS API against Supabase
      */
     async getBatchStatus(batchId: string): Promise<BatchStatusResponse> {
-        const response = await fetch(`${this.baseUrl}/api/content/status/batch`, {
+        // Use local NextJS API for batch status queries
+        const response = await fetch(`/api/content/batch-status`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -286,28 +294,38 @@ class ContentApiClient {
 
     /**
      * Get generation status for multiple map nodes
+     * Uses LOCAL NextJS API against Supabase (not external cloud function)
+     * Returns empty result on failure to avoid blocking the map UI
      */
     async getNodesStatus(nodeIds: string[]): Promise<NodesStatusResponse> {
         if (nodeIds.length === 0) {
             return { nodes: {} };
         }
 
-        const response = await fetch(
-            `${this.baseUrl}/api/nodes/status?ids=${nodeIds.join(",")}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+        try {
+            // Always use local NextJS API - status queries should not go to cloud functions
+            const response = await fetch(
+                `/api/nodes/status?ids=${nodeIds.join(",")}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                // Log but don't throw - return empty result to avoid blocking UI
+                console.warn(`Node status API returned ${response.status}: ${response.statusText}`);
+                return { nodes: {} };
             }
-        );
 
-        if (!response.ok) {
-            const error = await response.json().catch(() => ({ error: response.statusText }));
-            throw new Error(error.error || `Failed to get nodes status: ${response.statusText}`);
+            return response.json();
+        } catch (error) {
+            // Network error or other failure - log and return empty result
+            console.warn("Failed to fetch node statuses:", error);
+            return { nodes: {} };
         }
-
-        return response.json();
     }
 
     /**

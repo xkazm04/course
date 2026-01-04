@@ -185,7 +185,7 @@ export function PeerSolutionsPanel({
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
                                         <Sparkles size={16} className="text-[var(--ember)]" />
-                                        <h3 className="text-sm font-semibold text-[var(--forge-text-secondary)]">
+                                        <h3 className="text-lg font-semibold text-[var(--forge-text-secondary)]">
                                             Solutions from fellow learners
                                         </h3>
                                     </div>
@@ -280,7 +280,7 @@ export function PeerSolutionsPanel({
                                 ) : (
                                     <div className="text-center py-8 text-[var(--forge-text-muted)]">
                                         <Users size={32} className="mx-auto mb-2 opacity-50" />
-                                        <p className="text-sm">No solutions match your criteria</p>
+                                        <p className="text-sm leading-relaxed">No solutions match your criteria</p>
                                     </div>
                                 )}
                             </div>
@@ -290,7 +290,7 @@ export function PeerSolutionsPanel({
                                 <p className="text-xs text-[var(--forge-text-muted)] text-center">
                                     Solutions are anonymized and ranked by helpfulness.
                                     <button
-                                        className="text-[var(--ember)] hover:text-[var(--ember-glow)] ml-1"
+                                        className="text-[var(--ember)] hover:text-[var(--ember-glow)] ml-1 font-medium"
                                         data-testid="peer-solutions-contribute-btn"
                                     >
                                         Contribute your solution

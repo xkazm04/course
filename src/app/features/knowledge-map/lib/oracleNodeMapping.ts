@@ -3,6 +3,12 @@
  *
  * Maps Career Oracle path modules to Knowledge Map nodes.
  * Handles matching existing nodes and creating hypothetical nodes.
+ *
+ * NOTE: This module now integrates with the unified CurriculumEntity type.
+ * The mapping functions provide backward compatibility while new code can
+ * use CurriculumEntity directly.
+ *
+ * @see ./curriculumEntity.ts for the unified type system
  */
 
 import type { PredictiveModule } from '@/app/features/goal-path/lib/predictiveTypes';
@@ -12,8 +18,11 @@ import type {
     RecommendedPathConnection,
     NodeLevel,
     DifficultyLevel,
-    LAYOUT_CONFIG,
+    CurriculumEntity,
 } from './types';
+import {
+    createFullEntity,
+} from './curriculumEntity';
 import type { LearningDomainId, DomainColorKey } from '@/app/shared/lib/learningDomains';
 import { LEARNING_DOMAINS } from '@/app/shared/lib/learningDomains';
 
@@ -137,8 +146,8 @@ export function findMatchingNodes(
 ): string[] {
     const matchingIds: Set<string> = new Set();
 
-    for (const module of modules) {
-        for (const skill of module.skills) {
+    for (const pathModule of modules) {
+        for (const skill of pathModule.skills) {
             const skillLower = skill.toLowerCase();
 
             for (const node of existingNodes) {
@@ -489,4 +498,202 @@ export function formatPrerequisites(prerequisites: string[]): string {
     if (prerequisites.length === 1) return prerequisites[0];
     if (prerequisites.length === 2) return `${prerequisites[0]} and ${prerequisites[1]}`;
     return `${prerequisites.slice(0, -1).join(', ')}, and ${prerequisites[prerequisites.length - 1]}`;
+}
+
+// ============================================================================
+// UNIFIED CURRICULUM ENTITY MAPPING
+// ============================================================================
+
+/**
+ * Convert a PredictiveModule to a CurriculumEntity.
+ * This is the primary conversion function for the unified type system.
+ *
+ * The resulting entity has materialization='proposed' and can be directly
+ * rendered on the map or used in path preview components.
+ */
+export function moduleToCurriculumEntity(
+    module: PredictiveModule,
+    index: number,
+    existingNodes: MapNode[]
+): CurriculumEntity {
+    // Determine domain from skills
+    const primarySkill = module.skills[0] || 'General';
+    const domainId = skillToDomainId(primarySkill);
+    const color = getDomainColor(domainId);
+    const difficulty = calculateDifficulty(module);
+
+    // Calculate position (grid layout)
+    const existingCourseCount = existingNodes.filter(n => n.level === 'course').length;
+    const totalIndex = existingCourseCount + index;
+
+    const columns = 4;
+    const nodeWidth = 170;
+    const nodeHeight = 85;
+    const gap = 28;
+
+    const row = Math.floor(totalIndex / columns);
+    const col = totalIndex % columns;
+
+    const position = {
+        x: col * (nodeWidth + gap) + nodeWidth / 2,
+        y: row * (nodeHeight + gap) + nodeHeight / 2,
+    };
+
+    // Find parent domain node
+    const parentDomain = existingNodes.find(
+        n => n.level === 'domain' && n.domainId === domainId
+    );
+
+    return createFullEntity({
+        id: `proposed-${module.id}`,
+        title: module.title,
+        description: module.reasoning || `Learn ${module.skills.join(', ')}`,
+        skills: module.skills,
+        estimatedHours: module.estimatedHours,
+        materialization: 'proposed',
+        sequence: module.sequence,
+        domainId,
+        color,
+        level: 'course',
+        difficulty,
+        position,
+        parentId: parentDomain?.id || null,
+        status: 'available',
+        progress: 0,
+        prerequisites: module.prerequisites,
+        reasoning: module.reasoning,
+        skillDemand: module.skillDemand,
+        optimalWindow: module.optimalWindow,
+        sourceModuleId: module.id,
+        childIds: [],
+    });
+}
+
+/**
+ * Convert multiple PredictiveModules to CurriculumEntities.
+ * Filters out modules that match existing nodes.
+ */
+export function modulesToCurriculumEntities(
+    modules: PredictiveModule[],
+    existingNodes: MapNode[]
+): CurriculumEntity[] {
+    const matchingNodeIds = findMatchingNodes(modules, existingNodes);
+
+    // Filter modules that don't have matching nodes
+    const unmatchedModules = modules.filter(module => {
+        const moduleSkills = module.skills.map(s => s.toLowerCase());
+        return !matchingNodeIds.some(nodeId => {
+            const node = existingNodes.find(n => n.id === nodeId);
+            if (!node) return false;
+
+            const nodeName = node.name.toLowerCase();
+            return moduleSkills.some(
+                skill => nodeName.includes(skill) || skill.includes(nodeName.split(' ')[0])
+            );
+        });
+    });
+
+    return unmatchedModules.map((module, index) =>
+        moduleToCurriculumEntity(module, index, existingNodes)
+    );
+}
+
+/**
+ * Convert a CurriculumEntity to HypotheticalMapNode for backward compatibility.
+ * Use this when interfacing with components that haven't been migrated yet.
+ *
+ * @deprecated New code should use CurriculumEntity directly
+ */
+export function curriculumEntityToHypotheticalNode(
+    entity: CurriculumEntity
+): HypotheticalMapNode {
+    return {
+        id: entity.id.replace('proposed-', 'hypothetical-'),
+        level: entity.level,
+        name: entity.title,
+        description: entity.description,
+        skills: entity.skills,
+        estimatedHours: entity.estimatedHours,
+        color: entity.color,
+        domainId: entity.domainId,
+        position: entity.position,
+        parentId: entity.parentId,
+        difficulty: entity.difficulty,
+        sourceModuleId: entity.sourceModuleId,
+        materialization: entity.materialization,
+    };
+}
+
+/**
+ * Convert a HypotheticalMapNode to CurriculumEntity.
+ * Use this when upgrading from the old type to the new unified type.
+ */
+export function hypotheticalNodeToCurriculumEntity(
+    node: HypotheticalMapNode,
+    oracleData?: {
+        reasoning?: string;
+        skillDemand?: import('@/app/features/goal-path/lib/predictiveTypes').DemandTrend;
+        sequence?: number;
+        prerequisites?: string[];
+    }
+): CurriculumEntity {
+    return createFullEntity({
+        id: node.id.replace('hypothetical-', 'proposed-'),
+        title: node.name,
+        description: node.description,
+        skills: node.skills,
+        estimatedHours: node.estimatedHours,
+        materialization: node.materialization || 'proposed',
+        sequence: oracleData?.sequence ?? 0,
+        domainId: node.domainId,
+        color: node.color,
+        level: node.level,
+        difficulty: node.difficulty ?? 'intermediate',
+        position: node.position,
+        parentId: node.parentId,
+        status: 'available',
+        progress: 0,
+        prerequisites: oracleData?.prerequisites ?? [],
+        reasoning: oracleData?.reasoning ?? '',
+        skillDemand: oracleData?.skillDemand ?? 'stable',
+        sourceModuleId: node.sourceModuleId,
+        childIds: [],
+    });
+}
+
+/**
+ * Convert MapNode to CurriculumEntity.
+ * Use this when you need to treat an existing map node as a curriculum entity.
+ */
+export function mapNodeToCurriculumEntity(
+    node: MapNode,
+    oracleData?: {
+        reasoning?: string;
+        skillDemand?: import('@/app/features/goal-path/lib/predictiveTypes').DemandTrend;
+        sequence?: number;
+    }
+): CurriculumEntity {
+    const skills = 'skills' in node && node.skills ? node.skills : [];
+
+    return createFullEntity({
+        id: node.id,
+        title: node.name,
+        description: node.description,
+        skills,
+        estimatedHours: node.estimatedHours ?? 0,
+        materialization: 'materialized',
+        sequence: oracleData?.sequence ?? 0,
+        domainId: node.domainId,
+        color: node.color,
+        level: node.level,
+        difficulty: 'difficulty' in node ? node.difficulty : 'intermediate',
+        position: node.position ?? { x: 0, y: 0 },
+        parentId: node.parentId,
+        status: node.status,
+        progress: node.progress,
+        prerequisites: [],
+        reasoning: oracleData?.reasoning ?? '',
+        skillDemand: oracleData?.skillDemand ?? 'stable',
+        childIds: node.childIds,
+    });
 }

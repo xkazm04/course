@@ -29,3 +29,28 @@ export type { OrchestrationCardProps } from "./OrchestrationCard";
 
 export { CelebrationOverlay } from "./CelebrationOverlay";
 export type { CelebrationOverlayProps } from "./CelebrationOverlay";
+
+// SlotCard compound component
+export { SlotCard } from "./SlotCard";
+export type {
+    SlotCardProps,
+    SlotCardHeaderProps,
+    SlotCardBodyProps,
+    SlotCardFooterProps,
+    SlotCardSectionProps,
+    SlotCardVariant,
+} from "./SlotCard";
+
+// Collective Intelligence Components
+export { CollectiveInsightsPanel } from "./CollectiveInsightsPanel";
+export type { CollectiveInsightsPanelProps } from "./CollectiveInsightsPanel";
+
+export { EmergentPrerequisiteWarning } from "./EmergentPrerequisiteWarning";
+export type { EmergentPrerequisiteWarningProps } from "./EmergentPrerequisiteWarning";
+
+// Living Graph Components
+export { TraversabilityWarning } from "./TraversabilityWarning";
+export type { TraversabilityWarningProps } from "./TraversabilityWarning";
+
+export { PathRecommendation } from "./PathRecommendation";
+export type { PathRecommendationProps } from "./PathRecommendation";

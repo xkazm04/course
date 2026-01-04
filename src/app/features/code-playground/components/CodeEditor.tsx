@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback, useImperativeHandle, forwardRef } from "react";
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import typescript from "highlight.js/lib/languages/typescript";
@@ -9,6 +9,10 @@ import css from "highlight.js/lib/languages/css";
 import json from "highlight.js/lib/languages/json";
 import "highlight.js/styles/vs2015.css";
 import { cn } from "@/app/shared/lib/utils";
+import type { Concept, ConceptCodeRegion } from "../lib/conceptBridge";
+import { ConceptHighlightLayer } from "./ConceptHighlightLayer";
+import { ConceptLineBadge } from "./ConceptLineBadge";
+import { ConceptTooltip } from "./ConceptTooltip";
 
 // Register languages
 hljs.registerLanguage("javascript", javascript);
@@ -20,25 +24,101 @@ hljs.registerLanguage("html", xml);
 hljs.registerLanguage("css", css);
 hljs.registerLanguage("json", json);
 
+export interface CodeEditorHandle {
+    scrollToLine: (lineNumber: number) => void;
+}
+
 interface CodeEditorProps {
     code: string;
     language: string;
     onChange: (value: string) => void;
     className?: string;
     readOnly?: boolean;
+    /** Set of line numbers that have errors */
+    errorLines?: Set<number>;
+    /** Currently highlighted line (will flash briefly) */
+    highlightedLine?: number | null;
+    /** Callback when an error line indicator is clicked */
+    onErrorLineClick?: (lineNumber: number) => void;
+    /** Concept code regions for this file */
+    conceptRegions?: ConceptCodeRegion[];
+    /** Currently active concept ID (highlighted from curriculum content) */
+    activeConceptId?: string | null;
+    /** Whether concept highlighting is enabled */
+    conceptsEnabled?: boolean;
+    /** Function to get concepts for a specific line */
+    getConceptsForLine?: (lineNumber: number) => Concept[];
+    /** Callback when a concept is clicked */
+    onConceptClick?: (concept: Concept) => void;
+    /** Callback when hovering over a concept line */
+    onConceptLineHover?: (lineNumber: number | null) => void;
 }
 
-export function CodeEditor({
+export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function CodeEditor({
     code,
     language,
     onChange,
     className,
     readOnly = false,
-}: CodeEditorProps) {
+    errorLines,
+    highlightedLine,
+    onErrorLineClick,
+    conceptRegions = [],
+    activeConceptId = null,
+    conceptsEnabled = false,
+    getConceptsForLine,
+    onConceptClick,
+    onConceptLineHover,
+}, ref) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const highlightRef = useRef<HTMLPreElement>(null);
     const [highlightedCode, setHighlightedCode] = useState("");
     const containerRef = useRef<HTMLDivElement>(null);
+    const lineNumbersRef = useRef<HTMLDivElement>(null);
+    const [flashingLine, setFlashingLine] = useState<number | null>(null);
+    const [activeLine, setActiveLine] = useState<number>(1);
+
+    // Concept bridge state
+    const [conceptHoveredLine, setConceptHoveredLine] = useState<number | null>(null);
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+    const [tooltipConcepts, setTooltipConcepts] = useState<Concept[]>([]);
+    const [isTooltipSticky, setIsTooltipSticky] = useState(false);
+
+    // Expose scrollToLine method via ref
+    useImperativeHandle(ref, () => ({
+        scrollToLine: (lineNumber: number) => {
+            const textarea = textareaRef.current;
+            const container = containerRef.current;
+            if (!textarea || !container) return;
+
+            const lineHeight = 24; // 6 units (h-6) = 24px
+            const scrollTop = Math.max(0, (lineNumber - 1) * lineHeight - container.clientHeight / 3);
+
+            textarea.scrollTop = scrollTop;
+            if (highlightRef.current) {
+                highlightRef.current.scrollTop = scrollTop;
+            }
+            if (lineNumbersRef.current) {
+                const lineNumsInner = lineNumbersRef.current.querySelector('div');
+                if (lineNumsInner) {
+                    lineNumsInner.scrollTop = scrollTop;
+                }
+            }
+
+            // Trigger flash animation
+            setFlashingLine(lineNumber);
+            setTimeout(() => setFlashingLine(null), 1500);
+        },
+    }));
+
+    // Handle external highlight line changes
+    useEffect(() => {
+        if (highlightedLine !== null && highlightedLine !== undefined) {
+            setFlashingLine(highlightedLine);
+            setTimeout(() => setFlashingLine(null), 1500);
+        }
+    }, [highlightedLine]);
 
     // Highlight code
     useEffect(() => {
@@ -69,6 +149,28 @@ export function CodeEditor({
         [onChange]
     );
 
+    // Calculate active line from cursor position
+    const updateActiveLine = useCallback(() => {
+        const textarea = textareaRef.current;
+        if (!textarea) return;
+
+        const cursorPosition = textarea.selectionStart;
+        const textBeforeCursor = textarea.value.substring(0, cursorPosition);
+        const lineNumber = textBeforeCursor.split("\n").length;
+
+        setActiveLine(lineNumber);
+    }, []);
+
+    // Handle click/selection change to update active line
+    const handleSelect = useCallback(() => {
+        updateActiveLine();
+    }, [updateActiveLine]);
+
+    // Handle focus to update active line
+    const handleFocus = useCallback(() => {
+        updateActiveLine();
+    }, [updateActiveLine]);
+
     // Handle tab key for indentation
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -88,14 +190,96 @@ export function CodeEditor({
                 // Move cursor after inserted spaces
                 requestAnimationFrame(() => {
                     textarea.selectionStart = textarea.selectionEnd = start + 2;
+                    updateActiveLine();
                 });
+            } else {
+                // Update active line on any key press
+                requestAnimationFrame(updateActiveLine);
             }
         },
-        [onChange]
+        [onChange, updateActiveLine]
     );
 
     const lines = (code || "").split("\n");
     const lineCount = Math.max(lines.length, 1);
+
+    // Handle concept badge click
+    const handleConceptBadgeClick = useCallback(
+        (lineNumber: number, concepts: Concept[], event?: React.MouseEvent) => {
+            if (concepts.length === 0) return;
+
+            const rect = event?.currentTarget?.getBoundingClientRect();
+            if (rect) {
+                setTooltipPosition({
+                    x: rect.right + 8,
+                    y: rect.top,
+                });
+            }
+            setTooltipConcepts(concepts);
+            setIsTooltipSticky(true);
+            setTooltipVisible(true);
+        },
+        []
+    );
+
+    // Handle concept badge hover
+    const handleConceptBadgeHover = useCallback(
+        (lineNumber: number | null) => {
+            setConceptHoveredLine(lineNumber);
+            onConceptLineHover?.(lineNumber);
+
+            if (lineNumber === null) {
+                // Only hide tooltip if not sticky
+                if (!isTooltipSticky) {
+                    setTooltipVisible(false);
+                }
+                return;
+            }
+
+            // Get concepts for this line
+            const concepts = getConceptsForLine?.(lineNumber) || [];
+            if (concepts.length > 0 && !isTooltipSticky) {
+                // Calculate position based on line number
+                const lineElement = lineNumbersRef.current?.querySelector(`[data-line="${lineNumber}"]`);
+                if (lineElement) {
+                    const rect = lineElement.getBoundingClientRect();
+                    setTooltipPosition({
+                        x: rect.right + 8,
+                        y: rect.top,
+                    });
+                } else {
+                    // Fallback position calculation
+                    const container = containerRef.current;
+                    if (container) {
+                        const containerRect = container.getBoundingClientRect();
+                        setTooltipPosition({
+                            x: containerRect.left + 70,
+                            y: containerRect.top + 12 + (lineNumber - 1) * 24,
+                        });
+                    }
+                }
+                setTooltipConcepts(concepts);
+                setTooltipVisible(true);
+            }
+        },
+        [getConceptsForLine, isTooltipSticky, onConceptLineHover]
+    );
+
+    // Handle concept tooltip concept click
+    const handleTooltipConceptClick = useCallback(
+        (concept: Concept) => {
+            setTooltipVisible(false);
+            setIsTooltipSticky(false);
+            onConceptClick?.(concept);
+        },
+        [onConceptClick]
+    );
+
+    // Handle tooltip close
+    const handleTooltipClose = useCallback(() => {
+        setTooltipVisible(false);
+        setIsTooltipSticky(false);
+    }, []);
 
     return (
         <div
@@ -108,23 +292,93 @@ export function CodeEditor({
         >
             {/* Line numbers */}
             <div
-                className="absolute left-0 top-0 bottom-0 w-12 bg-[var(--forge-bg-void)] border-r border-[var(--forge-border-subtle)] select-none z-10 overflow-hidden"
+                ref={lineNumbersRef}
+                className="absolute left-0 top-0 bottom-0 w-14 bg-[var(--forge-bg-void)] border-r border-[var(--forge-border-subtle)] select-none z-10 overflow-hidden"
                 data-testid="code-editor-line-numbers"
             >
-                <div className="p-3 text-right">
-                    {Array.from({ length: lineCount }, (_, i) => (
-                        <div
-                            key={i}
-                            className="text-[var(--forge-text-muted)] leading-6 h-6"
-                        >
-                            {i + 1}
-                        </div>
-                    ))}
+                <div className="p-3 text-right overflow-hidden" style={{ height: '100%' }}>
+                    {Array.from({ length: lineCount }, (_, i) => {
+                        const lineNum = i + 1;
+                        const hasError = errorLines?.has(lineNum);
+                        const isFlashing = flashingLine === lineNum;
+                        const isActive = activeLine === lineNum;
+                        const lineConcepts = conceptsEnabled ? (getConceptsForLine?.(lineNum) || []) : [];
+                        const hasConcepts = lineConcepts.length > 0;
+
+                        return (
+                            <div
+                                key={i}
+                                className={cn(
+                                    "leading-6 h-6 flex items-center justify-end gap-1 pr-1 transition-colors duration-75",
+                                    hasError && "text-[var(--forge-error)]",
+                                    !hasError && !isActive && "text-[var(--forge-text-muted)]",
+                                    !hasError && isActive && "text-[var(--forge-text-secondary)]",
+                                    isFlashing && "bg-[var(--forge-error)]/30 animate-pulse",
+                                    isActive && !isFlashing && "bg-[var(--forge-bg-elevated)]/30"
+                                )}
+                                data-line={lineNum}
+                                data-testid={hasError ? `error-line-${lineNum}` : hasConcepts ? `concept-line-${lineNum}` : undefined}
+                            >
+                                {/* Concept badge - shown when concepts are enabled and line has concepts */}
+                                {hasConcepts && !hasError && (
+                                    <ConceptLineBadge
+                                        concepts={lineConcepts}
+                                        lineNumber={lineNum}
+                                        onClick={(ln, concepts) => {
+                                            const lineEl = lineNumbersRef.current?.querySelector(`[data-line="${ln}"]`);
+                                            if (lineEl) {
+                                                const rect = lineEl.getBoundingClientRect();
+                                                setTooltipPosition({ x: rect.right + 8, y: rect.top });
+                                            }
+                                            handleConceptBadgeClick(ln, concepts);
+                                        }}
+                                        onHover={handleConceptBadgeHover}
+                                        isHighlighted={conceptHoveredLine === lineNum || lineConcepts.some(c => c.id === activeConceptId)}
+                                    />
+                                )}
+                                {hasError && (
+                                    <button
+                                        onClick={() => onErrorLineClick?.(lineNum)}
+                                        className="w-2 h-2 rounded-full bg-[var(--forge-error)] shrink-0 hover:ring-2 hover:ring-[var(--forge-error)]/50 transition-all cursor-pointer"
+                                        title={`Error at line ${lineNum}`}
+                                        data-testid={`error-indicator-${lineNum}`}
+                                    />
+                                )}
+                                <span>{lineNum}</span>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
             {/* Code display container */}
-            <div className="relative ml-12 overflow-auto" style={{ height: "100%" }}>
+            <div className="relative ml-14 overflow-auto" style={{ height: "100%" }}>
+                {/* Concept highlight layer (bottom-most) */}
+                {conceptsEnabled && conceptRegions.length > 0 && (
+                    <ConceptHighlightLayer
+                        regions={conceptRegions}
+                        activeConceptId={activeConceptId}
+                        hoveredLine={conceptHoveredLine}
+                        isEnabled={conceptsEnabled}
+                        lineHeight={24}
+                        topPadding={12}
+                    />
+                )}
+
+                {/* Active line highlight layer */}
+                <div
+                    className="absolute left-0 right-0 pointer-events-none"
+                    style={{
+                        top: `${12 + (activeLine - 1) * 24}px`, // 12px padding + line offset
+                        height: "24px",
+                        backgroundColor: "var(--forge-bg-elevated)",
+                        opacity: 0.3,
+                        transition: "top 0.05s ease-out",
+                    }}
+                    aria-hidden="true"
+                    data-testid="code-editor-active-line-highlight"
+                />
+
                 {/* Highlighted code layer (background) */}
                 <pre
                     ref={highlightRef}
@@ -144,6 +398,9 @@ export function CodeEditor({
                     onChange={handleChange}
                     onScroll={handleScroll}
                     onKeyDown={handleKeyDown}
+                    onSelect={handleSelect}
+                    onClick={handleSelect}
+                    onFocus={handleFocus}
                     readOnly={readOnly}
                     spellCheck={false}
                     autoCapitalize="off"
@@ -165,9 +422,21 @@ export function CodeEditor({
                     data-testid="code-editor-textarea"
                 />
             </div>
+
+            {/* Concept tooltip */}
+            {conceptsEnabled && (
+                <ConceptTooltip
+                    concepts={tooltipConcepts}
+                    position={tooltipPosition}
+                    isVisible={tooltipVisible}
+                    isSticky={isTooltipSticky}
+                    onConceptClick={handleTooltipConceptClick}
+                    onClose={handleTooltipClose}
+                />
+            )}
         </div>
     );
-}
+});
 
 // HTML escape helper
 function escapeHtml(text: string): string {
@@ -182,3 +451,5 @@ function escapeHtml(text: string): string {
 }
 
 export default CodeEditor;
+
+export type { CodeEditorProps };

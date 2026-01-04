@@ -278,16 +278,16 @@ export function PathProgressIndicator({
             )}
 
             {/* Progress label */}
-            {progress > 0 && (
-                <span
-                    className={cn(
-                        "absolute right-0 -top-5",
-                        "text-xs font-medium text-[var(--forge-text-muted)]"
-                    )}
-                >
-                    {Math.round(progress)}%
-                </span>
-            )}
+            <span
+                className={cn(
+                    "absolute right-0 -top-5",
+                    "text-xs font-medium text-[var(--forge-text-muted)]",
+                    progress === 0 && "opacity-50"
+                )}
+                data-testid={`path-progress-label-${pathId}`}
+            >
+                {Math.round(progress)}%
+            </span>
         </div>
     );
 }

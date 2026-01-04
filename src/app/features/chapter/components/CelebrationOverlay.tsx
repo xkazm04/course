@@ -252,7 +252,7 @@ export function CelebrationOverlay({
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
-                                className={cn("text-2xl font-bold mb-2", config.color)}
+                                className={cn("text-lg font-semibold mb-2", config.color)}
                             >
                                 {config.title}
                             </motion.h3>
@@ -263,7 +263,7 @@ export function CelebrationOverlay({
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.4 }}
-                                    className="text-[var(--forge-text-secondary)] leading-relaxed"
+                                    className="text-sm text-[var(--forge-text-secondary)] leading-relaxed"
                                 >
                                     {message}
                                 </motion.p>
@@ -276,7 +276,7 @@ export function CelebrationOverlay({
                                 transition={{ delay: 0.5 }}
                                 onClick={handleDismiss}
                                 className={cn(
-                                    "mt-6 px-6 py-2.5 rounded-lg font-medium",
+                                    "mt-6 px-6 py-2.5 rounded-lg text-sm font-medium",
                                     "bg-gradient-to-r from-[var(--forge-bg-elevated)] to-[var(--forge-bg-anvil)]",
                                     "border border-[var(--forge-border-default)]",
                                     "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)]",

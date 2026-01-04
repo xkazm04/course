@@ -145,7 +145,7 @@ export function PeerSolutionCard({
 
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm font-medium text-[var(--forge-text-secondary)] truncate">
+                            <span className="text-lg font-semibold text-[var(--forge-text-secondary)] truncate">
                                 {getSolutionTitle(solution)}
                             </span>
                             <ConfidenceBadge level={solution.authorLevel} />
@@ -204,7 +204,7 @@ export function PeerSolutionCard({
                             {/* Solution content */}
                             <div
                                 className={cn(
-                                    "p-3 rounded-lg text-sm",
+                                    "p-3 rounded-lg text-sm leading-relaxed",
                                     solution.solutionType === "code"
                                         ? "bg-[var(--forge-bg-void)] font-mono text-[var(--forge-text-secondary)]"
                                         : "bg-[var(--forge-bg-elevated)]/30 text-[var(--forge-text-secondary)]"
@@ -236,7 +236,7 @@ export function PeerSolutionCard({
                                     onClick={handleUpvote}
                                     disabled={hasUpvoted}
                                     className={cn(
-                                        "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
+                                        "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                                         hasUpvoted
                                             ? "bg-[var(--forge-success)]/20 text-[var(--forge-success)]"
                                             : "bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-elevated)] hover:text-[var(--forge-text-secondary)]"
@@ -250,7 +250,7 @@ export function PeerSolutionCard({
 
                                 <button
                                     onClick={handleCopy}
-                                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-elevated)] hover:text-[var(--forge-text-secondary)] transition-colors"
+                                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-muted)] hover:bg-[var(--forge-bg-elevated)] hover:text-[var(--forge-text-secondary)] transition-colors"
                                     data-testid={`peer-solution-copy-btn-${solution.id}`}
                                 >
                                     {copied ? (

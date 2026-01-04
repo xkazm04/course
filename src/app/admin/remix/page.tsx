@@ -56,7 +56,7 @@ interface Challenge {
 type StatusFilter = "all" | "pending" | "approved" | "rejected" | "archived";
 type ViewMode = "grid" | "list";
 
-const STATUS_TABS: { value: StatusFilter; label: string; icon: React.ElementType }[] = [
+const STATUS_TABS: { value: StatusFilter; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
     { value: "all", label: "All", icon: LayoutGrid },
     { value: "pending", label: "Pending", icon: Clock },
     { value: "approved", label: "Approved", icon: CheckCircle2 },

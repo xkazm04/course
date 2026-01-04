@@ -56,13 +56,16 @@ function TreeNode({ node, tree, depth, onNavigate, expandedNodes, toggleExpanded
   const hasChildren = children.length > 0;
   const isExpanded = expandedNodes.has(node.id);
 
-  const levelColors = {
-    0: { bg: 'bg-[var(--ember)]/10', text: 'text-[var(--ember)]', icon: 'text-[var(--ember)]' },
-    1: { bg: 'bg-[var(--forge-info)]/10', text: 'text-[var(--forge-info)]', icon: 'text-[var(--forge-info)]' },
-    2: { bg: 'bg-[var(--forge-success)]/10', text: 'text-[var(--forge-success)]', icon: 'text-[var(--forge-success)]' },
+  // Colors for 5-level hierarchy: domain (0), topic (1), skill (2), course (3), lesson (4)
+  const depthColors = {
+    0: { bg: 'bg-[var(--ember)]/10', text: 'text-[var(--ember)]', icon: 'text-[var(--ember)]' },           // domain
+    1: { bg: 'bg-[var(--forge-info)]/10', text: 'text-[var(--forge-info)]', icon: 'text-[var(--forge-info)]' },     // topic
+    2: { bg: 'bg-purple-500/10', text: 'text-purple-400', icon: 'text-purple-400' },                        // skill
+    3: { bg: 'bg-[var(--forge-success)]/10', text: 'text-[var(--forge-success)]', icon: 'text-[var(--forge-success)]' }, // course
+    4: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', icon: 'text-cyan-400' },                              // lesson
   };
 
-  const colors = levelColors[node.level as keyof typeof levelColors] || levelColors[2];
+  const colors = depthColors[node.depth as keyof typeof depthColors] || depthColors[4];
 
   return (
     <div>
@@ -72,12 +75,21 @@ function TreeNode({ node, tree, depth, onNavigate, expandedNodes, toggleExpanded
         transition={{ delay: depth * 0.05 }}
         className="group"
       >
-        <button
+        <div
+          role="button"
+          tabIndex={0}
           onClick={() => hasChildren && toggleExpanded(node.id)}
+          onKeyDown={(e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && hasChildren) {
+              e.preventDefault();
+              toggleExpanded(node.id);
+            }
+          }}
           className={`
             w-full flex items-center gap-2 px-2 py-2 rounded-lg text-left
             transition-colors duration-150
             hover:bg-[var(--forge-bg-elevated)]
+            ${hasChildren ? 'cursor-pointer' : 'cursor-default'}
           `}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
         >
@@ -133,7 +145,7 @@ function TreeNode({ node, tree, depth, onNavigate, expandedNodes, toggleExpanded
               <ExternalLink size={12} className="text-[var(--forge-text-muted)]" />
             </button>
           )}
-        </button>
+        </div>
 
         {/* Node details (shown when expanded) */}
         {isExpanded && node.description && (
@@ -197,10 +209,10 @@ function TreeNode({ node, tree, depth, onNavigate, expandedNodes, toggleExpanded
 
 export function PathTree({ path, onNavigateToNode, onAccept, isAccepting }: PathTreeProps) {
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(() => {
-    // Expand all level 0 and 1 nodes by default
+    // Expand domain, topic, and skill nodes (depth 0-2) by default
     const expanded = new Set<string>();
     path.nodes?.forEach(node => {
-      if (node.level <= 1) {
+      if (node.depth <= 2) {
         expanded.add(node.id);
       }
     });
@@ -242,7 +254,7 @@ export function PathTree({ path, onNavigateToNode, onAccept, isAccepting }: Path
     <div className="space-y-4">
       {/* Path header */}
       <div className="px-2">
-        <h4 className="text-sm font-semibold text-white mb-1">{path.name}</h4>
+        <h4 className="text-sm font-semibold text-[var(--oracle-text-heading)] mb-1">{path.name}</h4>
         {path.description && (
           <p className="text-xs text-[var(--forge-text-secondary)] mb-3">{path.description}</p>
         )}
@@ -293,7 +305,7 @@ export function PathTree({ path, onNavigateToNode, onAccept, isAccepting }: Path
             transition-all duration-200
             ${isAccepting
               ? 'bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] cursor-wait'
-              : 'bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white hover:opacity-90 shadow-lg shadow-[var(--ember)]/20'
+              : 'bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-[var(--oracle-text-on-ember)] hover:opacity-90 shadow-lg shadow-[var(--ember)]/20'
             }
           `}
           whileTap={!isAccepting ? { scale: 0.98 } : undefined}

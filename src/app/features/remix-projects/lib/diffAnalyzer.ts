@@ -145,8 +145,8 @@ export function analyzeSubmission(
     };
 }
 
-// Analyze if objectives were met
-function analyzeObjectives(
+// Analyze if objectives were met (exported for real-time verification)
+export function analyzeObjectives(
     assignment: Assignment,
     diff: ProjectDiff,
     files: ModifiedFile[]

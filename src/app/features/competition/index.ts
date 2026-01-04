@@ -44,6 +44,10 @@ export {
 export { useChallenge } from "./lib/useChallenge";
 export { useLeaderboard } from "./lib/useLeaderboard";
 export { useSubmission } from "./lib/useSubmission";
+export { useArena } from "./lib/useArena";
+
+// Arena Types
+export * from "./lib/arenaTypes";
 
 // Components
 export {
@@ -61,4 +65,20 @@ export {
     SubmissionEditor,
     PeerReviewPanel,
     ChallengeDashboard,
+    // 3D Championship Arena
+    ChampionshipArena,
+    ArenaEnvironment,
+    Podiums,
+    CompetitorAvatar,
+    RankAnimationWrapper,
+    CelebrationEffect,
+    ClimbTrail,
+    LightningEffect,
+    VRModeManager,
+    VRController,
+    VREntryButton,
+    VRInfoPanel,
+    VRTeleportFloor,
+    TeleportIndicator,
+    DesktopCameraControls,
 } from "./components";

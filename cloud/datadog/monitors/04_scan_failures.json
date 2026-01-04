@@ -1,0 +1,21 @@
+{
+  "name": "[Project Scanner] Feature Scan Failure Rate",
+  "type": "query alert",
+  "query": "sum(last_15m):sum:project.scan.job.failed{*}.as_count() > 3",
+  "message": "## Project Scanner Failure Rate High\n\n**Failed Scans:** {{value}}\n**Threshold:** 3 failures in 15 minutes\n\n### Impact\n- Repository analysis jobs failing\n- Feature decomposition not working\n- Homework assignments cannot be created\n\n### Runbook\n1. Check scan job error messages in logs\n2. Verify GitHub API rate limits (project.github.rate_limit.remaining)\n3. Review Gemini API response quality\n4. Check for repository access issues\n5. Retry failed scans for transient errors\n\n@slack-project-scanner",
+  "tags": [
+    "service:project-scanner",
+    "severity:high",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 3,
+      "warning": 2
+    },
+    "notify_no_data": false,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 2
+}

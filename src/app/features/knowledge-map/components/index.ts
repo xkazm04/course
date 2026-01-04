@@ -14,6 +14,7 @@ export { NodeDetailsPanel } from "./NodeDetailsPanel";
 // Oracle integration components
 export { HypotheticalNode } from "./HypotheticalNode";
 export { RecommendedNodeGlow } from "./RecommendedNodeGlow";
+export { EmptyStateIllustration } from "./EmptyStateIllustration";
 
 // Oracle Bottom Panel
 export {
@@ -28,6 +29,7 @@ export {
     PathPreviewSidebar,
     PathModuleCard,
     PathMilestoneMarker,
+    PathEffectivenessScore,
 } from "./PathPreviewSidebar";
 
 

@@ -16,6 +16,12 @@ export async function middleware(request: NextRequest) {
         return supabaseResponse;
     }
 
+    // Log auth cookies for debugging
+    const authCookies = request.cookies.getAll().filter(c => c.name.includes('auth-token'));
+    if (request.nextUrl.pathname.startsWith('/forge')) {
+        console.log("[Middleware]", request.nextUrl.pathname, "Auth cookies:", authCookies.map(c => c.name));
+    }
+
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
         cookies: {
             getAll() {
@@ -34,7 +40,11 @@ export async function middleware(request: NextRequest) {
     });
 
     // Refresh session if expired
-    await supabase.auth.getUser();
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (request.nextUrl.pathname.startsWith('/forge')) {
+        console.log("[Middleware]", request.nextUrl.pathname, "User:", user?.id || "none", error?.message || "");
+    }
 
     return supabaseResponse;
 }

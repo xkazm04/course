@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       .from('chapters')
       .select('*')
       .eq('course_id', courseId)
-      .order('sort_order')
+      .order('sort_order') as unknown as { data: Array<{ id: string; course_id: string; slug: string; title: string; description: string | null; sort_order: number; estimated_minutes: number; xp_reward: number }> | null; error: any }
 
     if (error) {
       return NextResponse.json(
@@ -53,10 +53,10 @@ export async function GET(request: NextRequest) {
       : { data: [] }
 
     // Combine chapters with sections
-    const chaptersWithSections: ChapterWithSections[] = (chapters || []).map(chapter => ({
+    const chaptersWithSections = (chapters || []).map(chapter => ({
       ...chapter,
-      sections: sections?.filter(s => s.chapter_id === chapter.id) || [],
-      section_count: sections?.filter(s => s.chapter_id === chapter.id).length || 0
+      sections: (sections as any[])?.filter(s => s.chapter_id === chapter.id) || [],
+      section_count: (sections as any[])?.filter(s => s.chapter_id === chapter.id).length || 0
     }))
 
     return NextResponse.json({ chapters: chaptersWithSections })
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       .from('courses')
       .select('created_by_user_id')
       .eq('id', body.course_id)
-      .single()
+      .single() as unknown as { data: { created_by_user_id: string | null } | null }
 
     if (!course || course.created_by_user_id !== user.id) {
       return NextResponse.json(
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
       .eq('course_id', body.course_id)
       .order('sort_order', { ascending: false })
       .limit(1)
-      .single()
+      .single() as unknown as { data: { sort_order: number } | null }
 
     const nextSortOrder = (lastChapter?.sort_order || 0) + 1
 
@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
     // Insert chapter
     const { data: chapter, error } = await supabase
       .from('chapters')
-      .insert(chapterData)
+      .insert(chapterData as any)
       .select()
       .single()
 

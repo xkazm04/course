@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, FlaskConical } from "lucide-react";
@@ -14,23 +14,23 @@ import { CodePlayground } from "@/app/features/code-playground";
 import { SocialProofVisualization } from "@/app/features/social-proof";
 import { KnowledgeUniverse } from "@/app/features/knowledge-universe";
 
+// Adaptive Learning imports
+import { AdaptiveLearningProvider, AdaptiveLearningMap } from "@/app/features/adaptive-learning";
+
+// Path Comparison imports
+import { PathComparisonModal, CompareButton, PathComparisonCard } from "@/app/features/path-comparison";
+import { usePathComparison } from "@/app/features/path-comparison/lib/usePathComparison";
+import { learningPaths as mockLearningPaths } from "@/app/shared/lib/mockData";
+
+// Shareable Links imports
+import { ShareModal, ShareButton } from "@/app/features/shareable-links";
+import { useSharePath } from "@/app/features/shareable-links/lib/useSharePath";
+
 // Experiment feature imports (Tasks 01-04)
 import { DiscoveryDashboard } from "@/app/features/open-source-discovery";
 import { SimulationWorkspace } from "@/app/features/client-simulation";
 import { ChallengeDashboard } from "@/app/features/competition";
 import { RemixWorkspace } from "@/app/features/remix-projects";
-
-// Placeholder for components that need complex props
-const FeaturePlaceholder = ({ name, description }: { name: string; description: string }) => (
-    <div className="p-8 bg-[var(--surface-overlay)] rounded-2xl border border-[var(--border-default)] text-center">
-        <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">{name}</h3>
-        <p className="text-[var(--text-muted)] mb-4">{description}</p>
-        <p className="text-sm text-[var(--text-secondary)]">
-            This component requires specific props from other modules.
-            See the source code for integration examples.
-        </p>
-    </div>
-);
 
 // Feature metadata
 const featuresMeta: Record<string, { title: string; description: string; gradient: string }> = {
@@ -105,6 +105,183 @@ const LoadingFallback = () => (
     </div>
 );
 
+// Adaptive Learning Demo Component
+function AdaptiveLearningDemo() {
+    return (
+        <AdaptiveLearningProvider>
+            <div className="space-y-6">
+                <div className="p-4 bg-[var(--surface-overlay)] rounded-xl border border-[var(--border-default)]">
+                    <p className="text-sm text-[var(--text-secondary)]">
+                        This demo shows AI-powered learning recommendations. Click &quot;Refresh&quot; to generate personalized path suggestions based on your learning profile.
+                    </p>
+                </div>
+                <AdaptiveLearningMap
+                    onNavigateToNode={(nodeId) => {
+                        console.log("Navigate to node:", nodeId);
+                        alert(`Would navigate to: ${nodeId}`);
+                    }}
+                />
+            </div>
+        </AdaptiveLearningProvider>
+    );
+}
+
+// Path Comparison Demo Component
+function PathComparisonDemo() {
+    const {
+        session,
+        comparisonData,
+        togglePath,
+        isSelected,
+        openModal,
+        closeModal,
+        clearSelection,
+        removePath,
+        canAddMore,
+        canCompare,
+    } = usePathComparison({
+        maxPaths: 3,
+        allPaths: mockLearningPaths,
+    });
+
+    return (
+        <div className="space-y-6">
+            <div className="p-4 bg-[var(--surface-overlay)] rounded-xl border border-[var(--border-default)]">
+                <p className="text-sm text-[var(--text-secondary)] mb-4">
+                    Select 2-3 learning paths to compare them side-by-side. Click &quot;Compare&quot; on a path to add it.
+                </p>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={openModal}
+                        disabled={!canCompare}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                            canCompare
+                                ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:opacity-90"
+                                : "bg-[var(--surface-inset)] text-[var(--text-muted)] cursor-not-allowed"
+                        )}
+                    >
+                        Compare {session.selectedPaths.length} Paths
+                    </button>
+                    {session.selectedPaths.length > 0 && (
+                        <button
+                            onClick={clearSelection}
+                            className="px-3 py-1.5 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        >
+                            Clear selection
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {mockLearningPaths.map((path) => (
+                    <div
+                        key={path.id}
+                        className={cn(
+                            "p-4 rounded-xl border transition-all",
+                            isSelected(path.id)
+                                ? "bg-[var(--accent-primary)]/10 border-[var(--accent-primary)]"
+                                : "bg-[var(--surface-overlay)] border-[var(--border-default)] hover:border-[var(--border-strong)]"
+                        )}
+                    >
+                        <div className="flex items-start justify-between mb-2">
+                            <h3 className="font-semibold text-[var(--text-primary)]">{path.name}</h3>
+                            <CompareButton
+                                path={path}
+                                isSelected={isSelected(path.id)}
+                                canAddMore={canAddMore}
+                                onToggle={togglePath}
+                                size="sm"
+                            />
+                        </div>
+                        <p className="text-sm text-[var(--text-secondary)] mb-3">{path.description}</p>
+                        <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
+                            <span>{path.courses} courses</span>
+                            <span>{path.hours}h</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 mt-3">
+                            {path.skills.slice(0, 3).map((skill) => (
+                                <span
+                                    key={skill}
+                                    className="px-2 py-0.5 text-xs bg-[var(--surface-inset)] text-[var(--text-muted)] rounded-md"
+                                >
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <PathComparisonModal
+                isOpen={session.isOpen}
+                onClose={closeModal}
+                comparisonData={comparisonData}
+                onRemovePath={removePath}
+                onStartPath={(pathId) => {
+                    console.log("Start path:", pathId);
+                    alert(`Would start learning path: ${pathId}`);
+                    closeModal();
+                }}
+            />
+        </div>
+    );
+}
+
+// Shareable Links Demo Component
+function ShareableLinksDemo() {
+    const {
+        modalState,
+        openShare,
+        closeShare,
+        copyShareUrl,
+        shareToTwitter,
+        shareToLinkedIn,
+    } = useSharePath({ progress: 65 });
+
+    return (
+        <div className="space-y-6">
+            <div className="p-4 bg-[var(--surface-overlay)] rounded-xl border border-[var(--border-default)]">
+                <p className="text-sm text-[var(--text-secondary)]">
+                    Share your learning progress on social media! Click the Share button on any path to generate a shareable link with an OG preview card.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {mockLearningPaths.map((path) => (
+                    <div
+                        key={path.id}
+                        className="p-4 rounded-xl border bg-[var(--surface-overlay)] border-[var(--border-default)] hover:border-[var(--border-strong)] transition-all"
+                    >
+                        <div className="flex items-start justify-between mb-2">
+                            <h3 className="font-semibold text-[var(--text-primary)]">{path.name}</h3>
+                            <ShareButton
+                                path={path}
+                                onShare={openShare}
+                                size="sm"
+                            />
+                        </div>
+                        <p className="text-sm text-[var(--text-secondary)] mb-3">{path.description}</p>
+                        <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
+                            <span>{path.courses} courses</span>
+                            <span>{path.hours}h</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <ShareModal
+                state={modalState}
+                onClose={closeShare}
+                onCopy={copyShareUrl}
+                onTwitterShare={shareToTwitter}
+                onLinkedInShare={shareToLinkedIn}
+            />
+        </div>
+    );
+}
+
 // Feature renderer
 function FeatureRenderer({ featureId }: { featureId: string }) {
     switch (featureId) {
@@ -115,11 +292,11 @@ function FeatureRenderer({ featureId }: { featureId: string }) {
         case "knowledge-universe":
             return <KnowledgeUniverse />;
         case "adaptive-learning":
-            return <FeaturePlaceholder name="Adaptive Learning" description="AI-powered learning map with personalized path predictions based on learner behavior." />;
+            return <AdaptiveLearningDemo />;
         case "path-comparison":
-            return <FeaturePlaceholder name="Path Comparison" description="Side-by-side comparison of learning paths with skill overlap visualization and combined path suggestions." />;
+            return <PathComparisonDemo />;
         case "shareable-links":
-            return <FeaturePlaceholder name="Shareable Links" description="Social sharing with OG preview cards for learning paths and achievements." />;
+            return <ShareableLinksDemo />;
         // Experiment features (Tasks 01-04)
         case "open-source-discovery":
             return <DiscoveryDashboard />;

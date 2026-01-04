@@ -276,10 +276,12 @@ export function GraphHealthOverview({
 }
 
 function StatBadge({
+    label,
     count,
     color,
     emoji,
 }: {
+    label: string;
     count: number;
     color: string;
     emoji: string;
@@ -292,6 +294,7 @@ function StatBadge({
     return (
         <div
             className={`flex items-center gap-1.5 px-2 py-1 rounded-lg ${colorMap[color] || "bg-[var(--forge-bg-elevated)] border-[var(--forge-border-subtle)]"}`}
+            title={label}
         >
             <span className="text-xs">{emoji}</span>
             <span className="text-xs text-[var(--forge-text-muted)]">{count}</span>

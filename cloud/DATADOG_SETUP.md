@@ -47,7 +47,16 @@ DD_DOGSTATSD_URL=udp://<agent-host>:8125
 
 ## 2. Create Monitors (Detection Rules)
 
-Navigate to **Monitors > New Monitor** in Datadog and create the following:
+### Option A: Using curl (requires monitors_write scope)
+
+```bash
+cd cloud/datadog
+DD_API_KEY=xxx DD_APP_KEY=xxx bash create_monitors.sh
+```
+
+### Option B: Manual UI Creation
+
+Navigate to **Monitors > New Monitor > Metric** in Datadog and create the following:
 
 ### Monitor 1: High LLM Latency
 

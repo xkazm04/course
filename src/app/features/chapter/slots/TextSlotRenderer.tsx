@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useMemo, memo } from "react";
-import { elevation } from "@/app/shared/lib/utils";
+import { MarkdownRenderer } from "../components/MarkdownRenderer";
+import { SlotCard } from "../components/SlotCard";
 import type { TextSlot } from "../lib/contentSlots";
 import type { ChapterState } from "../lib/useChapterState";
 
@@ -32,13 +33,13 @@ const TextSlotRendererComponent: React.FC<TextSlotRendererProps> = ({ slot, clas
     if (variant === "prose") {
         return (
             <div
-                className={`prose prose-slate dark:prose-invert max-w-none ${className ?? ""}`}
+                className={className}
                 data-testid={`text-slot-${slot.id}`}
             >
                 {title && (
-                    <h2 className="text-xl font-bold text-[var(--text-primary)]">{title}</h2>
+                    <h2 className="text-xl font-bold text-[var(--forge-text-primary)] mb-4">{title}</h2>
                 )}
-                <p className="text-[var(--text-secondary)]">{content}</p>
+                <MarkdownRenderer content={content} />
             </div>
         );
     }
@@ -56,16 +57,19 @@ const TextSlotRendererComponent: React.FC<TextSlotRendererProps> = ({ slot, clas
 
     if (variant === "highlight") {
         return (
-            <div
-                className={`bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] ${elevation.flat} ${className ?? ""}`}
-                style={{ padding: "var(--slot-padding-lg)" }}
+            <SlotCard
+                variant="highlighted"
+                cardElevation="flat"
+                className={className}
                 data-testid={`text-slot-${slot.id}`}
             >
-                {title && (
-                    <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3">{title}</h3>
-                )}
-                <p className="text-[var(--forge-text-secondary)]">{content}</p>
-            </div>
+                <SlotCard.Body padding="lg">
+                    {title && (
+                        <h3 className="font-semibold text-[var(--forge-text-primary)] mb-3">{title}</h3>
+                    )}
+                    <p className="text-[var(--forge-text-secondary)]">{content}</p>
+                </SlotCard.Body>
+            </SlotCard>
         );
     }
 

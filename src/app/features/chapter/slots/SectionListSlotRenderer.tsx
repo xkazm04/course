@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { PrismaticCard, CodeBlock } from "@/app/shared/components";
 import { cn, buttonSizeClasses } from "@/app/shared/lib/utils";
+import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import { TRANSITIONS, ANIMATION_VARIANTS } from "@/app/shared/lib/animationTiming";
 import { BookmarkButton, BookmarkIndicator } from "@/app/features/bookmarks";
@@ -175,6 +176,11 @@ interface SectionItemProps {
 
 /**
  * Individual section item component with IntersectionObserver-based reveal
+ *
+ * Visual hierarchy depth system:
+ * - Active: Elevated with shadow-lg, ring accent, left border for quick scanning
+ * - Completed: Recedes with reduced opacity
+ * - Pending: Flat standard style
  */
 const SectionItem: React.FC<SectionItemProps> = ({
     section,
@@ -188,6 +194,9 @@ const SectionItem: React.FC<SectionItemProps> = ({
 }) => {
     const { ref, isRevealed } = useRevealAnimation(enableRevealAnimation);
 
+    // Determine depth-based styling for visual hierarchy
+    const isCompleted = section.completed;
+
     return (
         <div
             ref={ref}
@@ -198,18 +207,33 @@ const SectionItem: React.FC<SectionItemProps> = ({
                 initial={enableRevealAnimation ? ANIMATION_VARIANTS.fadeInUp.initial : false}
                 animate={isRevealed ? ANIMATION_VARIANTS.fadeInUp.animate : ANIMATION_VARIANTS.fadeInUp.initial}
                 transition={TRANSITIONS.normal}
+                className={cn(
+                    "rounded-xl transition-all duration-200",
+                    // Active: Elevated with shadow and ring
+                    isActive && !isCompleted && "shadow-lg ring-1 ring-[var(--ember)]/20",
+                    // Completed: Recedes with reduced opacity
+                    isCompleted && "opacity-80",
+                    // Pending: Standard flat style (no additional classes needed)
+                )}
             >
                 <PrismaticCard
-                    glowColor={section.completed ? "emerald" : isActive ? "indigo" : "purple"}
+                    glowColor={isCompleted ? "emerald" : isActive ? "indigo" : "purple"}
                     static={true}
                 >
                     {/* Section Header */}
                     <button
                         onClick={() => expandable && setExpandedSection(isExpanded ? null : section.id)}
-                        className="w-full flex items-center gap-4 text-left"
+                        className="relative w-full flex items-center gap-4 text-left"
                         style={{ padding: "var(--slot-padding-md)" }}
                         data-testid={`section-list-toggle-btn-${section.id}`}
                     >
+                        {/* Active state: Left border accent for quick visual scanning */}
+                        {isActive && !isCompleted && (
+                            <div
+                                className="absolute left-0 top-2 bottom-2 w-[3px] bg-[var(--ember)] rounded-full"
+                                data-testid={`section-active-indicator-${section.id}`}
+                            />
+                        )}
                         {/* Status Icon */}
                         <div className={cn(
                             "w-10 h-10 rounded-xl flex items-center justify-center",
@@ -282,14 +306,14 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                         paddingBottom: "var(--slot-padding-md)"
                                     }}
                                 >
-                                    {/* Description - fades in at 0ms */}
-                                    <motion.p
+                                    {/* Description - fades in at 0ms, rendered as markdown */}
+                                    <motion.div
                                         variants={descriptionVariants}
-                                        className="text-[var(--forge-text-secondary)] mb-4"
+                                        className="mb-4"
                                         data-testid={`section-description-${section.id}`}
                                     >
-                                        {section.content.description}
-                                    </motion.p>
+                                        <MarkdownRenderer content={section.content.description} />
+                                    </motion.div>
 
                                     {/* Code Preview - slides up at 150ms */}
                                     {section.content.code && (

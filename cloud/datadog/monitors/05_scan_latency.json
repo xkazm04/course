@@ -1,0 +1,21 @@
+{
+  "name": "[Project Scanner] Scan Latency Critical",
+  "type": "metric alert",
+  "query": "avg(last_5m):avg:project.scan.job.duration{*} > 180000",
+  "message": "## Project Scan Latency Critical\n\n**Current Latency:** {{value}} ms\n**Threshold:** 180,000ms (3 minutes)\n\n### Impact\n- Repository analysis taking too long\n- User experience degradation\n- Potential timeouts\n\n### Runbook\n1. Check GitHub API latency\n2. Review repository complexity (large repos take longer)\n3. Check Gemini API latency\n4. Consider implementing chunked scanning for large repos\n5. Audit recent changes to prompts\n\n@slack-project-scanner",
+  "tags": [
+    "service:project-scanner",
+    "severity:high",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 180000,
+      "warning": 120000
+    },
+    "notify_no_data": false,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 2
+}

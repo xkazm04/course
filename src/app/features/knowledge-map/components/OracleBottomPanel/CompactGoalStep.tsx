@@ -37,9 +37,9 @@ export function CompactGoalStep({
     onGoalChange,
 }: CompactGoalStepProps) {
     return (
-        <div className="h-full flex flex-col gap-3" data-testid="compact-goal-step">
+        <div className="h-full flex flex-col gap-4" data-testid="compact-goal-step">
             {/* Header */}
-            <div>
+            <div className="flex flex-col gap-0.5 py-1">
                 <h3 className="text-sm font-semibold text-[var(--forge-text-primary)]">
                     What's your career goal?
                 </h3>
@@ -48,7 +48,7 @@ export function CompactGoalStep({
                 </p>
             </div>
 
-            {/* Goal options grid */}
+            {/* Goal options grid - subsection uses gap-2 */}
             <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-2 overflow-y-auto">
                 {careerGoalOptions.map(option => {
                     const isSelected = selectedGoal === option.id;

@@ -351,6 +351,12 @@ export interface Database {
           estimated_minutes: number
           xp_reward: number
           is_ai_generated: boolean
+          // Content generation fields
+          content_status: string | null
+          content_metadata: Json | null
+          generated_at: string | null
+          // Deprecated: use content_metadata instead
+          generated_content?: Json | null
           created_at: string
           updated_at: string
         }
@@ -364,6 +370,10 @@ export interface Database {
           estimated_minutes?: number
           xp_reward?: number
           is_ai_generated?: boolean
+          content_status?: string | null
+          content_metadata?: Json | null
+          generated_at?: string | null
+          generated_content?: Json | null
           created_at?: string
           updated_at?: string
         }
@@ -377,6 +387,10 @@ export interface Database {
           estimated_minutes?: number
           xp_reward?: number
           is_ai_generated?: boolean
+          content_status?: string | null
+          content_metadata?: Json | null
+          generated_at?: string | null
+          generated_content?: Json | null
           created_at?: string
           updated_at?: string
         }
@@ -387,10 +401,15 @@ export interface Database {
           chapter_id: string
           slug: string
           title: string
-          description: string | null
+          // content_markdown is the new name (renamed from description)
+          content_markdown: string | null
+          // description kept for backward compatibility during migration
+          description?: string | null
           content_type: ContentType
           content_url: string | null
-          content_data: Json | null
+          // content_json is the actual column name (not content_data)
+          content_json: Json | null
+          content_data?: Json | null  // Alias for backward compatibility
           sort_order: number
           estimated_minutes: number
           xp_reward: number
@@ -404,10 +423,12 @@ export interface Database {
           chapter_id: string
           slug: string
           title: string
-          description?: string | null
+          content_markdown?: string | null
+          description?: string | null  // Backward compatibility
           content_type?: ContentType
           content_url?: string | null
-          content_data?: Json | null
+          content_json?: Json | null
+          content_data?: Json | null  // Backward compatibility
           sort_order?: number
           estimated_minutes?: number
           xp_reward?: number
@@ -421,10 +442,12 @@ export interface Database {
           chapter_id?: string
           slug?: string
           title?: string
-          description?: string | null
+          content_markdown?: string | null
+          description?: string | null  // Backward compatibility
           content_type?: ContentType
           content_url?: string | null
-          content_data?: Json | null
+          content_json?: Json | null
+          content_data?: Json | null  // Backward compatibility
           sort_order?: number
           estimated_minutes?: number
           xp_reward?: number
@@ -1032,6 +1055,47 @@ export interface Database {
           created_at?: string
         }
       }
+      chapter_progress: {
+        Row: {
+          id: string
+          user_id: string
+          chapter_id: string
+          status: 'not_started' | 'in_progress' | 'completed'
+          sections_completed: number
+          total_sections: number
+          xp_earned: number
+          started_at: string | null
+          completed_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          chapter_id: string
+          status?: 'not_started' | 'in_progress' | 'completed'
+          sections_completed?: number
+          total_sections?: number
+          xp_earned?: number
+          started_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          chapter_id?: string
+          status?: 'not_started' | 'in_progress' | 'completed'
+          sections_completed?: number
+          total_sections?: number
+          xp_earned?: number
+          started_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       learning_path_enrollments: {
         Row: {
           id: string
@@ -1187,6 +1251,7 @@ export type CareerGoal = Tables<'career_goals'>
 export type UserProfile = Tables<'user_profiles'>
 export type Enrollment = Tables<'enrollments'>
 export type Achievement = Tables<'achievements'>
+export type ChapterProgress = Tables<'chapter_progress'>
 
 // View types
 export type CourseOverview = Views<'course_overview'>

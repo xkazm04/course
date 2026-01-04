@@ -8,7 +8,7 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
     Brain,
     Sparkles,
@@ -156,6 +156,16 @@ const ACTION_CONFIGS: Record<OrchestrationAction, ActionConfig> = {
 };
 
 // ============================================================================
+// Unified Animation Config
+// ============================================================================
+
+const UNIFIED_SPRING = {
+    type: "spring" as const,
+    stiffness: 300,
+    damping: 25,
+};
+
+// ============================================================================
 // Main Component
 // ============================================================================
 
@@ -178,10 +188,10 @@ export function OrchestrationCard({
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={UNIFIED_SPRING}
             className={cn(
                 "rounded-xl overflow-hidden",
                 config.bgColor,
@@ -193,12 +203,12 @@ export function OrchestrationCard({
         >
             {/* Main Content */}
             <div className="p-4">
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-4">
                     {/* Icon */}
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                        transition={{ delay: 0.1, ...UNIFIED_SPRING }}
                         className={cn(
                             "p-2 rounded-lg",
                             config.bgColor,
@@ -213,16 +223,16 @@ export function OrchestrationCard({
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                             <Brain size={14} className="text-[var(--forge-text-muted)]" />
-                            <span className="text-xs text-[var(--forge-text-muted)] font-medium">
+                            <span className="text-xs text-[var(--forge-text-muted)]">
                                 AI Learning Conductor
                             </span>
                         </div>
 
-                        <h4 className={cn("text-sm font-semibold mb-1", config.color)}>
+                        <h4 className={cn("text-lg font-semibold mb-1", config.color)}>
                             {config.title}
                         </h4>
 
-                        <p className="text-sm text-[var(--forge-text-muted)] leading-relaxed">
+                        <p className="text-sm text-[var(--forge-text-secondary)] leading-relaxed">
                             {decision.reason}
                         </p>
 
@@ -262,7 +272,7 @@ export function OrchestrationCard({
             <div className="flex border-t border-[var(--forge-border-subtle)]">
                 <button
                     onClick={handleDismiss}
-                    className="flex-1 px-4 py-2.5 text-sm text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)]/50 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2.5 text-sm font-medium text-[var(--forge-text-muted)] hover:text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-anvil)]/50 transition-colors flex items-center justify-center gap-2"
                     data-testid={`orchestration-card-dismiss-btn-${decision.id}`}
                 >
                     <X size={14} />
@@ -304,11 +314,12 @@ export function OrchestrationCardCompact({
 
     return (
         <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={UNIFIED_SPRING}
             className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg",
+                "flex items-center gap-4 px-3 py-2 rounded-lg",
                 config.bgColor,
                 "border",
                 config.borderColor,

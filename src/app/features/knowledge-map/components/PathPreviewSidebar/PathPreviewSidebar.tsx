@@ -5,6 +5,7 @@
  *
  * Right sidebar showing the generated learning path preview.
  * Displays modules, milestones, and confirmation actions.
+ * Features orchestrated staggered animations for a polished reveal sequence.
  */
 
 import React, { useMemo } from "react";
@@ -14,8 +15,29 @@ import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
 import { PathModuleCard } from "./PathModuleCard";
 import { PathMilestoneMarker } from "./PathMilestoneMarker";
+import { AnimatedCounter } from "./AnimatedCounter";
+import { PathEffectivenessScore } from "./PathEffectivenessScore";
 import type { PredictiveLearningPath } from "@/app/features/goal-path/lib/predictiveTypes";
 import type { HypotheticalMapNode } from "../../lib/types";
+
+// ============================================================================
+// ANIMATION CONSTANTS
+// ============================================================================
+
+/** Base delay before any animations start */
+const ANIMATION_BASE_DELAY = 0.1;
+
+/** Delay increment between stats items */
+const STATS_STAGGER_DELAY = 0.08;
+
+/** Total duration for stats section animation */
+const STATS_ANIMATION_DURATION = 0.4;
+
+/** Delay before module cards start animating (after stats complete) */
+const MODULE_START_DELAY = ANIMATION_BASE_DELAY + (STATS_STAGGER_DELAY * 3) + STATS_ANIMATION_DURATION;
+
+/** Delay increment between module cards */
+const MODULE_STAGGER_DELAY = 0.05;
 
 // ============================================================================
 // TYPES
@@ -58,7 +80,14 @@ export function PathPreviewSidebar({
         const newNodesCount = hypotheticalNodes.length;
         const existingNodesCount = recommendedNodeIds.size;
 
-        return { totalHours, moduleCount, newNodesCount, existingNodesCount };
+        // Calculate path completion potential as a percentage
+        // This represents how much of the learning journey this path covers
+        const totalNodes = newNodesCount + existingNodesCount;
+        const completionPotential = totalNodes > 0
+            ? Math.round((newNodesCount / Math.max(totalNodes, moduleCount)) * 100)
+            : 0;
+
+        return { totalHours, moduleCount, newNodesCount, existingNodesCount, completionPotential };
     }, [path.modules, hypotheticalNodes, recommendedNodeIds]);
 
     // Find milestone positions
@@ -100,73 +129,195 @@ export function PathPreviewSidebar({
                 <button
                     onClick={onClose}
                     className="p-1.5 rounded-lg transition-colors hover:bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)]"
+                    data-testid="path-preview-close-btn"
                 >
                     <X size={ICON_SIZES.sm} />
                 </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-2 p-4 pt-0 mt-4">
-                <div className="text-center p-2 rounded-lg bg-[var(--forge-bg-anvil)]">
-                    <div className="flex items-center justify-center gap-1 mb-0.5 text-[var(--forge-text-secondary)]">
-                        <BookOpen size={12} />
-                    </div>
-                    <p className="text-sm font-bold text-[var(--forge-text-primary)]">
-                        {stats.moduleCount}
-                    </p>
-                    <p className="text-xs text-[var(--forge-text-secondary)]">Modules</p>
-                </div>
-                <div className="text-center p-2 rounded-lg bg-[var(--forge-bg-anvil)]">
-                    <div className="flex items-center justify-center gap-1 mb-0.5 text-[var(--forge-text-secondary)]">
-                        <Clock size={12} />
-                    </div>
-                    <p className="text-sm font-bold text-[var(--forge-text-primary)]">
-                        {stats.totalHours}
-                    </p>
-                    <p className="text-xs text-[var(--forge-text-secondary)]">Hours</p>
-                </div>
-                <div className="text-center p-2 rounded-lg bg-[var(--forge-bg-anvil)]">
-                    <div className="flex items-center justify-center gap-1 mb-0.5 text-[var(--forge-text-secondary)]">
-                        <Sparkles size={12} />
-                    </div>
-                    <p className="text-sm font-bold text-[var(--forge-text-primary)]">
-                        {stats.newNodesCount}
-                    </p>
-                    <p className="text-xs text-[var(--forge-text-secondary)]">New</p>
-                </div>
+            {/* Path Effectiveness Score - Compound Outcome Metric */}
+            <div className="p-4 pt-0 mt-4 space-y-3" data-testid="path-stats-section">
+                {/* Main effectiveness score with drill-down */}
+                <PathEffectivenessScore
+                    path={path}
+                    animationDelay={ANIMATION_BASE_DELAY}
+                />
+
+                {/* Compact stats row - supporting metrics */}
+                <motion.div
+                    className={cn(
+                        "flex items-center justify-between gap-2 px-3 py-2 rounded-lg",
+                        "bg-[var(--forge-bg-anvil)]",
+                        "border border-[var(--forge-border-subtle)]"
+                    )}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: ANIMATION_BASE_DELAY + 0.2,
+                        duration: 0.3,
+                        ease: "easeOut"
+                    }}
+                    data-testid="compact-stats-row"
+                >
+                    {/* Modules */}
+                    <motion.div
+                        className="flex items-center gap-1.5"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: ANIMATION_BASE_DELAY + STATS_STAGGER_DELAY }}
+                        data-testid="stat-modules"
+                    >
+                        <BookOpen size={12} className="text-[var(--forge-text-muted)]" />
+                        <div className="flex items-baseline gap-1">
+                            <AnimatedCounter
+                                value={stats.moduleCount}
+                                duration={0.6}
+                                delay={ANIMATION_BASE_DELAY + STATS_STAGGER_DELAY + 0.1}
+                                className="text-xs font-bold text-[var(--forge-text-primary)]"
+                            />
+                            <span className="text-[10px] text-[var(--forge-text-muted)]">modules</span>
+                        </div>
+                    </motion.div>
+
+                    {/* Divider */}
+                    <div className="w-px h-3 bg-[var(--forge-border-subtle)]" />
+
+                    {/* Hours */}
+                    <motion.div
+                        className="flex items-center gap-1.5"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: ANIMATION_BASE_DELAY + (STATS_STAGGER_DELAY * 2) }}
+                        data-testid="stat-hours"
+                    >
+                        <Clock size={12} className="text-[var(--forge-text-muted)]" />
+                        <div className="flex items-baseline gap-1">
+                            <AnimatedCounter
+                                value={stats.totalHours}
+                                duration={0.6}
+                                delay={ANIMATION_BASE_DELAY + (STATS_STAGGER_DELAY * 2) + 0.1}
+                                className="text-xs font-bold text-[var(--forge-text-primary)]"
+                            />
+                            <span className="text-[10px] text-[var(--forge-text-muted)]">hrs</span>
+                        </div>
+                    </motion.div>
+
+                    {/* Divider */}
+                    <div className="w-px h-3 bg-[var(--forge-border-subtle)]" />
+
+                    {/* New Nodes */}
+                    <motion.div
+                        className="flex items-center gap-1.5"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: ANIMATION_BASE_DELAY + (STATS_STAGGER_DELAY * 3) }}
+                        data-testid="stat-new-nodes"
+                    >
+                        <Sparkles size={12} className="text-[var(--ember)]" />
+                        <div className="flex items-baseline gap-1">
+                            <AnimatedCounter
+                                value={stats.newNodesCount}
+                                duration={0.6}
+                                delay={ANIMATION_BASE_DELAY + (STATS_STAGGER_DELAY * 3) + 0.1}
+                                className="text-xs font-bold text-[var(--ember)]"
+                            />
+                            <span className="text-[10px] text-[var(--forge-text-muted)]">new</span>
+                        </div>
+                    </motion.div>
+                </motion.div>
             </div>
 
-            {/* Module list */}
-            <div className="flex-1 overflow-y-auto p-4 pt-0">
-                <div className="space-y-3">
-                    {path.modules.map((module, index) => {
-                        // Check if there's a milestone after this module
-                        const milestoneAfter = milestonesWithModules.find(
-                            m => m.moduleIndex === index
-                        );
+            {/* Module list with Timeline Spine */}
+            <div className="flex-1 overflow-y-auto p-4 pt-0" data-testid="path-module-list">
+                <div className="relative pl-8">
+                    {/* Timeline Spine - vertical line */}
+                    <motion.div
+                        className="absolute left-3 top-0 bottom-0 w-0.5"
+                        initial={{ scaleY: 0, opacity: 0 }}
+                        animate={{ scaleY: 1, opacity: 1 }}
+                        transition={{
+                            delay: MODULE_START_DELAY - 0.1,
+                            duration: 0.6,
+                            ease: "easeOut"
+                        }}
+                        style={{ transformOrigin: "top" }}
+                        data-testid="timeline-spine"
+                    >
+                        {/* Gradient background for the spine */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--forge-border-subtle)] via-[var(--forge-text-muted)]/30 to-[var(--forge-border-subtle)]" />
+                    </motion.div>
 
-                        // Check if this module creates a new node
-                        const isHypothetical = hypotheticalNodes.some(
-                            h => h.sourceModuleId === module.id
-                        );
+                    <div className="space-y-3 relative">
+                        {path.modules.map((module, index) => {
+                            // Check if there's a milestone after this module
+                            const milestoneAfter = milestonesWithModules.find(
+                                m => m.moduleIndex === index
+                            );
 
-                        return (
-                            <React.Fragment key={module.id}>
-                                <PathModuleCard
-                                    module={module}
-                                    index={index}
-                                    isHypothetical={isHypothetical}
-                                    onHover={(isHovering) =>
-                                        onModuleHover?.(isHovering ? module.id : null)
-                                    }
-                                />
+                            // Check if this module creates a new node
+                            const isHypothetical = hypotheticalNodes.some(
+                                h => h.sourceModuleId === module.id
+                            );
 
-                                {milestoneAfter && index < path.modules.length - 1 && (
-                                    <PathMilestoneMarker milestone={milestoneAfter} />
-                                )}
-                            </React.Fragment>
-                        );
-                    })}
+                            // Check if the next module is hypothetical (for connector line styling)
+                            const nextModule = path.modules[index + 1];
+                            const isNextHypothetical = nextModule
+                                ? hypotheticalNodes.some(h => h.sourceModuleId === nextModule.id)
+                                : false;
+
+                            // Calculate animation delay: stats animate first, then modules cascade
+                            const animationDelay = MODULE_START_DELAY + (index * MODULE_STAGGER_DELAY);
+
+                            const isLast = index === path.modules.length - 1;
+
+                            return (
+                                <React.Fragment key={module.id}>
+                                    {/* Timeline segment for this module */}
+                                    <div className="relative">
+                                        {/* Connector line segment - dashed for hypothetical, solid for existing */}
+                                        {!isLast && !milestoneAfter && (
+                                            <motion.div
+                                                className={cn(
+                                                    "absolute left-[-20px] top-[24px] w-0.5 h-[calc(100%+12px)]",
+                                                    isHypothetical || isNextHypothetical
+                                                        ? "border-l-2 border-dashed border-[var(--ember)]/40"
+                                                        : "bg-[var(--forge-text-muted)]/20"
+                                                )}
+                                                initial={{ scaleY: 0, opacity: 0 }}
+                                                animate={{ scaleY: 1, opacity: 1 }}
+                                                transition={{
+                                                    delay: animationDelay + 0.1,
+                                                    duration: 0.3,
+                                                    ease: "easeOut"
+                                                }}
+                                                style={{ transformOrigin: "top" }}
+                                                data-testid={`timeline-segment-${index}`}
+                                            />
+                                        )}
+
+                                        <PathModuleCard
+                                            module={module}
+                                            index={index}
+                                            isHypothetical={isHypothetical}
+                                            animationDelay={animationDelay}
+                                            onHover={(isHovering) =>
+                                                onModuleHover?.(isHovering ? module.id : null)
+                                            }
+                                            showTimelineNode
+                                        />
+                                    </div>
+
+                                    {milestoneAfter && index < path.modules.length - 1 && (
+                                        <PathMilestoneMarker
+                                            milestone={milestoneAfter}
+                                            animationDelay={animationDelay + 0.03}
+                                            showTimelineNode
+                                        />
+                                    )}
+                                </React.Fragment>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
 

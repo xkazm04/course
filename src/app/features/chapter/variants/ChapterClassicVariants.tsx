@@ -10,7 +10,6 @@
  */
 
 import { ElegantVariant } from './ElegantVariant'
-import { useChapterState } from '../lib/useChapterState'
 import { COURSE_INFO, CHAPTER_SECTIONS } from '../lib/chapterData'
 
 export interface ChapterClassicVariantsProps {
@@ -21,28 +20,26 @@ export interface ChapterClassicVariantsProps {
 }
 
 export function ChapterClassicVariants({ className }: ChapterClassicVariantsProps) {
-  const chapterState = useChapterState({
-    courseInfo: COURSE_INFO,
-    sections: CHAPTER_SECTIONS,
-    initialSection: 0,
-    enableVideoControls: true,
-  })
-
-  return <ElegantVariant state={chapterState} className={className} />
+  return (
+    <ElegantVariant
+      courseInfo={COURSE_INFO}
+      sections={CHAPTER_SECTIONS}
+      className={className}
+    />
+  )
 }
 
 /**
  * Standalone chapter component for direct use
  */
 export function ChapterElegant(props: { className?: string }) {
-  const chapterState = useChapterState({
-    courseInfo: COURSE_INFO,
-    sections: CHAPTER_SECTIONS,
-    initialSection: 0,
-    enableVideoControls: true,
-  })
-
-  return <ElegantVariant state={chapterState} className={props.className} />
+  return (
+    <ElegantVariant
+      courseInfo={COURSE_INFO}
+      sections={CHAPTER_SECTIONS}
+      className={props.className}
+    />
+  )
 }
 
 export default ChapterClassicVariants

@@ -68,7 +68,7 @@ const CodeSlotRendererComponent: React.FC<CodeSlotRendererProps> = ({ slot, clas
     return (
         <div className={cn("space-y-0 rounded-xl overflow-hidden", elevation.flat, className)} data-testid={`code-slot-${slot.id}`}>
             {/* Toggle Header */}
-            <div className="flex items-center justify-between px-4 py-2 bg-[var(--forge-bg-anvil)] rounded-t-xl border-b border-[var(--forge-border-subtle)]">
+            <div className="flex items-center justify-between px-4 py-2 bg-[var(--forge-bg-anvil)] rounded-t-xl border-b border-[var(--forge-border-subtle)]" data-testid={`code-toggle-header-${slot.id}`}>
                 <div className="flex items-center gap-2">
                     {showDiff ? (
                         <GitCompare size={ICON_SIZES.sm} className="text-[var(--ember)]" />
@@ -106,7 +106,7 @@ const CodeSlotRendererComponent: React.FC<CodeSlotRendererProps> = ({ slot, clas
 
             {/* Content Area */}
             {showDiff ? (
-                <div className="rounded-b-xl overflow-hidden">
+                <div className="rounded-b-xl overflow-hidden" data-testid={`code-diff-view-${slot.id}`}>
                     <DiffView
                         oldCode={data.previousCode!}
                         newCode={data.code}
@@ -116,11 +116,13 @@ const CodeSlotRendererComponent: React.FC<CodeSlotRendererProps> = ({ slot, clas
                     />
                 </div>
             ) : (
-                <CodeBlock
-                    {...codeBlockProps}
-                    showHeader={false}
-                    className="rounded-t-none"
-                />
+                <div data-testid={`code-normal-view-${slot.id}`}>
+                    <CodeBlock
+                        {...codeBlockProps}
+                        showHeader={false}
+                        className="rounded-t-none"
+                    />
+                </div>
             )}
         </div>
     );

@@ -133,14 +133,14 @@ export function useUniverseCamera(
     // ========================================================================
 
     const animate = useCallback(() => {
-        if (!animationStartRef.current) return;
+        const start = animationStartRef.current;
+        if (!start) return;
 
         const elapsed = Date.now() - animationStartTimeRef.current;
         const progress = Math.min(elapsed / config.animationDuration, 1);
         const eased = config.animationEasing(progress);
 
         setCamera((prev) => {
-            const start = animationStartRef.current!;
             const newX = start.x + (prev.targetX - start.x) * eased;
             const newY = start.y + (prev.targetY - start.y) * eased;
             const newScale = start.scale + (prev.targetScale - start.scale) * eased;
@@ -302,17 +302,18 @@ export function useUniverseCamera(
 
     const handlePanMove = useCallback(
         (x: number, y: number) => {
-            if (!panStartRef.current || !isPanning) return;
+            const panStart = panStartRef.current;
+            if (!panStart || !isPanning) return;
 
-            const deltaX = x - panStartRef.current.x;
-            const deltaY = y - panStartRef.current.y;
+            const deltaX = x - panStart.x;
+            const deltaY = y - panStart.y;
 
             setCamera((prev) => ({
                 ...prev,
-                x: panStartRef.current!.cameraX - deltaX / prev.scale,
-                y: panStartRef.current!.cameraY - deltaY / prev.scale,
-                targetX: panStartRef.current!.cameraX - deltaX / prev.scale,
-                targetY: panStartRef.current!.cameraY - deltaY / prev.scale,
+                x: panStart.cameraX - deltaX / prev.scale,
+                y: panStart.cameraY - deltaY / prev.scale,
+                targetX: panStart.cameraX - deltaX / prev.scale,
+                targetY: panStart.cameraY - deltaY / prev.scale,
             }));
         },
         [isPanning]

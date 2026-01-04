@@ -16,6 +16,17 @@ export interface NodeStatusMap {
 const POLL_INTERVAL = 5000; // 5 seconds
 const CACHE_TTL = 10000; // 10 seconds
 
+// UUID regex pattern
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Check if a string is a valid UUID
+ * Only UUIDs should be queried from the database
+ */
+function isValidUUID(id: string): boolean {
+    return UUID_REGEX.test(id);
+}
+
 interface CachedStatus {
     status: NodeStatus;
     timestamp: number;
@@ -31,11 +42,16 @@ export function useNodeStatus(visibleNodeIds: string[]) {
     const cacheRef = useRef<Map<string, CachedStatus>>(new Map());
     const lastFetchedIdsRef = useRef<string>("");
 
+    // Filter to only valid UUIDs (mock nodes have string IDs, not UUIDs)
+    const validNodeIds = useMemo(() => {
+        return visibleNodeIds.filter(isValidUUID);
+    }, [visibleNodeIds]);
+
     // Filter to only nodes that might need status checks
     // (nodes with generating/pending status or nodes we haven't cached)
     const nodeIdsToFetch = useMemo(() => {
         const now = Date.now();
-        return visibleNodeIds.filter((id) => {
+        return validNodeIds.filter((id) => {
             const cached = cacheRef.current.get(id);
 
             // Always fetch if not cached
@@ -60,7 +76,7 @@ export function useNodeStatus(visibleNodeIds: string[]) {
             // Fetch if cache is stale
             return now - cached.timestamp > CACHE_TTL;
         });
-    }, [visibleNodeIds]);
+    }, [validNodeIds]);
 
     // Fetch node statuses
     const fetchStatuses = useCallback(async (nodeIds: string[]) => {
@@ -79,20 +95,24 @@ export function useNodeStatus(visibleNodeIds: string[]) {
 
             const now = Date.now();
 
-            // Update cache and state
-            setNodeStatuses((prev) => {
-                const updated = { ...prev };
-                for (const [nodeId, status] of Object.entries(response.nodes)) {
-                    updated[nodeId] = status;
-                    cacheRef.current.set(nodeId, { status, timestamp: now });
-                }
-                return updated;
-            });
+            // Update cache and state only if we got results
+            if (response.nodes && Object.keys(response.nodes).length > 0) {
+                setNodeStatuses((prev) => {
+                    const updated = { ...prev };
+                    for (const [nodeId, status] of Object.entries(response.nodes)) {
+                        updated[nodeId] = status;
+                        cacheRef.current.set(nodeId, { status, timestamp: now });
+                    }
+                    return updated;
+                });
+            }
 
             setError(null);
         } catch (err) {
-            console.error("Error fetching node statuses:", err);
-            setError(err instanceof Error ? err.message : "Failed to fetch statuses");
+            // Log but don't block - status fetching should be non-critical
+            console.warn("Error fetching node statuses (non-blocking):", err);
+            // Clear error after a moment to allow retries
+            setError(null);
         } finally {
             setIsLoading(false);
             lastFetchedIdsRef.current = "";
@@ -109,7 +129,7 @@ export function useNodeStatus(visibleNodeIds: string[]) {
         }
 
         // Setup polling only if we have nodes that are generating
-        const hasGeneratingNodes = visibleNodeIds.some((id) => {
+        const hasGeneratingNodes = validNodeIds.some((id) => {
             const cached = cacheRef.current.get(id);
             return (
                 cached?.status.status === "generating" ||
@@ -119,8 +139,8 @@ export function useNodeStatus(visibleNodeIds: string[]) {
 
         if (hasGeneratingNodes) {
             pollIntervalRef.current = setInterval(() => {
-                // Re-filter nodes that need fetching
-                const toFetch = visibleNodeIds.filter((id) => {
+                // Re-filter nodes that need fetching (only valid UUIDs)
+                const toFetch = validNodeIds.filter((id) => {
                     const cached = cacheRef.current.get(id);
                     return (
                         !cached ||
@@ -141,7 +161,7 @@ export function useNodeStatus(visibleNodeIds: string[]) {
                 clearInterval(pollIntervalRef.current);
             }
         };
-    }, [visibleNodeIds, nodeIdsToFetch, fetchStatuses]);
+    }, [validNodeIds, nodeIdsToFetch, fetchStatuses]);
 
     // Get status for a specific node
     const getNodeStatus = useCallback(
@@ -158,11 +178,13 @@ export function useNodeStatus(visibleNodeIds: string[]) {
         );
     }, [nodeStatuses]);
 
-    // Manually refresh all statuses
+    // Manually refresh all statuses (only for valid UUIDs)
     const refresh = useCallback(() => {
         cacheRef.current.clear();
-        fetchStatuses(visibleNodeIds);
-    }, [visibleNodeIds, fetchStatuses]);
+        if (validNodeIds.length > 0) {
+            fetchStatuses(validNodeIds);
+        }
+    }, [validNodeIds, fetchStatuses]);
 
     // Get nodes by status
     const getNodesByStatus = useCallback(

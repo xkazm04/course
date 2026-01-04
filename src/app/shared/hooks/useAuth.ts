@@ -29,86 +29,121 @@ export function useAuth() {
         error: null,
     });
 
-    const supabase = createClient();
+    // Fetch user profile from database with timeout
+    const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
+        console.log("[useAuth] Fetching profile for:", userId);
+        const supabase = createClient();
 
-    // Fetch user profile from database
-    const fetchProfile = useCallback(async (userId: string) => {
-        const { data, error } = await supabase
-            .from("user_profiles")
-            .select("*")
-            .eq("id", userId)
-            .single();
+        try {
+            // Add timeout to prevent hanging
+            const timeoutPromise = new Promise<null>((_, reject) => {
+                setTimeout(() => reject(new Error("Profile fetch timeout")), 5000);
+            });
 
-        if (error) {
-            console.error("Error fetching profile:", error);
+            const fetchPromise = supabase
+                .from("user_profiles")
+                .select("*")
+                .eq("id", userId)
+                .single();
+
+            const { data, error } = await Promise.race([
+                fetchPromise,
+                timeoutPromise.then(() => ({ data: null, error: { message: "Timeout" } }))
+            ]) as any;
+
+            if (error) {
+                console.error("[useAuth] Error fetching profile:", error.message || error);
+                return null;
+            }
+
+            console.log("[useAuth] Profile fetched successfully:", !!data);
+            return data;
+        } catch (err) {
+            console.error("[useAuth] Profile fetch exception:", err);
             return null;
         }
+    }, []);
 
-        return data;
-    }, [supabase]);
-
-    // Initialize auth state
+    // Initialize auth state using onAuthStateChange which works reliably
     useEffect(() => {
-        const initAuth = async () => {
-            try {
-                const { data: { session }, error } = await supabase.auth.getSession();
+        const supabase = createClient();
+        let isMounted = true;
 
-                if (error) {
-                    setState(prev => ({ ...prev, error, isLoading: false }));
+        console.log("[useAuth] Setting up auth listener...");
+
+        // onAuthStateChange fires immediately with current session state
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            async (event, session) => {
+                console.log("[useAuth] Auth state changed:", event, { userId: session?.user?.id });
+
+                if (!isMounted) {
+                    console.log("[useAuth] Component unmounted, skipping state update");
                     return;
                 }
 
                 if (session?.user) {
-                    const profile = await fetchProfile(session.user.id);
-                    setState({
-                        user: session.user,
-                        session,
-                        profile,
-                        isLoading: false,
-                        error: null,
-                    });
-                } else {
-                    setState(prev => ({ ...prev, isLoading: false }));
-                }
-            } catch (error) {
-                console.error("Auth init error:", error);
-                setState(prev => ({ ...prev, isLoading: false }));
-            }
-        };
+                    console.log("[useAuth] User authenticated:", session.user.email);
 
-        initAuth();
+                    // Set user immediately, then fetch profile
+                    if (isMounted) {
+                        setState(prev => ({
+                            ...prev,
+                            user: session.user,
+                            session,
+                            isLoading: false,
+                            error: null,
+                        }));
+                    }
 
-        // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            async (event, session) => {
-                if (session?.user) {
+                    // Fetch profile in background
                     const profile = await fetchProfile(session.user.id);
-                    setState({
-                        user: session.user,
-                        session,
-                        profile,
-                        isLoading: false,
-                        error: null,
-                    });
+                    console.log("[useAuth] Profile fetched:", !!profile);
+
+                    if (isMounted && profile) {
+                        setState(prev => ({
+                            ...prev,
+                            profile,
+                        }));
+                    }
                 } else {
-                    setState({
-                        user: null,
-                        session: null,
-                        profile: null,
-                        isLoading: false,
-                        error: null,
-                    });
+                    console.log("[useAuth] No user session");
+                    if (isMounted) {
+                        setState({
+                            user: null,
+                            session: null,
+                            profile: null,
+                            isLoading: false,
+                            error: null,
+                        });
+                    }
                 }
             }
         );
 
+        // Set a timeout to stop loading if no auth event fires
+        const timeout = setTimeout(() => {
+            if (isMounted) {
+                console.log("[useAuth] Auth timeout, setting isLoading to false");
+                setState(prev => {
+                    if (prev.isLoading) {
+                        return { ...prev, isLoading: false };
+                    }
+                    return prev;
+                });
+            }
+        }, 3000);
+
         return () => {
+            console.log("[useAuth] Cleaning up auth listener");
+            isMounted = false;
+            clearTimeout(timeout);
             subscription.unsubscribe();
         };
-    }, [supabase, fetchProfile]);
+    }, [fetchProfile]);
 
     // Sign in with Google
     const signInWithGoogle = useCallback(async (redirectTo?: string) => {
+        const supabase = createClient();
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
@@ -119,23 +154,25 @@ export function useAuth() {
         if (error) {
             setState(prev => ({ ...prev, error }));
         }
-    }, [supabase]);
+    }, []);
 
     // Sign out
     const signOut = useCallback(async () => {
+        const supabase = createClient();
         const { error } = await supabase.auth.signOut();
 
         if (error) {
             setState(prev => ({ ...prev, error }));
         }
-    }, [supabase]);
+    }, []);
 
     // Update profile
     const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
         if (!state.user) return { error: new Error("Not authenticated") };
 
-        const { data, error } = await supabase
-            .from("user_profiles")
+        const supabase = createClient();
+        const { data, error } = await (supabase
+            .from("user_profiles") as any)
             .update(updates)
             .eq("id", state.user.id)
             .select()
@@ -147,7 +184,7 @@ export function useAuth() {
 
         setState(prev => ({ ...prev, profile: data }));
         return { data };
-    }, [supabase, state.user]);
+    }, [state.user]);
 
     // Refresh profile data
     const refreshProfile = useCallback(async () => {

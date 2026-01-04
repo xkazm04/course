@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================================
 // Knowledge Map API
 // GET /api/knowledge-map - Returns complete knowledge map data

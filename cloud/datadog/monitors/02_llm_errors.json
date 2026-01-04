@@ -1,0 +1,22 @@
+{
+  "name": "[LLM] Gemini API Error Rate Elevated",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:llm.gemini.errors{*}.as_count() > 10",
+  "message": "## LLM API Error Rate Above Threshold\n\n**Error Count:** {{value}}\n**Threshold:** 10 errors in 5 minutes\n\n### Common Error Types\n- `rate_limit`: API quota exceeded\n- `invalid_response`: Malformed LLM output\n- `parse_error`: JSON parsing failure\n- `timeout`: Request timeout\n- `safety_block`: Content filtered by safety\n\n### Runbook\n1. Check error breakdown in APM\n2. If rate_limit: Review quota in GCP Console\n3. If parse_error: Review prompt engineering\n4. If timeout: Check Gemini API latency\n5. Contact Vertex AI support if needed\n\n@slack-llm-alerts",
+  "tags": [
+    "service:llm-observability",
+    "severity:critical",
+    "team:ai-platform",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 10,
+      "warning": 5
+    },
+    "notify_no_data": false,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 1
+}

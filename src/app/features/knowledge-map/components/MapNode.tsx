@@ -14,22 +14,31 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/app/shared/lib/utils";
-import { DURATION_NORMAL, DURATION_SLOW } from "@/app/shared/lib/motionPrimitives";
+import { DURATION_SLOW } from "@/app/shared/lib/motionPrimitives";
 import { HEX_COLORS, type DomainColorKey } from "@/app/shared/lib/learningDomains";
 import type { LayoutNode } from "../lib/useMapLayout";
 import {
     isDomainNode,
     isCourseNode,
     isChapterNode,
-    isSectionNode,
     getLevelDepth,
 } from "../lib/types";
+
+interface SpringConfig {
+    type: "spring";
+    stiffness: number;
+    damping: number;
+}
 
 interface MapNodeProps {
     node: LayoutNode;
     isSelected: boolean;
     onSelect: () => void;
     onDrillDown: () => void;
+    /** Animation delay for staggered reveal (in seconds) */
+    animationDelay?: number;
+    /** Spring animation configuration */
+    springConfig?: SpringConfig;
 }
 
 // Status styling - simplified for title-focused design
@@ -93,11 +102,20 @@ function getChildCount(node: LayoutNode): number | null {
     return null;
 }
 
+// Default spring config fallback
+const DEFAULT_SPRING_CONFIG: SpringConfig = {
+    type: "spring",
+    stiffness: 260,
+    damping: 20,
+};
+
 export const MapNode: React.FC<MapNodeProps> = memo(function MapNode({
     node,
     isSelected,
     onSelect,
     onDrillDown,
+    animationDelay = 0,
+    springConfig = DEFAULT_SPRING_CONFIG,
 }) {
     const styles = STATUS_STYLES[node.status];
     const isInteractive = node.status !== "locked";
@@ -155,9 +173,18 @@ export const MapNode: React.FC<MapNodeProps> = memo(function MapNode({
             }}
             whileHover={isInteractive ? { scale: 1.03, zIndex: 50 } : {}}
             whileTap={isInteractive ? { scale: 0.98 } : {}}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: node.status === "locked" ? 0.6 : 1, scale: 1 }}
-            transition={{ duration: DURATION_NORMAL }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{
+                opacity: node.status === "locked" ? 0.6 : 1,
+                scale: 1,
+                y: 0,
+            }}
+            exit={{ opacity: 0, scale: 0.9, y: -10 }}
+            transition={{
+                ...springConfig,
+                delay: animationDelay,
+                opacity: { duration: 0.2, delay: animationDelay },
+            }}
             tabIndex={isInteractive ? 0 : -1}
             role="button"
             aria-label={`${node.name}, ${node.status}${childCount ? `, ${childCount} items` : ""}`}

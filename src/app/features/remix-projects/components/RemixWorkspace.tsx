@@ -16,6 +16,7 @@ import { QualityReport } from "./QualityReport";
 import { InlineDevContext } from "./PreviousDevContext";
 import { getAssignmentsForProject } from "../lib/seedProjectTemplates";
 import { generateDiff } from "../lib/diffAnalyzer";
+import { useObjectiveVerification } from "../lib/useObjectiveVerification";
 
 type View = "browse" | "detail" | "workspace" | "results";
 type Tab = "code" | "diff" | "assignment";
@@ -38,6 +39,13 @@ export const RemixWorkspace: React.FC = () => {
         canSubmit,
         isSubmitting,
     } = useAssignment();
+
+    // Real-time objective verification
+    const { verificationStatuses, isAnalyzing: isAnalyzingVerification } = useObjectiveVerification({
+        assignment,
+        files: fork?.files ?? [],
+        debounceMs: 300,
+    });
 
     const handleSelectProject = (id: string) => {
         selectProject(id);
@@ -147,6 +155,8 @@ export const RemixWorkspace: React.FC = () => {
                                 onSubmit={handleSubmit}
                                 canSubmit={canSubmit}
                                 isSubmitting={isSubmitting}
+                                verificationStatuses={verificationStatuses}
+                                isAnalyzingVerification={isAnalyzingVerification}
                             />
                         </motion.div>
                     )}
@@ -182,6 +192,8 @@ interface WorkspaceLayoutProps {
     onSubmit: () => void;
     canSubmit: boolean;
     isSubmitting: boolean;
+    verificationStatuses: ReturnType<typeof useObjectiveVerification>["verificationStatuses"];
+    isAnalyzingVerification: boolean;
 }
 
 const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
@@ -198,6 +210,8 @@ const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
     onSubmit,
     canSubmit,
     isSubmitting,
+    verificationStatuses,
+    isAnalyzingVerification,
 }) => {
     if (!assignment || !fork || !project) return null;
 
@@ -293,6 +307,8 @@ const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
                                 onSubmit={onSubmit}
                                 canSubmit={canSubmit}
                                 isSubmitting={isSubmitting}
+                                verificationStatuses={verificationStatuses}
+                                isAnalyzing={isAnalyzingVerification}
                             />
                         </motion.div>
                     )}

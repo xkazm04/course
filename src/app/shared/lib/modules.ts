@@ -52,22 +52,6 @@ export const modules: ModuleDefinition[] = [
         ],
     },
     {
-        id: "chapter",
-        title: "Course Chapter",
-        subtitle: "Interactive Learning",
-        description: "Interactive syllabus with dynamic snippets and examples",
-        icon: BookOpen,
-        color: "cyan",
-        gradient: "from-cyan-500 to-cyan-600",
-        features: ["Video Lessons", "Code IDE", "Expandable", "Progress"],
-        atmosphereVariant: "cool",
-        variants: [
-            { id: "classic", name: "Classic" },
-            { id: "expandable", name: "Expandable" },
-            { id: "ide", name: "IDE" },
-        ],
-    },
-    {
         id: "my-notes",
         title: "My Notes",
         subtitle: "Personal Library",
@@ -134,5 +118,4 @@ export interface NavigationModule {
 export const navigationModules: NavigationModule[] = [
     { id: "overview", title: "Explore Paths", icon: Compass, href: "/overview" },
     { id: "career-mapping", title: "Career Map", icon: Briefcase, href: "/career-mapping" },
-    { id: "chapter", title: "Learn", icon: BookOpen, href: "/chapter" },
 ];

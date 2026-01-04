@@ -5,6 +5,31 @@
 // Types
 export * from "./types";
 
+// Unified Curriculum Entity Types
+export type {
+    MaterializationStatus,
+    CurriculumEntityBase,
+    CurriculumEntityWithMap,
+    CurriculumEntityWithOracle,
+    CurriculumEntity,
+} from "./curriculumEntity";
+
+export {
+    isProposed,
+    isMaterialized,
+    isForging,
+    hasOracleProperties,
+    hasMapProperties,
+    isFullCurriculumEntity,
+    createProposedEntity,
+    createMaterializedEntity,
+    createFullEntity,
+    addMapProperties,
+    addOracleProperties,
+    startForging,
+    materialize,
+} from "./curriculumEntity";
+
 // Learning Node Base Types - Unified curriculum DAG foundation
 export {
     // Status and content types
@@ -55,6 +80,17 @@ export {
     type UseMapViewportReturn,
 } from "./useMapViewport";
 
+// Unified Scene Graph - combines navigation and viewport
+export {
+    useSceneGraph,
+    type SceneGraphState,
+    type SceneTransitionType,
+    type SceneTransitionConfig,
+    type UseSceneGraphOptions,
+    type UseSceneGraphReturn,
+    TRANSITION_CONFIGS,
+} from "./useSceneGraph";
+
 export {
     useMapLayout,
     getNodeCenter,
@@ -93,4 +129,10 @@ export {
     getSkillDemandIndicator,
     hasPrerequisites,
     formatPrerequisites,
+    // Unified CurriculumEntity mapping functions
+    moduleToCurriculumEntity,
+    modulesToCurriculumEntities,
+    curriculumEntityToHypotheticalNode,
+    hypotheticalNodeToCurriculumEntity,
+    mapNodeToCurriculumEntity,
 } from "./oracleNodeMapping";

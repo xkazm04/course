@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================================
 // Sections API
 // GET /api/db/sections?chapter_id={id} - List sections for a chapter

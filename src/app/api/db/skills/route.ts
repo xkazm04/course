@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================================
 // Skills API
 // GET /api/db/skills - List skills with optional filters

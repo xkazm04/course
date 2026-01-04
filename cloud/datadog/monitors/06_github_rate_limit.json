@@ -1,0 +1,22 @@
+{
+  "name": "[Project Scanner] GitHub API Rate Limit Warning",
+  "type": "metric alert",
+  "query": "avg(last_5m):avg:project.github.rate_limit.remaining{*} < 100",
+  "message": "## GitHub API Rate Limit Running Low\n\n**Remaining Calls:** {{value}}\n**Threshold:** Below 100 remaining\n\n### Impact\n- Repository scanning will fail if exhausted\n- Feature extraction blocked\n- New homework assignments cannot be created\n\n### Runbook\n1. Check reset time in project.github.rate_limit.reset_seconds\n2. Pause non-critical scanning jobs\n3. Consider using GitHub App authentication for higher limits\n4. Implement exponential backoff\n5. Cache repository data to reduce API calls\n\n@slack-project-scanner",
+  "tags": [
+    "service:project-scanner",
+    "severity:warning",
+    "hackathon:datadog"
+  ],
+  "options": {
+    "thresholds": {
+      "critical": 50,
+      "warning": 100
+    },
+    "notify_no_data": true,
+    "no_data_timeframe": 15,
+    "include_tags": true,
+    "notify_audit": false
+  },
+  "priority": 3
+}

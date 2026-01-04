@@ -19,6 +19,7 @@ interface HexNodeProps {
     generationStatus?: NodeGenerationStatus;
     generationProgress?: number;
     onRetryGeneration?: (nodeId: string) => void;
+    onContextMenu?: (e: React.MouseEvent, node: HexLayoutNode) => void;
 }
 
 export function HexNode({
@@ -32,6 +33,7 @@ export function HexNode({
     generationStatus,
     generationProgress,
     onRetryGeneration,
+    onContextMenu,
 }: HexNodeProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -152,11 +154,18 @@ export function HexNode({
                 ? "pointer"
                 : "default";
 
+    const handleContextMenu = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onContextMenu?.(e, node);
+    };
+
     return (
         <g
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
+            onContextMenu={handleContextMenu}
             style={{ cursor: cursorStyle, opacity: nodeOpacity }}
         >
             {/* Glow effect on hover */}
