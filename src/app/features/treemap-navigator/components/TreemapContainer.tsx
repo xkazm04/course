@@ -8,6 +8,7 @@ import { DEFAULT_LAYOUT_CONFIG } from "../lib/types";
 import type { TreemapNode, LayoutConfig } from "../lib/types";
 import { Territory } from "./Territory";
 import { LoadingOverlay } from "./LoadingOverlay";
+import { NavigationHeader } from "./NavigationHeader";
 
 export interface TreemapContainerProps {
   className?: string;
@@ -50,6 +51,7 @@ export function TreemapContainer({
   const error = useNavigationStore((s) => s.error);
   const drillDown = useNavigationStore((s) => s.drillDown);
   const goBack = useNavigationStore((s) => s.goBack);
+  const jumpTo = useNavigationStore((s) => s.jumpTo);
   const reset = useNavigationStore((s) => s.reset);
   const setLoading = useNavigationStore((s) => s.setLoading);
   const setError = useNavigationStore((s) => s.setError);
@@ -173,6 +175,38 @@ export function TreemapContainer({
     }
   }, [currentPath, goBack, reset, setLoading, setError, setCurrentNodes]);
 
+  // Handle jump to specific breadcrumb (for breadcrumb navigation)
+  const handleJumpTo = useCallback(
+    async (index: number) => {
+      if (index === -1) {
+        // Jump to root
+        setLoading(true);
+        try {
+          const nodes = await fetchRootNodes();
+          reset(nodes);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Failed to navigate");
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+
+      // Jump to specific breadcrumb
+      const targetBreadcrumb = currentPath[index];
+      setLoading(true);
+      try {
+        const children = await fetchChildren(targetBreadcrumb.id);
+        jumpTo(index, children);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to navigate");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [currentPath, jumpTo, reset, setLoading, setError]
+  );
+
   // Keyboard navigation
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -271,18 +305,16 @@ export function TreemapContainer({
         </div>
       )}
 
-      {/* Current path indicator (temporary, breadcrumbs come in Phase 2) */}
-      {currentPath.length > 0 && (
-        <div className="absolute top-4 left-4 flex items-center gap-2 text-white/70 text-sm z-20">
-          <button
-            onClick={handleGoBack}
-            className="px-2 py-1 bg-white/10 hover:bg-white/20 rounded text-xs"
-          >
-            Back
-          </button>
-          <span>{currentPath.map((item) => item.label).join(" > ")}</span>
-        </div>
-      )}
+      {/* Navigation header */}
+      <div className="absolute top-4 left-4 right-4 z-20">
+        <NavigationHeader
+          currentPath={currentPath}
+          currentDepth={currentPath.length}
+          onGoBack={handleGoBack}
+          onNavigate={handleJumpTo}
+          isTransitioning={isLoading}
+        />
+      </div>
     </div>
   );
 }
