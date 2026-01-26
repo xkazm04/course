@@ -9,3 +9,6 @@ export type { TerritoryProps } from "./Territory";
 
 export { LoadingOverlay } from "./LoadingOverlay";
 export type { LoadingOverlayProps } from "./LoadingOverlay";
+
+export { TreemapContainer } from "./TreemapContainer";
+export type { TreemapContainerProps } from "./TreemapContainer";
