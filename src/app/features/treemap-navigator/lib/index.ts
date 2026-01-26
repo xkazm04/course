@@ -15,3 +15,16 @@ export { computeLayout, canShowLabel, calculateFontSize } from "./layoutEngine";
 
 // Data adapter for API integration
 export { fetchRootNodes, fetchChildren } from "./dataAdapter";
+
+// Animation configuration
+export {
+  SPRING_CONFIGS,
+  drillDownVariants,
+  drillUpVariants,
+  getTransitionVariants,
+  getSpringConfig,
+} from "./animationConfig";
+export type { TransitionDirection } from "./animationConfig";
+
+// Focus management
+export { useFocusOnNavigate } from "./useFocusOnNavigate";
