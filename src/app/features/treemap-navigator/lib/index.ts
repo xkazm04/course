@@ -12,3 +12,6 @@ export { useNavigationStore } from "./navigationStore";
 
 // Layout engine
 export { computeLayout, canShowLabel, calculateFontSize } from "./layoutEngine";
+
+// Data adapter for API integration
+export { fetchRootNodes, fetchChildren } from "./dataAdapter";

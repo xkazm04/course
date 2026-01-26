@@ -81,6 +81,8 @@ export const DEFAULT_LAYOUT_CONFIG: LayoutConfig = {
 /**
  * ApiNode - shape returned by /api/map-nodes
  * Used for transforming API responses to TreemapNode
+ *
+ * Matches TransformedNode from route.ts but we only use the fields we need.
  */
 export interface ApiNode {
   id: string;
@@ -90,4 +92,19 @@ export interface ApiNode {
   depth: number;
   totalChildren: number;
   color: string;
+  // Additional fields from API (not all used in transform)
+  slug?: string;
+  description?: string;
+  status?: string;
+  progress?: number;
+  childIds?: string[];
+  domainId?: string;
+  sortOrder?: number;
+  estimatedHours?: number | null;
+  difficulty?: string | null;
+  courseId?: string | null;
+  isGroupNode?: boolean;
+  isAiGenerated?: boolean;
+  icon?: string | null;
+  level?: string;
 }
