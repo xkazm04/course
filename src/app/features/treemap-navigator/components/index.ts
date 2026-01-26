@@ -7,6 +7,9 @@
 export { Territory } from "./Territory";
 export type { TerritoryProps } from "./Territory";
 
+export { ChildCountBadge } from "./ChildCountBadge";
+export type { ChildCountBadgeProps } from "./ChildCountBadge";
+
 export { LoadingOverlay } from "./LoadingOverlay";
 export type { LoadingOverlayProps } from "./LoadingOverlay";
 
