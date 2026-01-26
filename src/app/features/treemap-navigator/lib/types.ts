@@ -46,6 +46,11 @@ export interface BreadcrumbItem {
 }
 
 /**
+ * TransitionDirection - animation direction for navigation
+ */
+export type TransitionDirection = "drillDown" | "drillUp" | null;
+
+/**
  * NavigationState - what the store manages
  */
 export interface NavigationState {
@@ -53,6 +58,7 @@ export interface NavigationState {
   currentNodes: TreemapNode[]; // Nodes displayed at current level
   isLoading: boolean;
   error: string | null;
+  transitionDirection: TransitionDirection; // For animation variants
 }
 
 // ============================================================================

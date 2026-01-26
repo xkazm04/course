@@ -9,7 +9,7 @@
 
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { TreemapNode, BreadcrumbItem, NavigationState } from "./types";
+import type { TreemapNode, BreadcrumbItem, NavigationState, TransitionDirection } from "./types";
 
 // ============================================================================
 // STORE ACTIONS
@@ -55,6 +55,11 @@ interface NavigationActions {
    * Update current nodes (after layout computation or fetch)
    */
   setCurrentNodes: (nodes: TreemapNode[]) => void;
+
+  /**
+   * Clear transition direction (after animation completes)
+   */
+  clearTransition: () => void;
 }
 
 // ============================================================================
@@ -72,6 +77,7 @@ const initialState: NavigationState = {
   currentNodes: [],
   isLoading: false,
   error: null,
+  transitionDirection: null,
 };
 
 // ============================================================================
@@ -91,6 +97,7 @@ export const useNavigationStore = create<NavigationStore>()(
         });
         state.currentNodes = children;
         state.error = null;
+        state.transitionDirection = "drillDown";
       });
     },
 
@@ -98,6 +105,7 @@ export const useNavigationStore = create<NavigationStore>()(
       set((state) => {
         if (state.currentPath.length > 0) {
           state.currentPath.pop();
+          state.transitionDirection = "drillUp";
           // Note: Caller must provide new nodes via setCurrentNodes after fetching
         }
       });
@@ -105,19 +113,24 @@ export const useNavigationStore = create<NavigationStore>()(
 
     jumpTo: (breadcrumbIndex, nodes) => {
       set((state) => {
+        // Determine direction based on whether we're going up or down
+        const isGoingUp = breadcrumbIndex < state.currentPath.length - 1;
         // Keep path up to and including the target index
         state.currentPath = state.currentPath.slice(0, breadcrumbIndex + 1);
         state.currentNodes = nodes;
         state.error = null;
+        state.transitionDirection = isGoingUp ? "drillUp" : null;
       });
     },
 
     reset: (rootNodes) => {
       set((state) => {
+        const wasAtDepth = state.currentPath.length > 0;
         state.currentPath = [];
         state.currentNodes = rootNodes;
         state.isLoading = false;
         state.error = null;
+        state.transitionDirection = wasAtDepth ? "drillUp" : null;
       });
     },
 
@@ -137,6 +150,12 @@ export const useNavigationStore = create<NavigationStore>()(
     setCurrentNodes: (nodes) => {
       set((state) => {
         state.currentNodes = nodes;
+      });
+    },
+
+    clearTransition: () => {
+      set((state) => {
+        state.transitionDirection = null;
       });
     },
   }))
