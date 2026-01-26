@@ -13,6 +13,7 @@ import { Territory } from "./Territory";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { NavigationHeader } from "./NavigationHeader";
 import { EmptyState } from "./EmptyState";
+import { DetailPanel } from "./DetailPanel";
 
 export interface TreemapContainerProps {
   className?: string;
@@ -63,6 +64,9 @@ export function TreemapContainer({
   const setError = useNavigationStore((s) => s.setError);
   const setCurrentNodes = useNavigationStore((s) => s.setCurrentNodes);
   const clearTransition = useNavigationStore((s) => s.clearTransition);
+  const selectedNode = useNavigationStore((s) => s.selectedNode);
+  const selectNode = useNavigationStore((s) => s.selectNode);
+  const closePanel = useNavigationStore((s) => s.closePanel);
 
   // Focus management: focus first territory after navigation completes
   const containerRef = useFocusOnNavigate(currentPath.length, isLoading);
@@ -133,10 +137,9 @@ export function TreemapContainer({
   // Handle drill down into a node
   const handleDrillDown = useCallback(
     async (node: TreemapNode) => {
-      // Don't drill into leaf nodes (lessons)
+      // Open detail panel for leaf nodes (lessons)
       if (node.nodeType === "lesson" || node.childCount === 0) {
-        // TODO: In Phase 3, open detail panel for leaf nodes
-        console.log("Leaf node clicked:", node.label);
+        selectNode(node);
         return;
       }
 
@@ -150,8 +153,14 @@ export function TreemapContainer({
         setLoading(false);
       }
     },
-    [drillDown, setLoading, setError]
+    [drillDown, setLoading, setError, selectNode]
   );
+
+  // Handle starting a lesson from detail panel
+  const handleStartLesson = useCallback((nodeId: string) => {
+    // Navigate to the lesson page
+    window.location.href = `/forge/chapter/${nodeId}`;
+  }, []);
 
   // Handle go back (called after fetching parent's children)
   const handleGoBack = useCallback(async () => {
@@ -235,9 +244,12 @@ export function TreemapContainer({
     }
   }, [currentPath.length, reset, setLoading, setError]);
 
-  // Keyboard navigation
+  // Keyboard navigation (Escape to go back - but not when panel is open)
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
+      // Don't handle Escape if panel is open (panel handles its own Escape)
+      if (selectedNode) return;
+
       if (e.key === "Escape") {
         e.preventDefault();
         handleGoBack();
@@ -246,7 +258,7 @@ export function TreemapContainer({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleGoBack]);
+  }, [handleGoBack, selectedNode]);
 
   // Reset focusedIndex on navigation (path change)
   useEffect(() => {
@@ -362,6 +374,13 @@ export function TreemapContainer({
           isTransitioning={isLoading}
         />
       </div>
+
+      {/* Detail panel for leaf nodes */}
+      <DetailPanel
+        node={selectedNode}
+        onClose={closePanel}
+        onStart={handleStartLesson}
+      />
     </div>
   );
 }

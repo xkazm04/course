@@ -31,5 +31,8 @@ export type { LevelIndicatorProps } from "./LevelIndicator";
 export { NavigationHeader } from "./NavigationHeader";
 export type { NavigationHeaderProps } from "./NavigationHeader";
 
+export { DetailPanel } from "./DetailPanel";
+export type { DetailPanelProps } from "./DetailPanel";
+
 export { TreemapContainer } from "./TreemapContainer";
 export type { TreemapContainerProps } from "./TreemapContainer";
