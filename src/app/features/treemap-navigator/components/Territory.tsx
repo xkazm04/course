@@ -3,6 +3,7 @@
 import { memo, useState, useCallback } from "react";
 import type { TreemapNode } from "../lib/types";
 import { canShowLabel, calculateFontSize } from "../lib/layoutEngine";
+import { ChildCountBadge } from "./ChildCountBadge";
 
 export interface TerritoryProps {
   node: TreemapNode;
@@ -74,6 +75,9 @@ export const Territory = memo(function Territory({
         zIndex: isActive ? 10 : 1,
       }}
     >
+      {/* Child count badge - positioned relative to Territory, not affected by flex centering */}
+      <ChildCountBadge count={node.childCount} nodeWidth={node.width} />
+
       {/* Content container */}
       <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden p-2">
         {/* Label */}
@@ -83,13 +87,6 @@ export const Territory = memo(function Territory({
             style={{ fontSize: `${fontSize}px` }}
           >
             {node.label}
-          </span>
-        )}
-
-        {/* Child count badge */}
-        {node.childCount > 0 && showLabel && (
-          <span className="mt-1 rounded-full bg-white/10 px-2 py-0.5 text-xs text-white/70">
-            {node.childCount} items
           </span>
         )}
       </div>
