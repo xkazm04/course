@@ -15,6 +15,7 @@ import {
     TrendingUp,
     Users,
     Home,
+    LayoutGrid,
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { ICON_SIZES } from "@/app/shared/lib/iconSizes";
@@ -37,6 +38,7 @@ const navItems = [
     { href: "/forge/progress", label: "My Progress", icon: TrendingUp },
     { href: "/forge/community", label: "Community", icon: Users },
     { href: "/forge/map", label: "Map", icon: Hexagon },
+    { href: "/forge/territories", label: "Territories", icon: LayoutGrid },
     { href: "/forge/projects", label: "Projects", icon: FolderGit2 },
     { href: "/forge/challenges", label: "Challenges", icon: Target },
 ];
