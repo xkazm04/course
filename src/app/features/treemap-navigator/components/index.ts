@@ -6,3 +6,6 @@
 
 export { Territory } from "./Territory";
 export type { TerritoryProps } from "./Territory";
+
+export { LoadingOverlay } from "./LoadingOverlay";
+export type { LoadingOverlayProps } from "./LoadingOverlay";
