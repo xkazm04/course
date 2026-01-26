@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useCallback, useState } from "react";
+import { useEffect, useMemo, useCallback, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigationStore } from "../lib/navigationStore";
 import { fetchRootNodes, fetchChildren } from "../lib/dataAdapter";
 import { computeLayout } from "../lib/layoutEngine";
+import { useFocusOnNavigate } from "../lib/useFocusOnNavigate";
+import { getTransitionVariants, getSpringConfig } from "../lib/animationConfig";
 import { DEFAULT_LAYOUT_CONFIG } from "../lib/types";
 import type { TreemapNode, LayoutConfig } from "../lib/types";
 import { Territory } from "./Territory";
@@ -35,12 +38,13 @@ export interface TreemapContainerProps {
  * - REQ-DES-02: Readable labels (via layout minWidth/minHeight)
  * - REQ-DES-03: Bounded space (no drift)
  * - REQ-A11Y-01: Keyboard navigation
+ * - REQ-VIS-02: Animated transitions (drill-down/drill-up)
+ * - REQ-A11Y-02: Focus management after navigation
  */
 export function TreemapContainer({
   className = "",
   layoutConfig = DEFAULT_LAYOUT_CONFIG,
 }: TreemapContainerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
@@ -49,6 +53,7 @@ export function TreemapContainer({
   const currentNodes = useNavigationStore((s) => s.currentNodes);
   const isLoading = useNavigationStore((s) => s.isLoading);
   const error = useNavigationStore((s) => s.error);
+  const transitionDirection = useNavigationStore((s) => s.transitionDirection);
   const drillDown = useNavigationStore((s) => s.drillDown);
   const goBack = useNavigationStore((s) => s.goBack);
   const jumpTo = useNavigationStore((s) => s.jumpTo);
@@ -56,6 +61,13 @@ export function TreemapContainer({
   const setLoading = useNavigationStore((s) => s.setLoading);
   const setError = useNavigationStore((s) => s.setError);
   const setCurrentNodes = useNavigationStore((s) => s.setCurrentNodes);
+  const clearTransition = useNavigationStore((s) => s.clearTransition);
+
+  // Focus management: focus first territory after navigation completes
+  const containerRef = useFocusOnNavigate(currentPath.length, isLoading);
+
+  // Unique key for AnimatePresence - changes when path changes
+  const contentKey = currentPath.map((p) => p.id).join("/") || "root";
 
   // Measure container size
   useEffect(() => {
@@ -220,6 +232,11 @@ export function TreemapContainer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleGoBack]);
 
+  // Reset focusedIndex on navigation (path change)
+  useEffect(() => {
+    setFocusedIndex(null);
+  }, [currentPath.length]);
+
   // Arrow key navigation between territories
   const handleTerritoryKeyDown = useCallback(
     (e: React.KeyboardEvent, node: TreemapNode) => {
@@ -263,16 +280,31 @@ export function TreemapContainer({
       className={`relative w-full h-full bg-[#0a0a0f] overflow-hidden ${className}`}
       style={{ minHeight: "400px" }}
     >
-      {/* Territories */}
-      {layoutNodes.map((node, index) => (
-        <Territory
-          key={node.id}
-          node={node}
-          onClick={handleDrillDown}
-          onKeyDown={handleTerritoryKeyDown}
-          isFocused={focusedIndex === index}
-        />
-      ))}
+      {/* Animated Territories Container */}
+      <AnimatePresence mode="wait" onExitComplete={clearTransition}>
+        <motion.div
+          key={contentKey}
+          className="absolute inset-0"
+          variants={getTransitionVariants(transitionDirection)}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={getSpringConfig(transitionDirection)}
+          style={{
+            willChange: transitionDirection ? "transform, opacity" : "auto",
+          }}
+        >
+          {layoutNodes.map((node, index) => (
+            <Territory
+              key={node.id}
+              node={node}
+              onClick={handleDrillDown}
+              onKeyDown={handleTerritoryKeyDown}
+              isFocused={focusedIndex === index}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Loading overlay */}
       <LoadingOverlay isVisible={isLoading} />
