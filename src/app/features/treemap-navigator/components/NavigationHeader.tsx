@@ -16,6 +16,7 @@
 import { memo } from "react";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { BackButton } from "./BackButton";
+import { ResetButton } from "./ResetButton";
 import { LevelIndicator } from "./LevelIndicator";
 import type { BreadcrumbItem } from "../lib/types";
 
@@ -24,6 +25,7 @@ export interface NavigationHeaderProps {
   currentDepth: number;
   onGoBack: () => void;
   onNavigate: (index: number) => void;
+  onReset: () => void;
   isTransitioning?: boolean;
 }
 
@@ -32,6 +34,7 @@ export const NavigationHeader = memo(function NavigationHeader({
   currentDepth,
   onGoBack,
   onNavigate,
+  onReset,
   isTransitioning = false,
 }: NavigationHeaderProps) {
   // Don't render at root level
@@ -45,6 +48,13 @@ export const NavigationHeader = memo(function NavigationHeader({
       <BackButton
         onBack={onGoBack}
         disabled={currentPath.length === 0}
+        isTransitioning={isTransitioning}
+      />
+
+      {/* Reset button */}
+      <ResetButton
+        onReset={onReset}
+        isAtRoot={currentPath.length === 0}
         isTransitioning={isTransitioning}
       />
 

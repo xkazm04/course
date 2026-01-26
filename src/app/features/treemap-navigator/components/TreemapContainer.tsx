@@ -12,6 +12,7 @@ import type { TreemapNode, LayoutConfig } from "../lib/types";
 import { Territory } from "./Territory";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { NavigationHeader } from "./NavigationHeader";
+import { EmptyState } from "./EmptyState";
 
 export interface TreemapContainerProps {
   className?: string;
@@ -219,6 +220,21 @@ export function TreemapContainer({
     [currentPath, jumpTo, reset, setLoading, setError]
   );
 
+  // Handle reset to root (for reset button)
+  const handleReset = useCallback(async () => {
+    if (currentPath.length === 0) return; // Already at root
+
+    setLoading(true);
+    try {
+      const nodes = await fetchRootNodes();
+      reset(nodes);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to reset");
+    } finally {
+      setLoading(false);
+    }
+  }, [currentPath.length, reset, setLoading, setError]);
+
   // Keyboard navigation
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -332,9 +348,7 @@ export function TreemapContainer({
 
       {/* Empty state */}
       {!isLoading && !error && layoutNodes.length === 0 && (
-        <div className="absolute inset-0 flex items-center justify-center text-white/50">
-          <p>No content available</p>
-        </div>
+        <EmptyState onGoBack={handleGoBack} />
       )}
 
       {/* Navigation header */}
@@ -344,6 +358,7 @@ export function TreemapContainer({
           currentDepth={currentPath.length}
           onGoBack={handleGoBack}
           onNavigate={handleJumpTo}
+          onReset={handleReset}
           isTransitioning={isLoading}
         />
       </div>
