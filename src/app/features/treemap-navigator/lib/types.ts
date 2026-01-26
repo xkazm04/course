@@ -59,6 +59,7 @@ export interface NavigationState {
   isLoading: boolean;
   error: string | null;
   transitionDirection: TransitionDirection; // For animation variants
+  selectedNode: TreemapNode | null; // For detail panel
 }
 
 // ============================================================================

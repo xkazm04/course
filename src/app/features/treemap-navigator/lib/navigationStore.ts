@@ -60,6 +60,16 @@ interface NavigationActions {
    * Clear transition direction (after animation completes)
    */
   clearTransition: () => void;
+
+  /**
+   * Select a node to show in detail panel
+   */
+  selectNode: (node: TreemapNode | null) => void;
+
+  /**
+   * Close the detail panel
+   */
+  closePanel: () => void;
 }
 
 // ============================================================================
@@ -78,6 +88,7 @@ const initialState: NavigationState = {
   isLoading: false,
   error: null,
   transitionDirection: null,
+  selectedNode: null,
 };
 
 // ============================================================================
@@ -98,6 +109,7 @@ export const useNavigationStore = create<NavigationStore>()(
         state.currentNodes = children;
         state.error = null;
         state.transitionDirection = "drillDown";
+        state.selectedNode = null; // Close panel on navigation
       });
     },
 
@@ -106,6 +118,7 @@ export const useNavigationStore = create<NavigationStore>()(
         if (state.currentPath.length > 0) {
           state.currentPath.pop();
           state.transitionDirection = "drillUp";
+          state.selectedNode = null; // Close panel on navigation
           // Note: Caller must provide new nodes via setCurrentNodes after fetching
         }
       });
@@ -120,6 +133,7 @@ export const useNavigationStore = create<NavigationStore>()(
         state.currentNodes = nodes;
         state.error = null;
         state.transitionDirection = isGoingUp ? "drillUp" : null;
+        state.selectedNode = null; // Close panel on navigation
       });
     },
 
@@ -131,6 +145,7 @@ export const useNavigationStore = create<NavigationStore>()(
         state.isLoading = false;
         state.error = null;
         state.transitionDirection = wasAtDepth ? "drillUp" : null;
+        state.selectedNode = null; // Close panel on reset
       });
     },
 
@@ -156,6 +171,18 @@ export const useNavigationStore = create<NavigationStore>()(
     clearTransition: () => {
       set((state) => {
         state.transitionDirection = null;
+      });
+    },
+
+    selectNode: (node) => {
+      set((state) => {
+        state.selectedNode = node;
+      });
+    },
+
+    closePanel: () => {
+      set((state) => {
+        state.selectedNode = null;
       });
     },
   }))
