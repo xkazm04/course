@@ -14,13 +14,14 @@ export interface TerritoryProps {
 }
 
 /**
- * Difficulty badge colors mapping
+ * Difficulty border colors - subtle tinted borders instead of badges
+ * Uses light tones that blend with the ember aesthetic
  */
-const DIFFICULTY_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  beginner: { bg: "rgba(74, 222, 128, 0.2)", text: "#4ade80", label: "Beginner" },
-  intermediate: { bg: "rgba(251, 191, 36, 0.2)", text: "#fbbf24", label: "Intermediate" },
-  advanced: { bg: "rgba(249, 115, 22, 0.2)", text: "#f97316", label: "Advanced" },
-  expert: { bg: "rgba(248, 113, 113, 0.2)", text: "#f87171", label: "Expert" },
+const DIFFICULTY_BORDER_COLORS: Record<string, { border: string; glow: string }> = {
+  beginner: { border: "rgba(74, 222, 128, 0.4)", glow: "rgba(74, 222, 128, 0.15)" },
+  intermediate: { border: "rgba(251, 191, 36, 0.4)", glow: "rgba(251, 191, 36, 0.15)" },
+  advanced: { border: "rgba(249, 115, 22, 0.5)", glow: "rgba(249, 115, 22, 0.2)" },
+  expert: { border: "rgba(248, 113, 113, 0.5)", glow: "rgba(248, 113, 113, 0.2)" },
 };
 
 /**
@@ -78,11 +79,12 @@ export const Territory = memo(function Territory({
   // Determine what metadata to show based on card size
   const canShowSubtitle = node.width > 120 && node.height > 60 && node.description;
   const canShowIcon = node.width > 80 && node.height > 50;
-  const canShowDifficulty = node.width > 100 && node.height > 70 && node.difficulty;
 
   // Get icon component
   const IconComponent = canShowIcon ? getIconComponent(node.icon) : null;
-  const difficultyConfig = node.difficulty ? DIFFICULTY_COLORS[node.difficulty] : null;
+
+  // Get difficulty border colors (subtle tinted border instead of badge)
+  const difficultyBorder = node.difficulty ? DIFFICULTY_BORDER_COLORS[node.difficulty] : null;
 
   return (
     <div
@@ -104,11 +106,17 @@ export const Territory = memo(function Territory({
         width: node.width,
         height: node.height,
         backgroundColor: node.color,
-        border: `1px solid ${isActive ? "rgba(255, 255, 255, 0.4)" : "rgba(255, 255, 255, 0.1)"}`,
-        borderRadius: "4px",
+        // Border: use difficulty tint when available, otherwise default white
+        border: difficultyBorder
+          ? `2px solid ${isActive ? difficultyBorder.border : difficultyBorder.glow}`
+          : `1px solid ${isActive ? "rgba(255, 255, 255, 0.4)" : "rgba(255, 255, 255, 0.1)"}`,
+        borderRadius: "6px",
+        // Box shadow: combine node glow with difficulty glow
         boxShadow: isActive
-          ? `0 0 20px ${node.color}80, inset 0 1px 0 rgba(255,255,255,0.1)`
-          : "inset 0 1px 0 rgba(255,255,255,0.05)",
+          ? `0 0 20px ${node.color}80${difficultyBorder ? `, 0 0 12px ${difficultyBorder.glow}` : ""}, inset 0 1px 0 rgba(255,255,255,0.1)`
+          : difficultyBorder
+            ? `0 0 8px ${difficultyBorder.glow}, inset 0 1px 0 rgba(255,255,255,0.05)`
+            : "inset 0 1px 0 rgba(255,255,255,0.05)",
         transform: isActive ? "scale(1.02)" : "scale(1)",
         zIndex: isActive ? 10 : 1,
       }}
@@ -152,25 +160,12 @@ export const Territory = memo(function Territory({
             {node.description}
           </span>
         )}
-
-        {/* Difficulty badge (minimal) */}
-        {canShowDifficulty && difficultyConfig && (
-          <span
-            className="mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
-            style={{
-              backgroundColor: difficultyConfig.bg,
-              color: difficultyConfig.text,
-            }}
-          >
-            {difficultyConfig.label}
-          </span>
-        )}
       </div>
 
       {/* Focus ring (keyboard navigation) */}
       {isFocused && (
         <div
-          className="pointer-events-none absolute inset-0 rounded"
+          className="pointer-events-none absolute inset-0 rounded-md"
           style={{
             border: "2px solid var(--ember-bright)",
             boxShadow: "0 0 0 2px rgba(234, 88, 12, 0.3)",
