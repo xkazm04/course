@@ -305,9 +305,43 @@ export function TreemapContainer({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full bg-[#0a0a0f] overflow-hidden ${className}`}
-      style={{ minHeight: "400px" }}
+      className={`relative w-full h-full overflow-hidden ${className}`}
+      style={{ minHeight: "400px", backgroundColor: "var(--forge-bg-void)" }}
     >
+      {/* Background gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, var(--forge-bg-void), var(--forge-bg-forge), var(--forge-bg-void))",
+        }}
+      />
+
+      {/* Subtle radial ember glow from top */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at 50% 0%, var(--ember) 0%, transparent 50%)",
+          opacity: 0.05,
+        }}
+      />
+
+      {/* Noise texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          opacity: 0.015,
+        }}
+      />
+
+      {/* Vignette edge darkening */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)",
+        }}
+      />
+
       {/* Animated Territories Container */}
       <AnimatePresence mode="wait" onExitComplete={clearTransition}>
         <motion.div
