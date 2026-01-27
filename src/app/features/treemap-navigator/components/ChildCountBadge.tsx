@@ -24,7 +24,13 @@ export const ChildCountBadge = memo(function ChildCountBadge({
   }
 
   return (
-    <span className="absolute right-2 top-2 rounded-full border border-white/10 bg-white/15 px-2 py-0.5 text-xs text-white/90 backdrop-blur-sm">
+    <span
+      className="absolute right-2 top-2 rounded-full border border-white/10 px-2 py-0.5 text-xs font-medium text-white/90 backdrop-blur-sm"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        textShadow: "0 1px 1px rgba(0, 0, 0, 0.3)",
+      }}
+    >
       {count}
     </span>
   );
