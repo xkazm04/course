@@ -49,6 +49,8 @@ export function TreemapContainer({
 }: TreemapContainerProps) {
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  const [hasNavigated, setHasNavigated] = useState(false);
 
   // Store state and actions
   const currentPath = useNavigationStore((s) => s.currentPath);
@@ -265,6 +267,36 @@ export function TreemapContainer({
     setFocusedIndex(null);
   }, [currentPath.length]);
 
+  // Screen reader announcements for navigation changes
+  useEffect(() => {
+    // Don't announce while loading or on initial mount
+    if (isLoading) return;
+
+    // Track that user has navigated at least once
+    if (!hasNavigated && currentNodes.length > 0) {
+      setHasNavigated(true);
+      return; // Skip announcement for initial load
+    }
+
+    if (!hasNavigated) return;
+
+    // Build announcement based on current state
+    if (currentPath.length > 0) {
+      const current = currentPath[currentPath.length - 1];
+      const itemCount = currentNodes.length;
+      const itemWord = itemCount === 1 ? "item" : "items";
+      setAnnouncement(
+        `Navigated to ${current.label}. ${itemCount} ${itemWord} at this level.`
+      );
+    } else {
+      const domainCount = currentNodes.length;
+      const domainWord = domainCount === 1 ? "domain" : "domains";
+      setAnnouncement(
+        `Returned to root. ${domainCount} ${domainWord} visible.`
+      );
+    }
+  }, [isLoading, currentPath, currentNodes.length, hasNavigated]);
+
   // Arrow key navigation between territories
   const handleTerritoryKeyDown = useCallback(
     (e: React.KeyboardEvent, node: TreemapNode) => {
@@ -308,6 +340,16 @@ export function TreemapContainer({
       className={`relative w-full h-full overflow-hidden ${className}`}
       style={{ minHeight: "400px", backgroundColor: "var(--forge-bg-void)" }}
     >
+      {/* Screen reader announcer - visually hidden */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {announcement}
+      </div>
+
       {/* Background gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
