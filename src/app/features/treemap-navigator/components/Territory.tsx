@@ -54,7 +54,11 @@ export const Territory = memo(function Territory({
     <div
       role="button"
       tabIndex={0}
-      aria-label={`${node.label}, ${node.childCount} items`}
+      aria-label={
+        node.nodeType === "lesson" || node.childCount === 0
+          ? `${node.label}. Lesson. Press Enter to view details.`
+          : `${node.label}. ${node.childCount} ${node.childCount === 1 ? "item" : "items"}. Press Enter to explore.`
+      }
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsHovered(true)}
