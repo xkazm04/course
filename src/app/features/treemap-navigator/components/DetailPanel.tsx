@@ -12,8 +12,31 @@
 
 import { memo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import * as LucideIcons from "lucide-react";
 import { X } from "lucide-react";
 import type { TreemapNode } from "../lib/types";
+
+/**
+ * Difficulty badge colors mapping
+ */
+const DIFFICULTY_COLORS: Record<string, { bg: string; text: string; label: string }> = {
+  beginner: { bg: "rgba(74, 222, 128, 0.2)", text: "#4ade80", label: "Beginner" },
+  intermediate: { bg: "rgba(251, 191, 36, 0.2)", text: "#fbbf24", label: "Intermediate" },
+  advanced: { bg: "rgba(249, 115, 22, 0.2)", text: "#f97316", label: "Advanced" },
+  expert: { bg: "rgba(248, 113, 113, 0.2)", text: "#f87171", label: "Expert" },
+};
+
+/**
+ * Get Lucide icon component by name
+ */
+function getIconComponent(iconName: string | null): React.ComponentType<{ size?: number; className?: string }> | null {
+  if (!iconName) return null;
+  const pascalName = iconName
+    .split(/[-_]/)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join("");
+  return (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[pascalName] || null;
+}
 
 export interface DetailPanelProps {
   node: TreemapNode | null;
@@ -112,12 +135,27 @@ export const DetailPanel = memo(function DetailPanel({
             {/* Header */}
             <div className="flex items-start justify-between p-6 border-b border-[var(--forge-border-subtle)]">
               <div className="flex-1 min-w-0 pr-4">
-                <h2
-                  id="detail-panel-title"
-                  className="text-xl font-semibold text-white truncate"
-                >
-                  {node.label}
-                </h2>
+                <div className="flex items-center gap-3 mb-2">
+                  {/* Icon */}
+                  {(() => {
+                    const IconComponent = getIconComponent(node.icon);
+                    return IconComponent ? (
+                      <div className="p-2 rounded-lg bg-[var(--ember)]/20">
+                        <IconComponent size={24} className="text-[var(--ember)]" />
+                      </div>
+                    ) : null;
+                  })()}
+                  <h2
+                    id="detail-panel-title"
+                    className="text-xl font-semibold text-white"
+                  >
+                    {node.label}
+                  </h2>
+                </div>
+                {/* Subtitle from description */}
+                {node.description && (
+                  <p className="text-white/60 text-sm">{node.description}</p>
+                )}
               </div>
               <button
                 onClick={onClose}
@@ -130,27 +168,50 @@ export const DetailPanel = memo(function DetailPanel({
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {/* Type badge */}
-              <div>
+              {/* Badges row */}
+              <div className="flex flex-wrap gap-2">
+                {/* Type badge */}
                 <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-[var(--ember)]/20 text-[var(--ember)] border border-[var(--ember)]/30">
                   {capitalize(node.nodeType)}
                 </span>
+                {/* Difficulty badge */}
+                {node.difficulty && DIFFICULTY_COLORS[node.difficulty] && (
+                  <span
+                    className="inline-block px-3 py-1 rounded-full text-xs font-medium"
+                    style={{
+                      backgroundColor: DIFFICULTY_COLORS[node.difficulty].bg,
+                      color: DIFFICULTY_COLORS[node.difficulty].text,
+                    }}
+                  >
+                    {DIFFICULTY_COLORS[node.difficulty].label}
+                  </span>
+                )}
               </div>
 
-              {/* Description placeholder */}
+              {/* Description / About section */}
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-white/70">About</h3>
                 <p className="text-white/60 text-sm leading-relaxed">
-                  Ready to explore this content? Click the button below to start
-                  your learning journey.
+                  {node.description || "Ready to explore this content? Click the button below to start your learning journey."}
                 </p>
               </div>
 
-              {/* Depth indicator */}
+              {/* Cover image placeholder (for future) */}
+              {node.coverImageUrl && (
+                <div className="rounded-lg overflow-hidden">
+                  <img
+                    src={node.coverImageUrl}
+                    alt={`Cover for ${node.label}`}
+                    className="w-full h-40 object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Location / Depth indicator */}
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-white/70">Location</h3>
                 <p className="text-white/60 text-sm">
-                  Depth level: {node.depth + 1}
+                  Level {node.depth + 1} • {node.childCount > 0 ? `${node.childCount} items inside` : "Leaf node"}
                 </p>
               </div>
             </div>

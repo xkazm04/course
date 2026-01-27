@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useState, useCallback } from "react";
+import * as LucideIcons from "lucide-react";
 import type { TreemapNode } from "../lib/types";
 import { canShowLabel, calculateFontSize } from "../lib/layoutEngine";
 import { ChildCountBadge } from "./ChildCountBadge";
@@ -13,11 +14,35 @@ export interface TerritoryProps {
 }
 
 /**
+ * Difficulty badge colors mapping
+ */
+const DIFFICULTY_COLORS: Record<string, { bg: string; text: string; label: string }> = {
+  beginner: { bg: "rgba(74, 222, 128, 0.2)", text: "#4ade80", label: "Beginner" },
+  intermediate: { bg: "rgba(251, 191, 36, 0.2)", text: "#fbbf24", label: "Intermediate" },
+  advanced: { bg: "rgba(249, 115, 22, 0.2)", text: "#f97316", label: "Advanced" },
+  expert: { bg: "rgba(248, 113, 113, 0.2)", text: "#f87171", label: "Expert" },
+};
+
+/**
+ * Get Lucide icon component by name
+ */
+function getIconComponent(iconName: string | null): React.ComponentType<{ size?: number; className?: string }> | null {
+  if (!iconName) return null;
+  // Convert icon name to PascalCase (e.g., "file-code" -> "FileCode")
+  const pascalName = iconName
+    .split(/[-_]/)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join("");
+  return (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[pascalName] || null;
+}
+
+/**
  * Territory component renders a single treemap node.
  *
  * Features:
  * - Dark background with glowing border on hover/focus
- * - Label text (hidden if node too small)
+ * - Label text with icon and subtitle
+ * - Difficulty badge (minimal)
  * - Child count badge
  * - Keyboard accessible (Tab, Enter, Space)
  */
@@ -49,6 +74,15 @@ export const Territory = memo(function Territory({
 
   // Visual state
   const isActive = isHovered || isFocused;
+
+  // Determine what metadata to show based on card size
+  const canShowSubtitle = node.width > 120 && node.height > 60 && node.description;
+  const canShowIcon = node.width > 80 && node.height > 50;
+  const canShowDifficulty = node.width > 100 && node.height > 70 && node.difficulty;
+
+  // Get icon component
+  const IconComponent = canShowIcon ? getIconComponent(node.icon) : null;
+  const difficultyConfig = node.difficulty ? DIFFICULTY_COLORS[node.difficulty] : null;
 
   return (
     <div
@@ -83,7 +117,15 @@ export const Territory = memo(function Territory({
       <ChildCountBadge count={node.childCount} nodeWidth={node.width} />
 
       {/* Content container */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden p-2">
+      <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden p-2 gap-1">
+        {/* Icon */}
+        {IconComponent && (
+          <IconComponent
+            size={Math.min(24, fontSize + 4)}
+            className="text-white/70 flex-shrink-0"
+          />
+        )}
+
         {/* Label */}
         {showLabel && (
           <span
@@ -94,6 +136,33 @@ export const Territory = memo(function Territory({
             }}
           >
             {node.label}
+          </span>
+        )}
+
+        {/* Subtitle (description) - truncated with title for hover */}
+        {canShowSubtitle && (
+          <span
+            className="max-w-full truncate text-center text-white/60 leading-tight"
+            style={{
+              fontSize: `${Math.max(10, fontSize - 3)}px`,
+              textShadow: "0 1px 1px rgba(0, 0, 0, 0.4)",
+            }}
+            title={node.description || undefined}
+          >
+            {node.description}
+          </span>
+        )}
+
+        {/* Difficulty badge (minimal) */}
+        {canShowDifficulty && difficultyConfig && (
+          <span
+            className="mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
+            style={{
+              backgroundColor: difficultyConfig.bg,
+              color: difficultyConfig.text,
+            }}
+          >
+            {difficultyConfig.label}
           </span>
         )}
       </div>

@@ -30,6 +30,14 @@ export interface TreemapNode {
   color: string;
   nodeType: "domain" | "topic" | "skill" | "course" | "lesson";
   depth: number;
+
+  // Metadata for orientation (Tier 1)
+  description: string | null; // Short subtitle
+  difficulty: "beginner" | "intermediate" | "advanced" | "expert" | null;
+  icon: string | null; // Lucide icon name
+
+  // Cover image for domains/topics (Tier 2)
+  coverImageUrl: string | null;
 }
 
 // ============================================================================
@@ -114,4 +122,6 @@ export interface ApiNode {
   isAiGenerated?: boolean;
   icon?: string | null;
   level?: string;
+  // Tier 2: Cover image
+  coverImageUrl?: string | null;
 }

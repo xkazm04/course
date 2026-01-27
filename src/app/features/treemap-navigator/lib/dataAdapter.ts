@@ -50,6 +50,14 @@ function transformNode(apiNode: ApiNode): TreemapNode {
     lesson: "lesson",
   };
 
+  // Map difficulty string to typed value
+  const difficultyMap: Record<string, TreemapNode["difficulty"]> = {
+    beginner: "beginner",
+    intermediate: "intermediate",
+    advanced: "advanced",
+    expert: "expert",
+  };
+
   return {
     id: apiNode.id,
     label: apiNode.name,
@@ -63,6 +71,12 @@ function transformNode(apiNode: ApiNode): TreemapNode {
     color: apiNode.color || getNodeColor(apiNode.nodeType, apiNode.depth),
     nodeType: nodeTypeMap[apiNode.nodeType] || "lesson",
     depth: apiNode.depth,
+    // Metadata for orientation (Tier 1)
+    description: apiNode.description || null,
+    difficulty: apiNode.difficulty ? difficultyMap[apiNode.difficulty] || null : null,
+    icon: apiNode.icon || null,
+    // Cover image (Tier 2) - will be null until migration runs
+    coverImageUrl: apiNode.coverImageUrl || null,
   };
 }
 
