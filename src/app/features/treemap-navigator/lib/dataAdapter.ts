@@ -8,19 +8,30 @@
 import type { TreemapNode, ApiNode } from "./types";
 
 /**
+ * Ember spectrum color palette for territory backgrounds.
+ * Based on CSS variables from globals.css dark mode.
+ * Darker colors for higher-level (domain) nodes,
+ * brighter ember for deeper (lesson) nodes.
+ */
+const EMBER_PALETTE: Record<string, string[]> = {
+  // Domain: deepest ember (near black with orange tint)
+  domain: ["#451A03", "#4D1F06", "#5C2408"],
+  // Topic: dark ember
+  topic: ["#5C2408", "#6A2A0A", "#7C2D12"],
+  // Skill: mid ember
+  skill: ["#7C2D12", "#8A320F", "#9A3412"],
+  // Course: bright ember
+  course: ["#9A3412", "#A83E0E", "#B45309"],
+  // Lesson: brightest (spark/molten range)
+  lesson: ["#B45309", "#C2410C", "#EA580C"],
+};
+
+/**
  * Get color for a node based on its type and depth.
- * Uses dark gaming aesthetic with glowing accents.
+ * Uses warm ember aesthetic matching the Forge UI.
  */
 function getNodeColor(nodeType: string, depth: number): string {
-  const colors: Record<string, string[]> = {
-    domain: ["#1e3a5f", "#2a4a7a", "#3a5a9a"],
-    topic: ["#2d4a3e", "#3d5a4e", "#4d6a5e"],
-    skill: ["#4a3052", "#5a4062", "#6a5072"],
-    course: ["#5a3d2b", "#6a4d3b", "#7a5d4b"],
-    lesson: ["#3d4a5a", "#4d5a6a", "#5d6a7a"],
-  };
-
-  const colorSet = colors[nodeType] || colors.lesson;
+  const colorSet = EMBER_PALETTE[nodeType] || EMBER_PALETTE.lesson;
   const colorIndex = Math.min(depth, colorSet.length - 1);
   return colorSet[colorIndex];
 }
