@@ -84,7 +84,10 @@ export const Territory = memo(function Territory({
         {showLabel && (
           <span
             className="max-w-full truncate text-center font-medium leading-tight text-white"
-            style={{ fontSize: `${fontSize}px` }}
+            style={{
+              fontSize: `${fontSize}px`,
+              textShadow: "0 1px 2px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.3)",
+            }}
           >
             {node.label}
           </span>
