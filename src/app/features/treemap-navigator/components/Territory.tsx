@@ -99,8 +99,8 @@ export const Territory = memo(function Territory({
         <div
           className="pointer-events-none absolute inset-0 rounded"
           style={{
-            border: "2px solid #60a5fa",
-            boxShadow: "0 0 0 2px rgba(96, 165, 250, 0.3)",
+            border: "2px solid var(--ember-bright)",
+            boxShadow: "0 0 0 2px rgba(234, 88, 12, 0.3)",
           }}
         />
       )}
