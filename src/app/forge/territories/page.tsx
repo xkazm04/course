@@ -12,8 +12,13 @@ export default function TerritoriesPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-64px)]">
       {/* Header */}
-      <header className="flex-none p-4 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-sm">
-        <h1 className="text-xl font-semibold text-white">Knowledge Territories</h1>
+      <header className="flex-none p-4 border-b border-white/10 backdrop-blur-sm" style={{ backgroundColor: "rgba(9, 9, 10, 0.8)" }}>
+        <h1
+          className="text-xl font-semibold text-white"
+          style={{ textShadow: "0 0 20px rgba(234, 88, 12, 0.3)" }}
+        >
+          Knowledge Territories
+        </h1>
         <p className="text-sm text-white/60">
           Click territories to explore. Press Escape to go back.
         </p>
