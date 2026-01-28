@@ -3,10 +3,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, CheckCircle, Play, BookOpen, Loader2, AlertCircle, RefreshCw } from "lucide-react";
-import type { HexLayoutNode, MapNode } from "../lib/types";
+import type { HexLayoutNode, MapNode, NodeGenerationStatus } from "../lib/types";
 import { STATUS_STYLES, DOMAIN_COLORS, getStatusBg, getDomainBg } from "../lib/types";
 import { getHexPoints, BASE_HEX_SIZE } from "../lib/hexUtils";
-import type { NodeGenerationStatus } from "../lib/contentApi";
 
 interface HexNodeProps {
     node: HexLayoutNode;
@@ -20,6 +19,8 @@ interface HexNodeProps {
     generationProgress?: number;
     onRetryGeneration?: (nodeId: string) => void;
     onContextMenu?: (e: React.MouseEvent, node: HexLayoutNode) => void;
+    /** Whether this node is highlighted from search results */
+    isHighlighted?: boolean;
 }
 
 export function HexNode({
@@ -34,6 +35,7 @@ export function HexNode({
     generationProgress,
     onRetryGeneration,
     onContextMenu,
+    isHighlighted = false,
 }: HexNodeProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -71,9 +73,17 @@ export function HexNode({
     const domainColor = domainId ? DOMAIN_COLORS[domainId] : null;
     const hasChildren = node.childIds && node.childIds.length > 0;
 
+    // Defensive check: skip rendering if node position is invalid
+    if (!node.pixel || !Number.isFinite(node.pixel.x) || !Number.isFinite(node.pixel.y)) {
+        return null;
+    }
+
+    // Defensive check: ensure scale is valid
+    const safeScale = Number.isFinite(scale) && scale > 0 ? scale : 1;
+
     // Inverse scale factor - when zoomed out, make things BIGGER in SVG coords
     // so they appear normal size on screen
-    const inverseScale = 1 / scale;
+    const inverseScale = 1 / safeScale;
 
     // Fixed hex size
     const hexSize = BASE_HEX_SIZE;
@@ -168,15 +178,36 @@ export function HexNode({
             onContextMenu={handleContextMenu}
             style={{ cursor: cursorStyle, opacity: nodeOpacity }}
         >
+            {/* Search highlight glow effect */}
+            {isHighlighted && !isGroupNode && (
+                <motion.polygon
+                    points={getHexPoints(node.pixel.x, node.pixel.y, hexSize * 1.2)}
+                    fill="none"
+                    stroke="var(--ember)"
+                    strokeWidth={3}
+                    initial={{ opacity: 0.3 }}
+                    animate={{
+                        opacity: [0.3, 0.8, 0.3],
+                        scale: [1, 1.02, 1],
+                    }}
+                    transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    }}
+                    filter="blur(4px)"
+                />
+            )}
+
             {/* Glow effect on hover */}
             <AnimatePresence>
-                {isHovered && !isGroupNode && (
+                {(isHovered || isHighlighted) && !isGroupNode && (
                     <motion.polygon
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.25 }}
+                        animate={{ opacity: isHighlighted ? 0.4 : 0.25 }}
                         exit={{ opacity: 0 }}
                         points={getHexPoints(node.pixel.x, node.pixel.y, hexSize * 1.15)}
-                        fill={fillColor}
+                        fill={isHighlighted ? "var(--ember)" : fillColor}
                         filter="blur(12px)"
                     />
                 )}
@@ -186,8 +217,8 @@ export function HexNode({
             <motion.polygon
                 points={points}
                 fill={bgColor}
-                stroke={fillColor}
-                strokeWidth={isHovered ? 3 : 2}
+                stroke={isHighlighted ? "var(--ember)" : fillColor}
+                strokeWidth={isHighlighted ? 3 : (isHovered ? 3 : 2)}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 whileHover={{ scale: isGroupNode ? 1 : 1.02 }}

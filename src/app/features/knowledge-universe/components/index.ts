@@ -5,7 +5,8 @@
  */
 
 export { KnowledgeUniverse, KnowledgeUniversePreview } from "./KnowledgeUniverse";
-export { UniverseCanvas, NodeTooltip } from "./UniverseCanvas";
+export { ClusteredKnowledgeUniverse } from "./ClusteredKnowledgeUniverse";
+export { UniverseCanvas, NodeTooltip, type RendererType } from "./UniverseCanvas";
 export {
     UniverseControls,
     ZoomLevelIndicator,
@@ -21,3 +22,19 @@ export {
     CompactBreadcrumb,
     PositionIndicator,
 } from "./SemanticBreadcrumb";
+
+// Semantic Zoom Indicator - Visual feedback for 4-tier zoom system
+export {
+    ZoomIndicator,
+    MiniZoomIndicator,
+    ZoomBreadcrumb,
+} from "./ZoomIndicator";
+
+// Territory Map - Google Maps-inspired visualization
+export { TerritoryMap } from "./TerritoryMap";
+
+// Hierarchical Map - One-level-at-a-time navigation
+export { HierarchicalMap } from "./HierarchicalMap";
+
+// WebGL Canvas - High-performance WebGL-based rendering
+export { WebGLCanvas, WebGLBadge, AdaptiveCanvas } from "./WebGLCanvas";

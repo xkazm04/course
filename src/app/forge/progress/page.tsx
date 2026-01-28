@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import { UserProgressView } from "./UserProgressView";
+import { forgeEasing } from "../lib/animations";
 
 export default function ProgressPage() {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ease: forgeEasing }}
         >
             <UserProgressView />
         </motion.div>

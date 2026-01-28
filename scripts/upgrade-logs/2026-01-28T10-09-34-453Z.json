@@ -1,0 +1,228 @@
+{
+  "options": {
+    "maxLessons": 20,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "ab46ef6e-ec3c-487b-88cc-b67cd4f3382a",
+      "name": "any, unknown, and never",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "470411dc-8fe1-43c4-a2a0-1fd4cbe5ecea",
+      "name": "Server Action Validation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "60771fb1-8e94-4d65-90f3-2d0d03c1bfb9",
+      "name": "Web Fonts and Google Fonts",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "0e03750f-a07f-452c-b279-d81d987241e7",
+      "name": "getElementById",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "0d99d0cf-a855-481e-8da1-893341202efa",
+      "name": "Discriminated Unions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "94f00931-e84a-4cf5-80cb-2b00ea2365ae",
+      "name": "Index Signatures",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "f927ec54-75b4-4333-b556-66ab522ad8dc",
+      "name": "Pseudo-elements",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "e4435b11-4553-40c0-bdd4-46a54660b16c",
+      "name": "Gesture Animations",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "1ae39e07-df10-46f5-908b-9873dfb60542",
+      "name": "Type Annotations",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "f0bcbd4f-3ed1-40d8-9763-7ac32c1e2771",
+      "name": "Viewport Meta Tag",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "01a291b5-16d0-4ee9-a780-24d6d7390b01",
+      "name": "Button Components",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "68823460-05c4-4713-9670-3f29f5247da3",
+      "name": "Array Creation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "e346d163-0926-49f3-be69-621a15d2711e",
+      "name": "Event Listeners",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8ed88240-404d-4640-9cac-095ca61797b2",
+      "name": "For Loops",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "0aaa9d1e-4b1f-49da-9778-7dd00739f8e5",
+      "name": "var, let, and const",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "6eb9b1e6-aa10-45fc-8b34-1d20a1918dd1",
+      "name": "Loading UI",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "f71f24d6-6294-44dd-a1d2-50f5494ffbd9",
+      "name": "Middleware Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "fff9d705-094d-4380-8b96-82a94befded8",
+      "name": "vi.fn() for Mocking",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "b4ed069a-6c5f-4616-bff2-f39ddd229373",
+      "name": "Building a CRUD API",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "1e9ecbac-bcd4-4935-bebc-e842c647784d",
+      "name": "Grid Container Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, warning, realworld"
+      ]
+    }
+  ]
+}

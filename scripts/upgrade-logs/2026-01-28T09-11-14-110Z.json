@@ -1,0 +1,228 @@
+{
+  "options": {
+    "maxLessons": 20,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "52634014-61e1-42ce-9c07-40e6a54e6086",
+      "name": "Basic CSS Selectors",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "36a939a6-e548-4bda-b98a-342d1ef8aa61",
+      "name": "Vitest Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "4c29f5b4-c48c-40c7-87e7-d5812d34ef65",
+      "name": "Motion Component",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "f819bb48-9e55-4da3-b149-12fb890909a7",
+      "name": "HTML Document Anatomy",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "355612a1-6c20-4eef-a7ef-3f61739a2e73",
+      "name": "Transition Property",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "36204faa-6801-4046-b9f3-9c50cbbc6fc5",
+      "name": "Tailwind Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "8bfe4e88-4a98-4eaf-baff-6416f681cb99",
+      "name": "Link Component",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "4e0ea829-3a4e-4ff3-9c63-34e0effebbab",
+      "name": "Route Handler Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "2a99c6fa-9019-4b26-b6dd-8ea4c020b3b9",
+      "name": "Object Literals",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "28ef9024-3fff-4e86-aaf8-c40df89300cb",
+      "name": "Arithmetic and Comparison Operators",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "7fd1e112-654f-4ed6-ad74-59a894fc3569",
+      "name": "Error Responses",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "d1e02efb-950e-49ea-99c9-72f2c4049bac",
+      "name": "React Hook Form Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "b2a103ec-2008-4d05-8a61-1e1d4febd470",
+      "name": "Image Optimization",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "4917bfeb-05cd-4917-a961-0ca7c6557adc",
+      "name": "JSX Syntax",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "49691e9a-9305-4169-959d-2908c2248727",
+      "name": "Promise Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "1e78ccf5-4f26-44d9-816c-6c351075f457",
+      "name": "Responsive Design",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "d61e5113-4044-4598-8098-fec4763065e3",
+      "name": "Class Properties",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "ca0508f3-e6da-433e-9d39-65b46c7446a3",
+      "name": "Function Declarations",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: animated, pitfall, tabs, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "ae556916-b9af-4456-a715-74b46191485a",
+      "name": "CSS Color Formats",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "34903c39-e0fd-4486-917c-b9304ef05dc7",
+      "name": "Justify and Align",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    }
+  ]
+}

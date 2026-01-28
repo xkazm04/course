@@ -16,6 +16,8 @@ import type {
     PlanetNode,
     MoonNode,
     StarNode,
+    AsteroidNode,
+    CometNode,
     UniverseNode,
     UniverseConnection,
     ZoomLevel,
@@ -352,38 +354,87 @@ export function transformCurriculumToUniverse(
         }
     });
 
-    // Transform skills to stars
+    // Transform skills to stars, asteroids, or comets based on originalDbType
     const moonByChapterId = new Map(moons.map((m) => [m.chapterId, m]));
 
-    const stars: StarNode[] = graph.skills.map((skill): StarNode => {
+    const stars: StarNode[] = [];
+    const asteroids: AsteroidNode[] = [];
+    const comets: CometNode[] = [];
+
+    graph.skills.forEach((skill) => {
         const pos = skillPositions.get(skill.id) || { x: 0, y: 0 };
         const parentTopic = graph.topics.find((t) => t.id === skill.parentTopicId);
         const parentMoon = parentTopic ? moonByChapterId.get(parentTopic.chapterId) : undefined;
         const colors = getSkillColor(skill);
 
-        return {
-            id: `star-${skill.lessonId}`,
-            type: "star",
-            name: skill.name,
-            parentMoonId: parentMoon?.id || "unknown",
-            lessonId: skill.lessonId,
-            lessonType: skill.contentType,
-            x: pos.x,
-            y: pos.y,
-            radius: config.baseStarRadius + Math.random() * config.starRadiusVariation,
-            color: colors.base,
-            glowColor: colors.glow,
-            completed: skill.completed || false,
-            duration: skill.duration || "1h",
-            visibleAtZoom: ["constellation", "star"] as ZoomLevel[],
-        };
+        // Determine node type based on originalDbType
+        if (skill.originalDbType === "course") {
+            // Course nodes become asteroids
+            asteroids.push({
+                id: `asteroid-${skill.lessonId}`,
+                type: "asteroid",
+                name: skill.name,
+                parentMoonId: parentMoon?.id || "unknown",
+                contentId: skill.lessonId,
+                contentType: "deep-dive",
+                x: pos.x,
+                y: pos.y,
+                radius: config.baseStarRadius * 1.2 + Math.random() * config.starRadiusVariation,
+                color: colors.base,
+                glowColor: colors.glow,
+                fragmentCount: 8,
+                visibleAtZoom: ["star"] as ZoomLevel[],
+            });
+        } else if (skill.originalDbType === "lesson") {
+            // Lesson nodes become comets
+            comets.push({
+                id: `comet-${skill.lessonId}`,
+                type: "comet",
+                name: skill.name,
+                parentMoonId: parentMoon?.id || "unknown",
+                challengeId: skill.lessonId,
+                x: pos.x,
+                y: pos.y,
+                radius: config.baseStarRadius + Math.random() * config.starRadiusVariation,
+                color: colors.base,
+                glowColor: colors.glow,
+                expiresAt: 0, // No expiration for regular lessons
+                tailLength: 40,
+                tailAngle: Math.PI * (0.5 + Math.random() * 0.5),
+                difficulty: skill.difficulty === "advanced" ? "hard" : skill.difficulty === "intermediate" ? "medium" : "easy",
+                visibleAtZoom: ["star"] as ZoomLevel[],
+            });
+        } else {
+            // Default: skill nodes become stars
+            stars.push({
+                id: `star-${skill.lessonId}`,
+                type: "star",
+                name: skill.name,
+                parentMoonId: parentMoon?.id || "unknown",
+                lessonId: skill.lessonId,
+                lessonType: skill.contentType,
+                x: pos.x,
+                y: pos.y,
+                radius: config.baseStarRadius + Math.random() * config.starRadiusVariation,
+                color: colors.base,
+                glowColor: colors.glow,
+                completed: skill.completed || false,
+                duration: skill.duration || "1h",
+                visibleAtZoom: ["constellation", "star"] as ZoomLevel[],
+            });
+        }
     });
 
-    // Transform connections
+    // Transform connections - map skill IDs to the correct visual node type
     const nodeIdMap = new Map<string, string>();
     graph.domains.forEach((d) => nodeIdMap.set(d.id, `planet-${d.domainId}`));
     graph.topics.forEach((t) => nodeIdMap.set(t.id, `moon-${t.chapterId}`));
-    graph.skills.forEach((s) => nodeIdMap.set(s.id, `star-${s.lessonId}`));
+    graph.skills.forEach((s) => {
+        // Use the appropriate prefix based on originalDbType
+        const prefix = s.originalDbType === "course" ? "asteroid" :
+                      s.originalDbType === "lesson" ? "comet" : "star";
+        nodeIdMap.set(s.id, `${prefix}-${s.lessonId}`);
+    });
 
     const connections: UniverseConnection[] = graph.connections
         .filter((conn) => conn.type === "prerequisite" || conn.type === "recommended" || conn.type === "builds_upon")
@@ -393,7 +444,7 @@ export function transformCurriculumToUniverse(
 
             if (!fromId || !toId) return null;
 
-            const fromNode = [...planets, ...moons, ...stars].find((n) => n.id === fromId);
+            const fromNode = [...planets, ...moons, ...stars, ...asteroids, ...comets].find((n) => n.id === fromId);
 
             return {
                 id: `connection-${index}`,
@@ -407,8 +458,8 @@ export function transformCurriculumToUniverse(
         })
         .filter((c): c is UniverseConnection => c !== null);
 
-    // Combine all nodes
-    const allNodes: UniverseNode[] = [...planets, ...moons, ...stars];
+    // Combine all nodes (including asteroids and comets)
+    const allNodes: UniverseNode[] = [...planets, ...moons, ...stars, ...asteroids, ...comets];
 
     return {
         planets,
@@ -419,7 +470,7 @@ export function transformCurriculumToUniverse(
         nodeCount: {
             planets: planets.length,
             moons: moons.length,
-            stars: stars.length,
+            stars: stars.length + asteroids.length + comets.length, // Include all lesson-level nodes
             total: allNodes.length,
         },
     };

@@ -1,0 +1,341 @@
+/**
+ * Map Theme CSS Variables
+ *
+ * These CSS custom properties are dynamically set by MapThemeProvider
+ * based on the selected theme preset. They can be used in components
+ * for consistent theming.
+ *
+ * Naming Convention:
+ * - --map-{category}-{property}
+ * - Categories: bg, text, border, accent, status, domain, connection, effect
+ */
+
+/* ============================================================================
+   BASE THEME VARIABLES (set dynamically by MapThemeProvider)
+   ============================================================================ */
+
+:root {
+    /* Background colors */
+    --map-bg-primary: #09090A;
+    --map-bg-secondary: #0D0D0E;
+    --map-bg-elevated: #1C1C1F;
+    --map-bg-overlay: rgba(0, 0, 0, 0.8);
+
+    /* Text colors */
+    --map-text-primary: #FAFAFA;
+    --map-text-secondary: #A1A1AA;
+    --map-text-muted: #71717A;
+    --map-text-inverse: #09090A;
+
+    /* Border colors */
+    --map-border-subtle: #252528;
+    --map-border-default: #32323A;
+    --map-border-strong: #52525B;
+
+    /* Accent colors */
+    --map-accent-primary: #F97316;
+    --map-accent-primary-hover: #EA580C;
+    --map-accent-secondary: #D97706;
+    --map-accent-tertiary: #C2410C;
+
+    /* Status colors */
+    --map-status-completed: #4ADE80;
+    --map-status-completed-bg: #064E3B;
+    --map-status-in-progress: #F97316;
+    --map-status-in-progress-bg: #7C2D12;
+    --map-status-available: #71717A;
+    --map-status-available-bg: #27272A;
+    --map-status-locked: #52525B;
+    --map-status-locked-bg: #18181B;
+
+    /* Domain colors */
+    --map-domain-frontend: #818CF8;
+    --map-domain-backend: #34D399;
+    --map-domain-fullstack: #C084FC;
+    --map-domain-databases: #22D3EE;
+    --map-domain-mobile: #F472B6;
+    --map-domain-games: #FB923C;
+
+    /* Connection colors */
+    --map-connection-default: rgba(113, 113, 122, 0.5);
+    --map-connection-active: rgba(249, 115, 22, 0.7);
+    --map-connection-highlighted: #F97316;
+
+    /* Effect colors */
+    --map-effect-glow: rgba(249, 115, 22, 0.3);
+    --map-effect-shadow: rgba(0, 0, 0, 0.5);
+    --map-effect-ember: #C2410C;
+
+    /* Dynamic customization properties */
+    --map-node-radius: 12px;
+    --map-connection-width: 2px;
+    --map-font-size: 0.875rem;
+}
+
+/* ============================================================================
+   NODE SHAPE VARIANTS
+   ============================================================================ */
+
+/* Circle nodes */
+[data-node-shape="circle"] .map-node {
+    border-radius: 50%;
+}
+
+/* Hexagon nodes (CSS clip-path) */
+[data-node-shape="hexagon"] .map-node {
+    clip-path: polygon(
+        50% 0%,
+        100% 25%,
+        100% 75%,
+        50% 100%,
+        0% 75%,
+        0% 25%
+    );
+    border-radius: 0;
+}
+
+/* Rounded square nodes (default) */
+[data-node-shape="rounded-square"] .map-node {
+    border-radius: var(--map-node-radius);
+}
+
+/* ============================================================================
+   CONNECTION STYLE VARIANTS
+   ============================================================================ */
+
+/* Straight connections */
+[data-connection-style="straight"] .map-connection {
+    stroke-dasharray: none;
+}
+
+/* Curved connections (default) */
+[data-connection-style="curved"] .map-connection {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Animated connections */
+[data-connection-style="animated"] .map-connection {
+    animation: map-connection-flow 2s linear infinite;
+}
+
+@keyframes map-connection-flow {
+    0% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -20;
+    }
+}
+
+[data-connection-style="animated"] .map-connection {
+    stroke-dasharray: 5 5;
+}
+
+/* ============================================================================
+   FONT SIZE VARIANTS
+   ============================================================================ */
+
+[data-font-size="small"] .map-label {
+    font-size: 0.75rem;
+}
+
+[data-font-size="medium"] .map-label {
+    font-size: 0.875rem;
+}
+
+[data-font-size="large"] .map-label {
+    font-size: 1rem;
+}
+
+[data-font-size="xl"] .map-label {
+    font-size: 1.125rem;
+}
+
+/* ============================================================================
+   COLORBLIND MODE INDICATORS
+   ============================================================================ */
+
+/* Add pattern/shape indicators when colorblind mode is active */
+[data-colorblind-mode="deuteranopia"],
+[data-colorblind-mode="protanopia"],
+[data-colorblind-mode="tritanopia"] {
+    /* Use patterns instead of just colors */
+}
+
+/* Completed nodes get a checkmark pattern */
+[data-colorblind-mode]:not([data-colorblind-mode="none"]) .map-node-completed::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* In-progress nodes get a dot pattern */
+[data-colorblind-mode]:not([data-colorblind-mode="none"]) .map-node-in-progress::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, white 30%, transparent 30%);
+    background-size: 4px 4px;
+}
+
+/* Locked nodes get a striped pattern */
+[data-colorblind-mode]:not([data-colorblind-mode="none"]) .map-node-locked::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.1) 2px,
+        rgba(255, 255, 255, 0.1) 4px
+    );
+    pointer-events: none;
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+[data-reduced-motion="true"] * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+}
+
+[data-reduced-motion="true"] .map-connection {
+    animation: none !important;
+    stroke-dasharray: none;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Map canvas container */
+.map-canvas {
+    background-color: var(--map-bg-primary);
+    color: var(--map-text-primary);
+}
+
+/* Map node base styles */
+.map-node {
+    background-color: var(--map-bg-elevated);
+    border: 2px solid var(--map-border-default);
+    border-radius: var(--map-node-radius);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.map-node:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px var(--map-effect-shadow);
+}
+
+/* Map node status variants */
+.map-node-completed {
+    background-color: var(--map-status-completed-bg);
+    border-color: var(--map-status-completed);
+}
+
+.map-node-in-progress {
+    background-color: var(--map-status-in-progress-bg);
+    border-color: var(--map-status-in-progress);
+}
+
+.map-node-available {
+    background-color: var(--map-status-available-bg);
+    border-color: var(--map-status-available);
+}
+
+.map-node-locked {
+    background-color: var(--map-status-locked-bg);
+    border-color: var(--map-status-locked);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Map connection styles */
+.map-connection {
+    stroke: var(--map-connection-default);
+    stroke-width: var(--map-connection-width);
+    fill: none;
+}
+
+.map-connection-active {
+    stroke: var(--map-connection-active);
+}
+
+.map-connection-highlighted {
+    stroke: var(--map-connection-highlighted);
+    stroke-width: calc(var(--map-connection-width) + 1px);
+}
+
+/* Map label styles */
+.map-label {
+    color: var(--map-text-primary);
+    font-size: var(--map-font-size);
+    font-weight: 500;
+}
+
+.map-label-secondary {
+    color: var(--map-text-secondary);
+}
+
+.map-label-muted {
+    color: var(--map-text-muted);
+}
+
+/* Domain color utilities */
+.map-domain-frontend { color: var(--map-domain-frontend); }
+.map-domain-backend { color: var(--map-domain-backend); }
+.map-domain-fullstack { color: var(--map-domain-fullstack); }
+.map-domain-databases { color: var(--map-domain-databases); }
+.map-domain-mobile { color: var(--map-domain-mobile); }
+.map-domain-games { color: var(--map-domain-games); }
+
+.map-domain-frontend-bg { background-color: var(--map-domain-frontend); }
+.map-domain-backend-bg { background-color: var(--map-domain-backend); }
+.map-domain-fullstack-bg { background-color: var(--map-domain-fullstack); }
+.map-domain-databases-bg { background-color: var(--map-domain-databases); }
+.map-domain-mobile-bg { background-color: var(--map-domain-mobile); }
+.map-domain-games-bg { background-color: var(--map-domain-games); }
+
+/* Glow effects */
+.map-glow {
+    box-shadow: 0 0 20px var(--map-effect-glow);
+}
+
+.map-glow-pulse {
+    animation: map-glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes map-glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--map-effect-glow);
+    }
+    50% {
+        box-shadow: 0 0 30px var(--map-effect-glow);
+    }
+}
+
+/* Hexagon clip-path utility class */
+.clip-hexagon {
+    clip-path: polygon(
+        50% 0%,
+        100% 25%,
+        100% 75%,
+        50% 100%,
+        0% 75%,
+        0% 25%
+    );
+}

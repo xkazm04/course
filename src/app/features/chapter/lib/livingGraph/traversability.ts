@@ -459,7 +459,7 @@ function computePredictedStruggle(
     }
 
     let basePrediction = 0;
-    let confidenceSum = 0;
+    const confidenceSum = 0;
     let confidenceCount = 0;
 
     // From collective insight

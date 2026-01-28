@@ -10,9 +10,6 @@ import { getModuleById, getVariantIndex } from "@/app/shared/lib/modules";
 
 // Feature imports
 import { KnowledgeMap } from "@/app/features/knowledge-map";
-import {
-    VariantD as CareerD
-} from "@/app/features/career-mapping";
 import { MyNotesPage } from "@/app/features/bookmarks";
 import { CertificatesPage } from "@/app/features/certificates";
 
@@ -20,9 +17,6 @@ import { CertificatesPage } from "@/app/features/certificates";
 const variantComponents: Record<string, Record<string, React.ReactNode>> = {
     overview: {
         "knowledge-map": <KnowledgeMap height="calc(100vh - 180px)" />,
-    },
-    "career-mapping": {
-        gamified: <CareerD />,
     },
     "my-notes": {
         library: <MyNotesPage />,

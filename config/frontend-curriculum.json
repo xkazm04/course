@@ -1,0 +1,1477 @@
+{
+  "domain": {
+    "slug": "frontend",
+    "name": "Frontend Development",
+    "depth": 0,
+    "node_type": "domain",
+    "icon": "Monitor",
+    "color": "#6366f1",
+    "description": "Craft beautiful, interactive user interfaces",
+    "estimated_hours": 500,
+    "difficulty": "beginner"
+  },
+  "topics": [
+    {
+      "slug": "html-css-foundations",
+      "name": "HTML & CSS Foundations",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "FileCode",
+      "color": "#e34c26",
+      "description": "Master the building blocks of every website",
+      "estimated_hours": 60,
+      "difficulty": "beginner",
+      "sort_order": 1,
+      "skills": [
+        {
+          "slug": "html-fundamentals",
+          "name": "HTML Fundamentals",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Code",
+          "color": "#e34c26",
+          "description": "Learn semantic HTML and document structure",
+          "estimated_hours": 15,
+          "difficulty": "beginner",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "html-document-structure",
+              "name": "Document Structure",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Understanding HTML document anatomy",
+              "estimated_hours": 3,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "html-document-anatomy", "name": "HTML Document Anatomy", "description": "DOCTYPE, html, head, and body elements", "estimated_hours": 0.5 },
+                { "slug": "meta-tags-essentials", "name": "Meta Tags Essentials", "description": "Charset, viewport, and SEO meta tags", "estimated_hours": 0.5 },
+                { "slug": "linking-external-resources", "name": "Linking External Resources", "description": "CSS, JavaScript, and favicon linking", "estimated_hours": 0.5 },
+                { "slug": "html-comments-best-practices", "name": "HTML Comments Best Practices", "description": "When and how to use comments effectively", "estimated_hours": 0.25 }
+              ]
+            },
+            {
+              "slug": "semantic-html",
+              "name": "Semantic HTML",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Writing meaningful, accessible HTML",
+              "estimated_hours": 4,
+              "difficulty": "beginner",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "semantic-elements-intro", "name": "Introduction to Semantic Elements", "description": "Why semantics matter for accessibility and SEO", "estimated_hours": 0.5 },
+                { "slug": "header-nav-footer", "name": "Header, Nav, and Footer", "description": "Page structure landmarks", "estimated_hours": 0.5 },
+                { "slug": "main-article-section", "name": "Main, Article, and Section", "description": "Content organization elements", "estimated_hours": 0.5 },
+                { "slug": "aside-figure-figcaption", "name": "Aside, Figure, and Figcaption", "description": "Supporting content elements", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "html-forms-inputs",
+              "name": "Forms and Inputs",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Building interactive forms",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "form-element-basics", "name": "Form Element Basics", "description": "Form tag, action, and method attributes", "estimated_hours": 0.5 },
+                { "slug": "text-input-types", "name": "Text Input Types", "description": "Text, email, password, tel, and URL inputs", "estimated_hours": 0.75 },
+                { "slug": "selection-inputs", "name": "Selection Inputs", "description": "Checkbox, radio, and select elements", "estimated_hours": 0.75 },
+                { "slug": "form-validation-html5", "name": "HTML5 Form Validation", "description": "Required, pattern, min, max attributes", "estimated_hours": 0.5 },
+                { "slug": "labels-accessibility", "name": "Labels and Accessibility", "description": "Proper labeling for screen readers", "estimated_hours": 0.5 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "css-fundamentals",
+          "name": "CSS Fundamentals",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Palette",
+          "color": "#264de4",
+          "description": "Style and layout with CSS",
+          "estimated_hours": 20,
+          "difficulty": "beginner",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "css-selectors-specificity",
+              "name": "Selectors and Specificity",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Target elements precisely",
+              "estimated_hours": 4,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "basic-css-selectors", "name": "Basic CSS Selectors", "description": "Element, class, and ID selectors", "estimated_hours": 0.5 },
+                { "slug": "combinator-selectors", "name": "Combinator Selectors", "description": "Descendant, child, sibling selectors", "estimated_hours": 0.5 },
+                { "slug": "pseudo-classes", "name": "Pseudo-classes", "description": "hover, focus, first-child, nth-child", "estimated_hours": 0.75 },
+                { "slug": "pseudo-elements", "name": "Pseudo-elements", "description": "before, after, first-line, first-letter", "estimated_hours": 0.5 },
+                { "slug": "specificity-calculation", "name": "Specificity Calculation", "description": "Understanding the cascade and specificity", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "css-box-model",
+              "name": "Box Model",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Understanding element dimensions",
+              "estimated_hours": 3,
+              "difficulty": "beginner",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "content-padding-border-margin", "name": "Content, Padding, Border, Margin", "description": "The four parts of the box model", "estimated_hours": 0.75 },
+                { "slug": "box-sizing-property", "name": "Box-sizing Property", "description": "content-box vs border-box", "estimated_hours": 0.5 },
+                { "slug": "margin-collapsing", "name": "Margin Collapsing", "description": "Understanding when margins collapse", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "css-colors-typography",
+              "name": "Colors and Typography",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Visual design with CSS",
+              "estimated_hours": 4,
+              "difficulty": "beginner",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "css-color-formats", "name": "CSS Color Formats", "description": "Hex, RGB, HSL, and named colors", "estimated_hours": 0.5 },
+                { "slug": "font-properties", "name": "Font Properties", "description": "font-family, font-size, font-weight", "estimated_hours": 0.5 },
+                { "slug": "text-styling", "name": "Text Styling", "description": "line-height, letter-spacing, text-decoration", "estimated_hours": 0.5 },
+                { "slug": "web-fonts-google-fonts", "name": "Web Fonts and Google Fonts", "description": "Loading custom fonts", "estimated_hours": 0.5 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "css-layout",
+          "name": "CSS Layout",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "LayoutGrid",
+          "color": "#264de4",
+          "description": "Modern layout techniques",
+          "estimated_hours": 25,
+          "difficulty": "intermediate",
+          "sort_order": 3,
+          "areas": [
+            {
+              "slug": "flexbox-layout",
+              "name": "Flexbox Layout",
+              "depth": 3,
+              "node_type": "course",
+              "description": "One-dimensional layouts with Flexbox",
+              "estimated_hours": 6,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "flexbox-container-basics", "name": "Flexbox Container Basics", "description": "display: flex and flex-direction", "estimated_hours": 0.75 },
+                { "slug": "justify-content-align-items", "name": "Justify and Align", "description": "justify-content and align-items", "estimated_hours": 0.75 },
+                { "slug": "flex-wrap-flow", "name": "Flex Wrap and Flow", "description": "Wrapping and flex-flow shorthand", "estimated_hours": 0.5 },
+                { "slug": "flex-item-properties", "name": "Flex Item Properties", "description": "flex-grow, flex-shrink, flex-basis", "estimated_hours": 0.75 },
+                { "slug": "flexbox-alignment-tricks", "name": "Flexbox Alignment Tricks", "description": "Centering and spacing patterns", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "css-grid-layout",
+              "name": "CSS Grid Layout",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Two-dimensional layouts with Grid",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "grid-container-setup", "name": "Grid Container Setup", "description": "display: grid and defining columns/rows", "estimated_hours": 0.75 },
+                { "slug": "grid-template-areas", "name": "Grid Template Areas", "description": "Named grid areas for layout", "estimated_hours": 0.75 },
+                { "slug": "grid-gap-spacing", "name": "Grid Gap and Spacing", "description": "gap, row-gap, column-gap", "estimated_hours": 0.5 },
+                { "slug": "grid-item-placement", "name": "Grid Item Placement", "description": "grid-column and grid-row", "estimated_hours": 0.75 },
+                { "slug": "auto-fit-auto-fill", "name": "Auto-fit and Auto-fill", "description": "Responsive grids without media queries", "estimated_hours": 0.75 },
+                { "slug": "grid-alignment", "name": "Grid Alignment", "description": "justify-items, align-items, place-items", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "responsive-design",
+              "name": "Responsive Design",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Adapting to any screen size",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "viewport-meta-tag", "name": "Viewport Meta Tag", "description": "Configuring the viewport correctly", "estimated_hours": 0.5 },
+                { "slug": "media-queries-basics", "name": "Media Queries Basics", "description": "Breakpoints and responsive rules", "estimated_hours": 0.75 },
+                { "slug": "mobile-first-design", "name": "Mobile-First Design", "description": "Building from small to large screens", "estimated_hours": 0.75 },
+                { "slug": "responsive-images", "name": "Responsive Images", "description": "srcset, sizes, and picture element", "estimated_hours": 0.75 },
+                { "slug": "fluid-typography", "name": "Fluid Typography", "description": "clamp() and viewport-based sizing", "estimated_hours": 0.5 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "javascript-mastery",
+      "name": "JavaScript Mastery",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "Braces",
+      "color": "#f7df1e",
+      "description": "Master the language of the web",
+      "estimated_hours": 100,
+      "difficulty": "beginner",
+      "sort_order": 2,
+      "skills": [
+        {
+          "slug": "js-fundamentals",
+          "name": "JavaScript Fundamentals",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Variable",
+          "color": "#f7df1e",
+          "description": "Core language concepts",
+          "estimated_hours": 25,
+          "difficulty": "beginner",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "variables-data-types",
+              "name": "Variables and Data Types",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Working with data in JavaScript",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "var-let-const", "name": "var, let, and const", "description": "Variable declarations and scoping", "estimated_hours": 0.75 },
+                { "slug": "primitive-types", "name": "Primitive Types", "description": "string, number, boolean, null, undefined", "estimated_hours": 0.75 },
+                { "slug": "type-coercion", "name": "Type Coercion", "description": "Implicit and explicit type conversion", "estimated_hours": 0.75 },
+                { "slug": "template-literals", "name": "Template Literals", "description": "String interpolation and multiline strings", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "operators-control-flow",
+              "name": "Operators and Control Flow",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Logic and decision making",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "arithmetic-comparison-operators", "name": "Arithmetic and Comparison Operators", "description": "Math and value comparison", "estimated_hours": 0.5 },
+                { "slug": "logical-operators", "name": "Logical Operators", "description": "AND, OR, NOT, and short-circuit evaluation", "estimated_hours": 0.5 },
+                { "slug": "if-else-statements", "name": "If-Else Statements", "description": "Conditional branching", "estimated_hours": 0.5 },
+                { "slug": "switch-statements", "name": "Switch Statements", "description": "Multi-case branching", "estimated_hours": 0.5 },
+                { "slug": "ternary-operator", "name": "Ternary Operator", "description": "Inline conditional expressions", "estimated_hours": 0.25 }
+              ]
+            },
+            {
+              "slug": "loops-iteration",
+              "name": "Loops and Iteration",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Repeating operations",
+              "estimated_hours": 4,
+              "difficulty": "beginner",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "for-loops", "name": "For Loops", "description": "Classic iteration with for", "estimated_hours": 0.5 },
+                { "slug": "while-do-while", "name": "While and Do-While Loops", "description": "Condition-based iteration", "estimated_hours": 0.5 },
+                { "slug": "for-of-for-in", "name": "For...of and For...in", "description": "Iterating arrays and objects", "estimated_hours": 0.5 },
+                { "slug": "break-continue", "name": "Break and Continue", "description": "Loop control statements", "estimated_hours": 0.25 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "js-functions",
+          "name": "Functions Deep Dive",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "FunctionSquare",
+          "color": "#f7df1e",
+          "description": "Master function patterns",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "function-basics",
+              "name": "Function Basics",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Creating and using functions",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "function-declarations", "name": "Function Declarations", "description": "Named functions and hoisting", "estimated_hours": 0.5 },
+                { "slug": "function-expressions", "name": "Function Expressions", "description": "Anonymous and named expressions", "estimated_hours": 0.5 },
+                { "slug": "arrow-functions", "name": "Arrow Functions", "description": "Concise syntax and lexical this", "estimated_hours": 0.75 },
+                { "slug": "parameters-arguments", "name": "Parameters and Arguments", "description": "Default, rest, and spread", "estimated_hours": 0.75 },
+                { "slug": "return-values", "name": "Return Values", "description": "Explicit and implicit returns", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "scope-closures",
+              "name": "Scope and Closures",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Understanding variable access",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "global-local-scope", "name": "Global and Local Scope", "description": "Variable visibility rules", "estimated_hours": 0.75 },
+                { "slug": "block-scope", "name": "Block Scope", "description": "let, const, and block-level scoping", "estimated_hours": 0.5 },
+                { "slug": "closures-explained", "name": "Closures Explained", "description": "Functions remembering their scope", "estimated_hours": 1 },
+                { "slug": "practical-closure-patterns", "name": "Practical Closure Patterns", "description": "Private variables and factories", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "higher-order-functions",
+              "name": "Higher-Order Functions",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Functions as first-class citizens",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "callbacks-intro", "name": "Introduction to Callbacks", "description": "Passing functions as arguments", "estimated_hours": 0.75 },
+                { "slug": "array-methods-map", "name": "Array Method: map()", "description": "Transforming array elements", "estimated_hours": 0.75 },
+                { "slug": "array-methods-filter-find", "name": "Array Methods: filter() and find()", "description": "Selecting array elements", "estimated_hours": 0.75 },
+                { "slug": "array-methods-reduce", "name": "Array Method: reduce()", "description": "Accumulating values", "estimated_hours": 1 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "js-objects-arrays",
+          "name": "Objects and Arrays",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Boxes",
+          "color": "#f7df1e",
+          "description": "Complex data structures",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 3,
+          "areas": [
+            {
+              "slug": "object-fundamentals",
+              "name": "Object Fundamentals",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Working with objects",
+              "estimated_hours": 6,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "object-literals", "name": "Object Literals", "description": "Creating objects with {}", "estimated_hours": 0.5 },
+                { "slug": "property-access", "name": "Property Access", "description": "Dot and bracket notation", "estimated_hours": 0.5 },
+                { "slug": "object-methods", "name": "Object Methods", "description": "Functions as object properties", "estimated_hours": 0.5 },
+                { "slug": "this-keyword", "name": "The this Keyword", "description": "Context in object methods", "estimated_hours": 0.75 },
+                { "slug": "object-destructuring", "name": "Object Destructuring", "description": "Extracting properties concisely", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "array-fundamentals",
+              "name": "Array Fundamentals",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Working with arrays",
+              "estimated_hours": 6,
+              "difficulty": "beginner",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "array-creation", "name": "Array Creation", "description": "Literals and Array constructor", "estimated_hours": 0.5 },
+                { "slug": "array-access-modification", "name": "Array Access and Modification", "description": "Indexing and updating elements", "estimated_hours": 0.5 },
+                { "slug": "array-methods-mutating", "name": "Mutating Array Methods", "description": "push, pop, shift, unshift, splice", "estimated_hours": 0.75 },
+                { "slug": "array-methods-non-mutating", "name": "Non-Mutating Array Methods", "description": "slice, concat, spread operator", "estimated_hours": 0.75 },
+                { "slug": "array-destructuring", "name": "Array Destructuring", "description": "Extracting elements concisely", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "modern-object-features",
+              "name": "Modern Object Features",
+              "depth": 3,
+              "node_type": "course",
+              "description": "ES6+ object enhancements",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "shorthand-properties", "name": "Shorthand Properties", "description": "Concise property definitions", "estimated_hours": 0.5 },
+                { "slug": "computed-properties", "name": "Computed Property Names", "description": "Dynamic property keys", "estimated_hours": 0.5 },
+                { "slug": "object-spread", "name": "Object Spread Operator", "description": "Copying and merging objects", "estimated_hours": 0.5 },
+                { "slug": "object-static-methods", "name": "Object Static Methods", "description": "keys(), values(), entries()", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "async-javascript",
+          "name": "Asynchronous JavaScript",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Clock",
+          "color": "#f7df1e",
+          "description": "Handle async operations",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 4,
+          "areas": [
+            {
+              "slug": "callbacks-event-loop",
+              "name": "Callbacks and Event Loop",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Understanding async execution",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "event-loop-explained", "name": "The Event Loop Explained", "description": "How JavaScript handles concurrency", "estimated_hours": 1 },
+                { "slug": "callback-pattern", "name": "Callback Pattern", "description": "Handling async with callbacks", "estimated_hours": 0.75 },
+                { "slug": "callback-hell", "name": "Callback Hell and Solutions", "description": "Managing nested callbacks", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "promises",
+              "name": "Promises",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Modern async handling",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "promise-basics", "name": "Promise Basics", "description": "Creating and consuming promises", "estimated_hours": 0.75 },
+                { "slug": "promise-chaining", "name": "Promise Chaining", "description": "Sequential async operations", "estimated_hours": 0.75 },
+                { "slug": "promise-error-handling", "name": "Promise Error Handling", "description": "catch() and error propagation", "estimated_hours": 0.75 },
+                { "slug": "promise-all-race", "name": "Promise.all() and Promise.race()", "description": "Parallel and racing promises", "estimated_hours": 0.75 },
+                { "slug": "promise-allsettled", "name": "Promise.allSettled()", "description": "Handling mixed results", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "async-await",
+              "name": "Async/Await",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Syntactic sugar for promises",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "async-functions", "name": "Async Functions", "description": "Declaring async functions", "estimated_hours": 0.5 },
+                { "slug": "await-keyword", "name": "The await Keyword", "description": "Pausing for promise resolution", "estimated_hours": 0.75 },
+                { "slug": "async-error-handling", "name": "Error Handling with try/catch", "description": "Catching async errors", "estimated_hours": 0.75 },
+                { "slug": "parallel-async-await", "name": "Parallel Execution with async/await", "description": "Running async operations concurrently", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "dom-manipulation",
+          "name": "DOM Manipulation",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "FileCode2",
+          "color": "#f7df1e",
+          "description": "Interact with the page",
+          "estimated_hours": 15,
+          "difficulty": "intermediate",
+          "sort_order": 5,
+          "areas": [
+            {
+              "slug": "dom-selection",
+              "name": "DOM Selection",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Finding elements in the DOM",
+              "estimated_hours": 4,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "getelementbyid", "name": "getElementById", "description": "Selecting by ID", "estimated_hours": 0.5 },
+                { "slug": "queryselector-queryselectorall", "name": "querySelector and querySelectorAll", "description": "CSS selector-based selection", "estimated_hours": 0.75 },
+                { "slug": "traversing-dom", "name": "Traversing the DOM", "description": "parentNode, children, siblings", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "dom-modification",
+              "name": "DOM Modification",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Changing page content",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "innerhtml-textcontent", "name": "innerHTML vs textContent", "description": "Setting element content", "estimated_hours": 0.5 },
+                { "slug": "creating-elements", "name": "Creating Elements", "description": "createElement and appendChild", "estimated_hours": 0.75 },
+                { "slug": "modifying-attributes", "name": "Modifying Attributes", "description": "setAttribute, classList, dataset", "estimated_hours": 0.75 },
+                { "slug": "removing-elements", "name": "Removing Elements", "description": "remove() and removeChild()", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "dom-events",
+              "name": "DOM Events",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Responding to user actions",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "event-listeners", "name": "Event Listeners", "description": "addEventListener and removeEventListener", "estimated_hours": 0.75 },
+                { "slug": "event-object", "name": "The Event Object", "description": "Accessing event information", "estimated_hours": 0.75 },
+                { "slug": "event-bubbling-capturing", "name": "Event Bubbling and Capturing", "description": "Understanding event flow", "estimated_hours": 0.75 },
+                { "slug": "event-delegation", "name": "Event Delegation", "description": "Efficient event handling", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "typescript-professional",
+      "name": "TypeScript Professional",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "FileType",
+      "color": "#3178c6",
+      "description": "Add type safety to JavaScript",
+      "estimated_hours": 80,
+      "difficulty": "intermediate",
+      "sort_order": 3,
+      "skills": [
+        {
+          "slug": "ts-fundamentals",
+          "name": "TypeScript Fundamentals",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Type",
+          "color": "#3178c6",
+          "description": "Core typing concepts",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "basic-types",
+              "name": "Basic Types",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Primitive type annotations",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "type-annotations", "name": "Type Annotations", "description": "Adding types to variables", "estimated_hours": 0.5 },
+                { "slug": "primitive-types-ts", "name": "Primitive Types in TypeScript", "description": "string, number, boolean, null, undefined", "estimated_hours": 0.5 },
+                { "slug": "arrays-tuples", "name": "Arrays and Tuples", "description": "Typed arrays and fixed-length tuples", "estimated_hours": 0.75 },
+                { "slug": "any-unknown-never", "name": "any, unknown, and never", "description": "Special types and their uses", "estimated_hours": 0.75 },
+                { "slug": "type-inference", "name": "Type Inference", "description": "When TypeScript infers types", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "object-types",
+              "name": "Object Types",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Typing object structures",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "object-type-annotations", "name": "Object Type Annotations", "description": "Inline object types", "estimated_hours": 0.5 },
+                { "slug": "optional-properties", "name": "Optional Properties", "description": "Making properties optional with ?", "estimated_hours": 0.5 },
+                { "slug": "readonly-properties", "name": "Readonly Properties", "description": "Immutable object properties", "estimated_hours": 0.5 },
+                { "slug": "index-signatures", "name": "Index Signatures", "description": "Dynamic property types", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "interfaces-type-aliases",
+              "name": "Interfaces and Type Aliases",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Reusable type definitions",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "interface-basics", "name": "Interface Basics", "description": "Defining interfaces", "estimated_hours": 0.75 },
+                { "slug": "type-alias-basics", "name": "Type Alias Basics", "description": "Creating type aliases", "estimated_hours": 0.5 },
+                { "slug": "interface-vs-type", "name": "Interface vs Type Alias", "description": "When to use each", "estimated_hours": 0.75 },
+                { "slug": "extending-interfaces", "name": "Extending Interfaces", "description": "Interface inheritance", "estimated_hours": 0.75 },
+                { "slug": "intersection-types", "name": "Intersection Types", "description": "Combining types with &", "estimated_hours": 0.5 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "ts-advanced-types",
+          "name": "Advanced Types",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Layers",
+          "color": "#3178c6",
+          "description": "Complex type patterns",
+          "estimated_hours": 25,
+          "difficulty": "advanced",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "union-narrowing",
+              "name": "Unions and Narrowing",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Flexible and safe types",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "union-types", "name": "Union Types", "description": "Types that can be one of several", "estimated_hours": 0.75 },
+                { "slug": "literal-types", "name": "Literal Types", "description": "Specific value types", "estimated_hours": 0.5 },
+                { "slug": "type-narrowing", "name": "Type Narrowing", "description": "Refining types with control flow", "estimated_hours": 0.75 },
+                { "slug": "discriminated-unions", "name": "Discriminated Unions", "description": "Tagged union patterns", "estimated_hours": 0.75 },
+                { "slug": "exhaustiveness-checking", "name": "Exhaustiveness Checking", "description": "Ensuring all cases are handled", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "generics",
+              "name": "Generics",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Reusable type-safe code",
+              "estimated_hours": 8,
+              "difficulty": "advanced",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "generic-functions", "name": "Generic Functions", "description": "Type parameters in functions", "estimated_hours": 0.75 },
+                { "slug": "generic-interfaces", "name": "Generic Interfaces", "description": "Type parameters in interfaces", "estimated_hours": 0.75 },
+                { "slug": "generic-constraints", "name": "Generic Constraints", "description": "Limiting generic types with extends", "estimated_hours": 0.75 },
+                { "slug": "default-type-parameters", "name": "Default Type Parameters", "description": "Fallback types for generics", "estimated_hours": 0.5 },
+                { "slug": "generic-utility-types", "name": "Built-in Utility Types", "description": "Partial, Required, Pick, Omit", "estimated_hours": 1 }
+              ]
+            },
+            {
+              "slug": "conditional-mapped-types",
+              "name": "Conditional and Mapped Types",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Type-level programming",
+              "estimated_hours": 8,
+              "difficulty": "advanced",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "conditional-types", "name": "Conditional Types", "description": "Types that depend on conditions", "estimated_hours": 1 },
+                { "slug": "infer-keyword", "name": "The infer Keyword", "description": "Extracting types with infer", "estimated_hours": 0.75 },
+                { "slug": "mapped-types", "name": "Mapped Types", "description": "Transforming types", "estimated_hours": 1 },
+                { "slug": "template-literal-types", "name": "Template Literal Types", "description": "String manipulation at type level", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "ts-functions-classes",
+          "name": "Functions and Classes",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Box",
+          "color": "#3178c6",
+          "description": "Typed OOP patterns",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 3,
+          "areas": [
+            {
+              "slug": "function-types",
+              "name": "Function Types",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Typing functions completely",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "function-parameter-types", "name": "Function Parameter Types", "description": "Typing function parameters", "estimated_hours": 0.5 },
+                { "slug": "return-type-annotations", "name": "Return Type Annotations", "description": "Explicit return types", "estimated_hours": 0.5 },
+                { "slug": "function-type-expressions", "name": "Function Type Expressions", "description": "Typing function variables", "estimated_hours": 0.75 },
+                { "slug": "function-overloads", "name": "Function Overloads", "description": "Multiple call signatures", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "classes-typescript",
+              "name": "Classes in TypeScript",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Type-safe OOP",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "class-properties", "name": "Class Properties", "description": "Typed class fields", "estimated_hours": 0.75 },
+                { "slug": "access-modifiers", "name": "Access Modifiers", "description": "public, private, protected", "estimated_hours": 0.75 },
+                { "slug": "parameter-properties", "name": "Parameter Properties", "description": "Shorthand property initialization", "estimated_hours": 0.5 },
+                { "slug": "abstract-classes", "name": "Abstract Classes", "description": "Base classes for inheritance", "estimated_hours": 0.75 },
+                { "slug": "implements-keyword", "name": "Implementing Interfaces", "description": "Classes implementing interfaces", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "react-ecosystem",
+      "name": "React Ecosystem",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "Atom",
+      "color": "#61dafb",
+      "description": "Build modern user interfaces with React",
+      "estimated_hours": 120,
+      "difficulty": "intermediate",
+      "sort_order": 4,
+      "skills": [
+        {
+          "slug": "react-core",
+          "name": "React Core",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Component",
+          "color": "#61dafb",
+          "description": "Essential React concepts",
+          "estimated_hours": 25,
+          "difficulty": "intermediate",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "jsx-components",
+              "name": "JSX and Components",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Building blocks of React",
+              "estimated_hours": 6,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "jsx-syntax", "name": "JSX Syntax", "description": "Writing HTML in JavaScript", "estimated_hours": 0.75 },
+                { "slug": "functional-components", "name": "Functional Components", "description": "Creating stateless components", "estimated_hours": 0.75 },
+                { "slug": "component-composition", "name": "Component Composition", "description": "Building complex UIs from simple parts", "estimated_hours": 0.75 },
+                { "slug": "children-prop", "name": "The children Prop", "description": "Passing content between components", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "props-state",
+              "name": "Props and State",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Data flow in React",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "passing-props", "name": "Passing Props", "description": "Data from parent to child", "estimated_hours": 0.75 },
+                { "slug": "prop-types-validation", "name": "Prop Types Validation", "description": "Runtime prop checking", "estimated_hours": 0.5 },
+                { "slug": "usestate-hook", "name": "useState Hook", "description": "Managing component state", "estimated_hours": 0.75 },
+                { "slug": "state-updates", "name": "State Updates", "description": "Updating state correctly", "estimated_hours": 0.75 },
+                { "slug": "lifting-state-up", "name": "Lifting State Up", "description": "Sharing state between components", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "rendering-lists",
+              "name": "Rendering and Lists",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Dynamic content rendering",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "conditional-rendering", "name": "Conditional Rendering", "description": "Rendering based on conditions", "estimated_hours": 0.75 },
+                { "slug": "rendering-lists", "name": "Rendering Lists", "description": "Using map() for lists", "estimated_hours": 0.75 },
+                { "slug": "keys-importance", "name": "Keys and Their Importance", "description": "Why keys matter for performance", "estimated_hours": 0.5 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "react-hooks",
+          "name": "React Hooks",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Anchor",
+          "color": "#61dafb",
+          "description": "Master React hooks",
+          "estimated_hours": 30,
+          "difficulty": "intermediate",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "essential-hooks",
+              "name": "Essential Hooks",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Core hooks every developer needs",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "useeffect-basics", "name": "useEffect Basics", "description": "Side effects in components", "estimated_hours": 0.75 },
+                { "slug": "useeffect-dependencies", "name": "useEffect Dependencies", "description": "Controlling when effects run", "estimated_hours": 0.75 },
+                { "slug": "useeffect-cleanup", "name": "useEffect Cleanup", "description": "Preventing memory leaks", "estimated_hours": 0.75 },
+                { "slug": "usecontext-hook", "name": "useContext Hook", "description": "Consuming context values", "estimated_hours": 0.75 },
+                { "slug": "useref-hook", "name": "useRef Hook", "description": "Refs and mutable values", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "performance-hooks",
+              "name": "Performance Hooks",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Optimizing React performance",
+              "estimated_hours": 7,
+              "difficulty": "advanced",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "usememo-hook", "name": "useMemo Hook", "description": "Memoizing expensive calculations", "estimated_hours": 0.75 },
+                { "slug": "usecallback-hook", "name": "useCallback Hook", "description": "Memoizing callback functions", "estimated_hours": 0.75 },
+                { "slug": "when-to-memoize", "name": "When to Memoize", "description": "Avoiding premature optimization", "estimated_hours": 0.75 },
+                { "slug": "react-memo", "name": "React.memo", "description": "Memoizing components", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "custom-hooks",
+              "name": "Custom Hooks",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Creating reusable hook logic",
+              "estimated_hours": 8,
+              "difficulty": "advanced",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "custom-hook-basics", "name": "Custom Hook Basics", "description": "Extracting component logic", "estimated_hours": 0.75 },
+                { "slug": "hook-composition", "name": "Hook Composition", "description": "Building complex hooks from simple ones", "estimated_hours": 0.75 },
+                { "slug": "usefetch-hook", "name": "Building useFetch", "description": "Custom data fetching hook", "estimated_hours": 1 },
+                { "slug": "uselocalstorage-hook", "name": "Building useLocalStorage", "description": "Persistent state hook", "estimated_hours": 0.75 },
+                { "slug": "generics-custom-hooks", "name": "Generics in Custom Hooks", "description": "Type-safe reusable hooks", "estimated_hours": 1 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "react-state-management",
+          "name": "State Management",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "GitBranch",
+          "color": "#61dafb",
+          "description": "Managing complex state",
+          "estimated_hours": 25,
+          "difficulty": "advanced",
+          "sort_order": 3,
+          "areas": [
+            {
+              "slug": "context-api",
+              "name": "Context API",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Built-in state sharing",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "creating-context", "name": "Creating Context", "description": "Setting up React context", "estimated_hours": 0.75 },
+                { "slug": "context-provider", "name": "Context Provider", "description": "Providing values to children", "estimated_hours": 0.75 },
+                { "slug": "context-best-practices", "name": "Context Best Practices", "description": "Avoiding common pitfalls", "estimated_hours": 0.75 },
+                { "slug": "context-with-reducer", "name": "Context with useReducer", "description": "Complex state with context", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "usereducer-hook",
+              "name": "useReducer Hook",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Redux-like state management",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "usereducer-basics", "name": "useReducer Basics", "description": "Actions and reducers", "estimated_hours": 0.75 },
+                { "slug": "reducer-patterns", "name": "Reducer Patterns", "description": "Common reducer structures", "estimated_hours": 0.75 },
+                { "slug": "usestate-vs-usereducer", "name": "useState vs useReducer", "description": "When to use each", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "zustand-state",
+              "name": "Zustand",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Lightweight state management",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "zustand-setup", "name": "Zustand Setup", "description": "Creating a Zustand store", "estimated_hours": 0.75 },
+                { "slug": "zustand-selectors", "name": "Zustand Selectors", "description": "Efficient state selection", "estimated_hours": 0.75 },
+                { "slug": "zustand-middleware", "name": "Zustand Middleware", "description": "persist, devtools, and more", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "react-forms",
+          "name": "Forms and Validation",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "FormInput",
+          "color": "#61dafb",
+          "description": "Handle user input",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 4,
+          "areas": [
+            {
+              "slug": "controlled-forms",
+              "name": "Controlled Forms",
+              "depth": 3,
+              "node_type": "course",
+              "description": "React-controlled inputs",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "controlled-inputs", "name": "Controlled Inputs", "description": "State-driven form inputs", "estimated_hours": 0.75 },
+                { "slug": "handling-form-submission", "name": "Handling Form Submission", "description": "onSubmit and preventDefault", "estimated_hours": 0.5 },
+                { "slug": "multiple-inputs", "name": "Multiple Inputs", "description": "Managing complex forms", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "react-hook-form",
+              "name": "React Hook Form",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Performant form library",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "rhf-setup", "name": "React Hook Form Setup", "description": "Installing and basic usage", "estimated_hours": 0.75 },
+                { "slug": "rhf-validation", "name": "Built-in Validation", "description": "Required, pattern, min, max", "estimated_hours": 0.75 },
+                { "slug": "rhf-errors", "name": "Error Handling", "description": "Displaying validation errors", "estimated_hours": 0.5 },
+                { "slug": "rhf-zod-integration", "name": "Zod Schema Validation", "description": "Type-safe form validation", "estimated_hours": 1 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-fullstack",
+      "name": "Next.js Fullstack",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "Triangle",
+      "color": "#000000",
+      "description": "Production-ready React applications",
+      "estimated_hours": 100,
+      "difficulty": "intermediate",
+      "sort_order": 5,
+      "skills": [
+        {
+          "slug": "nextjs-fundamentals",
+          "name": "Next.js Fundamentals",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Rocket",
+          "color": "#000000",
+          "description": "Core Next.js concepts",
+          "estimated_hours": 25,
+          "difficulty": "intermediate",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "app-router-basics",
+              "name": "App Router Basics",
+              "depth": 3,
+              "node_type": "course",
+              "description": "File-based routing in Next.js 15",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "file-based-routing", "name": "File-Based Routing", "description": "Creating routes with folders", "estimated_hours": 0.75 },
+                { "slug": "page-layout-components", "name": "Page and Layout Components", "description": "page.tsx and layout.tsx", "estimated_hours": 0.75 },
+                { "slug": "dynamic-routes", "name": "Dynamic Routes", "description": "[param] folder conventions", "estimated_hours": 0.75 },
+                { "slug": "route-groups", "name": "Route Groups", "description": "Organizing routes with (folder)", "estimated_hours": 0.5 },
+                { "slug": "parallel-routes", "name": "Parallel Routes", "description": "@folder slot conventions", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "server-client-components",
+              "name": "Server and Client Components",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Understanding the component model",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "server-components-intro", "name": "Server Components Introduction", "description": "Default behavior and benefits", "estimated_hours": 0.75 },
+                { "slug": "use-client-directive", "name": "The 'use client' Directive", "description": "When and how to use client components", "estimated_hours": 0.75 },
+                { "slug": "component-composition-nextjs", "name": "Mixing Server and Client", "description": "Composition patterns", "estimated_hours": 0.75 },
+                { "slug": "serialization-boundaries", "name": "Serialization Boundaries", "description": "What can cross the boundary", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "navigation-linking",
+              "name": "Navigation and Linking",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Moving between pages",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "link-component", "name": "Link Component", "description": "Client-side navigation", "estimated_hours": 0.5 },
+                { "slug": "userouter-hook", "name": "useRouter Hook", "description": "Programmatic navigation", "estimated_hours": 0.75 },
+                { "slug": "usepathname-usesearchparams", "name": "usePathname and useSearchParams", "description": "Reading URL information", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-data-fetching",
+          "name": "Data Fetching",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Download",
+          "color": "#000000",
+          "description": "Getting data in Next.js",
+          "estimated_hours": 25,
+          "difficulty": "intermediate",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "server-data-fetching",
+              "name": "Server Data Fetching",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Fetching data on the server",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "fetch-in-server-components", "name": "Fetch in Server Components", "description": "Direct async/await fetching", "estimated_hours": 0.75 },
+                { "slug": "caching-strategies", "name": "Caching Strategies", "description": "force-cache, no-store, revalidate", "estimated_hours": 1 },
+                { "slug": "parallel-data-fetching", "name": "Parallel Data Fetching", "description": "Promise.all for performance", "estimated_hours": 0.75 },
+                { "slug": "sequential-data-fetching", "name": "Sequential Data Fetching", "description": "When order matters", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "server-actions",
+              "name": "Server Actions",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Server mutations in Next.js",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "server-actions-intro", "name": "Server Actions Introduction", "description": "The 'use server' directive", "estimated_hours": 0.75 },
+                { "slug": "form-server-actions", "name": "Forms with Server Actions", "description": "action prop on forms", "estimated_hours": 0.75 },
+                { "slug": "useformstatus-useformstate", "name": "useFormStatus and useFormState", "description": "Form state management", "estimated_hours": 0.75 },
+                { "slug": "server-action-validation", "name": "Server Action Validation", "description": "Validating server-side input", "estimated_hours": 0.75 },
+                { "slug": "revalidation-after-mutation", "name": "Revalidation After Mutation", "description": "revalidatePath and revalidateTag", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "loading-error-states",
+              "name": "Loading and Error States",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Handling loading and errors",
+              "estimated_hours": 5,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "loading-ui", "name": "Loading UI", "description": "loading.tsx convention", "estimated_hours": 0.5 },
+                { "slug": "suspense-streaming", "name": "Suspense and Streaming", "description": "Progressive rendering", "estimated_hours": 0.75 },
+                { "slug": "error-handling-nextjs", "name": "Error Handling", "description": "error.tsx and global errors", "estimated_hours": 0.75 },
+                { "slug": "not-found-handling", "name": "Not Found Handling", "description": "not-found.tsx convention", "estimated_hours": 0.5 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-api-routes",
+          "name": "API Routes",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Webhook",
+          "color": "#000000",
+          "description": "Building APIs in Next.js",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 3,
+          "areas": [
+            {
+              "slug": "route-handlers",
+              "name": "Route Handlers",
+              "depth": 3,
+              "node_type": "course",
+              "description": "API endpoints in App Router",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "route-handler-basics", "name": "Route Handler Basics", "description": "Creating route.ts files", "estimated_hours": 0.75 },
+                { "slug": "http-methods", "name": "HTTP Methods", "description": "GET, POST, PUT, DELETE handlers", "estimated_hours": 0.75 },
+                { "slug": "request-response-objects", "name": "Request and Response Objects", "description": "NextRequest and NextResponse", "estimated_hours": 0.75 },
+                { "slug": "dynamic-api-routes", "name": "Dynamic API Routes", "description": "[param] in route handlers", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "api-patterns",
+              "name": "API Patterns",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Common API implementations",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "crud-api", "name": "Building a CRUD API", "description": "Create, Read, Update, Delete", "estimated_hours": 1 },
+                { "slug": "api-error-responses", "name": "Error Responses", "description": "Structured error handling", "estimated_hours": 0.5 },
+                { "slug": "api-rate-limiting", "name": "Rate Limiting", "description": "Protecting your API", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-advanced",
+          "name": "Advanced Next.js",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Zap",
+          "color": "#000000",
+          "description": "Production patterns",
+          "estimated_hours": 20,
+          "difficulty": "advanced",
+          "sort_order": 4,
+          "areas": [
+            {
+              "slug": "middleware",
+              "name": "Middleware",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Request interception",
+              "estimated_hours": 5,
+              "difficulty": "advanced",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "middleware-basics", "name": "Middleware Basics", "description": "Creating middleware.ts", "estimated_hours": 0.75 },
+                { "slug": "middleware-matching", "name": "Middleware Matching", "description": "Configuring matcher patterns", "estimated_hours": 0.5 },
+                { "slug": "auth-middleware", "name": "Authentication Middleware", "description": "Protecting routes", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "optimization",
+              "name": "Optimization",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Performance optimization",
+              "estimated_hours": 7,
+              "difficulty": "advanced",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "image-optimization", "name": "Image Optimization", "description": "next/image component", "estimated_hours": 0.75 },
+                { "slug": "font-optimization", "name": "Font Optimization", "description": "next/font for web fonts", "estimated_hours": 0.5 },
+                { "slug": "bundle-analysis", "name": "Bundle Analysis", "description": "Analyzing and reducing bundle size", "estimated_hours": 0.75 },
+                { "slug": "static-dynamic-rendering", "name": "Static vs Dynamic Rendering", "description": "Choosing the right strategy", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "modern-css-styling",
+      "name": "Modern CSS & Styling",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "Sparkles",
+      "color": "#38bdf8",
+      "description": "Advanced styling techniques",
+      "estimated_hours": 60,
+      "difficulty": "intermediate",
+      "sort_order": 6,
+      "skills": [
+        {
+          "slug": "tailwind-css",
+          "name": "Tailwind CSS",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Wind",
+          "color": "#38bdf8",
+          "description": "Utility-first CSS framework",
+          "estimated_hours": 25,
+          "difficulty": "intermediate",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "tailwind-fundamentals",
+              "name": "Tailwind Fundamentals",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Core utility classes",
+              "estimated_hours": 8,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "tailwind-setup", "name": "Tailwind Setup", "description": "Installing and configuring Tailwind", "estimated_hours": 0.75 },
+                { "slug": "spacing-sizing-utilities", "name": "Spacing and Sizing", "description": "margin, padding, width, height", "estimated_hours": 0.75 },
+                { "slug": "color-utilities", "name": "Color Utilities", "description": "text, background, border colors", "estimated_hours": 0.5 },
+                { "slug": "typography-utilities", "name": "Typography Utilities", "description": "font, text, leading classes", "estimated_hours": 0.75 },
+                { "slug": "flexbox-grid-tailwind", "name": "Flexbox and Grid in Tailwind", "description": "Layout utilities", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "tailwind-advanced",
+              "name": "Advanced Tailwind",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Power features of Tailwind",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "responsive-design-tailwind", "name": "Responsive Design", "description": "sm:, md:, lg: breakpoints", "estimated_hours": 0.75 },
+                { "slug": "state-variants", "name": "State Variants", "description": "hover:, focus:, active: modifiers", "estimated_hours": 0.75 },
+                { "slug": "dark-mode-tailwind", "name": "Dark Mode", "description": "dark: variant implementation", "estimated_hours": 0.75 },
+                { "slug": "custom-configuration", "name": "Custom Configuration", "description": "Extending tailwind.config.js", "estimated_hours": 0.75 },
+                { "slug": "arbitrary-values", "name": "Arbitrary Values", "description": "Custom values with []", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "tailwind-patterns",
+              "name": "Tailwind Patterns",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Common UI patterns",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "tailwind-buttons", "name": "Button Components", "description": "Building button variants", "estimated_hours": 0.75 },
+                { "slug": "tailwind-cards", "name": "Card Layouts", "description": "Card component patterns", "estimated_hours": 0.75 },
+                { "slug": "tailwind-forms", "name": "Form Styling", "description": "Input and form styling", "estimated_hours": 0.75 },
+                { "slug": "tailwind-navigation", "name": "Navigation Patterns", "description": "Navbar and sidebar patterns", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "css-animations",
+          "name": "CSS Animations",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Play",
+          "color": "#f472b6",
+          "description": "Motion and transitions",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "css-transitions",
+              "name": "CSS Transitions",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Smooth state changes",
+              "estimated_hours": 5,
+              "difficulty": "beginner",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "transition-property", "name": "Transition Property", "description": "What to animate", "estimated_hours": 0.5 },
+                { "slug": "timing-functions", "name": "Timing Functions", "description": "ease, linear, cubic-bezier", "estimated_hours": 0.75 },
+                { "slug": "transition-duration-delay", "name": "Duration and Delay", "description": "Controlling animation timing", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "keyframe-animations",
+              "name": "Keyframe Animations",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Complex animations",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "keyframes-rule", "name": "@keyframes Rule", "description": "Defining animation stages", "estimated_hours": 0.75 },
+                { "slug": "animation-properties", "name": "Animation Properties", "description": "name, duration, iteration", "estimated_hours": 0.75 },
+                { "slug": "animation-fill-mode", "name": "Animation Fill Mode", "description": "forwards, backwards, both", "estimated_hours": 0.5 },
+                { "slug": "common-animation-patterns", "name": "Common Animation Patterns", "description": "Fade, slide, pulse, bounce", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "framer-motion-basics",
+              "name": "Framer Motion Basics",
+              "depth": 3,
+              "node_type": "course",
+              "description": "React animation library",
+              "estimated_hours": 7,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "motion-component", "name": "Motion Component", "description": "Animating with motion.div", "estimated_hours": 0.75 },
+                { "slug": "animate-prop", "name": "Animate Prop", "description": "Declarative animations", "estimated_hours": 0.75 },
+                { "slug": "variants-pattern", "name": "Variants Pattern", "description": "Coordinated animations", "estimated_hours": 0.75 },
+                { "slug": "gesture-animations", "name": "Gesture Animations", "description": "whileHover, whileTap, drag", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "testing-frontend",
+      "name": "Frontend Testing",
+      "depth": 1,
+      "node_type": "topic",
+      "icon": "TestTube",
+      "color": "#22c55e",
+      "description": "Test your frontend code",
+      "estimated_hours": 50,
+      "difficulty": "intermediate",
+      "sort_order": 7,
+      "skills": [
+        {
+          "slug": "unit-testing",
+          "name": "Unit Testing",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Check",
+          "color": "#22c55e",
+          "description": "Test individual units",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 1,
+          "areas": [
+            {
+              "slug": "vitest-fundamentals",
+              "name": "Vitest Fundamentals",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Modern test runner",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "vitest-setup", "name": "Vitest Setup", "description": "Installing and configuring Vitest", "estimated_hours": 0.5 },
+                { "slug": "test-describe-it", "name": "test, describe, and it", "description": "Test structure and organization", "estimated_hours": 0.5 },
+                { "slug": "expect-matchers", "name": "Expect and Matchers", "description": "Assertions and expectations", "estimated_hours": 0.75 },
+                { "slug": "setup-teardown", "name": "Setup and Teardown", "description": "beforeEach, afterEach hooks", "estimated_hours": 0.5 }
+              ]
+            },
+            {
+              "slug": "testing-react-components",
+              "name": "Testing React Components",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Component testing strategies",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "testing-library-setup", "name": "Testing Library Setup", "description": "Installing @testing-library/react", "estimated_hours": 0.5 },
+                { "slug": "render-screen", "name": "render and screen", "description": "Rendering components for testing", "estimated_hours": 0.75 },
+                { "slug": "query-methods", "name": "Query Methods", "description": "getBy, findBy, queryBy", "estimated_hours": 0.75 },
+                { "slug": "user-events", "name": "User Events", "description": "Simulating user interactions", "estimated_hours": 0.75 },
+                { "slug": "testing-async-components", "name": "Testing Async Components", "description": "waitFor and findBy queries", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "mocking-strategies",
+              "name": "Mocking Strategies",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Isolating units for testing",
+              "estimated_hours": 6,
+              "difficulty": "intermediate",
+              "sort_order": 3,
+              "lessons": [
+                { "slug": "vi-fn-mocking", "name": "vi.fn() for Mocking", "description": "Creating mock functions", "estimated_hours": 0.75 },
+                { "slug": "module-mocking", "name": "Module Mocking", "description": "vi.mock() for modules", "estimated_hours": 0.75 },
+                { "slug": "mocking-api-calls", "name": "Mocking API Calls", "description": "MSW and fetch mocking", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "e2e-testing",
+          "name": "E2E Testing",
+          "depth": 2,
+          "node_type": "skill",
+          "icon": "Globe",
+          "color": "#22c55e",
+          "description": "End-to-end testing",
+          "estimated_hours": 20,
+          "difficulty": "intermediate",
+          "sort_order": 2,
+          "areas": [
+            {
+              "slug": "playwright-fundamentals",
+              "name": "Playwright Fundamentals",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Browser automation testing",
+              "estimated_hours": 8,
+              "difficulty": "intermediate",
+              "sort_order": 1,
+              "lessons": [
+                { "slug": "playwright-setup", "name": "Playwright Setup", "description": "Installing and configuring", "estimated_hours": 0.75 },
+                { "slug": "page-locators", "name": "Page and Locators", "description": "Finding elements on page", "estimated_hours": 0.75 },
+                { "slug": "playwright-actions", "name": "Actions", "description": "click, fill, type, select", "estimated_hours": 0.75 },
+                { "slug": "playwright-assertions", "name": "Assertions", "description": "expect with locators", "estimated_hours": 0.75 }
+              ]
+            },
+            {
+              "slug": "playwright-advanced",
+              "name": "Advanced Playwright",
+              "depth": 3,
+              "node_type": "course",
+              "description": "Advanced testing patterns",
+              "estimated_hours": 7,
+              "difficulty": "advanced",
+              "sort_order": 2,
+              "lessons": [
+                { "slug": "test-fixtures", "name": "Test Fixtures", "description": "Reusable test setup", "estimated_hours": 0.75 },
+                { "slug": "page-object-model", "name": "Page Object Model", "description": "Organizing test code", "estimated_hours": 0.75 },
+                { "slug": "visual-regression", "name": "Visual Regression Testing", "description": "Screenshot comparisons", "estimated_hours": 0.75 },
+                { "slug": "ci-integration", "name": "CI Integration", "description": "Running tests in CI/CD", "estimated_hours": 0.75 }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_topics": 7,
+    "total_skills": 22,
+    "total_areas": 52,
+    "total_lessons": 200
+  }
+}

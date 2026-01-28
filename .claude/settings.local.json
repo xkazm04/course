@@ -74,7 +74,23 @@
       "Bash(then grep -E \"^\\(SUPABASE_SERVICE_ROLE_KEY\\)\" .env.local)",
       "Bash(then grep -E \"^\\(SUPABASE_URL|NEXT_PUBLIC_SUPABASE_URL|SUPABASE_SERVICE_ROLE_KEY\\)\" .env.local)",
       "Bash(then grep -E \"^\\(ANTHROPIC_API_KEY\\)\" .env.local)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(npx supabase:*)",
+      "Bash(node -e:*)",
+      "WebFetch(domain:www.hubspot.com)",
+      "Bash(npm ls:*)",
+      "Bash(PROJECT_ID=\"5bcd0884-6ae3-4d5d-a35f-152a6b01c3bb\":*)",
+      "Bash(__NEW_LINE_09dc551735d1910b__ echo \"=== GROUPS ===\")",
+      "Bash(__NEW_LINE_5f609c146f6c0682__ echo \"=== CONTEXTS ===\")",
+      "Bash(__NEW_LINE_2655b13fb14bd7c1__ echo \"=== RELATIONSHIPS ===\")",
+      "Bash(node scripts/analyze-map-nodes.js:*)",
+      "WebFetch(domain:www.remotion.dev)",
+      "Bash(ping:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(netstat:*)",
+      "Bash(tee:*)",
+      "Bash(git add:*)"
     ]
   }
 }

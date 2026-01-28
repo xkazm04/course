@@ -111,13 +111,13 @@ function pruneOldData(patterns: CollectivePatterns): CollectivePatterns {
     const now = Date.now();
 
     // Prune fingerprints
-    let fingerprints = patterns.fingerprints
+    const fingerprints = patterns.fingerprints
         .filter((f) => now - f.lastUpdated < MAX_AGE_MS)
         .sort((a, b) => b.lastUpdated - a.lastUpdated)
         .slice(0, MAX_FINGERPRINTS);
 
     // Prune patterns by frequency
-    let learningPatterns = patterns.patterns
+    const learningPatterns = patterns.patterns
         .sort((a, b) => b.patternFrequency - a.patternFrequency)
         .slice(0, MAX_PATTERNS);
 

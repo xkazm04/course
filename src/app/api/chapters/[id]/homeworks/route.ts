@@ -118,7 +118,7 @@ async function fallbackQuery(
     }
 
     // If user is logged in, get their assignments
-    let userAssignments: Record<string, any> = {};
+    const userAssignments: Record<string, any> = {};
     if (userId && definitions?.length > 0) {
         const defIds = definitions.map((d: any) => d.id);
         const { data: assignments } = await supabase

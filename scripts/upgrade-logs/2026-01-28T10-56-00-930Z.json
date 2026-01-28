@@ -1,0 +1,261 @@
+{
+  "options": {
+    "maxLessons": 30,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "1c29025d-37a3-46b5-b0a7-6e47850e13b5",
+      "name": "Auto-fit and Auto-fill",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: comparison, code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "724c0c2c-897e-49e9-b70e-419de8061d3c",
+      "name": "Array Destructuring",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "942d1b19-50f6-44bf-bfea-c4b058bc1025",
+      "name": "Promise.allSettled()",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8fbe29bd-9f70-4ec5-a5bf-c4954296cad0",
+      "name": "useRef Hook",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, code, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "dd803fc1-0ee5-4304-b6af-8b58e550bea1",
+      "name": "Built-in Utility Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "bce6b3b4-ae91-4892-af68-58dabf805c6c",
+      "name": "Testing Async Components",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "ab156ebe-15e5-42c8-9557-49277891de40",
+      "name": "Revalidation After Mutation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tabs, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "f75ae9ef-9979-4af6-b033-53b6ff98e154",
+      "name": "Fluid Typography",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "ad2fe93f-ca13-4e4a-9b40-c45ed5a0e1ce",
+      "name": "Parallel Routes",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "911ca053-3274-4e33-9cb6-385f29ed11c8",
+      "name": "Flexbox Alignment Tricks",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "2a086a5d-0f98-483e-8611-2c856bb46c93",
+      "name": "Intersection Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "9c725066-d6cc-4408-9f9e-33f57e7ec857",
+      "name": "Exhaustiveness Checking",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, animated, pitfall, tabs, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "40b63ace-2e0e-4e80-8204-273248e7430f",
+      "name": "Specificity Calculation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "e5019d5e-da73-4081-94b5-7024ba99620e",
+      "name": "Labels and Accessibility",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "d541d83f-6465-4248-967f-3f51bfe3e944",
+      "name": "Arbitrary Values",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "5aa6cc74-3742-4910-8dc0-5b0f070d49bb",
+      "name": "Ternary Operator",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "3fa3dab5-5b0c-4ab7-ba91-891bdf3beeae",
+      "name": "Type Inference",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "d46ed762-b876-4fcf-945f-637034da6c37",
+      "name": "Lifting State Up",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "1e5dac05-0b56-4ace-bef9-f18b056881b7",
+      "name": "Implementing Interfaces",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "1ef603fe-d90f-4078-991d-2f4d0e42018f",
+      "name": "Object Destructuring",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "c9b226cf-7f29-4deb-b181-d82e3ec75ce1",
+      "name": "Flexbox and Grid in Tailwind",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "b80e6b59-0b6a-41ee-b766-aef5e967275c",
+      "name": "Return Values",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "525f4c26-62d0-4c02-bc24-9b449b73f869",
+      "name": "Grid Alignment",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    }
+  ]
+}

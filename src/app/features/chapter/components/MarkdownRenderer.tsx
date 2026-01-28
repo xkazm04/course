@@ -4,8 +4,80 @@ import React, { useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import DOMPurify from "dompurify";
 import { Lightbulb, AlertTriangle, Info, Copy, Check } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
+
+// ============================================================================
+// XSS Sanitization Configuration
+// ============================================================================
+
+/**
+ * DOMPurify configuration for markdown content sanitization.
+ * Whitelists only safe HTML tags and attributes to prevent XSS attacks.
+ * This is critical for user-generated content like peer solutions.
+ */
+const ALLOWED_TAGS = [
+    // Text formatting
+    "p", "br", "strong", "b", "em", "i", "u", "s", "del", "ins", "mark",
+    "sub", "sup", "small",
+    // Headings
+    "h1", "h2", "h3", "h4", "h5", "h6",
+    // Lists
+    "ul", "ol", "li",
+    // Code
+    "pre", "code", "kbd", "samp", "var",
+    // Tables
+    "table", "thead", "tbody", "tfoot", "tr", "th", "td", "caption", "colgroup", "col",
+    // Block elements
+    "div", "span", "blockquote", "hr",
+    // Links and images
+    "a", "img",
+    // Details/summary (for collapsible content)
+    "details", "summary",
+];
+
+const ALLOWED_ATTR = [
+    // Common
+    "class", "id", "title",
+    // Links
+    "href", "target", "rel",
+    // Images
+    "src", "alt", "width", "height",
+    // Tables
+    "colspan", "rowspan", "scope",
+    // Code blocks (for syntax highlighting)
+    "data-language",
+];
+
+const FORBID_TAGS = ["script", "style", "iframe", "object", "embed", "form", "input", "button", "textarea", "select"];
+const FORBID_ATTR = ["onerror", "onload", "onclick", "onmouseover", "onfocus", "onblur", "onchange", "onsubmit", "style"];
+
+/**
+ * Sanitize markdown content to prevent XSS attacks.
+ * This should be called BEFORE passing content to ReactMarkdown.
+ *
+ * Note: While ReactMarkdown provides some sanitization, DOMPurify adds
+ * an extra defense layer especially important for user-generated content.
+ */
+function sanitizeContent(content: string): string {
+    if (typeof window === "undefined") {
+        // Server-side: return content as-is (ReactMarkdown handles basic sanitization)
+        // Note: For full SSR support, consider using isomorphic-dompurify
+        return content;
+    }
+
+    return DOMPurify.sanitize(content, {
+        ALLOWED_TAGS,
+        ALLOWED_ATTR,
+        FORBID_TAGS,
+        FORBID_ATTR,
+        // Force all links to open in new tab and have safe rel attributes
+        ADD_ATTR: ["target", "rel"],
+        // Disallow data: and javascript: URLs
+        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
+    });
+}
 
 // ============================================================================
 // Types
@@ -328,10 +400,12 @@ function processCallouts(content: string): React.ReactNode[] {
 // ============================================================================
 
 export function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
-    const processedContent = useMemo(() => processCallouts(content), [content]);
+    // Sanitize content first to prevent XSS attacks from user-generated content
+    const sanitizedContent = useMemo(() => sanitizeContent(content), [content]);
+    const processedContent = useMemo(() => processCallouts(sanitizedContent), [sanitizedContent]);
 
     return (
-        <div className={cn("markdown-content", className)}>
+        <div className={cn("markdown-content", className)} data-testid="markdown-renderer">
             {processedContent}
         </div>
     );

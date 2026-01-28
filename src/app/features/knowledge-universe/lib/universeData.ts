@@ -20,6 +20,7 @@ import { CHAPTER_SECTIONS, type ChapterSection } from "@/app/features/chapter/li
 import type {
     PlanetNode,
     MoonNode,
+    OrbitNode,
     StarNode,
     UniverseNode,
     UniverseConnection,
@@ -215,12 +216,15 @@ function generateConnections(planets: PlanetNode[]): UniverseConnection[] {
 export interface UniverseData {
     planets: PlanetNode[];
     moons: MoonNode[];
+    /** Optional orbit nodes (skills) - intermediate level between moons and stars */
+    orbits?: OrbitNode[];
     stars: StarNode[];
     connections: UniverseConnection[];
     allNodes: UniverseNode[];
     nodeCount: {
         planets: number;
         moons: number;
+        orbits?: number;
         stars: number;
         total: number;
     };

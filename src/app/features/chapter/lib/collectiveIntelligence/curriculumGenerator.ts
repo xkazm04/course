@@ -4,9 +4,135 @@
  * Generates a crowd-sourced curriculum from collective learner behavior.
  * Instead of hand-crafted prerequisites, this system derives them from
  * actual learning patterns.
+ *
+ * Includes cycle detection to prevent infinite loops when traversing
+ * prerequisite relationships.
  */
 
 import type { ChapterNodeId } from "../chapterGraph";
+
+// ============================================================================
+// CYCLE DETECTION ERROR
+// ============================================================================
+
+/**
+ * Error thrown when a circular dependency is detected in prerequisite graph.
+ * Includes the full cycle path for debugging.
+ */
+export class CircularPrerequisiteError extends Error {
+    /** The cycle path that was detected (e.g., ["A", "B", "C", "A"]) */
+    public readonly cyclePath: ChapterNodeId[];
+
+    constructor(cyclePath: ChapterNodeId[]) {
+        const cycleString = cyclePath.join(" -> ");
+        super(
+            `Circular prerequisite dependency detected: ${cycleString}. ` +
+            `Please review and fix the prerequisite relationships to remove the cycle.`
+        );
+        this.name = "CircularPrerequisiteError";
+        this.cyclePath = cyclePath;
+    }
+}
+
+/**
+ * Result of cycle detection - either no cycle found or a cycle path
+ */
+export interface CycleDetectionResult {
+    /** Whether a cycle was detected */
+    hasCycle: boolean;
+    /** If a cycle was found, the path of the cycle */
+    cyclePath?: ChapterNodeId[];
+}
+
+/**
+ * Detect cycles in a prerequisite graph using DFS.
+ *
+ * @param edges - Array of prerequisite edges (from prerequisite to dependent)
+ * @returns CycleDetectionResult indicating if a cycle exists and the path
+ */
+export function detectPrerequisiteCycles(
+    edges: Array<{ from: ChapterNodeId; to: ChapterNodeId }>
+): CycleDetectionResult {
+    // Build adjacency list: from -> [to nodes]
+    const adjacencyList = new Map<ChapterNodeId, ChapterNodeId[]>();
+    const allNodes = new Set<ChapterNodeId>();
+
+    for (const edge of edges) {
+        allNodes.add(edge.from);
+        allNodes.add(edge.to);
+
+        const neighbors = adjacencyList.get(edge.from) ?? [];
+        neighbors.push(edge.to);
+        adjacencyList.set(edge.from, neighbors);
+    }
+
+    // Track node states: 0 = unvisited, 1 = visiting, 2 = visited
+    const state = new Map<ChapterNodeId, number>();
+    // Track the path for cycle reconstruction
+    const path: ChapterNodeId[] = [];
+
+    /**
+     * DFS traversal that detects back edges (cycles)
+     */
+    function dfs(node: ChapterNodeId): ChapterNodeId[] | null {
+        state.set(node, 1); // Mark as visiting
+        path.push(node);
+
+        const neighbors = adjacencyList.get(node) ?? [];
+        for (const neighbor of neighbors) {
+            const neighborState = state.get(neighbor) ?? 0;
+
+            if (neighborState === 1) {
+                // Back edge found - we have a cycle
+                // Find where the cycle starts in the path
+                const cycleStartIndex = path.indexOf(neighbor);
+                const cyclePath = [...path.slice(cycleStartIndex), neighbor];
+                return cyclePath;
+            }
+
+            if (neighborState === 0) {
+                // Unvisited - recurse
+                const cycleResult = dfs(neighbor);
+                if (cycleResult) {
+                    return cycleResult;
+                }
+            }
+            // If neighborState === 2, already fully processed, skip
+        }
+
+        path.pop();
+        state.set(node, 2); // Mark as fully visited
+        return null;
+    }
+
+    // Run DFS from each unvisited node
+    for (const node of allNodes) {
+        if ((state.get(node) ?? 0) === 0) {
+            const cyclePath = dfs(node);
+            if (cyclePath) {
+                return { hasCycle: true, cyclePath };
+            }
+        }
+    }
+
+    return { hasCycle: false };
+}
+
+/**
+ * Validate that a set of prerequisite edges contains no cycles.
+ * Throws CircularPrerequisiteError if a cycle is detected.
+ *
+ * @param edges - Array of prerequisite edges to validate
+ * @throws CircularPrerequisiteError if a cycle is detected
+ */
+export function validateNoPrerequisiteCycles(
+    edges: Array<{ from: ChapterNodeId; to: ChapterNodeId }>
+): void {
+    const result = detectPrerequisiteCycles(edges);
+    if (result.hasCycle && result.cyclePath) {
+        throw new CircularPrerequisiteError(result.cyclePath);
+    }
+}
 import type {
     LearnerJourney,
     ImplicitPrerequisite,
@@ -429,7 +555,12 @@ export function shouldHavePrerequisite(
 
 /**
  * Merge emergent prerequisites with static prerequisites
- * Returns combined edges that respect both hand-crafted and learned relationships
+ * Returns combined edges that respect both hand-crafted and learned relationships.
+ *
+ * Validates the merged graph for cycles and throws CircularPrerequisiteError
+ * if circular dependencies are detected.
+ *
+ * @throws CircularPrerequisiteError if the merged prerequisites contain cycles
  */
 export function mergeWithStaticPrerequisites(
     staticEdges: Array<{ from: ChapterNodeId; to: ChapterNodeId }>,
@@ -437,6 +568,7 @@ export function mergeWithStaticPrerequisites(
     options: {
         minConfidence?: number;
         preferStatic?: boolean;
+        validateCycles?: boolean;
     } = {}
 ): Array<{
     from: ChapterNodeId;
@@ -444,7 +576,7 @@ export function mergeWithStaticPrerequisites(
     source: "static" | "emergent";
     confidence?: number;
 }> {
-    const { minConfidence = 0.7, preferStatic = true } = options;
+    const { minConfidence = 0.7, preferStatic = true, validateCycles = true } = options;
 
     const mergedEdges = new Map<
         string,
@@ -473,5 +605,12 @@ export function mergeWithStaticPrerequisites(
         }
     }
 
-    return Array.from(mergedEdges.values());
+    const result = Array.from(mergedEdges.values());
+
+    // Validate for cycles if enabled
+    if (validateCycles) {
+        validateNoPrerequisiteCycles(result);
+    }
+
+    return result;
 }

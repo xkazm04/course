@@ -6,6 +6,10 @@
  * coordinated system.
  */
 
+/* eslint-disable react-hooks/refs */
+// This hook uses a valid lazy initialization pattern for the coordinator ref.
+// The coordinator is created once and accessed during render, which is intentional.
+
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
     WorldCoordinator,
@@ -60,6 +64,7 @@ export interface UseWorldCoordinatorReturn {
     pan: (deltaX: number, deltaY: number) => void;
     zoom: (delta: number, centerX?: number, centerY?: number) => void;
     zoomTo: (targetScale: number, x?: number, y?: number) => void;
+    zoomToNode: (node: UniverseNode, padding?: number) => void;
     panTo: (x: number, y: number) => void;
     focusOn: (x: number, y: number, scale?: number) => void;
     reset: () => void;
@@ -91,6 +96,7 @@ export function useWorldCoordinator(
     } = options;
 
     // Create coordinator instance (stable reference)
+    // This is a valid lazy initialization pattern - the coordinator is created once
     const coordinatorRef = useRef<WorldCoordinator | null>(null);
     if (!coordinatorRef.current) {
         coordinatorRef.current = createWorldCoordinator(config);
@@ -204,6 +210,12 @@ export function useWorldCoordinator(
         [coordinator]
     );
 
+    const zoomToNode = useCallback(
+        (node: UniverseNode, padding?: number) =>
+            coordinator.zoomToNode(node, padding),
+        [coordinator]
+    );
+
     const panTo = useCallback(
         (x: number, y: number) => coordinator.panTo(x, y),
         [coordinator]
@@ -291,6 +303,8 @@ export function useWorldCoordinator(
     // RETURN
     // ========================================================================
 
+    // Accessing coordinator properties during render is valid - these are reactive values
+    // that trigger re-renders via the forceUpdate subscription above
     return {
         coordinator,
         camera: coordinator.camera,
@@ -316,6 +330,7 @@ export function useWorldCoordinator(
         pan,
         zoom,
         zoomTo,
+        zoomToNode,
         panTo,
         focusOn,
         reset,

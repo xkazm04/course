@@ -9,15 +9,15 @@
  *
  * This replaces the basic PrerequisiteWarning when using the living graph,
  * providing richer information about why a node may be difficult.
+ *
+ * Uses BaseWarning for consistent styling across warning types.
  */
 
 import React, { useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
     AlertTriangle,
     Lock,
-    ArrowRight,
-    X,
     BookOpen,
     TrendingUp,
     Users,
@@ -29,6 +29,7 @@ import {
     Zap,
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
+import { BaseWarning, WarningSkipButton } from "./BaseWarning";
 import type {
     TraversabilityScore,
     TraversabilityFactor,
@@ -84,20 +85,7 @@ export function TraversabilityWarning({
     onDismiss,
     className,
 }: TraversabilityWarningProps) {
-    // Don't show warning for fully traversable nodes
-    if (
-        traversability.recommendation === "proceed" ||
-        traversability.recommendation === "accelerate" ||
-        traversability.recommendation === "skip"
-    ) {
-        return null;
-    }
-
-    const { icon: Icon, color, label } = getRecommendationConfig(
-        traversability.recommendation
-    );
-
-    // Group factors by impact
+    // Group factors by impact - must be called before early return
     const { positive, neutral, negative } = useMemo(() => {
         return traversability.factors.reduce(
             (acc, factor) => {
@@ -123,6 +111,22 @@ export function TraversabilityWarning({
         (f) => f.type === "static_prerequisite" || f.type === "emergent_prerequisite"
     );
 
+    // Don't show warning for fully traversable nodes
+    if (
+        traversability.recommendation === "proceed" ||
+        traversability.recommendation === "accelerate" ||
+        traversability.recommendation === "skip"
+    ) {
+        return null;
+    }
+
+    const { icon: Icon, color, label } = getRecommendationConfig(
+        traversability.recommendation
+    );
+
+    // ========================================================================
+    // COMPACT VARIANT
+    // ========================================================================
     if (variant === "compact") {
         return (
             <motion.div
@@ -146,184 +150,151 @@ export function TraversabilityWarning({
         );
     }
 
+    // ========================================================================
+    // INLINE VARIANT
+    // ========================================================================
     if (variant === "inline") {
         return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className={cn("flex items-center gap-2 text-sm", className)}
-                data-testid="traversability-warning-inline"
-            >
-                <Icon className={`h-4 w-4 text-[var(--forge-${color === "warning" ? "warning" : "ember"})]`} />
-                <span className="text-[var(--forge-text-secondary)]">
-                    {label}
-                    {prereqFactor && `: ${prereqFactor.description}`}
-                </span>
-            </motion.div>
+            <BaseWarning
+                type="traversability"
+                variant="inline"
+                icon={Icon}
+                title={label}
+                description={prereqFactor?.description}
+                className={className}
+                testId="traversability-warning-inline"
+            />
         );
     }
 
+    // ========================================================================
+    // BANNER VARIANT
+    // ========================================================================
     if (variant === "banner") {
         return (
-            <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className={cn(
-                    "bg-[var(--forge-warning)]/10 border border-[var(--forge-warning)]/30 rounded-lg p-4",
-                    className
-                )}
-                data-testid="traversability-warning-banner"
+            <BaseWarning
+                type="traversability"
+                variant="banner"
+                icon={Icon}
+                title={label}
+                dismissible={!!onDismiss}
+                onDismiss={onDismiss}
+                className={className}
+                testId="traversability-warning-banner"
+                footer={
+                    allowSkip && (
+                        <WarningSkipButton
+                            onClick={onSkip}
+                            type="traversability"
+                            testId="skip-traversability-btn"
+                        />
+                    )
+                }
             >
-                <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0">
-                        <Icon className="h-5 w-5 text-[var(--forge-warning)]" />
+                {/* Traversability Score Bar */}
+                <div className="mt-2 flex items-center gap-2">
+                    <span className="text-xs text-[var(--forge-text-muted)]">
+                        Accessibility:
+                    </span>
+                    <div className="flex-1 h-2 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${traversability.score * 100}%` }}
+                            className={cn(
+                                "h-full rounded-full",
+                                traversability.score >= 0.7
+                                    ? "bg-[var(--forge-success)]"
+                                    : traversability.score >= 0.4
+                                    ? "bg-[var(--forge-warning)]"
+                                    : "bg-[var(--ember)]"
+                            )}
+                        />
                     </div>
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-[var(--forge-warning)]">
-                            {label}
-                        </h3>
-
-                        {/* Traversability Score Bar */}
-                        <div className="mt-2 flex items-center gap-2">
-                            <span className="text-xs text-[var(--forge-text-muted)]">
-                                Accessibility:
-                            </span>
-                            <div className="flex-1 h-2 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${traversability.score * 100}%` }}
-                                    className={cn(
-                                        "h-full rounded-full",
-                                        traversability.score >= 0.7
-                                            ? "bg-[var(--forge-success)]"
-                                            : traversability.score >= 0.4
-                                            ? "bg-[var(--forge-warning)]"
-                                            : "bg-[var(--ember)]"
-                                    )}
-                                />
-                            </div>
-                            <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
-                                {Math.round(traversability.score * 100)}%
-                            </span>
-                        </div>
-
-                        {/* Factors */}
-                        {showFactors && negative.length > 0 && (
-                            <div className="mt-3 space-y-2">
-                                {negative.map((factor, index) => (
-                                    <FactorItem
-                                        key={`${factor.type}-${index}`}
-                                        factor={factor}
-                                        onNavigate={
-                                            factor.type === "static_prerequisite" ||
-                                            factor.type === "emergent_prerequisite"
-                                                ? onNavigateToPrerequisite
-                                                : undefined
-                                        }
-                                    />
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Predicted Struggle */}
-                        {traversability.predictedStruggle > 0.3 && (
-                            <div className="mt-3 flex items-center gap-2 text-sm">
-                                <Brain className="h-4 w-4 text-[var(--forge-text-muted)]" />
-                                <span className="text-[var(--forge-text-secondary)]">
-                                    Predicted difficulty:{" "}
-                                    <span
-                                        className={cn(
-                                            "font-medium",
-                                            traversability.predictedStruggle > 0.6
-                                                ? "text-[var(--ember)]"
-                                                : "text-[var(--forge-warning)]"
-                                        )}
-                                    >
-                                        {traversability.predictedStruggle > 0.6
-                                            ? "High"
-                                            : "Moderate"}
-                                    </span>
-                                </span>
-                                {traversability.struggleConfidence > 0.5 && (
-                                    <span className="text-xs text-[var(--forge-text-muted)]">
-                                        (based on {Math.round(traversability.struggleConfidence * 100)}%
-                                        confidence)
-                                    </span>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Skip Option */}
-                        {allowSkip && (
-                            <div className="mt-3">
-                                <button
-                                    onClick={onSkip}
-                                    className="text-xs text-[var(--forge-text-muted)] hover:underline font-medium"
-                                    data-testid="skip-traversability-btn"
-                                >
-                                    Continue anyway (not recommended)
-                                </button>
-                            </div>
-                        )}
-                    </div>
-
-                    {onDismiss && (
-                        <button
-                            onClick={onDismiss}
-                            className="flex-shrink-0 text-[var(--forge-warning)] hover:text-[var(--forge-warning)]/80"
-                            data-testid="dismiss-traversability-btn"
-                        >
-                            <X className="h-4 w-4" />
-                        </button>
-                    )}
+                    <span className="text-xs font-medium text-[var(--forge-text-secondary)]">
+                        {Math.round(traversability.score * 100)}%
+                    </span>
                 </div>
-            </motion.div>
+
+                {/* Factors */}
+                {showFactors && negative.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                        {negative.map((factor, index) => (
+                            <FactorItem
+                                key={`${factor.type}-${index}`}
+                                factor={factor}
+                                onNavigate={
+                                    factor.type === "static_prerequisite" ||
+                                    factor.type === "emergent_prerequisite"
+                                        ? onNavigateToPrerequisite
+                                        : undefined
+                                }
+                            />
+                        ))}
+                    </div>
+                )}
+
+                {/* Predicted Struggle */}
+                {traversability.predictedStruggle > 0.3 && (
+                    <div className="mt-3 flex items-center gap-2 text-sm">
+                        <Brain className="h-4 w-4 text-[var(--forge-text-muted)]" />
+                        <span className="text-[var(--forge-text-secondary)]">
+                            Predicted difficulty:{" "}
+                            <span
+                                className={cn(
+                                    "font-medium",
+                                    traversability.predictedStruggle > 0.6
+                                        ? "text-[var(--ember)]"
+                                        : "text-[var(--forge-warning)]"
+                                )}
+                            >
+                                {traversability.predictedStruggle > 0.6
+                                    ? "High"
+                                    : "Moderate"}
+                            </span>
+                        </span>
+                        {traversability.struggleConfidence > 0.5 && (
+                            <span className="text-xs text-[var(--forge-text-muted)]">
+                                (based on {Math.round(traversability.struggleConfidence * 100)}%
+                                confidence)
+                            </span>
+                        )}
+                    </div>
+                )}
+            </BaseWarning>
         );
     }
 
-    // Card variant
+    // ========================================================================
+    // CARD VARIANT (default)
+    // ========================================================================
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+        <BaseWarning
+            type="traversability"
+            variant="card"
+            icon={Icon}
+            title={label}
+            subtitle={
+                traversability.recommendation === "blocked"
+                    ? "Complete prerequisites to unlock"
+                    : "Consider these factors before proceeding"
+            }
             className={cn(
-                "bg-[var(--forge-bg-workshop)] border border-[var(--forge-warning)]/30 rounded-xl p-6 shadow-lg",
+                traversability.recommendation === "blocked" &&
+                    "border-[var(--ember)]/30",
                 className
             )}
-            data-testid="traversability-warning-card"
-        >
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-4">
-                <div
-                    className={cn(
-                        "p-2 rounded-lg",
-                        traversability.recommendation === "blocked"
-                            ? "bg-[var(--ember)]/10"
-                            : "bg-[var(--forge-warning)]/10"
-                    )}
-                >
-                    <Icon
-                        className={cn(
-                            "h-6 w-6",
-                            traversability.recommendation === "blocked"
-                                ? "text-[var(--ember)]"
-                                : "text-[var(--forge-warning)]"
-                        )}
+            testId="traversability-warning-card"
+            footer={
+                allowSkip && (
+                    <WarningSkipButton
+                        onClick={onSkip}
+                        label="Skip warnings and continue anyway →"
+                        type="traversability"
+                        testId="skip-traversability-card-btn"
                     />
-                </div>
-                <div>
-                    <h3 className="text-lg font-semibold text-[var(--forge-text-primary)]">
-                        {label}
-                    </h3>
-                    <p className="text-xs text-[var(--forge-text-muted)]">
-                        {traversability.recommendation === "blocked"
-                            ? "Complete prerequisites to unlock"
-                            : "Consider these factors before proceeding"}
-                    </p>
-                </div>
-            </div>
-
+                )
+            }
+        >
             {/* Traversability Gauge */}
             <div className="mb-4 p-3 bg-[var(--forge-bg-elevated)] rounded-lg">
                 <div className="flex items-center justify-between mb-2">
@@ -418,7 +389,7 @@ export function TraversabilityWarning({
 
             {/* Node-specific info */}
             {node && (
-                <div className="flex items-center gap-4 p-3 bg-[var(--forge-bg-elevated)] rounded-lg mb-4">
+                <div className="flex items-center gap-4 p-3 bg-[var(--forge-bg-elevated)] rounded-lg">
                     <div className="flex items-center gap-2 text-sm">
                         <Clock className="h-4 w-4 text-[var(--forge-text-muted)]" />
                         <span className="text-[var(--forge-text-secondary)]">
@@ -439,20 +410,7 @@ export function TraversabilityWarning({
                     </div>
                 </div>
             )}
-
-            {/* Actions */}
-            {allowSkip && (
-                <div className="pt-4 border-t border-[var(--forge-border-subtle)]">
-                    <button
-                        onClick={onSkip}
-                        className="text-xs text-[var(--forge-text-muted)] hover:text-[var(--forge-warning)] font-medium"
-                        data-testid="skip-traversability-card-btn"
-                    >
-                        Skip warnings and continue anyway →
-                    </button>
-                </div>
-            )}
-        </motion.div>
+        </BaseWarning>
     );
 }
 

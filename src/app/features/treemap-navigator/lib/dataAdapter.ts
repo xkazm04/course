@@ -3,9 +3,12 @@
  *
  * Fetches nodes from /api/map-nodes and transforms them to TreemapNode format.
  * Bridges the existing API with the navigation store.
+ *
+ * Improvement #1: Integrated LRU cache for faster back-navigation.
  */
 
 import type { TreemapNode, ApiNode } from "./types";
+import { nodeCache, ROOT_CACHE_KEY } from "./nodeCache";
 
 /**
  * Ember spectrum color palette for territory backgrounds.
@@ -92,8 +95,15 @@ interface FetchNodesResponse {
 
 /**
  * Fetch root-level nodes (depth 0, no parent).
+ * Uses cache for instant back-navigation.
  */
 export async function fetchRootNodes(): Promise<TreemapNode[]> {
+  // Check cache first
+  const cached = nodeCache.get(ROOT_CACHE_KEY);
+  if (cached) {
+    return cached;
+  }
+
   try {
     // Fetch nodes with no parent (root level) - depth 0
     const response = await fetch("/api/map-nodes?max_depth=0&limit=100");
@@ -110,6 +120,9 @@ export async function fetchRootNodes(): Promise<TreemapNode[]> {
       .filter(Boolean)
       .map(transformNode);
 
+    // Cache the result
+    nodeCache.set(ROOT_CACHE_KEY, rootNodes);
+
     return rootNodes;
   } catch (error) {
     console.error("fetchRootNodes error:", error);
@@ -119,8 +132,15 @@ export async function fetchRootNodes(): Promise<TreemapNode[]> {
 
 /**
  * Fetch children of a specific parent node.
+ * Uses cache for instant back-navigation.
  */
 export async function fetchChildren(parentId: string): Promise<TreemapNode[]> {
+  // Check cache first
+  const cached = nodeCache.get(parentId);
+  if (cached) {
+    return cached;
+  }
+
   try {
     const response = await fetch(
       `/api/map-nodes?parent_id=${encodeURIComponent(parentId)}&limit=100`
@@ -139,9 +159,26 @@ export async function fetchChildren(parentId: string): Promise<TreemapNode[]> {
       )
       .map(transformNode);
 
+    // Cache the result
+    nodeCache.set(parentId, children);
+
     return children;
   } catch (error) {
     console.error("fetchChildren error:", error);
     throw error;
   }
+}
+
+/**
+ * Check if children are already cached (for optimistic UI)
+ */
+export function isChildrenCached(parentId: string): boolean {
+  return nodeCache.has(parentId);
+}
+
+/**
+ * Check if root nodes are cached
+ */
+export function isRootCached(): boolean {
+  return nodeCache.has(ROOT_CACHE_KEY);
 }

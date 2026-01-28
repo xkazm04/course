@@ -39,6 +39,8 @@ export type {
     ChapterSection,
     SimplifiedSection,
     CourseInfo,
+    ContentMetadata,
+    VideoVariant,
 } from "./chapterData";
 
 // Unified chapter state hook
@@ -182,23 +184,26 @@ export type {
 } from "./chapterGraph";
 
 // Curriculum Chapter Data - Pre-defined chapter nodes and edges
+// NOTE: Graph logic (getChapterPrerequisites, getSuggestedNextChapters) is in chapterGraph.ts
+// curriculumChapters.ts provides convenience wrappers that use the hardcoded curriculum data
 export {
     REACT_HOOKS_CHAPTERS,
     FULLSTACK_CHAPTERS,
     BACKEND_CHAPTERS,
     CURRICULUM_CHAPTERS,
     CHAPTER_CURRICULUM_EDGES,
-    // Accessors
+    // Accessors (these delegate to chapterGraph.ts for logic)
     getChapterNode,
     getChaptersByCourse,
     getChaptersByDomain,
-    getChapterPrerequisites as getCurriculumChapterPrerequisites,
-    getSuggestedNextChapters as getCurriculumSuggestedNextChapters,
     areChapterPrerequisitesMet,
     getChapterPrerequisiteWarnings,
     getOptimalChapterOrder,
     calculateCourseXP,
     calculateCourseDuration,
+    // Convenience functions for curriculum data (delegate to chapterGraph.ts)
+    getChapterPrerequisites as getCurriculumChapterPrerequisites,
+    getSuggestedNextChapters as getCurriculumSuggestedNextChapters,
 } from "./curriculumChapters";
 
 // Chapter Graph React Hooks
@@ -344,6 +349,11 @@ export {
     getImplicitPrerequisitesForChapter,
     getStrugglePointsForChapter,
     mergeWithStaticPrerequisites,
+    // Cycle Detection
+    CircularPrerequisiteError,
+    detectPrerequisiteCycles,
+    validateNoPrerequisiteCycles,
+    type CycleDetectionResult,
     // Hook
     useCollectiveIntelligence,
     type UseCollectiveIntelligenceOptions,

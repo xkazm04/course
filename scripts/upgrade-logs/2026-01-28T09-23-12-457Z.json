@@ -1,0 +1,228 @@
+{
+  "options": {
+    "maxLessons": 20,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "aa0d6161-a35b-45b1-8c36-10875c252502",
+      "name": "Array Method: map()",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "04b36425-d398-463a-bb76-ffc24856b0d1",
+      "name": "Promise Chaining",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, realworld, pitfall, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "ae4b2662-dcc2-4a51-9fa8-4dc0ac5fbb34",
+      "name": "Literal Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "245f7103-653a-4753-8621-62e6b8696b6b",
+      "name": "Primitive Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "04ebab47-76d1-4a00-9ede-851c4bdfef4d",
+      "name": "The Event Object",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "300f37fd-50cc-4a2a-b6eb-fdb0d287e854",
+      "name": "The infer Keyword",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "69e341e1-b07a-4349-a3c3-d79a06f293d9",
+      "name": "useEffect Dependencies",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, realworld, tip, tabs"
+      ]
+    },
+    {
+      "nodeId": "3dbb2341-6b95-4cca-a9c4-f40b9ed9a6e6",
+      "name": "Handling Form Submission",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tabs, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "a53e1cc4-f576-4004-8110-9f06012dd058",
+      "name": "The 'use client' Directive",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "69113890-0d88-44d6-838d-f5a34d3b5a39",
+      "name": "HTTP Methods",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "2b4bcb38-863e-4bd5-9aa7-e2b06582384c",
+      "name": "Page and Layout Components",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "0175653a-107e-479a-9e9f-45f884aee352",
+      "name": "useRouter Hook",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, warning"
+      ]
+    },
+    {
+      "nodeId": "7454f819-1a4c-4c7c-86ce-482bd2c1805d",
+      "name": "Module Mocking",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "3c241db1-96ea-4220-9657-d8eaefa3c7b8",
+      "name": "Suspense and Streaming",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tabs, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "2f969950-104a-4c80-97ab-faf7176e4520",
+      "name": "Middleware Matching",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "d9a8a1d8-f85c-4add-9857-009d494aa255",
+      "name": "State Variants",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "d2c8dc8b-e0eb-4198-bedd-ff6327733c33",
+      "name": "Animation Properties",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "49b5660a-1c4b-4fa7-8853-d30473276036",
+      "name": "render and screen",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "2c244587-cfe2-47c4-8b84-b5727befb0c6",
+      "name": "Font Optimization",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "445444d6-ad42-4148-bd94-232f9722d6a5",
+      "name": "Card Layouts",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    }
+  ]
+}

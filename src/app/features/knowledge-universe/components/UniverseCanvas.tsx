@@ -6,18 +6,35 @@
  * High-performance 2D canvas renderer for the knowledge universe.
  * Uses WorldCoordinator for unified camera/spatial management and
  * viewport culling for 60fps rendering with hundreds of nodes.
+ *
+ * Rendering Modes:
+ * - Canvas 2D: Default, works everywhere, good for <1000 nodes
+ * - WebGL: Optional, uses Three.js for 10k+ node performance
+ *
+ * Semantic Zoom Features:
+ * - Labels appear/disappear based on zoom level
+ * - Connections fade based on distance and zoom
+ * - Clusters render with nebula effect at far zoom
+ * - Smooth transitions between zoom levels
  */
 
-import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import React, { useRef, useEffect, useCallback, useMemo, useState, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { UniverseNode, UniverseConnection, ZoomLevel } from "../lib/types";
+import type { UniverseNode, UniverseConnection, ZoomLevel, ClusterNode } from "../lib/types";
 import { WorldCoordinator } from "../lib/worldCoordinator";
 import { useNodeRevealAnimation, type NodeRevealState } from "../lib/useNodeRevealAnimation";
 import { NodeTypeRegistry, type NodeRenderContext } from "../lib/nodeTypeRegistry";
+import type { SemanticLevel } from "../lib/zoomLevelManager";
+import { SEMANTIC_LEVELS } from "../lib/zoomLevelManager";
+import type { ComputedLabel } from "../lib/contextualLabels";
+import { WebGLCanvas, AdaptiveCanvas } from "./WebGLCanvas";
 
 // ============================================================================
 // TYPES
 // ============================================================================
+
+/** Renderer type selection */
+export type RendererType = "canvas2d" | "webgl" | "auto";
 
 interface UniverseCanvasProps {
     nodes: UniverseNode[];
@@ -30,6 +47,31 @@ interface UniverseCanvasProps {
     onNodeHover: (nodeId: string | null) => void;
     onNodeClick: (nodeId: string) => void;
     reducedMotion?: boolean;
+    /** Optional opacity overrides for LOD transitions */
+    nodeOpacityOverrides?: Map<string, number>;
+    /** Computed labels to render (from ContextualLabelRenderer) */
+    labels?: ComputedLabel[];
+    /** Whether to show labels */
+    showLabels?: boolean;
+    /** Current semantic level for rendering adjustments */
+    semanticLevel?: SemanticLevel;
+    /** Transition progress between levels (0-1) */
+    transitionProgress?: number;
+    /** Connection visibility configuration */
+    connectionVisibility?: {
+        /** Minimum opacity for connections */
+        minOpacity: number;
+        /** Maximum distance (in world units) to show connections */
+        maxDistance: number;
+        /** Whether to fade connections with zoom */
+        fadeWithZoom: boolean;
+    };
+    /** Renderer type: "canvas2d" (default), "webgl", or "auto" */
+    renderer?: RendererType;
+    /** Show WebGL debug stats overlay */
+    showWebGLStats?: boolean;
+    /** Enable WebGL particle effects */
+    enableParticles?: boolean;
 }
 
 // ============================================================================
@@ -164,7 +206,7 @@ function drawNode(
 }
 
 /**
- * Draw connection between nodes
+ * Draw connection between nodes with semantic zoom visibility
  */
 function drawConnection(
     ctx: CanvasRenderingContext2D,
@@ -173,15 +215,38 @@ function drawConnection(
     fromY: number,
     toX: number,
     toY: number,
-    scale: number
+    scale: number,
+    visibility?: {
+        minOpacity: number;
+        maxDistance: number;
+        fadeWithZoom: boolean;
+    }
 ): void {
     const lineWidth = Math.max(0.5, conn.strength * 2 * scale);
 
+    // Calculate distance for visibility fade
+    const distance = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
+    let alpha = 0.5;
+
+    if (visibility) {
+        const { minOpacity, maxDistance, fadeWithZoom } = visibility;
+
+        // Fade based on distance
+        if (distance > maxDistance * scale) {
+            alpha = Math.max(minOpacity, 0.5 * (1 - (distance - maxDistance * scale) / (maxDistance * scale)));
+        }
+
+        // Additional fade at low zoom
+        if (fadeWithZoom && scale < 0.3) {
+            alpha *= scale / 0.3;
+        }
+    }
+
     // Create gradient along the connection
     const gradient = ctx.createLinearGradient(fromX, fromY, toX, toY);
-    gradient.addColorStop(0, `${conn.color}80`);
-    gradient.addColorStop(0.5, `${conn.color}40`);
-    gradient.addColorStop(1, `${conn.color}80`);
+    gradient.addColorStop(0, `${conn.color}${Math.round(alpha * 128).toString(16).padStart(2, "0")}`);
+    gradient.addColorStop(0.5, `${conn.color}${Math.round(alpha * 64).toString(16).padStart(2, "0")}`);
+    gradient.addColorStop(1, `${conn.color}${Math.round(alpha * 128).toString(16).padStart(2, "0")}`);
 
     ctx.beginPath();
     ctx.moveTo(fromX, fromY);
@@ -198,6 +263,167 @@ function drawConnection(
     ctx.strokeStyle = gradient;
     ctx.lineWidth = lineWidth;
     ctx.stroke();
+}
+
+/**
+ * Draw a cluster node with nebula effect
+ */
+function drawCluster(
+    ctx: CanvasRenderingContext2D,
+    cluster: ClusterNode,
+    screenX: number,
+    screenY: number,
+    screenRadius: number,
+    isHovered: boolean,
+    isSelected: boolean,
+    opacity: number = 1,
+    time: number = 0
+): void {
+    ctx.save();
+    ctx.globalAlpha = opacity;
+
+    // Pulsing nebula effect
+    const pulseOffset = Math.sin(time * 0.002) * 0.1;
+    const nebulaRadius = screenRadius * (1.5 + pulseOffset);
+
+    // Multi-layer nebula glow
+    for (let layer = 3; layer >= 0; layer--) {
+        const layerRadius = nebulaRadius * (1 + layer * 0.3);
+        const layerAlpha = 0.15 / (layer + 1);
+
+        const gradient = ctx.createRadialGradient(
+            screenX, screenY, screenRadius * 0.2,
+            screenX, screenY, layerRadius
+        );
+
+        gradient.addColorStop(0, cluster.glowColor);
+        gradient.addColorStop(0.3, `${cluster.color}${Math.round(layerAlpha * 255).toString(16).padStart(2, "0")}`);
+        gradient.addColorStop(1, "transparent");
+
+        ctx.beginPath();
+        ctx.arc(screenX, screenY, layerRadius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+    }
+
+    // Core
+    const coreGradient = ctx.createRadialGradient(
+        screenX - screenRadius * 0.2,
+        screenY - screenRadius * 0.2,
+        0,
+        screenX, screenY,
+        screenRadius
+    );
+    coreGradient.addColorStop(0, "rgba(255, 255, 255, 0.3)");
+    coreGradient.addColorStop(0.5, cluster.color);
+    coreGradient.addColorStop(1, `${cluster.color}80`);
+
+    ctx.beginPath();
+    ctx.arc(screenX, screenY, screenRadius, 0, Math.PI * 2);
+    ctx.fillStyle = coreGradient;
+    ctx.fill();
+
+    // Particle sparkles
+    const particleCount = Math.min(12, Math.floor(screenRadius / 5));
+    for (let i = 0; i < particleCount; i++) {
+        const angle = (i / particleCount) * Math.PI * 2 + time * 0.001;
+        const dist = screenRadius * (0.6 + Math.sin(time * 0.003 + i) * 0.3);
+        const px = screenX + Math.cos(angle) * dist;
+        const py = screenY + Math.sin(angle) * dist;
+        const pSize = 1 + Math.sin(time * 0.005 + i * 2) * 0.5;
+
+        ctx.beginPath();
+        ctx.arc(px, py, pSize, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+        ctx.fill();
+    }
+
+    // Hover/selection ring
+    if (isSelected) {
+        ctx.beginPath();
+        ctx.arc(screenX, screenY, screenRadius + 6, 0, Math.PI * 2);
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    } else if (isHovered) {
+        ctx.beginPath();
+        ctx.arc(screenX, screenY, screenRadius + 4, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Metrics badge (node count)
+    if (screenRadius > 30 && cluster.metrics) {
+        const badgeText = `${cluster.metrics.nodeCount}`;
+        ctx.font = "bold 11px Inter, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // Badge background
+        const textWidth = ctx.measureText(badgeText).width;
+        const badgeX = screenX;
+        const badgeY = screenY + screenRadius + 14;
+        const badgePadding = 4;
+
+        ctx.beginPath();
+        ctx.roundRect(
+            badgeX - textWidth / 2 - badgePadding,
+            badgeY - 8,
+            textWidth + badgePadding * 2,
+            16,
+            4
+        );
+        ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+        ctx.fill();
+
+        // Badge text
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(badgeText, badgeX, badgeY);
+    }
+
+    ctx.restore();
+}
+
+/**
+ * Draw a label on the canvas
+ */
+function drawLabel(
+    ctx: CanvasRenderingContext2D,
+    label: ComputedLabel
+): void {
+    if (label.opacity <= 0) return;
+
+    ctx.save();
+    ctx.globalAlpha = label.opacity;
+
+    // Shadow for readability
+    ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 1;
+
+    // Main text
+    ctx.font = `500 ${label.fontSize}px Inter, system-ui, sans-serif`;
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(label.text, label.x, label.y);
+
+    // Subtitle
+    if (label.subtitle && label.subtitleFontSize) {
+        ctx.font = `400 ${label.subtitleFontSize}px Inter, system-ui, sans-serif`;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+        ctx.fillText(
+            label.subtitle,
+            label.x,
+            label.y + label.fontSize * 0.7 + label.subtitleFontSize * 0.5
+        );
+    }
+
+    ctx.restore();
 }
 
 /**
@@ -298,11 +524,116 @@ export function UniverseCanvas({
     onNodeHover,
     onNodeClick,
     reducedMotion = false,
+    nodeOpacityOverrides,
+    labels,
+    showLabels = true,
+    semanticLevel,
+    transitionProgress,
+    connectionVisibility,
+    renderer = "canvas2d",
+    showWebGLStats = false,
+    enableParticles = true,
 }: UniverseCanvasProps) {
+    // Track fallback state for "auto" mode
+    const [webglFailed, setWebglFailed] = useState(false);
+
+    // Determine actual renderer to use
+    const actualRenderer = useMemo(() => {
+        if (renderer === "canvas2d") return "canvas2d";
+        if (renderer === "webgl") return "webgl";
+        // "auto" mode: try WebGL first, fall back to Canvas 2D
+        if (webglFailed) return "canvas2d";
+        // Use WebGL for large node counts
+        return nodes.length > 500 ? "webgl" : "canvas2d";
+    }, [renderer, webglFailed, nodes.length]);
+
+    // Handle WebGL fallback
+    const handleWebGLFallback = useCallback(() => {
+        setWebglFailed(true);
+    }, []);
+
+    // Use WebGL renderer when selected
+    if (actualRenderer === "webgl") {
+        return (
+            <WebGLCanvas
+                nodes={nodes}
+                connections={connections}
+                coordinator={coordinator}
+                width={width}
+                height={height}
+                hoveredNodeId={hoveredNodeId}
+                selectedNodeId={selectedNodeId}
+                onNodeHover={onNodeHover}
+                onNodeClick={onNodeClick}
+                reducedMotion={reducedMotion}
+                nodeOpacityOverrides={nodeOpacityOverrides}
+                onFallback={handleWebGLFallback}
+                showStats={showWebGLStats}
+                enableParticles={enableParticles}
+            />
+        );
+    }
+
+    // Canvas 2D rendering below
+    return (
+        <Canvas2DRenderer
+            nodes={nodes}
+            connections={connections}
+            coordinator={coordinator}
+            width={width}
+            height={height}
+            hoveredNodeId={hoveredNodeId}
+            selectedNodeId={selectedNodeId}
+            onNodeHover={onNodeHover}
+            onNodeClick={onNodeClick}
+            reducedMotion={reducedMotion}
+            nodeOpacityOverrides={nodeOpacityOverrides}
+            labels={labels}
+            showLabels={showLabels}
+            semanticLevel={semanticLevel}
+            transitionProgress={transitionProgress}
+            connectionVisibility={connectionVisibility}
+        />
+    );
+}
+
+// ============================================================================
+// CANVAS 2D RENDERER (Original Implementation)
+// ============================================================================
+
+interface Canvas2DRendererProps extends Omit<UniverseCanvasProps, "renderer" | "showWebGLStats" | "enableParticles"> {}
+
+function Canvas2DRenderer({
+    nodes,
+    connections,
+    coordinator,
+    width,
+    height,
+    hoveredNodeId,
+    selectedNodeId,
+    onNodeHover,
+    onNodeClick,
+    reducedMotion = false,
+    nodeOpacityOverrides,
+    labels,
+    showLabels = true,
+    semanticLevel,
+    transitionProgress,
+    connectionVisibility,
+}: Canvas2DRendererProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number>(0);
     const timeRef = useRef<number>(0);
     const renderRef = useRef<() => void>(() => {});
+
+    // CRITICAL: Use refs for frequently-changing values to avoid callback recreation
+    // This prevents blinking during zoom by keeping render callback stable
+    const nodeOpacityOverridesRef = useRef(nodeOpacityOverrides);
+
+    // Keep ref in sync (synchronous, before paint)
+    useLayoutEffect(() => {
+        nodeOpacityOverridesRef.current = nodeOpacityOverrides;
+    });
 
     // Get camera state and zoom level from coordinator
     const { x: cameraX, y: cameraY, scale } = coordinator.camera;
@@ -374,7 +705,7 @@ export function UniverseCanvas({
         // Sort by depth for correct rendering order
         const sortedNodes = coordinator.sortNodesByDepth(viewportNodes);
 
-        // Draw connections
+        // Draw connections with semantic zoom visibility
         ctx.globalAlpha = 0.6;
         connections.forEach((conn) => {
             const fromNode = nodeMap.get(conn.fromId);
@@ -388,11 +719,20 @@ export function UniverseCanvas({
             const fromScreen = coordinator.worldToScreen(fromNode.x, fromNode.y);
             const toScreen = coordinator.worldToScreen(toNode.x, toNode.y);
 
-            drawConnection(ctx, conn, fromScreen.x, fromScreen.y, toScreen.x, toScreen.y, scale);
+            drawConnection(
+                ctx,
+                conn,
+                fromScreen.x,
+                fromScreen.y,
+                toScreen.x,
+                toScreen.y,
+                scale,
+                connectionVisibility
+            );
         });
         ctx.globalAlpha = 1;
 
-        // Draw nodes
+        // Draw nodes (clusters first, then regular nodes)
         sortedNodes.forEach((node) => {
             // Use coordinator for world-to-screen transformations
             const screen = coordinator.worldToScreen(node.x, node.y);
@@ -409,20 +749,55 @@ export function UniverseCanvas({
             }
 
             // Get reveal animation state for this node
-            const revealState = getNodeRevealState(node.id);
+            let revealState = getNodeRevealState(node.id);
 
-            drawNode(
-                ctx,
-                node,
-                screen.x,
-                screen.y,
-                screenRadius,
-                node.id === hoveredNodeId,
-                node.id === selectedNodeId,
-                zoomLevel,
-                revealState
-            );
+            // Apply LOD opacity override if present (read from ref for performance)
+            const opacityOverride = nodeOpacityOverridesRef.current?.get(node.id);
+            if (opacityOverride !== undefined) {
+                revealState = {
+                    ...revealState,
+                    opacity: (revealState?.opacity ?? 1) * opacityOverride,
+                    scale: revealState?.scale ?? 1,
+                    complete: revealState?.complete ?? true,
+                };
+            }
+
+            // Use special rendering for cluster nodes
+            if (node.type === "cluster") {
+                drawCluster(
+                    ctx,
+                    node as ClusterNode,
+                    screen.x,
+                    screen.y,
+                    screenRadius,
+                    node.id === hoveredNodeId,
+                    node.id === selectedNodeId,
+                    revealState?.opacity ?? 1,
+                    timeRef.current
+                );
+            } else {
+                drawNode(
+                    ctx,
+                    node,
+                    screen.x,
+                    screen.y,
+                    screenRadius,
+                    node.id === hoveredNodeId,
+                    node.id === selectedNodeId,
+                    zoomLevel,
+                    revealState
+                );
+            }
         });
+
+        // Draw labels on top of nodes
+        if (showLabels && labels && labels.length > 0) {
+            labels.forEach((label) => {
+                if (label.visible && label.opacity > 0) {
+                    drawLabel(ctx, label);
+                }
+            });
+        }
 
         // Continue animation loop if not reduced motion or if reveal animation is running
         if (!reducedMotion || isRevealAnimating) {
@@ -443,6 +818,10 @@ export function UniverseCanvas({
         reducedMotion,
         getNodeRevealState,
         isRevealAnimating,
+        // NOTE: nodeOpacityOverrides removed - read from ref instead to prevent blinking
+        labels,
+        showLabels,
+        connectionVisibility,
     ]);
 
     // Keep renderRef in sync with render
@@ -450,24 +829,24 @@ export function UniverseCanvas({
         renderRef.current = render;
     }, [render]);
 
-    // Start/stop render loop
+    // Start/stop render loop - only run once on mount
     useEffect(() => {
-        render();
+        // Initial render
+        renderRef.current();
 
         return () => {
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [render]);
+    }, []); // Empty deps - only run on mount/unmount
 
-    // Force re-render when dependencies change (for reduced motion mode)
-    // Also re-render when reveal animation state changes
+    // Re-render when key dependencies change (use ref to avoid render dep loop)
+    // NOTE: nodeOpacityOverrides removed - opacities are read from ref during render
+    // and animation loop handles continuous updates
     useEffect(() => {
-        if (reducedMotion && !isRevealAnimating) {
-            render();
-        }
-    }, [reducedMotion, isRevealAnimating, render, cameraX, cameraY, scale, hoveredNodeId, selectedNodeId]);
+        renderRef.current();
+    }, [cameraX, cameraY, scale, hoveredNodeId, selectedNodeId, nodes, isRevealAnimating, labels]);
 
     // ========================================================================
     // HIT TESTING

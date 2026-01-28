@@ -1,0 +1,228 @@
+{
+  "options": {
+    "maxLessons": 20,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "6b03c0e0-838c-46bb-ad8e-3f24bd693b71",
+      "name": "File-Based Routing",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "a32cfdb7-8dc2-41ef-83cd-c052e23c8869",
+      "name": "Controlled Inputs",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "d76f1b7d-a300-41b5-bbc8-45f366a4cb1d",
+      "name": "Custom Hook Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "abdb0ca2-c510-48de-9f44-c98fb42ae1e8",
+      "name": "useEffect Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "19c62b5e-8835-4092-bd1f-d0e94d06847a",
+      "name": "Fetch in Server Components",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "094bf013-5c8a-4a04-b626-f8466a275294",
+      "name": "innerHTML vs textContent",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, warning, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "08bc5b9f-26e3-4787-b675-122a717bfe5d",
+      "name": "Creating Context",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "32aa9ed3-f730-4803-8335-cc0a678fa999",
+      "name": "Shorthand Properties",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "6609d109-e425-4317-bcce-949e524cda80",
+      "name": "Passing Props",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "3c98e04b-7121-4cc5-bd60-1fa9badb3911",
+      "name": "Test Fixtures",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "1815ab37-70d7-47b1-a095-dc6d48357fce",
+      "name": "Function Parameter Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "ebbd1c54-aeb2-4921-ae47-4c97061ba330",
+      "name": "Testing Library Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "921d9abc-8b58-4ff2-876a-af30570691f9",
+      "name": "Object Type Annotations",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "cbfc099b-488e-40d9-bb29-953b36b5c14e",
+      "name": "Introduction to Callbacks",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "58834cd1-a6f2-4288-aad2-5920d1eb796e",
+      "name": "@keyframes Rule",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "b3008e92-9845-42ff-a9ae-b1c6eb8c8661",
+      "name": "Content, Padding, Border, Margin",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "f31fb50c-8883-44e3-b8ab-eec855a1f42d",
+      "name": "Playwright Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "01359d54-a518-4d3f-82a6-c93872d7d330",
+      "name": "Media Queries Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8acee8bc-8819-4fce-a567-eecf0ece91c4",
+      "name": "Array Access and Modification",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "766d8171-45d1-4821-b208-15285154283a",
+      "name": "Primitive Types in TypeScript",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    }
+  ]
+}

@@ -103,9 +103,8 @@ export function NodeContextMenu({
     // Content checks - courseId indicates content exists for chapters
     // For mock data, courseId is a string like "html-fundamentals"
     // For real data, it would be a UUID
-    // Note: HexLayoutNode uses [key: string]: unknown so we need explicit access
-    const courseIdRaw = node["courseId"];
-    const courseId = typeof courseIdRaw === "string" ? courseIdRaw : undefined;
+    // HexLayoutNode is MapNode & { hex, pixel } - courseId is available on ChapterNode
+    const courseId = "courseId" in node ? node.courseId : undefined;
     const hasContent = isChapter && !!courseId;
 
     // Children check - childIds should always be an array but verify

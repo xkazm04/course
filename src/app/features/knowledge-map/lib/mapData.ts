@@ -634,46 +634,113 @@ export function generateKnowledgeMapData(): KnowledgeMapData {
 
 /**
  * Get children of a node
+ * Returns empty array if data is malformed or node doesn't exist
  */
 export function getNodeChildren(data: KnowledgeMapData, nodeId: string | null): MapNode[] {
+    // Guard against malformed data
+    if (!data || !data.nodes || !(data.nodes instanceof Map)) {
+        return [];
+    }
+
     if (nodeId === null) {
         // Return root nodes (domains)
-        return data.rootNodeIds.map(id => data.nodes.get(id)!).filter(Boolean);
+        // Guard against malformed rootNodeIds
+        if (!Array.isArray(data.rootNodeIds)) return [];
+        return data.rootNodeIds
+            .filter((id): id is string => typeof id === "string" && id.length > 0)
+            .map(id => data.nodes.get(id))
+            .filter((node): node is MapNode => node != null);
     }
+
+    // Guard against invalid nodeId
+    if (typeof nodeId !== "string" || !nodeId) return [];
 
     const node = data.nodes.get(nodeId);
     if (!node) return [];
 
-    return node.childIds.map(id => data.nodes.get(id)!).filter(Boolean);
+    // Guard against malformed childIds
+    const childIds = Array.isArray(node.childIds) ? node.childIds : [];
+    return childIds
+        .filter((id): id is string => typeof id === "string" && id.length > 0)
+        .map(id => data.nodes.get(id))
+        .filter((child): child is MapNode => child != null);
 }
 
 /**
  * Get connections relevant to a set of visible nodes
+ * Returns empty array if data is malformed
  */
 export function getVisibleConnections(
     data: KnowledgeMapData,
     visibleNodeIds: Set<string>
 ): MapConnection[] {
+    // Guard against malformed data
+    if (!data || !Array.isArray(data.connections)) {
+        return [];
+    }
+
+    // Guard against invalid visibleNodeIds
+    if (!visibleNodeIds || !(visibleNodeIds instanceof Set) || visibleNodeIds.size === 0) {
+        return [];
+    }
+
     return data.connections.filter(
-        conn => visibleNodeIds.has(conn.fromId) && visibleNodeIds.has(conn.toId)
+        conn => conn != null &&
+            typeof conn.fromId === "string" &&
+            typeof conn.toId === "string" &&
+            visibleNodeIds.has(conn.fromId) &&
+            visibleNodeIds.has(conn.toId)
     );
 }
 
 /**
  * Get node by ID
+ * Returns undefined if data is malformed or node doesn't exist
  */
 export function getNodeById(data: KnowledgeMapData, nodeId: string): MapNode | undefined {
+    // Guard against malformed data
+    if (!data || !data.nodes || !(data.nodes instanceof Map)) {
+        return undefined;
+    }
+
+    // Guard against invalid nodeId
+    if (typeof nodeId !== "string" || !nodeId) {
+        return undefined;
+    }
+
     return data.nodes.get(nodeId);
 }
 
 /**
  * Get ancestor path to a node (for breadcrumb)
+ * Returns empty array if data is malformed or node doesn't exist
  */
 export function getNodeAncestors(data: KnowledgeMapData, nodeId: string): MapNode[] {
+    // Guard against malformed data
+    if (!data || !data.nodes || !(data.nodes instanceof Map)) {
+        return [];
+    }
+
+    // Guard against invalid nodeId
+    if (typeof nodeId !== "string" || !nodeId) {
+        return [];
+    }
+
     const ancestors: MapNode[] = [];
     let currentNode = data.nodes.get(nodeId);
 
-    while (currentNode?.parentId) {
+    // Guard against infinite loops with visited set
+    const visited = new Set<string>();
+    const maxIterations = 100; // Prevent infinite loops
+    let iterations = 0;
+
+    while (currentNode?.parentId && iterations < maxIterations) {
+        // Guard against circular references
+        if (visited.has(currentNode.parentId)) {
+            break;
+        }
+        visited.add(currentNode.parentId);
+
         const parent = data.nodes.get(currentNode.parentId);
         if (parent) {
             ancestors.unshift(parent);
@@ -681,6 +748,7 @@ export function getNodeAncestors(data: KnowledgeMapData, nodeId: string): MapNod
         } else {
             break;
         }
+        iterations++;
     }
 
     return ancestors;

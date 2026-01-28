@@ -2,6 +2,11 @@
  * Oracle API Client
  * Communicates with the Oracle API for learning path generation
  *
+ * Features:
+ * - Automatic retry with exponential backoff for transient failures
+ * - Error surfacing to UI via ProgressNotifications
+ * - Graceful fallback handling
+ *
  * Flow:
  * 1. Client calls local /api/oracle/generate endpoint
  * 2. Local endpoint fetches map_nodes context from Supabase
@@ -9,8 +14,22 @@
  * 4. Falls back to local generation if no external Oracle configured
  */
 
+import {
+    fetchWithRetryGet,
+    fetchWithRetryPost,
+    type ApiResult,
+    type RetryConfig,
+} from "./apiUtils";
+
 // External Oracle serverless function URL (optional - for AI-powered generation)
 const EXTERNAL_ORACLE_URL = process.env.NEXT_PUBLIC_ORACLE_API_URL || "";
+
+// Retry configuration for Oracle API - be patient with AI generation
+const ORACLE_RETRY_CONFIG: Partial<RetryConfig> = {
+    maxRetries: 3,
+    baseDelayMs: 3000, // Start with 3s delay (AI is slow)
+    maxDelayMs: 20000, // Max 20s delay
+};
 
 export interface OracleQuestion {
     id?: string;
@@ -132,25 +151,25 @@ class OracleApiClient {
      * 2. Calls external Oracle AI if ORACLE_API_URL is configured
      * 3. Falls back to local generation based on existing map structure
      *
-     * This ensures the Oracle always has proper map_nodes context for
-     * generating paths that align with the 5-level hierarchy.
+     * Uses retry logic with error notification - this is a critical user action
      */
     async generatePaths(payload: GeneratePathsRequest): Promise<GeneratePathsResponse> {
-        // Always route through local API which handles map_nodes context
-        const response = await fetch("/api/oracle/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        });
+        const result = await fetchWithRetryPost<GeneratePathsResponse>(
+            "/api/oracle/generate",
+            payload,
+            {
+                retryConfig: ORACLE_RETRY_CONFIG,
+                context: "Generate Learning Paths",
+                notifyOnError: true,
+                timeoutMs: 120000, // 2 minute timeout for AI generation
+            }
+        );
 
-        if (!response.ok) {
-            const error = await response.json().catch(() => ({ error: response.statusText }));
-            throw new Error(error.error || `Failed to generate paths: ${response.statusText}`);
+        if (!result.success || !result.data) {
+            throw new Error(result.error?.message || "Failed to generate paths");
         }
 
-        const data = await response.json();
+        const data = result.data;
 
         // Validate response has proper structure
         if (!data.paths || !Array.isArray(data.paths)) {
@@ -166,32 +185,70 @@ class OracleApiClient {
     }
 
     /**
+     * Generate paths with result wrapper
+     * Alternative method that returns ApiResult for more control over error handling
+     */
+    async generatePathsSafe(payload: GeneratePathsRequest): Promise<ApiResult<GeneratePathsResponse>> {
+        const result = await fetchWithRetryPost<GeneratePathsResponse>(
+            "/api/oracle/generate",
+            payload,
+            {
+                retryConfig: ORACLE_RETRY_CONFIG,
+                context: "Generate Learning Paths",
+                notifyOnError: false, // Caller will handle errors
+                timeoutMs: 120000,
+            }
+        );
+
+        if (result.success && result.data) {
+            // Validate response structure
+            if (!result.data.paths || !Array.isArray(result.data.paths)) {
+                return {
+                    data: null,
+                    error: {
+                        type: "parse",
+                        message: "Invalid response from Oracle: missing paths array",
+                        retryable: true,
+                    },
+                    success: false,
+                };
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Start a new Oracle session (legacy - for backward compatibility)
      * Requires external Oracle API to be configured
+     * Uses retry logic for reliability
      */
     async startSession(userId?: string): Promise<StartSessionResponse> {
         if (!this.externalUrl) {
             throw new Error("External Oracle API not configured for session-based flow");
         }
 
-        const response = await fetch(`${this.externalUrl}/oracle/start`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ user_id: userId }),
-        });
+        const result = await fetchWithRetryPost<StartSessionResponse>(
+            `${this.externalUrl}/oracle/start`,
+            { user_id: userId },
+            {
+                retryConfig: { maxRetries: 2, baseDelayMs: 1000, maxDelayMs: 5000, backoffMultiplier: 2, retryableStatuses: [408, 429, 500, 502, 503, 504] },
+                context: "Start Oracle Session",
+                notifyOnError: true,
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error(`Failed to start session: ${response.statusText}`);
+        if (!result.success || !result.data) {
+            throw new Error(result.error?.message || "Failed to start session");
         }
 
-        return response.json();
+        return result.data;
     }
 
     /**
      * Submit an answer and get the next question or paths (legacy)
      * Requires external Oracle API to be configured
+     * Uses retry logic for reliability
      */
     async submitAnswer(
         sessionId: string,
@@ -202,28 +259,32 @@ class OracleApiClient {
             throw new Error("External Oracle API not configured for session-based flow");
         }
 
-        const response = await fetch(`${this.externalUrl}/oracle/answer`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+        const result = await fetchWithRetryPost<AnswerResponse>(
+            `${this.externalUrl}/oracle/answer`,
+            {
                 session_id: sessionId,
                 answer,
                 question_index: questionIndex,
-            }),
-        });
+            },
+            {
+                retryConfig: ORACLE_RETRY_CONFIG,
+                context: "Submit Answer",
+                notifyOnError: true,
+                timeoutMs: 90000, // 90s timeout for answers that trigger path generation
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error(`Failed to submit answer: ${response.statusText}`);
+        if (!result.success || !result.data) {
+            throw new Error(result.error?.message || "Failed to submit answer");
         }
 
-        return response.json();
+        return result.data;
     }
 
     /**
      * Get session details (legacy)
      * Requires external Oracle API to be configured
+     * Uses retry logic for reliability
      */
     async getSession(sessionId: string): Promise<{
         session: OracleSession;
@@ -233,23 +294,29 @@ class OracleApiClient {
             throw new Error("External Oracle API not configured for session-based flow");
         }
 
-        const response = await fetch(`${this.externalUrl}/oracle/session/${sessionId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        const result = await fetchWithRetryGet<{
+            session: OracleSession;
+            paths: OraclePath[];
+        }>(
+            `${this.externalUrl}/oracle/session/${sessionId}`,
+            {
+                retryConfig: { maxRetries: 2, baseDelayMs: 1000, maxDelayMs: 5000, backoffMultiplier: 2, retryableStatuses: [408, 429, 500, 502, 503, 504] },
+                context: "Get Session",
+                notifyOnError: true,
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error(`Failed to get session: ${response.statusText}`);
+        if (!result.success || !result.data) {
+            throw new Error(result.error?.message || "Failed to get session");
         }
 
-        return response.json();
+        return result.data;
     }
 
     /**
      * Select a generated path (legacy)
      * Requires external Oracle API to be configured
+     * Uses retry logic - path selection is a critical user action
      */
     async selectPath(
         sessionId: string,
@@ -259,23 +326,26 @@ class OracleApiClient {
             throw new Error("External Oracle API not configured for session-based flow");
         }
 
-        const response = await fetch(`${this.externalUrl}/oracle/paths/${sessionId}/select`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ path_id: pathId }),
-        });
+        const result = await fetchWithRetryPost<{ success: boolean; path: OraclePath }>(
+            `${this.externalUrl}/oracle/paths/${sessionId}/select`,
+            { path_id: pathId },
+            {
+                retryConfig: ORACLE_RETRY_CONFIG,
+                context: "Select Learning Path",
+                notifyOnError: true,
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error(`Failed to select path: ${response.statusText}`);
+        if (!result.success || !result.data) {
+            throw new Error(result.error?.message || "Failed to select path");
         }
 
-        return response.json();
+        return result.data;
     }
 
     /**
      * Health check for external Oracle API
+     * Uses retry logic but silent errors
      */
     async healthCheck(): Promise<{ status: string; timestamp: string }> {
         if (!this.externalUrl) {
@@ -283,15 +353,20 @@ class OracleApiClient {
             return { status: "ok", timestamp: new Date().toISOString() };
         }
 
-        const response = await fetch(`${this.externalUrl}/health`, {
-            method: "GET",
-        });
+        const result = await fetchWithRetryGet<{ status: string; timestamp: string }>(
+            `${this.externalUrl}/health`,
+            {
+                retryConfig: { maxRetries: 1, baseDelayMs: 1000, maxDelayMs: 3000, backoffMultiplier: 2, retryableStatuses: [408, 429, 500, 502, 503, 504] },
+                context: "Oracle Health Check",
+                notifyOnError: false, // Silent - health checks shouldn't spam errors
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error(`Health check failed: ${response.statusText}`);
+        if (!result.success || !result.data) {
+            throw new Error(result.error?.message || "Health check failed");
         }
 
-        return response.json();
+        return result.data;
     }
 }
 

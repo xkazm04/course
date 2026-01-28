@@ -23,25 +23,62 @@ export function usePathPolling() {
     const updateFromPoll = usePathSyncStore(state => state.updateFromPoll);
     const setPolling = usePathSyncStore(state => state.setPolling);
 
-    const pollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    // Use refs to track interval ID and mounted state to prevent memory leaks
+    const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
     const isMountedRef = useRef(true);
+    // Track if a poll is currently in progress to prevent overlapping polls
+    const isPollingInProgressRef = useRef(false);
+
+    // Use refs for callbacks to avoid stale closures in interval
+    const jobsRef = useRef(jobs);
+    const updateFromPollRef = useRef(updateFromPoll);
+    const setPollingRef = useRef(setPolling);
+
+    // Keep refs in sync with latest values
+    useEffect(() => {
+        jobsRef.current = jobs;
+    }, [jobs]);
+
+    useEffect(() => {
+        updateFromPollRef.current = updateFromPoll;
+    }, [updateFromPoll]);
+
+    useEffect(() => {
+        setPollingRef.current = setPolling;
+    }, [setPolling]);
+
+    // Clear any existing interval - helper function
+    const clearPollingInterval = useCallback(() => {
+        if (intervalIdRef.current !== null) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+        }
+    }, []);
 
     const poll = useCallback(async () => {
-        const jobIds = Object.keys(jobs);
+        // Prevent overlapping polls
+        if (isPollingInProgressRef.current) {
+            return;
+        }
+
+        const currentJobs = jobsRef.current;
+        const jobIds = Object.keys(currentJobs);
         if (jobIds.length === 0) {
-            setPolling(false);
+            setPollingRef.current(false);
             return;
         }
 
         // Only poll for jobs that aren't complete
-        const pendingJobIds = Object.values(jobs)
+        const pendingJobIds = Object.values(currentJobs)
             .filter(j => j.status === "pending" || j.status === "generating")
             .map(j => j.jobId);
 
         if (pendingJobIds.length === 0) {
-            setPolling(false);
+            setPollingRef.current(false);
             return;
         }
+
+        isPollingInProgressRef.current = true;
 
         try {
             const response = await fetch("/api/content/job-status", {
@@ -59,43 +96,40 @@ export function usePathPolling() {
             const jobStatuses: JobStatusResponse[] = data.jobs || [];
 
             if (isMountedRef.current && jobStatuses.length > 0) {
-                updateFromPoll(jobStatuses);
+                updateFromPollRef.current(jobStatuses);
             }
         } catch (error) {
             console.error("[PathPolling] Error polling job status:", error);
+        } finally {
+            isPollingInProgressRef.current = false;
         }
-    }, [jobs, updateFromPoll, setPolling]);
+    }, []); // No dependencies - uses refs for latest values
 
     // Start/stop polling based on isPolling state
     useEffect(() => {
         isMountedRef.current = true;
 
-        const schedulePoll = () => {
-            if (pollTimeoutRef.current) {
-                clearTimeout(pollTimeoutRef.current);
-            }
-
-            if (isPolling && isMountedRef.current) {
-                pollTimeoutRef.current = setTimeout(async () => {
-                    await poll();
-                    schedulePoll();
-                }, POLL_INTERVAL);
-            }
-        };
+        // Always clear existing interval first to prevent stacking
+        clearPollingInterval();
 
         if (isPolling) {
             // Initial poll immediately
-            poll().then(() => schedulePoll());
+            poll();
+
+            // Set up interval for subsequent polls
+            intervalIdRef.current = setInterval(() => {
+                if (isMountedRef.current) {
+                    poll();
+                }
+            }, POLL_INTERVAL);
         }
 
+        // Cleanup function - CRITICAL for preventing memory leaks
         return () => {
             isMountedRef.current = false;
-            if (pollTimeoutRef.current) {
-                clearTimeout(pollTimeoutRef.current);
-                pollTimeoutRef.current = null;
-            }
+            clearPollingInterval();
         };
-    }, [isPolling, poll]);
+    }, [isPolling, poll, clearPollingInterval]);
 
     // Manual refresh
     const refresh = useCallback(() => {

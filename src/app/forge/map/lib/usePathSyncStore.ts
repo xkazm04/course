@@ -4,16 +4,26 @@
 // This store bridges the gap between:
 // - Static mock map data (string IDs like "chapter-frontend-html-basics")
 // - Dynamic database nodes (UUIDs created when accepting Oracle paths)
+//
+// Uses Immer middleware for mutable-style updates that produce immutable state.
+//
+// STALE CLOSURE PREVENTION:
+// - All state updates use functional form: set(state => ...)
+// - Timestamps track update order to prevent out-of-order overwrites
+// - shouldUpdateStatus function prevents stale data from overwriting newer updates
 // ============================================================================
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
+import type { NodeGenerationStatus } from "./types";
+
+// Re-export for backward compatibility
+export type { NodeGenerationStatus };
 
 // ============================================================================
 // Types
 // ============================================================================
-
-export type NodeGenerationStatus = "pending" | "generating" | "ready" | "completed" | "failed";
 
 export interface DynamicMapNode {
     id: string;                    // Database UUID (map_node_id)
@@ -34,6 +44,8 @@ export interface DynamicMapNode {
     isExisting: boolean;           // Was this an existing node in the map
     order: number;                 // Sort order within parent
     estimatedHours?: number;
+    /** Timestamp of last update - used for conflict resolution */
+    lastUpdatedAt: number;
 }
 
 export interface AcceptedPathInfo {
@@ -54,6 +66,8 @@ export interface GenerationJob {
     nodeName: string;
     status: NodeGenerationStatus;
     progress?: number;
+    /** Timestamp of last update - used for conflict resolution */
+    lastUpdatedAt: number;
 }
 
 // ============================================================================
@@ -80,6 +94,12 @@ interface PathSyncState {
     isSidebarOpen: boolean;
     isPolling: boolean;
     lastPollAt: number | null;
+
+    /**
+     * Global update version - incremented on each state change
+     * Used to detect stale updates in concurrent scenarios
+     */
+    updateVersion: number;
 }
 
 interface PathSyncActions {
@@ -193,83 +213,134 @@ const initialState: PathSyncState = {
     isSidebarOpen: false,
     isPolling: false,
     lastPollAt: null,
+    updateVersion: 0,
 };
+
+// ============================================================================
+// Helper Functions for Stale Closure Prevention
+// ============================================================================
+
+/**
+ * Status priority for conflict resolution - higher number = more progressed
+ * When two updates arrive out of order, prefer the more "progressed" status
+ */
+const STATUS_PRIORITY: Record<NodeGenerationStatus, number> = {
+    pending: 0,
+    generating: 1,
+    ready: 2,
+    completed: 3,
+    failed: 2, // Same as ready - both are terminal-ish states
+};
+
+/**
+ * Determines if the new status should replace the old status
+ * Prevents regression from completed -> pending due to stale data
+ */
+function shouldUpdateStatus(
+    currentStatus: NodeGenerationStatus,
+    newStatus: NodeGenerationStatus,
+    currentTimestamp: number,
+    newTimestamp: number
+): boolean {
+    // If new data is clearly newer by timestamp, accept it
+    if (newTimestamp > currentTimestamp) {
+        return true;
+    }
+
+    // If timestamps are close (within 100ms), use status priority
+    if (Math.abs(newTimestamp - currentTimestamp) < 100) {
+        return STATUS_PRIORITY[newStatus] >= STATUS_PRIORITY[currentStatus];
+    }
+
+    // Old data - don't update (stale closure scenario)
+    return false;
+}
 
 export const usePathSyncStore = create<PathSyncStore>()(
     persist(
-        (set, get) => ({
+        immer((set, get) => ({
             ...initialState,
 
             acceptPath: (path, domain, response) => {
-                const dynamicNodes: Record<string, DynamicMapNode> = {};
-                const pathToMapNodeId: Record<string, string> = {};
-                const mapNodeToChapterId: Record<string, string> = {};
-                const generationJobs: Record<string, GenerationJob> = {};
-
                 const pathNodes = path.nodes || [];
 
                 // CRITICAL: Sort created_nodes by depth to ensure parents are processed before children
                 // This ensures pathToMapNodeId[parent_id] is populated when processing child nodes
                 const sortedCreatedNodes = [...response.created_nodes].sort((a, b) => a.depth - b.depth);
 
-                // Process created nodes from response (now sorted by depth)
+                // Build local pathToMapNodeId first for parent lookups
+                const localPathToMapNodeId: Record<string, string> = {};
                 for (const created of sortedCreatedNodes) {
-                    pathToMapNodeId[created.path_node_id] = created.map_node_id;
-
-                    if (created.chapter_id) {
-                        mapNodeToChapterId[created.map_node_id] = created.chapter_id;
-                    }
-
-                    // Find the original path node for full info
-                    const pathNode = pathNodes.find(n => n.id === created.path_node_id);
-
-                    // Find parent map_node_id
-                    let parentMapNodeId: string | null = null;
-                    if (pathNode?.parent_id) {
-                        parentMapNodeId = pathToMapNodeId[pathNode.parent_id] || null;
-                    }
-
-                    // Determine initial status
-                    const hasJob = response.generation_jobs.some(
-                        j => j.map_node_id === created.map_node_id
-                    );
-
-                    dynamicNodes[created.map_node_id] = {
-                        id: created.map_node_id,
-                        pathNodeId: created.path_node_id,
-                        name: created.name,
-                        description: pathNode?.description,
-                        parentId: parentMapNodeId,
-                        parentPathNodeId: pathNode?.parent_id || undefined,
-                        depth: created.depth,
-                        nodeType: created.node_type,
-                        status: hasJob ? "pending" : "ready",
-                        chapterId: created.chapter_id,
-                        courseId: created.course_id,
-                        isNew: created.is_new,
-                        isExisting: !created.is_new,
-                        order: pathNode?.order || 0,
-                        estimatedHours: pathNode?.estimated_hours,
-                    };
+                    localPathToMapNodeId[created.path_node_id] = created.map_node_id;
                 }
 
-                // Process generation jobs
-                for (const job of response.generation_jobs) {
-                    generationJobs[job.job_id] = {
-                        jobId: job.job_id,
-                        mapNodeId: job.map_node_id,
-                        chapterId: job.chapter_id,
-                        nodeName: job.node_name,
-                        status: job.status as NodeGenerationStatus,
-                    };
+                set(state => {
+                    // Reset state for new path
+                    state.dynamicNodes = {};
+                    state.generationJobs = {};
+                    state.pathToMapNodeId = {};
+                    state.mapNodeToChapterId = {};
 
-                    if (job.chapter_id) {
-                        mapNodeToChapterId[job.map_node_id] = job.chapter_id;
+                    // Process created nodes from response (now sorted by depth)
+                    for (const created of sortedCreatedNodes) {
+                        state.pathToMapNodeId[created.path_node_id] = created.map_node_id;
+
+                        if (created.chapter_id) {
+                            state.mapNodeToChapterId[created.map_node_id] = created.chapter_id;
+                        }
+
+                        // Find the original path node for full info
+                        const pathNode = pathNodes.find(n => n.id === created.path_node_id);
+
+                        // Find parent map_node_id
+                        let parentMapNodeId: string | null = null;
+                        if (pathNode?.parent_id) {
+                            parentMapNodeId = localPathToMapNodeId[pathNode.parent_id] || null;
+                        }
+
+                        // Determine initial status
+                        const hasJob = response.generation_jobs.some(
+                            j => j.map_node_id === created.map_node_id
+                        );
+
+                        state.dynamicNodes[created.map_node_id] = {
+                            id: created.map_node_id,
+                            pathNodeId: created.path_node_id,
+                            name: created.name,
+                            description: pathNode?.description,
+                            parentId: parentMapNodeId,
+                            parentPathNodeId: pathNode?.parent_id || undefined,
+                            depth: created.depth,
+                            nodeType: created.node_type,
+                            status: hasJob ? "pending" : "ready",
+                            chapterId: created.chapter_id,
+                            courseId: created.course_id,
+                            isNew: created.is_new,
+                            isExisting: !created.is_new,
+                            order: pathNode?.order || 0,
+                            estimatedHours: pathNode?.estimated_hours,
+                            lastUpdatedAt: Date.now(),
+                        };
                     }
-                }
 
-                set({
-                    acceptedPath: {
+                    // Process generation jobs
+                    const now = Date.now();
+                    for (const job of response.generation_jobs) {
+                        state.generationJobs[job.job_id] = {
+                            jobId: job.job_id,
+                            mapNodeId: job.map_node_id,
+                            chapterId: job.chapter_id,
+                            nodeName: job.node_name,
+                            status: job.status as NodeGenerationStatus,
+                            lastUpdatedAt: now,
+                        };
+
+                        if (job.chapter_id) {
+                            state.mapNodeToChapterId[job.map_node_id] = job.chapter_id;
+                        }
+                    }
+
+                    state.acceptedPath = {
                         id: path.id || response.learning_path_id,
                         name: path.name,
                         description: path.description,
@@ -278,116 +349,114 @@ export const usePathSyncStore = create<PathSyncStore>()(
                         batchId: response.batch_id,
                         estimatedWeeks: path.estimated_weeks,
                         acceptedAt: new Date().toISOString(),
-                    },
-                    dynamicNodes,
-                    generationJobs,
-                    pathToMapNodeId,
-                    mapNodeToChapterId,
-                    isSidebarOpen: true,
-                    isPolling: Object.keys(generationJobs).length > 0,
+                    };
+                    state.isSidebarOpen = true;
+                    state.isPolling = Object.keys(state.generationJobs).length > 0;
+                    state.updateVersion += 1;
                 });
             },
 
             updateNodeStatus: (mapNodeId, status, progress, message, error) => {
                 set(state => {
                     const node = state.dynamicNodes[mapNodeId];
-                    if (!node) return state;
+                    if (!node) return;
 
-                    return {
-                        dynamicNodes: {
-                            ...state.dynamicNodes,
-                            [mapNodeId]: {
-                                ...node,
-                                status,
-                                progress,
-                                message,
-                                error,
-                            },
-                        },
-                    };
+                    const updateTimestamp = Date.now();
+
+                    // Check if we should apply this update (stale closure prevention)
+                    if (!shouldUpdateStatus(node.status, status, node.lastUpdatedAt, updateTimestamp)) {
+                        return;
+                    }
+
+                    node.status = status;
+                    node.progress = progress;
+                    node.message = message;
+                    node.error = error;
+                    node.lastUpdatedAt = updateTimestamp;
+                    state.updateVersion += 1;
                 });
             },
 
             updateJobStatus: (jobId, status, progress) => {
                 set(state => {
                     const job = state.generationJobs[jobId];
-                    if (!job) return state;
+                    if (!job) return;
 
-                    const updatedJobs = {
-                        ...state.generationJobs,
-                        [jobId]: { ...job, status, progress },
-                    };
+                    const updateTimestamp = Date.now();
+
+                    // Check if we should apply this update (stale closure prevention)
+                    if (!shouldUpdateStatus(job.status, status, job.lastUpdatedAt, updateTimestamp)) {
+                        return;
+                    }
+
+                    // Update job
+                    job.status = status;
+                    job.progress = progress;
+                    job.lastUpdatedAt = updateTimestamp;
 
                     // Also update the corresponding node
                     const node = state.dynamicNodes[job.mapNodeId];
-                    const updatedNodes = node
-                        ? {
-                            ...state.dynamicNodes,
-                            [job.mapNodeId]: { ...node, status, progress },
-                        }
-                        : state.dynamicNodes;
+                    if (node && shouldUpdateStatus(node.status, status, node.lastUpdatedAt, updateTimestamp)) {
+                        node.status = status;
+                        node.progress = progress;
+                        node.lastUpdatedAt = updateTimestamp;
+                    }
 
-                    return {
-                        generationJobs: updatedJobs,
-                        dynamicNodes: updatedNodes,
-                    };
+                    state.updateVersion += 1;
                 });
             },
 
             updateFromPoll: (jobs) => {
                 set(state => {
-                    const updatedJobs = { ...state.generationJobs };
-                    const updatedNodes = { ...state.dynamicNodes };
-                    const updatedChapterMap = { ...state.mapNodeToChapterId };
+                    const pollTimestamp = Date.now();
+                    let hasChanges = false;
 
                     for (const pollJob of jobs) {
                         // Find our job by ID
-                        const ourJob = Object.values(state.generationJobs).find(
-                            j => j.jobId === pollJob.id
-                        );
+                        const ourJob = state.generationJobs[pollJob.id] ||
+                            Object.values(state.generationJobs).find(j => j.jobId === pollJob.id);
                         if (!ourJob) continue;
 
                         const status = pollJob.status as NodeGenerationStatus;
 
+                        // Check if we should apply this update (stale closure prevention)
+                        if (!shouldUpdateStatus(ourJob.status, status, ourJob.lastUpdatedAt, pollTimestamp)) {
+                            continue;
+                        }
+
                         // Update job
-                        updatedJobs[ourJob.jobId] = {
-                            ...ourJob,
-                            status,
-                            progress: pollJob.progress_percent,
-                            chapterId: pollJob.chapter_id || ourJob.chapterId,
-                        };
+                        ourJob.status = status;
+                        ourJob.progress = pollJob.progress_percent;
+                        ourJob.chapterId = pollJob.chapter_id || ourJob.chapterId;
+                        ourJob.lastUpdatedAt = pollTimestamp;
+                        hasChanges = true;
 
                         // Update chapter ID mapping
                         if (pollJob.chapter_id) {
-                            updatedChapterMap[ourJob.mapNodeId] = pollJob.chapter_id;
+                            state.mapNodeToChapterId[ourJob.mapNodeId] = pollJob.chapter_id;
                         }
 
                         // Update node
-                        const node = updatedNodes[ourJob.mapNodeId];
-                        if (node) {
-                            updatedNodes[ourJob.mapNodeId] = {
-                                ...node,
-                                status,
-                                progress: pollJob.progress_percent,
-                                message: pollJob.progress_message,
-                                error: pollJob.error_message,
-                                chapterId: pollJob.chapter_id || node.chapterId,
-                            };
+                        const node = state.dynamicNodes[ourJob.mapNodeId];
+                        if (node && shouldUpdateStatus(node.status, status, node.lastUpdatedAt, pollTimestamp)) {
+                            node.status = status;
+                            node.progress = pollJob.progress_percent;
+                            node.message = pollJob.progress_message;
+                            node.error = pollJob.error_message;
+                            node.chapterId = pollJob.chapter_id || node.chapterId;
+                            node.lastUpdatedAt = pollTimestamp;
                         }
                     }
 
-                    // Check if any jobs are still pending/generating
-                    const stillGenerating = Object.values(updatedJobs).some(
-                        j => j.status === "pending" || j.status === "generating"
-                    );
+                    state.lastPollAt = pollTimestamp;
 
-                    return {
-                        generationJobs: updatedJobs,
-                        dynamicNodes: updatedNodes,
-                        mapNodeToChapterId: updatedChapterMap,
-                        isPolling: stillGenerating,
-                        lastPollAt: Date.now(),
-                    };
+                    if (hasChanges) {
+                        // Check if any jobs are still pending/generating
+                        state.isPolling = Object.values(state.generationJobs).some(
+                            j => j.status === "pending" || j.status === "generating"
+                        );
+                        state.updateVersion += 1;
+                    }
                 });
             },
 
@@ -415,17 +484,25 @@ export const usePathSyncStore = create<PathSyncStore>()(
             },
 
             setSidebarOpen: (open) => {
-                set({ isSidebarOpen: open });
+                set(state => {
+                    state.isSidebarOpen = open;
+                    state.updateVersion += 1;
+                });
             },
 
             setPolling: (polling) => {
-                set({ isPolling: polling });
+                set(state => {
+                    state.isPolling = polling;
+                    state.updateVersion += 1;
+                });
             },
 
             clearPath: () => {
-                set(initialState);
+                set(state => {
+                    Object.assign(state, initialState);
+                });
             },
-        }),
+        })),
         {
             name: "forge-path-sync",
             partialize: (state) => ({
@@ -440,49 +517,16 @@ export const usePathSyncStore = create<PathSyncStore>()(
 );
 
 // ============================================================================
-// Selector Hooks for common patterns
+// Selector Hooks (Re-exported from usePathSyncSelectors.ts)
 // ============================================================================
 
-export const useAcceptedPath = () => usePathSyncStore(state => state.acceptedPath);
-export const useDynamicNodes = () => usePathSyncStore(state => state.dynamicNodes);
-export const useIsSidebarOpen = () => usePathSyncStore(state => state.isSidebarOpen);
-export const useIsPolling = () => usePathSyncStore(state => state.isPolling);
-export const useGenerationJobs = () => usePathSyncStore(state => state.generationJobs);
-
-// Get nodes as array sorted by depth then order
-export const useSortedDynamicNodes = () => {
-    const nodes = usePathSyncStore(state => state.dynamicNodes);
-    return Object.values(nodes).sort((a, b) => {
-        if (a.depth !== b.depth) return a.depth - b.depth;
-        return a.order - b.order;
-    });
-};
-
-// Get nodes grouped by parent
-export const useNodesByParent = () => {
-    const nodes = usePathSyncStore(state => state.dynamicNodes);
-    const byParent: Record<string, DynamicMapNode[]> = { root: [] };
-
-    for (const node of Object.values(nodes)) {
-        const parentKey = node.parentId || "root";
-        if (!byParent[parentKey]) byParent[parentKey] = [];
-        byParent[parentKey].push(node);
-    }
-
-    // Sort each group by order
-    for (const key in byParent) {
-        byParent[key].sort((a, b) => a.order - b.order);
-    }
-
-    return byParent;
-};
-
-// Get overall progress
-export const useOverallProgress = () => {
-    const jobs = usePathSyncStore(state => state.generationJobs);
-    const jobArray = Object.values(jobs);
-    if (jobArray.length === 0) return 100;
-
-    const completed = jobArray.filter(j => j.status === "ready" || j.status === "completed").length;
-    return Math.round((completed / jobArray.length) * 100);
-};
+export {
+    useAcceptedPath,
+    useDynamicNodes,
+    useIsSidebarOpen,
+    useIsPolling,
+    useGenerationJobs,
+    useSortedDynamicNodes,
+    useNodesByParent,
+    useOverallProgress,
+} from "./usePathSyncSelectors";

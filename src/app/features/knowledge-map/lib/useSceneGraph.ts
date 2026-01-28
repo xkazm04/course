@@ -30,6 +30,67 @@ import type {
 import { getNodeChildren, getVisibleConnections, getNodeAncestors } from "./mapData";
 
 // ============================================================================
+// DATA VALIDATION HELPERS
+// ============================================================================
+
+/**
+ * Empty knowledge map data structure for fallback
+ */
+const EMPTY_MAP_DATA: KnowledgeMapData = {
+    nodes: new Map(),
+    connections: [],
+    rootNodeIds: [],
+};
+
+/**
+ * Validates that the KnowledgeMapData has the expected structure
+ * Returns true if valid, false if malformed
+ */
+function isValidMapData(data: unknown): data is KnowledgeMapData {
+    if (!data || typeof data !== "object") return false;
+    const d = data as Record<string, unknown>;
+
+    // Check nodes is a Map
+    if (!(d.nodes instanceof Map)) return false;
+
+    // Check connections is an array
+    if (!Array.isArray(d.connections)) return false;
+
+    // Check rootNodeIds is an array
+    if (!Array.isArray(d.rootNodeIds)) return false;
+
+    return true;
+}
+
+/**
+ * Validates that a MapNode has the minimum required fields
+ */
+function isValidNode(node: unknown): node is MapNode {
+    if (!node || typeof node !== "object") return false;
+    const n = node as Record<string, unknown>;
+
+    // Check required string fields
+    if (typeof n.id !== "string" || !n.id) return false;
+    if (typeof n.name !== "string") return false;
+    if (typeof n.level !== "string") return false;
+
+    // Check childIds is an array
+    if (!Array.isArray(n.childIds)) return false;
+
+    return true;
+}
+
+/**
+ * Safely get data with validation, returning empty structure if invalid
+ */
+function getSafeData(data: KnowledgeMapData): KnowledgeMapData {
+    if (!isValidMapData(data)) {
+        return EMPTY_MAP_DATA;
+    }
+    return data;
+}
+
+// ============================================================================
 // SCENE GRAPH TYPES
 // ============================================================================
 
@@ -277,12 +338,17 @@ export function useSceneGraph(
         enableSemanticZoom = true,
     } = options;
 
+    // Validate and get safe data - returns empty structure if invalid
+    const safeData = useMemo(() => getSafeData(data), [data]);
+
     // Calculate initial depth based on initial parent
     const initialDepth = useMemo(() => {
         if (!initialParentId) return 0;
-        const ancestors = getNodeAncestors(data, initialParentId);
+        // Validate that initialParentId exists in the data
+        if (!safeData.nodes.has(initialParentId)) return 0;
+        const ancestors = getNodeAncestors(safeData, initialParentId);
         return ancestors.length;
-    }, [data, initialParentId]);
+    }, [safeData, initialParentId]);
 
     // Build initial state
     const initialState = useMemo((): SceneGraphState => ({
@@ -373,26 +439,33 @@ export function useSceneGraph(
     // COMPUTED VALUES
     // ========================================================================
 
-    // Compute visible nodes at current level
+    // Compute visible nodes at current level with defensive validation
     const visibleNodes = useMemo(() => {
-        return getNodeChildren(data, scene.currentParentId);
-    }, [data, scene.currentParentId]);
+        const children = getNodeChildren(safeData, scene.currentParentId);
+        // Filter out any null/undefined nodes and validate each node has required fields
+        return children.filter(isValidNode);
+    }, [safeData, scene.currentParentId]);
 
-    // Compute visible connections
+    // Compute visible connections with defensive checks
     const visibleConnections = useMemo(() => {
+        if (visibleNodes.length === 0) return [];
         const visibleIds = new Set(visibleNodes.map((n) => n.id));
-        return getVisibleConnections(data, visibleIds);
-    }, [data, visibleNodes]);
+        return getVisibleConnections(safeData, visibleIds);
+    }, [safeData, visibleNodes]);
 
-    // Compute breadcrumb items
+    // Compute breadcrumb items with defensive validation
     const breadcrumbItems = useMemo((): BreadcrumbItem[] => {
         const items: BreadcrumbItem[] = [
             { nodeId: null, label: "Domains", level: "root" },
         ];
 
+        // Guard against malformed viewStack
+        if (!Array.isArray(scene.viewStack)) return items;
+
         scene.viewStack.forEach((nodeId) => {
-            const node = data.nodes.get(nodeId);
-            if (node) {
+            if (!nodeId || typeof nodeId !== "string") return;
+            const node = safeData.nodes.get(nodeId);
+            if (node && isValidNode(node)) {
                 items.push({
                     nodeId: node.id,
                     label: node.name,
@@ -402,19 +475,21 @@ export function useSceneGraph(
         });
 
         return items;
-    }, [data, scene.viewStack]);
+    }, [safeData, scene.viewStack]);
 
-    // Get selected node
+    // Get selected node with validation
     const selectedNode = useMemo(() => {
-        if (!scene.selectedNodeId) return null;
-        return data.nodes.get(scene.selectedNodeId) || null;
-    }, [data, scene.selectedNodeId]);
+        if (!scene.selectedNodeId || typeof scene.selectedNodeId !== "string") return null;
+        const node = safeData.nodes.get(scene.selectedNodeId);
+        return node && isValidNode(node) ? node : null;
+    }, [safeData, scene.selectedNodeId]);
 
-    // Get current parent node
+    // Get current parent node with validation
     const currentParent = useMemo(() => {
-        if (!scene.currentParentId) return null;
-        return data.nodes.get(scene.currentParentId) || null;
-    }, [data, scene.currentParentId]);
+        if (!scene.currentParentId || typeof scene.currentParentId !== "string") return null;
+        const node = safeData.nodes.get(scene.currentParentId);
+        return node && isValidNode(node) ? node : null;
+    }, [safeData, scene.currentParentId]);
 
     // Determine current level
     const currentLevel = useMemo((): NodeLevel | "root" => {
@@ -436,8 +511,18 @@ export function useSceneGraph(
     // Drill down into a node
     const drillDown = useCallback(
         (nodeId: string) => {
-            const node = data.nodes.get(nodeId);
-            if (!node || node.childIds.length === 0) {
+            // Guard against invalid nodeId
+            if (!nodeId || typeof nodeId !== "string") return;
+
+            const node = safeData.nodes.get(nodeId);
+            // Validate node exists and has valid structure
+            if (!node || !isValidNode(node)) {
+                return;
+            }
+
+            // Guard against malformed childIds
+            const childIds = Array.isArray(node.childIds) ? node.childIds : [];
+            if (childIds.length === 0) {
                 // Can't drill into nodes without children - select instead
                 updateScene(
                     () => ({ selectedNodeId: nodeId }),
@@ -454,7 +539,7 @@ export function useSceneGraph(
 
             updateScene(
                 (prev) => ({
-                    viewStack: [...prev.viewStack, nodeId],
+                    viewStack: [...(Array.isArray(prev.viewStack) ? prev.viewStack : []), nodeId],
                     currentParentId: nodeId,
                     selectedNodeId: null,
                     depth: newDepth,
@@ -466,7 +551,7 @@ export function useSceneGraph(
                 "drill_down"
             );
         },
-        [data, scene.depth, enableSemanticZoom, updateScene]
+        [safeData, scene.depth, enableSemanticZoom, updateScene]
     );
 
     // Drill up to a previous level
@@ -516,11 +601,17 @@ export function useSceneGraph(
     // Navigate to a node's parent level
     const navigateToNodeParent = useCallback(
         (nodeId: string) => {
-            const node = data.nodes.get(nodeId);
-            if (!node) return;
+            // Guard against invalid nodeId
+            if (!nodeId || typeof nodeId !== "string") return;
 
-            const ancestors = getNodeAncestors(data, nodeId);
-            const pathToParent = ancestors.slice(0, -1);
+            const node = safeData.nodes.get(nodeId);
+            // Validate node exists and has valid structure
+            if (!node || !isValidNode(node)) return;
+
+            const ancestors = getNodeAncestors(safeData, nodeId);
+            // Filter ancestors to only include valid nodes
+            const validAncestors = ancestors.filter(isValidNode);
+            const pathToParent = validAncestors.slice(0, -1);
 
             if (pathToParent.length === 0) {
                 // Node is at root level
@@ -546,7 +637,7 @@ export function useSceneGraph(
                 updateScene(
                     () => ({
                         viewStack,
-                        currentParentId: viewStack[viewStack.length - 1],
+                        currentParentId: viewStack[viewStack.length - 1] || null,
                         selectedNodeId: nodeId,
                         depth: newDepth,
                         scale: Math.max(semanticScale, 1),
@@ -557,15 +648,19 @@ export function useSceneGraph(
                 );
             }
         },
-        [data, enableSemanticZoom, updateScene]
+        [safeData, enableSemanticZoom, updateScene]
     );
 
     // Select a node
     const selectNode = useCallback(
         (nodeId: string | null) => {
+            // Allow null to deselect, but validate string nodeIds
+            if (nodeId !== null && (typeof nodeId !== "string" || !nodeId)) return;
+            // If nodeId is provided, verify it exists in the data
+            if (nodeId !== null && !safeData.nodes.has(nodeId)) return;
             updateScene(() => ({ selectedNodeId: nodeId }), "instant");
         },
-        [updateScene]
+        [safeData, updateScene]
     );
 
     // Reset to initial state
@@ -649,8 +744,12 @@ export function useSceneGraph(
     // Focus on a specific node (pan to center it)
     const focusOnNode = useCallback(
         (nodeId: string, targetScale?: number) => {
+            // Guard against invalid nodeId
+            if (!nodeId || typeof nodeId !== "string") return;
+
             const node = visibleNodes.find((n) => n.id === nodeId);
-            if (!node?.position) return;
+            // Guard against missing node or position
+            if (!node || !node.position) return;
 
             // TODO: Calculate offset to center the node
             // This would need container dimensions

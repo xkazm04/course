@@ -303,7 +303,7 @@ export const supabaseDataAdapter: CurriculumAdapter<SupabaseDataInput> = {
         // Create topic lookup for parent resolution
         const topicByDbId = new Map(topics.map((t) => [t.id, t]));
 
-        // Transform skills
+        // Transform skills (includes course and lesson types from DB)
         graph.skills = skills.map((node): CurriculumSkillNode => {
             // Find parent topic
             const parentTopic = node.parent_id ? topicByDbId.get(node.parent_id) : undefined;
@@ -319,6 +319,10 @@ export const supabaseDataAdapter: CurriculumAdapter<SupabaseDataInput> = {
                 duration: node.estimated_hours ? `${node.estimated_hours}h` : undefined,
                 difficulty: mapDifficulty(node.difficulty),
                 source: "supabase",
+                // Preserve original DB node type for visual differentiation
+                originalDbType: node.node_type === "course" || node.node_type === "lesson"
+                    ? node.node_type
+                    : "skill",
             };
         });
 

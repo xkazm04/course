@@ -1,0 +1,283 @@
+{
+  "options": {
+    "maxLessons": 25,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "6fff3f62-4fad-428c-909d-b4eb7d6e43ef",
+      "name": "Callback Pattern",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "f4137712-3c67-4c14-b036-8e70671cdf65",
+      "name": "The await Keyword",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "98ed4ec4-3249-4be8-be09-1ffe9d59c305",
+      "name": "Block Scope",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "7f08e1ed-61b0-4ee7-be69-6e9e877efb40",
+      "name": "Type Alias Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "b374224d-90ae-4743-8c40-89806e98c549",
+      "name": "Generic Interfaces",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "fd149d41-9882-4b01-bbd0-281a04ded2b7",
+      "name": "useCallback Hook",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "6e2da131-a04f-45cb-a153-0d6a17bc1ea8",
+      "name": "Reducer Patterns",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "6081ce62-bd9d-4f82-bc33-19891ed29c8a",
+      "name": "Access Modifiers",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, realworld, tip, warning"
+      ]
+    },
+    {
+      "nodeId": "7d84f459-fd0f-4c8f-8d12-c77582b187d4",
+      "name": "Functional Components",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "c2674930-6036-45b0-a69e-2e934da5e909",
+      "name": "Forms with Server Actions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "ce5c070d-d941-40d7-8cf2-98e69bf0ada6",
+      "name": "Optional Properties",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "f8d2c22d-9b61-4aa1-a48f-0d0d8c204bab",
+      "name": "Zustand Selectors",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tabs, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "03b37d5e-4f8c-4f71-935a-b90c512ac2bb",
+      "name": "Return Type Annotations",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "69486301-9ef5-493a-9d78-7a5ed87d7a55",
+      "name": "Prop Types Validation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "d10cb0fd-2bef-4e3d-a1f1-68efa96af325",
+      "name": "Context Provider",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "2080f404-fc7b-401b-b1e0-c457efad203b",
+      "name": "Caching Strategies",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "49fa7f8f-30e3-422f-886d-814b46f05a5c",
+      "name": "Mobile-First Design",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "86ef9cfb-da97-45cf-8b97-f23cdf2e0867",
+      "name": "Hook Composition",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "19c4c1bc-657c-4b04-8925-60a6c1051cf3",
+      "name": "Built-in Validation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "ad14aeec-1991-406c-938a-ade97fb4bfe0",
+      "name": "Animate Prop",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "6df78b46-a7e9-4fde-892d-d6a1a65a649a",
+      "name": "Spacing and Sizing",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "8d2783b7-dc6a-4bc7-80b5-1bb8d433688b",
+      "name": "Page Object Model",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, tabs, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "43159197-90e0-4765-8a97-8b939de02684",
+      "name": "Promise Error Handling",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "e3453ca9-6e32-486f-bdd8-72f1229912cc",
+      "name": "Zustand Middleware",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8f0d8acf-2be3-4883-9c05-6c17ed2ebe21",
+      "name": "Visual Regression Testing",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    }
+  ]
+}

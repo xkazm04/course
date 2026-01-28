@@ -164,7 +164,7 @@ export async function GET(request: NextRequest) {
             let progress: number | undefined;
             let message: string | undefined;
             let error: string | undefined;
-            let courseId: string | undefined = mapNode.course_id || undefined;
+            const courseId: string | undefined = mapNode.course_id || undefined;
             let chapterId: string | undefined;
 
             // For depth 3 (course) nodes - check if all chapters have content

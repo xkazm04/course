@@ -11,7 +11,6 @@ import { BackgroundAtmosphere } from "@/app/shared/components";
 
 // Direct imports for simpler components
 import { CodePlayground } from "@/app/features/code-playground";
-import { SocialProofVisualization } from "@/app/features/social-proof";
 import { KnowledgeUniverse } from "@/app/features/knowledge-universe";
 
 // Adaptive Learning imports
@@ -38,11 +37,6 @@ const featuresMeta: Record<string, { title: string; description: string; gradien
         title: "Code Playground",
         description: "Interactive code editor with live preview",
         gradient: "from-cyan-500 to-blue-600"
-    },
-    "social-proof": {
-        title: "Social Proof",
-        description: "Animated learner journey visualization",
-        gradient: "from-teal-500 to-emerald-600"
     },
     "knowledge-universe": {
         title: "Knowledge Universe",
@@ -287,8 +281,6 @@ function FeatureRenderer({ featureId }: { featureId: string }) {
     switch (featureId) {
         case "code-playground":
             return <CodePlayground playgroundId="dev-playground" initialFiles={mockPlaygroundFiles} title="Dev Playground" />;
-        case "social-proof":
-            return <SocialProofVisualization />;
         case "knowledge-universe":
             return <KnowledgeUniverse />;
         case "adaptive-learning":

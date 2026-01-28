@@ -449,7 +449,7 @@ let curriculumDataSourceInstance: CurriculumGraphDataSource | null = null;
  */
 export function getLearningPathDataSource(): LearningPathGraphDataSource {
     // Check WeakMap cache first
-    let cached = learningPathDataSourceCache.get(learningPathCacheKey);
+    const cached = learningPathDataSourceCache.get(learningPathCacheKey);
     if (cached) {
         return cached;
     }
@@ -473,7 +473,7 @@ export function getLearningPathDataSource(): LearningPathGraphDataSource {
  */
 export function getCurriculumDataSource(data: CurriculumData = curriculumData): CurriculumGraphDataSource {
     // Check WeakMap cache for this specific data object
-    let cached = curriculumDataSourceCache.get(data);
+    const cached = curriculumDataSourceCache.get(data);
     if (cached) {
         return cached;
     }

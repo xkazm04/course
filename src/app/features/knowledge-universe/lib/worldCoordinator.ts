@@ -432,13 +432,20 @@ export class WorldCoordinator {
     }
 
     /**
-     * Sort nodes by rendering order (planets first, then moons, then stars)
+     * Sort nodes by rendering order (clusters first, then planets, moons, stars)
      */
     sortNodesByDepth(nodes: UniverseNode[]): UniverseNode[] {
         const { x, y } = this._camera;
 
         return [...nodes].sort((a, b) => {
-            const typeOrder = { planet: 0, moon: 1, star: 2, asteroid: 3, comet: 3 };
+            const typeOrder: Record<string, number> = {
+                cluster: -1,  // Render clusters first (background)
+                planet: 0,
+                moon: 1,
+                star: 2,
+                asteroid: 3,
+                comet: 3,
+            };
             const typeA = typeOrder[a.type] ?? 3;
             const typeB = typeOrder[b.type] ?? 3;
 
@@ -582,6 +589,31 @@ export class WorldCoordinator {
     }
 
     /**
+     * Zoom to a node, centering it and calculating optimal scale to show it
+     * and its immediate context (children area)
+     *
+     * @param node - The node to zoom to
+     * @param padding - Multiplier for how much space around the node (default 4x node radius)
+     */
+    zoomToNode(node: UniverseNode, padding: number = 4): void {
+        // Calculate scale to fit node at ~40% of viewport
+        // We want the node + some context visible
+        const viewportMin = Math.min(this._viewport.width, this._viewport.height);
+        const targetNodeScreenSize = viewportMin * 0.25; // Node takes 25% of viewport
+
+        // Calculate the scale that would make the node appear at target size
+        const targetScale = targetNodeScreenSize / (node.radius * padding);
+
+        // Clamp to valid range
+        const clampedScale = Math.max(
+            this.config.minScale,
+            Math.min(this.config.maxScale, targetScale)
+        );
+
+        this.focusOn(node.x, node.y, clampedScale);
+    }
+
+    /**
      * Set zoom level by name
      */
     setZoomLevel(level: ZoomLevel): void {
@@ -612,6 +644,9 @@ export class WorldCoordinator {
     // ========================================================================
 
     private startAnimation(): void {
+        // Guard against SSR - no animation on server
+        if (typeof window === "undefined") return;
+
         if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame);
         }
@@ -626,6 +661,9 @@ export class WorldCoordinator {
     }
 
     private animate(): void {
+        // Guard against SSR
+        if (typeof window === "undefined") return;
+
         const start = this.animationStart;
         if (!start) return;
 

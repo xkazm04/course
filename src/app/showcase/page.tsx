@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import {
     Compass, Target, Briefcase, BookOpen, Layers, ArrowRight,
     Sparkles, GraduationCap, FileText, Award, Code2,
-    Brain, Globe2, Zap, BookMarked, Share2, GitCompare,
+    Brain, Zap, BookMarked, Share2, GitCompare,
     Rocket, TestTube2, Beaker, GitFork, Users, Trophy, Search
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
@@ -67,15 +67,6 @@ const devFeatures: DevFeature[] = [
         color: "cyan",
         gradient: "from-cyan-500 to-blue-600",
         component: "CodePlayground",
-    },
-    {
-        id: "social-proof",
-        title: "Social Proof",
-        description: "Animated learner journey visualization",
-        icon: Globe2,
-        color: "teal",
-        gradient: "from-teal-500 to-emerald-600",
-        component: "SocialProofVisualization",
     },
     {
         id: "knowledge-universe",

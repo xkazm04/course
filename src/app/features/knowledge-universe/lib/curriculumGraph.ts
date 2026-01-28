@@ -73,6 +73,11 @@ export interface CurriculumSkillNode extends CurriculumNodeBase {
     completed?: boolean;
     /** Difficulty level */
     difficulty?: "beginner" | "intermediate" | "advanced" | "expert";
+    /**
+     * Original database node type if different from "skill"
+     * Used to distinguish course/lesson nodes for different visual representations
+     */
+    originalDbType?: "skill" | "course" | "lesson";
 }
 
 /**

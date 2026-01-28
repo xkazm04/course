@@ -23,6 +23,8 @@ interface HexGridProps {
     onGenerateContent?: (nodeId: string) => void;
     onRegenerateContent?: (nodeId: string) => void;
     canGoBack?: boolean;
+    /** Set of node IDs highlighted from search results */
+    highlightedNodeIds?: Set<string>;
 }
 
 // Animated background component for visual polish
@@ -54,6 +56,7 @@ export function HexGrid({
     onGenerateContent,
     onRegenerateContent,
     canGoBack = true,
+    highlightedNodeIds,
 }: HexGridProps) {
     const svgRef = useRef<SVGSVGElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -317,6 +320,7 @@ export function HexGrid({
                                     generationProgress={status?.progress}
                                     onRetryGeneration={onRetryGeneration}
                                     onContextMenu={handleNodeContextMenu}
+                                    isHighlighted={highlightedNodeIds?.has(node.id)}
                                 />
                             );
                         })}

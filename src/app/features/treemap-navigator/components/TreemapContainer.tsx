@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigationStore } from "../lib/navigationStore";
-import { fetchRootNodes, fetchChildren } from "../lib/dataAdapter";
+import { fetchRootNodes, fetchChildren, isChildrenCached } from "../lib/dataAdapter";
 import { computeLayout } from "../lib/layoutEngine";
 import { useFocusOnNavigate } from "../lib/useFocusOnNavigate";
+import { usePrefetch } from "../lib/usePrefetch";
 import { getTransitionVariants, getSpringConfig } from "../lib/animationConfig";
 import { DEFAULT_LAYOUT_CONFIG } from "../lib/types";
 import type { TreemapNode, LayoutConfig } from "../lib/types";
 import { Territory } from "./Territory";
-import { LoadingOverlay } from "./LoadingOverlay";
 import { NavigationHeader } from "./NavigationHeader";
 import { EmptyState } from "./EmptyState";
 import { DetailPanel } from "./DetailPanel";
@@ -51,6 +51,9 @@ export function TreemapContainer({
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const [hasNavigated, setHasNavigated] = useState(false);
+
+  // Improvement #2: Prefetch on hover
+  const { prefetchNode, cancelPrefetch } = usePrefetch();
 
   // Store state and actions
   const currentPath = useNavigationStore((s) => s.currentPath);
@@ -137,6 +140,7 @@ export function TreemapContainer({
   }, [reset, setLoading, setError]);
 
   // Handle drill down into a node
+  // Uses cache for instant transitions when available
   const handleDrillDown = useCallback(
     async (node: TreemapNode) => {
       // Open detail panel for leaf nodes (lessons)
@@ -145,106 +149,92 @@ export function TreemapContainer({
         return;
       }
 
-      setLoading(true);
+      // Fetch children (instant if cached, otherwise fetches from API)
       try {
         const children = await fetchChildren(node.id);
         drillDown(node, children);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load children");
-      } finally {
-        setLoading(false);
       }
     },
-    [drillDown, setLoading, setError, selectNode]
+    [drillDown, setError, selectNode]
   );
 
   // Handle starting a lesson from detail panel
+  // FIX: Navigate to lesson page (uses map_nodes.id), not chapter page (uses chapters.id)
   const handleStartLesson = useCallback((nodeId: string) => {
-    // Navigate to the lesson page
-    window.location.href = `/forge/chapter/${nodeId}`;
+    // Navigate to the lesson page using map_nodes.id
+    window.location.href = `/forge/lesson/${nodeId}`;
   }, []);
 
   // Handle go back (called after fetching parent's children)
+  // Uses cache for instant back navigation
   const handleGoBack = useCallback(async () => {
     if (currentPath.length === 0) {
-      // Already at root
       return;
     }
 
     if (currentPath.length === 1) {
       // Going back to root
-      setLoading(true);
       try {
         const nodes = await fetchRootNodes();
         reset(nodes);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to go back");
-      } finally {
-        setLoading(false);
       }
       return;
     }
 
     // Going back to a parent level
     const parentBreadcrumb = currentPath[currentPath.length - 2];
-    setLoading(true);
     try {
       const children = await fetchChildren(parentBreadcrumb.id);
       goBack();
       setCurrentNodes(children);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to go back");
-    } finally {
-      setLoading(false);
     }
-  }, [currentPath, goBack, reset, setLoading, setError, setCurrentNodes]);
+  }, [currentPath, goBack, reset, setError, setCurrentNodes]);
 
   // Handle jump to specific breadcrumb (for breadcrumb navigation)
+  // Uses cache for instant navigation
   const handleJumpTo = useCallback(
     async (index: number) => {
       if (index === -1) {
         // Jump to root
-        setLoading(true);
         try {
           const nodes = await fetchRootNodes();
           reset(nodes);
         } catch (err) {
           setError(err instanceof Error ? err.message : "Failed to navigate");
-        } finally {
-          setLoading(false);
         }
         return;
       }
 
       // Jump to specific breadcrumb
       const targetBreadcrumb = currentPath[index];
-      setLoading(true);
       try {
         const children = await fetchChildren(targetBreadcrumb.id);
         jumpTo(index, children);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to navigate");
-      } finally {
-        setLoading(false);
       }
     },
-    [currentPath, jumpTo, reset, setLoading, setError]
+    [currentPath, jumpTo, reset, setError]
   );
 
   // Handle reset to root (for reset button)
+  // Uses cache for instant navigation
   const handleReset = useCallback(async () => {
-    if (currentPath.length === 0) return; // Already at root
+    if (currentPath.length === 0) return;
 
-    setLoading(true);
     try {
       const nodes = await fetchRootNodes();
       reset(nodes);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reset");
-    } finally {
-      setLoading(false);
     }
-  }, [currentPath.length, reset, setLoading, setError]);
+  }, [currentPath.length, reset, setError]);
 
   // Keyboard navigation (Escape to go back - but not when panel is open)
   useEffect(() => {
@@ -398,20 +388,30 @@ export function TreemapContainer({
             willChange: transitionDirection ? "transform, opacity" : "auto",
           }}
         >
+          {/* Staggered animation for territories */}
           {layoutNodes.map((node, index) => (
-            <Territory
+            <motion.div
               key={node.id}
-              node={node}
-              onClick={handleDrillDown}
-              onKeyDown={handleTerritoryKeyDown}
-              isFocused={focusedIndex === index}
-            />
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: index * 0.02, // 20ms stagger per card
+                duration: 0.15,
+                ease: "easeOut",
+              }}
+            >
+              <Territory
+                node={node}
+                onClick={handleDrillDown}
+                onKeyDown={handleTerritoryKeyDown}
+                isFocused={focusedIndex === index}
+                onMouseEnter={() => prefetchNode(node)}
+                onMouseLeave={cancelPrefetch}
+              />
+            </motion.div>
           ))}
         </motion.div>
       </AnimatePresence>
-
-      {/* Loading overlay */}
-      <LoadingOverlay isVisible={isLoading} />
 
       {/* Error display */}
       {error && (

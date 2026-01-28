@@ -26,7 +26,7 @@ export function selectPath(
     const { makePrimary = true, source } = options;
 
     const existingPath = graph.paths[pathId];
-    let updatedPaths = { ...graph.paths };
+    const updatedPaths = { ...graph.paths };
 
     if (existingPath) {
         updatedPaths[pathId] = {

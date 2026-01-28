@@ -4,9 +4,21 @@
  * This module defines chapter-level nodes in the curriculum DAG.
  * It connects the existing chapter data to the unified learning path graph,
  * enabling cross-chapter prerequisites and suggested learning paths.
+ *
+ * NOTE: Graph operation logic (prerequisites, suggested chapters, topological sort)
+ * is delegated to chapterGraph.ts. This module provides:
+ * - Data: CURRICULUM_CHAPTERS, CHAPTER_CURRICULUM_EDGES
+ * - Convenience functions that operate on that data
  */
 
 import type { ChapterCurriculumNode, CurriculumEdge } from "@/app/shared/lib/learningPathGraph";
+import {
+    getChapterPrerequisites as getGraphPrerequisites,
+    getSuggestedNextChapters as getGraphSuggestedNext,
+    getOptimalLearningPath,
+    type ChapterEdge,
+    type ChapterNode,
+} from "./chapterGraph";
 import { CHAPTER_SECTIONS, COURSE_INFO, HOOKS_FUNDAMENTALS_COURSE_INFO } from "./chapterData";
 import type { CourseInfo, ChapterSection } from "./chapterData";
 
@@ -362,34 +374,52 @@ export function getChaptersByDomain(
 }
 
 /**
- * Get chapter prerequisites
+ * Get chapter prerequisites.
+ * Delegates to chapterGraph.getChapterPrerequisites for the actual logic,
+ * using CHAPTER_CURRICULUM_EDGES as the edge data.
  */
 export function getChapterPrerequisites(chapterNodeId: string): ChapterCurriculumNode[] {
-    const prereqEdges = CHAPTER_CURRICULUM_EDGES.filter(
-        (edge) =>
-            edge.to === chapterNodeId &&
-            edge.type === "prerequisite" &&
-            edge.fromType === "chapter"
-    );
+    // Convert CurriculumEdge[] to ChapterEdge[] format for chapterGraph
+    const chapterEdges: ChapterEdge[] = CHAPTER_CURRICULUM_EDGES
+        .filter((edge) => edge.fromType === "chapter" && edge.toType === "chapter")
+        .map((edge) => ({
+            from: edge.from,
+            to: edge.to,
+            type: edge.type,
+            weight: edge.weight,
+            label: edge.label,
+            isIntraChapter: false,
+        }));
 
-    return prereqEdges
-        .map((edge) => getChapterNode(edge.from))
+    const prereqIds = getGraphPrerequisites(chapterNodeId, chapterEdges);
+
+    return prereqIds
+        .map((id) => getChapterNode(id))
         .filter((node): node is ChapterCurriculumNode => node !== undefined);
 }
 
 /**
- * Get suggested next chapters after completing a chapter
+ * Get suggested next chapters after completing a chapter.
+ * Delegates to chapterGraph.getSuggestedNextChapters for the actual logic,
+ * using CHAPTER_CURRICULUM_EDGES as the edge data.
  */
 export function getSuggestedNextChapters(chapterNodeId: string): ChapterCurriculumNode[] {
-    const nextEdges = CHAPTER_CURRICULUM_EDGES.filter(
-        (edge) =>
-            edge.from === chapterNodeId &&
-            (edge.type === "builds-upon" || edge.type === "enables") &&
-            edge.toType === "chapter"
-    );
+    // Convert CurriculumEdge[] to ChapterEdge[] format for chapterGraph
+    const chapterEdges: ChapterEdge[] = CHAPTER_CURRICULUM_EDGES
+        .filter((edge) => edge.fromType === "chapter" && edge.toType === "chapter")
+        .map((edge) => ({
+            from: edge.from,
+            to: edge.to,
+            type: edge.type,
+            weight: edge.weight,
+            label: edge.label,
+            isIntraChapter: false,
+        }));
 
-    return nextEdges
-        .map((edge) => getChapterNode(edge.to))
+    const nextIds = getGraphSuggestedNext(chapterNodeId, chapterEdges);
+
+    return nextIds
+        .map((id) => getChapterNode(id))
         .filter((node): node is ChapterCurriculumNode => node !== undefined);
 }
 
@@ -421,64 +451,62 @@ export function getChapterPrerequisiteWarnings(
 }
 
 /**
- * Get optimal chapter order for a course (topological sort)
+ * Get optimal chapter order for a course (topological sort).
+ * Delegates to chapterGraph.getOptimalLearningPath for the actual logic.
+ *
+ * Detects cycles in the prerequisite graph and throws CircularPrerequisiteError
+ * if circular dependencies are found.
+ *
+ * @throws CircularPrerequisiteError if the prerequisite graph contains cycles
  */
 export function getOptimalChapterOrder(courseId: string): ChapterCurriculumNode[] {
     const courseChapters = getChaptersByCourse(courseId);
     const courseChapterIds = new Set(courseChapters.map((ch) => ch.id));
 
     // Filter edges to only those within this course
-    const courseEdges = CHAPTER_CURRICULUM_EDGES.filter(
-        (edge) =>
-            courseChapterIds.has(edge.from) &&
-            courseChapterIds.has(edge.to) &&
-            edge.type === "prerequisite"
-    );
+    const courseEdges: ChapterEdge[] = CHAPTER_CURRICULUM_EDGES
+        .filter(
+            (edge) =>
+                courseChapterIds.has(edge.from) &&
+                courseChapterIds.has(edge.to) &&
+                edge.type === "prerequisite"
+        )
+        .map((edge) => ({
+            from: edge.from,
+            to: edge.to,
+            type: edge.type,
+            weight: edge.weight,
+            label: edge.label,
+            isIntraChapter: false,
+        }));
 
-    // Build in-degree map
-    const inDegree = new Map<string, number>();
-    const adjacency = new Map<string, string[]>();
+    // Convert ChapterCurriculumNode[] to ChapterNode[] for chapterGraph
+    const chapterNodes: ChapterNode[] = courseChapters.map((ch) => ({
+        id: ch.id,
+        courseId: ch.courseId,
+        chapterId: ch.chapterId,
+        title: ch.name,
+        domainId: ch.domainId,
+        position: ch.position,
+        hierarchyLevel: ch.hierarchyLevel,
+        timelinePhase: ch.timelinePhase,
+        difficulty: ch.hierarchyLevel === 0 ? "beginner" :
+                    ch.hierarchyLevel === 1 ? "intermediate" :
+                    ch.hierarchyLevel === 2 ? "advanced" : "expert",
+        durationMinutes: ch.durationMinutes,
+        sortOrder: ch.sortOrder,
+        isEntryPoint: ch.isEntryPoint,
+        xpReward: ch.xpReward,
+        sectionCount: ch.sectionCount,
+    }));
 
-    for (const chapter of courseChapters) {
-        inDegree.set(chapter.id, 0);
-        adjacency.set(chapter.id, []);
-    }
+    // Delegate to chapterGraph for the topological sort
+    const sortedNodes = getOptimalLearningPath(chapterNodes, courseEdges);
 
-    for (const edge of courseEdges) {
-        const current = inDegree.get(edge.to) ?? 0;
-        inDegree.set(edge.to, current + 1);
-        const adj = adjacency.get(edge.from) ?? [];
-        adj.push(edge.to);
-        adjacency.set(edge.from, adj);
-    }
-
-    // Kahn's algorithm
-    const queue: string[] = [];
-    for (const [id, degree] of inDegree) {
-        if (degree === 0) queue.push(id);
-    }
-
-    const result: ChapterCurriculumNode[] = [];
-    while (queue.length > 0) {
-        queue.sort((a, b) => {
-            const chA = courseChapters.find((ch) => ch.id === a);
-            const chB = courseChapters.find((ch) => ch.id === b);
-            return (chA?.sortOrder ?? 0) - (chB?.sortOrder ?? 0);
-        });
-
-        const current = queue.shift()!;
-        const chapter = courseChapters.find((ch) => ch.id === current);
-        if (chapter) result.push(chapter);
-
-        const neighbors = adjacency.get(current) ?? [];
-        for (const neighbor of neighbors) {
-            const degree = (inDegree.get(neighbor) ?? 1) - 1;
-            inDegree.set(neighbor, degree);
-            if (degree === 0) queue.push(neighbor);
-        }
-    }
-
-    return result;
+    // Map back to ChapterCurriculumNode[]
+    return sortedNodes
+        .map((node) => courseChapters.find((ch) => ch.id === node.id))
+        .filter((ch): ch is ChapterCurriculumNode => ch !== undefined);
 }
 
 /**

@@ -1,0 +1,228 @@
+{
+  "options": {
+    "maxLessons": 20,
+    "startFrom": ""
+  },
+  "results": [
+    {
+      "nodeId": "fd40db3a-0b05-4cdd-ab21-7265e8116f34",
+      "name": "Interface Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "1a270052-4da1-49df-9cee-140ef6d1a2fc",
+      "name": "useMemo Hook",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "ab2b83e0-e51d-42c5-9a0f-4e2e4e1debb5",
+      "name": "Generic Functions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "ece8820c-9875-4758-a9c9-e0e046ea7c43",
+      "name": "Global and Local Scope",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "9fd852f1-2fcf-4aa4-aafc-95072ae63728",
+      "name": "Form Element Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: warning"
+      ]
+    },
+    {
+      "nodeId": "d4e26cd5-45e1-4e93-b75c-570db45ec40f",
+      "name": "Async Functions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "9f423709-b112-4d64-a917-de9f2e55f573",
+      "name": "The Event Loop Explained",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "5c88e4a5-f560-4ff4-8b9d-7127457351e3",
+      "name": "Conditional Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    },
+    {
+      "nodeId": "52634014-61e1-42ce-9c07-40e6a54e6086",
+      "name": "Basic CSS Selectors",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "36a939a6-e548-4bda-b98a-342d1ef8aa61",
+      "name": "Vitest Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "4c29f5b4-c48c-40c7-87e7-d5812d34ef65",
+      "name": "Motion Component",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "f819bb48-9e55-4da3-b149-12fb890909a7",
+      "name": "HTML Document Anatomy",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "3632e446-e7a0-4d6a-ad8a-d026179b0f29",
+      "name": "Server Components Introduction",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "355612a1-6c20-4eef-a7ef-3f61739a2e73",
+      "name": "Transition Property",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "36204faa-6801-4046-b9f3-9c50cbbc6fc5",
+      "name": "Tailwind Setup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "8bfe4e88-4a98-4eaf-baff-6416f681cb99",
+      "name": "Link Component",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "4e0ea829-3a4e-4ff3-9c63-34e0effebbab",
+      "name": "Route Handler Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "2a99c6fa-9019-4b26-b6dd-8ea4c020b3b9",
+      "name": "Object Literals",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "a49472a1-4015-4042-a50e-c7f704833a78",
+      "name": "Flexbox Container Basics",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, tip"
+      ]
+    },
+    {
+      "nodeId": "28ef9024-3fff-4e86-aaf8-c40df89300cb",
+      "name": "Arithmetic and Comparison Operators",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    }
+  ]
+}

@@ -305,8 +305,15 @@ export function sortNodesByDepth(
     cameraY: number
 ): UniverseNode[] {
     return [...nodes].sort((a, b) => {
-        // Planets first, then moons, then stars
-        const typeOrder = { planet: 0, moon: 1, star: 2 };
+        // Clusters first (background), then planets, moons, stars, asteroids, comets
+        const typeOrder: Record<string, number> = {
+            cluster: -1,  // Render clusters first (background)
+            planet: 0,
+            moon: 1,
+            star: 2,
+            asteroid: 3,
+            comet: 4,
+        };
         const typeA = typeOrder[a.type] ?? 2;
         const typeB = typeOrder[b.type] ?? 2;
 

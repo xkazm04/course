@@ -1,10 +1,14 @@
 "use client";
 
 import React, { Suspense, lazy } from "react";
-import { Zap, GitPullRequest, Target, Flame } from "lucide-react";
+import { motion } from "framer-motion";
+import { Zap, GitPullRequest, Target, Flame, Rocket, BookOpen } from "lucide-react";
 import { useForge } from "../layout";
 import { StatsCard } from "./components";
 import { Skeleton, SkeletonCard } from "../components/LazySection";
+import { PageHero, type PageHeroStat } from "../components/PageHero";
+import { ForgeGlowButton } from "../components/ForgeGlowButton";
+import { staggerContainer, staggerChild, fadeUpVariants, forgeEasing } from "../lib/animations";
 
 // ============================================================================
 // Lazy load heavy components for better initial load
@@ -86,6 +90,35 @@ function StreakSkeleton() {
 }
 
 // ============================================================================
+// Quick Actions Component
+// ============================================================================
+
+function QuickActions() {
+    return (
+        <motion.div
+            variants={fadeUpVariants}
+            custom={3}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-wrap items-center justify-center gap-4 mt-6"
+        >
+            <ForgeGlowButton href="/forge/challenges" icon="flame">
+                Start a Challenge
+            </ForgeGlowButton>
+            <motion.a
+                href="/forge/projects"
+                className="flex items-center gap-2 px-6 py-4 rounded-xl bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm border border-[var(--forge-border-subtle)] text-[var(--forge-text-primary)] font-semibold hover:border-[var(--ember)]/30 transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+            >
+                <BookOpen size={20} className="text-[var(--forge-info)]" />
+                Browse Projects
+            </motion.a>
+        </motion.div>
+    );
+}
+
+// ============================================================================
 // Main Page
 // ============================================================================
 
@@ -112,51 +145,83 @@ export default function DashboardPage() {
     const mergedPRCount = 12;
     const contributionCount = 24;
 
-    return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-            {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-[var(--forge-text-primary)] mb-1">
-                    Welcome back, {user.displayName}!
-                </h1>
-                <p className="text-[var(--forge-text-secondary)]">
-                    Here's your progress and what to work on next.
-                </p>
-            </div>
+    // Hero stats
+    const heroStats: PageHeroStat[] = [
+        { value: user.xp, label: "Total XP", suffix: "" },
+        { value: mergedPRCount, label: "PRs Merged", suffix: "" },
+        { value: contributionCount, label: "Challenges Done", suffix: "" },
+        { value: user.currentStreak, label: "Day Streak", suffix: "" },
+    ];
 
-            {/* Stats Grid - Always render immediately */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <StatsCard
-                    icon={Zap}
-                    label="Total XP"
-                    value={user.xp.toLocaleString()}
-                    trend="+12%"
-                    iconColor="bg-[var(--gold)]"
-                />
-                <StatsCard
-                    icon={GitPullRequest}
-                    label="PRs Merged"
-                    value={mergedPRCount}
-                    subtext="this month"
-                    iconColor="bg-[var(--forge-success)]"
-                />
-                <StatsCard
-                    icon={Target}
-                    label="Challenges"
-                    value={contributionCount}
-                    subtext="completed"
-                    iconColor="bg-[var(--forge-info)]"
-                />
-                <StatsCard
-                    icon={Flame}
-                    label="Current Streak"
-                    value={`${user.currentStreak} days`}
-                    iconColor="bg-[var(--ember)]"
-                />
-            </div>
+    return (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            {/* Hero Section */}
+            <PageHero
+                title={`Welcome back, ${user.displayName}!`}
+                subtitle="Track your progress, complete challenges, and level up your skills."
+                badge={{ icon: Rocket, text: `Level ${user.level}` }}
+                stats={heroStats}
+                compact
+            >
+                <QuickActions />
+            </PageHero>
+
+            {/* Stats Grid with Staggered Animation */}
+            <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+                className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+            >
+                <motion.div variants={staggerChild}>
+                    <StatsCard
+                        icon={Zap}
+                        label="Total XP"
+                        value={user.xp}
+                        trend="+12%"
+                        iconColor="bg-[var(--gold)]"
+                        animateValue
+                    />
+                </motion.div>
+                <motion.div variants={staggerChild}>
+                    <StatsCard
+                        icon={GitPullRequest}
+                        label="PRs Merged"
+                        value={mergedPRCount}
+                        subtext="this month"
+                        iconColor="bg-[var(--forge-success)]"
+                        animateValue
+                    />
+                </motion.div>
+                <motion.div variants={staggerChild}>
+                    <StatsCard
+                        icon={Target}
+                        label="Challenges"
+                        value={contributionCount}
+                        subtext="completed"
+                        iconColor="bg-[var(--forge-info)]"
+                        animateValue
+                    />
+                </motion.div>
+                <motion.div variants={staggerChild}>
+                    <StatsCard
+                        icon={Flame}
+                        label="Current Streak"
+                        value={user.currentStreak}
+                        suffix=" days"
+                        iconColor="bg-[var(--ember)]"
+                        animateValue
+                    />
+                </motion.div>
+            </motion.div>
 
             {/* Main Content Grid - Lazy loaded sections */}
-            <div className="grid lg:grid-cols-3 gap-6">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.4, ease: forgeEasing }}
+                className="grid lg:grid-cols-3 gap-6 pb-12"
+            >
                 {/* Left Column */}
                 <div className="lg:col-span-2 space-y-6">
                     <Suspense fallback={<XPProgressSkeleton />}>
@@ -182,7 +247,7 @@ export default function DashboardPage() {
                         <RecentActivity />
                     </Suspense>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 }

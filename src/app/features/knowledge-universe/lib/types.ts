@@ -77,6 +77,19 @@ export interface MoonNode extends UniverseNodeBase {
 }
 
 /**
+ * Orbit node - represents a skill/sub-topic within a chapter
+ * Visual: smaller glowing orb orbiting moons, intermediate between moon and star
+ */
+export interface OrbitNode extends UniverseNodeBase {
+    type: "orbit";
+    parentMoonId: string;
+    skillId: string;
+    lessonCount: number;
+    estimatedHours?: number;
+    difficulty?: "beginner" | "intermediate" | "advanced" | "expert";
+}
+
+/**
  * Star node - represents an individual lesson
  */
 export interface StarNode extends UniverseNodeBase {
@@ -112,6 +125,104 @@ export interface CometNode extends UniverseNodeBase {
     difficulty: "easy" | "medium" | "hard";
 }
 
+// ============================================================================
+// CLUSTER NODES (for LOD/hierarchical visualization)
+// ============================================================================
+
+/**
+ * Cluster level representing aggregation depth
+ * - galaxy-cluster: Aggregates multiple domains into mega-clusters
+ * - domain-cluster: Single domain with aggregated topics
+ * - topic-cluster: Single topic with aggregated skills
+ * - skill-cluster: Single skill with aggregated lessons
+ */
+export type ClusterLevel = "galaxy-cluster" | "domain-cluster" | "topic-cluster" | "skill-cluster";
+
+/**
+ * Cluster node - represents an aggregation of child nodes
+ * Rendered as a glowing nebula that "explodes" into children on zoom
+ */
+export interface ClusterNode extends UniverseNodeBase {
+    type: "cluster";
+    /** The aggregation level of this cluster */
+    clusterLevel: ClusterLevel;
+    /** IDs of the nodes this cluster aggregates */
+    childNodeIds: string[];
+    /** Cached count of all descendant nodes (for metrics) */
+    totalDescendants: number;
+    /** Aggregate metrics for display */
+    metrics: ClusterMetrics;
+    /** Primary domain ID (for coloring, if single domain) */
+    primaryDomainId?: string;
+    /** Whether this cluster is currently expanded (animating to children) */
+    isExpanding?: boolean;
+    /** Animation progress (0-1) for expansion/collapse */
+    expansionProgress?: number;
+    /** Positions for child node animation targets */
+    childPositions?: Map<string, { x: number; y: number }>;
+}
+
+/**
+ * Aggregate metrics shown on cluster nodes
+ */
+export interface ClusterMetrics {
+    /** Total estimated hours of content */
+    totalHours: number;
+    /** Completion percentage (0-100) */
+    completionPercent: number;
+    /** Number of nodes in this cluster */
+    nodeCount: number;
+    /** Number of completed nodes */
+    completedCount: number;
+    /** Difficulty breakdown */
+    difficultyBreakdown?: {
+        beginner: number;
+        intermediate: number;
+        advanced: number;
+        expert: number;
+    };
+}
+
+/**
+ * LOD (Level of Detail) configuration
+ * 5-level hierarchy: galaxy → domain → topic → skill → lesson
+ */
+export interface LODConfig {
+    /** Zoom scale thresholds for LOD transitions */
+    thresholds: {
+        /** Below this scale: show galaxy clusters */
+        galaxyCluster: number;
+        /** Below this scale: show domain clusters */
+        domainCluster: number;
+        /** Below this scale: show topic clusters */
+        topicCluster: number;
+        /** Below this scale: show skill clusters */
+        skillCluster: number;
+        /** Above this: show individual nodes */
+        fullDetail: number;
+    };
+    /** Animation duration for cluster transitions (ms) */
+    transitionDuration: number;
+    /** Minimum nodes to form a cluster */
+    minClusterSize: number;
+}
+
+/**
+ * Default LOD configuration
+ * Adjusted thresholds for smooth 5-level navigation
+ */
+export const DEFAULT_LOD_CONFIG: LODConfig = {
+    thresholds: {
+        galaxyCluster: 0.12,
+        domainCluster: 0.22,
+        topicCluster: 0.40,
+        skillCluster: 0.60,
+        fullDetail: 0.85,
+    },
+    transitionDuration: 400,
+    minClusterSize: 3,
+};
+
 /**
  * Connection between nodes (learning paths)
  */
@@ -127,7 +238,7 @@ export interface UniverseConnection {
 /**
  * Union type for all node types
  */
-export type UniverseNode = PlanetNode | MoonNode | StarNode | AsteroidNode | CometNode;
+export type UniverseNode = PlanetNode | MoonNode | OrbitNode | StarNode | AsteroidNode | CometNode | ClusterNode;
 
 // ============================================================================
 // VIEWPORT & CAMERA

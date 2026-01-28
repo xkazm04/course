@@ -8,7 +8,6 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
 import type { CurriculumGraph, CurriculumDataSource } from "./curriculumGraph";
 import {
     mockDataAdapter,
@@ -103,35 +102,31 @@ function createMockDataInput(): MockDataInput {
 }
 
 // ============================================================================
-// SUPABASE DATA FETCHING
+// SERVER-SIDE DATA FETCHING (via API route)
 // ============================================================================
 
-async function fetchSupabaseData(): Promise<{ nodes: SupabaseMapNode[]; connections: SupabaseMapConnection[] } | null> {
+async function fetchMapData(): Promise<{ nodes: SupabaseMapNode[]; connections: SupabaseMapConnection[] } | null> {
     try {
-        const supabase = createClient();
+        const response = await fetch("/api/map/nodes", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-        // Fetch nodes
-        const { data: nodesData, error: nodesError } = await supabase
-            .from("map_nodes")
-            .select("*")
-            .order("depth", { ascending: true })
-            .order("sort_order", { ascending: true });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.warn("Failed to fetch map data:", errorData);
+            return null;
+        }
 
-        if (nodesError) throw nodesError;
-
-        // Fetch connections
-        const { data: connectionsData, error: connectionsError } = await supabase
-            .from("map_node_connections")
-            .select("*");
-
-        if (connectionsError) throw connectionsError;
-
+        const data = await response.json();
         return {
-            nodes: nodesData || [],
-            connections: connectionsData || [],
+            nodes: data.nodes || [],
+            connections: data.connections || [],
         };
     } catch (error) {
-        console.warn("Failed to fetch Supabase data:", error);
+        console.warn("Failed to fetch map data:", error);
         return null;
     }
 }
@@ -185,7 +180,7 @@ export function useUniverseDataProvider(
 
             // Try Supabase if source is "supabase" or "auto"
             if (source === "supabase" || source === "auto") {
-                const supabaseData = await fetchSupabaseData();
+                const supabaseData = await fetchMapData();
 
                 if (supabaseData && supabaseData.nodes.length > 0) {
                     graph = supabaseDataAdapter.transform(supabaseData);

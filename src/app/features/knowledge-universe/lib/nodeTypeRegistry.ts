@@ -6,7 +6,7 @@
  * rendering logic - the system is open for extension, closed for modification.
  */
 
-import type { UniverseNode, ZoomLevel } from "./types";
+import type { UniverseNode, ZoomLevel, ClusterNode, ClusterLevel } from "./types";
 
 // ============================================================================
 // TYPES
@@ -345,15 +345,140 @@ export const timeLimitedPulseStrategy: RenderStrategy = (context) => {
 };
 
 // ============================================================================
+// NODE LABEL SYSTEM
+// ============================================================================
+
+/**
+ * Label configuration for each node type
+ */
+export interface LabelConfig {
+    minScreenRadius: number;    // Min radius to show label
+    fontWeight: string;         // 'bold' | 'normal' | '600'
+    fontSizeMultiplier: number; // Relative to screenRadius
+    maxLength: number;          // Truncation threshold
+    visibleAtZoom: ZoomLevel[]; // Zoom levels where label is shown
+}
+
+/**
+ * Label configurations per node type
+ * - maxLength set high (100) to effectively disable truncation
+ * - visibleAtZoom controls progressive disclosure (stricter at zoom-out)
+ */
+const LABEL_CONFIGS: Record<string, LabelConfig> = {
+    cluster: {
+        minScreenRadius: 30,
+        fontWeight: "bold",
+        fontSizeMultiplier: 0.35,
+        maxLength: 100,  // No truncation
+        visibleAtZoom: ["galaxy", "solar"],
+    },
+    planet: {
+        minScreenRadius: 25,
+        fontWeight: "600",
+        fontSizeMultiplier: 0.4,
+        maxLength: 100,  // No truncation
+        visibleAtZoom: ["galaxy", "solar"],  // Hide at deep zoom
+    },
+    moon: {
+        minScreenRadius: 20,
+        fontWeight: "normal",
+        fontSizeMultiplier: 0.45,
+        maxLength: 100,  // No truncation
+        visibleAtZoom: ["solar", "constellation"],  // Hide at star level
+    },
+    star: {
+        minScreenRadius: 15,
+        fontWeight: "normal",
+        fontSizeMultiplier: 0.5,
+        maxLength: 100,  // No truncation
+        visibleAtZoom: ["constellation", "star"],
+    },
+    asteroid: {
+        minScreenRadius: 12,
+        fontWeight: "normal",
+        fontSizeMultiplier: 0.55,
+        maxLength: 100,  // No truncation
+        visibleAtZoom: ["star"],  // Only visible at deepest zoom
+    },
+    comet: {
+        minScreenRadius: 12,
+        fontWeight: "normal",
+        fontSizeMultiplier: 0.55,
+        maxLength: 100,  // No truncation
+        visibleAtZoom: ["star"],  // Only visible at deepest zoom
+    },
+};
+
+/**
+ * Universal node label rendering strategy
+ * Draws the node name below the node with zoom-aware sizing and visibility
+ */
+export const nodeLabelStrategy: RenderStrategy = (context) => {
+    const { ctx, node, screenX, screenY, screenRadius, zoomLevel, animOpacity } = context;
+
+    const config = LABEL_CONFIGS[node.type];
+    if (!config) return;
+
+    // Visibility checks
+    if (screenRadius < config.minScreenRadius) return;
+    if (!config.visibleAtZoom.includes(zoomLevel)) return;
+
+    // Calculate font size based on screen radius
+    const fontSize = Math.max(10, Math.min(24, screenRadius * config.fontSizeMultiplier));
+
+    // Truncate long names
+    let label = node.name;
+    if (label.length > config.maxLength) {
+        label = label.slice(0, config.maxLength - 1) + "…";
+    }
+
+    // Position label below node
+    const labelY = screenY + screenRadius + fontSize * 0.6 + 4;
+
+    // Setup text style
+    ctx.save();
+    ctx.font = `${config.fontWeight} ${fontSize}px Inter, system-ui, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.globalAlpha = animOpacity;
+
+    // Dark shadow/glow for readability on any background
+    ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 1;
+
+    // Draw text with subtle node color tint
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(label, screenX, labelY);
+
+    ctx.restore();
+};
+
+/**
+ * Compose multiple render strategies into one
+ */
+function composeStrategies(...strategies: (RenderStrategy | undefined)[]): RenderStrategy {
+    return (context) => {
+        for (const strategy of strategies) {
+            if (strategy) strategy(context);
+        }
+    };
+}
+
+// ============================================================================
 // REGISTER DEFAULT NODE TYPES
 // ============================================================================
 
-// Planet type
+// Planet type - visible at galaxy and solar zoom
 NodeTypeRegistry.register({
     type: "planet",
     displayName: "Learning Domain",
-    visibilityRules: [minRadiusRule(0.5)],
-    postRenderStrategy: orbitalRingsStrategy,
+    visibilityRules: [
+        minRadiusRule(0.5),
+        zoomLevelRule(["galaxy", "solar", "constellation"]),
+    ],
+    postRenderStrategy: composeStrategies(orbitalRingsStrategy, nodeLabelStrategy),
     interaction: {
         clickable: true,
         showTooltip: true,
@@ -366,11 +491,15 @@ NodeTypeRegistry.register({
     renderPriority: 1,
 });
 
-// Moon type
+// Moon type - visible at solar and constellation zoom
 NodeTypeRegistry.register({
     type: "moon",
     displayName: "Chapter",
-    visibilityRules: [minRadiusRule(0.5)],
+    visibilityRules: [
+        minRadiusRule(0.5),
+        zoomLevelRule(["solar", "constellation", "star"]),
+    ],
+    postRenderStrategy: nodeLabelStrategy,
     interaction: {
         clickable: true,
         showTooltip: true,
@@ -383,12 +512,15 @@ NodeTypeRegistry.register({
     renderPriority: 2,
 });
 
-// Star type
+// Star type - visible at constellation and star zoom
 NodeTypeRegistry.register({
     type: "star",
     displayName: "Lesson",
-    visibilityRules: [minRadiusRule(0.5)],
-    postRenderStrategy: completionIndicatorStrategy,
+    visibilityRules: [
+        minRadiusRule(0.5),
+        zoomLevelRule(["constellation", "star"]),
+    ],
+    postRenderStrategy: composeStrategies(completionIndicatorStrategy, nodeLabelStrategy),
     interaction: {
         clickable: true,
         showTooltip: true,
@@ -405,46 +537,306 @@ NodeTypeRegistry.register({
     renderPriority: 3,
 });
 
-// Asteroid type (optional content)
+// Asteroid type (course level) - visible only at star zoom
 NodeTypeRegistry.register({
     type: "asteroid",
-    displayName: "Optional Content",
-    visibilityRules: [minRadiusRule(3), zoomLevelRule(["constellation", "star"])],
+    displayName: "Course",
+    visibilityRules: [
+        minRadiusRule(2),
+        zoomLevelRule(["star"]),  // Only at deepest zoom
+    ],
     preRenderStrategy: asteroidBeltStrategy,
+    postRenderStrategy: nodeLabelStrategy,
     interaction: {
         clickable: true,
         showTooltip: true,
         hitRadiusMultiplier: 1.5,
         getTooltipContent: (node) => ({
             title: node.name,
-            subtitle: "Optional Content",
-            extra: "Bonus material",
+            subtitle: "Course",
+            extra: "Learning module",
         }),
     },
     renderPriority: 4,
 });
 
-// Comet type (time-limited challenges)
+// Comet type (lesson level) - visible only at star zoom
 NodeTypeRegistry.register({
     type: "comet",
-    displayName: "Time-Limited Challenge",
-    visibilityRules: [minRadiusRule(2)],
+    displayName: "Lesson",
+    visibilityRules: [
+        minRadiusRule(2),
+        zoomLevelRule(["star"]),  // Only at deepest zoom
+    ],
     preRenderStrategy: cometTailStrategy,
-    postRenderStrategy: timeLimitedPulseStrategy,
+    postRenderStrategy: nodeLabelStrategy,
     interaction: {
         clickable: true,
         showTooltip: true,
         hitRadiusMultiplier: 1.3,
         getTooltipContent: (node) => {
-            const comet = node as { expiresAt?: number };
-            const remaining = comet.expiresAt ? Math.max(0, comet.expiresAt - Date.now()) : 0;
-            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const lesson = node as { duration?: string; completed?: boolean };
             return {
                 title: node.name,
-                subtitle: "Time-Limited Challenge",
-                extra: remaining > 0 ? `${hours}h remaining` : "Expired",
+                subtitle: "Lesson",
+                extra: lesson.completed ? "Completed" : (lesson.duration || "~15 min"),
             };
         },
     },
     renderPriority: 5,
+});
+
+// ============================================================================
+// CLUSTER RENDER STRATEGIES
+// ============================================================================
+
+/**
+ * Draw nebula effect for galaxy clusters
+ * Creates a swirling, glowing cloud effect
+ */
+export const nebulaClusterStrategy: RenderStrategy = (context) => {
+    const { ctx, node, screenX, screenY, animatedRadius, animOpacity } = context;
+    const cluster = node as ClusterNode;
+
+    if (animatedRadius <= 10) return;
+
+    ctx.save();
+    ctx.globalAlpha = animOpacity * 0.8;
+
+    // Outer glow layers (nebula cloud effect)
+    const glowLayers = 4;
+    for (let i = glowLayers; i >= 1; i--) {
+        const layerRadius = animatedRadius * (1 + i * 0.4);
+        const gradient = ctx.createRadialGradient(
+            screenX, screenY, animatedRadius * 0.3,
+            screenX, screenY, layerRadius
+        );
+
+        const baseColor = node.color;
+        const alpha = (0.15 / i) * animOpacity;
+        gradient.addColorStop(0, `${baseColor}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`);
+        gradient.addColorStop(0.5, `${baseColor}${Math.round(alpha * 0.5 * 255).toString(16).padStart(2, '0')}`);
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.beginPath();
+        ctx.arc(screenX, screenY, layerRadius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+    }
+
+    // Animated swirling particles within the nebula
+    const particleCount = Math.min(cluster.metrics.nodeCount, 20);
+    const time = Date.now() * 0.001;
+
+    for (let i = 0; i < particleCount; i++) {
+        const angle = (i / particleCount) * Math.PI * 2 + time * 0.2;
+        const spiralFactor = 0.3 + (i % 3) * 0.2;
+        const distance = animatedRadius * spiralFactor * (1 + Math.sin(time + i) * 0.2);
+        const particleX = screenX + Math.cos(angle) * distance;
+        const particleY = screenY + Math.sin(angle) * distance;
+        const particleSize = 2 + Math.sin(time * 2 + i) * 1;
+
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, particleSize, 0, Math.PI * 2);
+        ctx.fillStyle = `${node.color}${Math.round(animOpacity * 0.6 * 255).toString(16).padStart(2, '0')}`;
+        ctx.fill();
+    }
+
+    ctx.restore();
+};
+
+/**
+ * Draw metrics overlay for clusters (node count, completion %)
+ */
+export const clusterMetricsStrategy: RenderStrategy = (context) => {
+    const { ctx, node, screenX, screenY, animatedRadius, animOpacity, isHovered } = context;
+    const cluster = node as ClusterNode;
+
+    if (animatedRadius <= 25) return;
+
+    ctx.save();
+    ctx.globalAlpha = animOpacity;
+
+    // Draw node count in center
+    const fontSize = Math.max(12, Math.min(24, animatedRadius * 0.4));
+    ctx.font = `bold ${fontSize}px Inter, system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Glow effect for text
+    ctx.shadowColor = node.color;
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(`${cluster.metrics.nodeCount}`, screenX, screenY - fontSize * 0.3);
+
+    // Draw "nodes" label below
+    const labelSize = Math.max(9, fontSize * 0.5);
+    ctx.font = `${labelSize}px Inter, system-ui, sans-serif`;
+    ctx.shadowBlur = 4;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.fillText('nodes', screenX, screenY + fontSize * 0.5);
+
+    // Draw completion ring if hovered or large enough
+    if (isHovered || animatedRadius > 50) {
+        const completionPercent = cluster.metrics.completionPercent / 100;
+        const ringRadius = animatedRadius * 0.85;
+        const ringWidth = Math.max(3, animatedRadius * 0.08);
+
+        // Background ring
+        ctx.beginPath();
+        ctx.arc(screenX, screenY, ringRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = ringWidth;
+        ctx.stroke();
+
+        // Progress ring
+        if (completionPercent > 0) {
+            ctx.beginPath();
+            ctx.arc(screenX, screenY, ringRadius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * completionPercent);
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = ringWidth;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        // Completion percentage text
+        if (isHovered) {
+            const percentSize = Math.max(10, fontSize * 0.6);
+            ctx.font = `${percentSize}px Inter, system-ui, sans-serif`;
+            ctx.shadowBlur = 6;
+            ctx.fillStyle = '#22c55e';
+            ctx.fillText(`${Math.round(cluster.metrics.completionPercent)}%`, screenX, screenY + animatedRadius * 0.65);
+        }
+    }
+
+    ctx.restore();
+};
+
+/**
+ * Draw "dive deeper" affordance on hover
+ */
+export const clusterDiveAffordanceStrategy: RenderStrategy = (context) => {
+    const { ctx, node, screenX, screenY, animatedRadius, animOpacity, isHovered } = context;
+
+    if (!isHovered || animatedRadius <= 30) return;
+
+    ctx.save();
+    ctx.globalAlpha = animOpacity * 0.9;
+
+    // Pulsing ring to indicate "dive in"
+    const pulsePhase = (Date.now() % 1500) / 1500;
+    const pulseRadius = animatedRadius * (1.1 + pulsePhase * 0.3);
+    const pulseAlpha = (1 - pulsePhase) * 0.5;
+
+    ctx.beginPath();
+    ctx.arc(screenX, screenY, pulseRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = `${node.color}${Math.round(pulseAlpha * 255).toString(16).padStart(2, '0')}`;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // "Zoom to explore" hint at bottom
+    const hintY = screenY + animatedRadius + 20;
+    ctx.font = '11px Inter, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 4;
+    ctx.fillText('Scroll to explore', screenX, hintY);
+
+    ctx.restore();
+};
+
+/**
+ * Draw expansion animation (cluster exploding into children)
+ */
+export const clusterExpansionStrategy: RenderStrategy = (context) => {
+    const { ctx, node, screenX, screenY, animatedRadius, animOpacity } = context;
+    const cluster = node as ClusterNode;
+
+    if (!cluster.isExpanding || !cluster.expansionProgress) return;
+
+    const progress = cluster.expansionProgress;
+    ctx.save();
+    ctx.globalAlpha = animOpacity * (1 - progress);
+
+    // Expanding ring effect
+    const expandRadius = animatedRadius * (1 + progress * 2);
+
+    ctx.beginPath();
+    ctx.arc(screenX, screenY, expandRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = `${node.color}${Math.round((1 - progress) * 0.5 * 255).toString(16).padStart(2, '0')}`;
+    ctx.lineWidth = 3 * (1 - progress);
+    ctx.stroke();
+
+    // Particle burst effect
+    const particleCount = Math.min(cluster.childNodeIds.length, 12);
+    for (let i = 0; i < particleCount; i++) {
+        const angle = (i / particleCount) * Math.PI * 2;
+        const distance = expandRadius * progress * 1.5;
+        const px = screenX + Math.cos(angle) * distance;
+        const py = screenY + Math.sin(angle) * distance;
+        const pSize = 4 * (1 - progress);
+
+        ctx.beginPath();
+        ctx.arc(px, py, pSize, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.fill();
+    }
+
+    ctx.restore();
+};
+
+// ============================================================================
+// REGISTER CLUSTER NODE TYPE
+// ============================================================================
+
+NodeTypeRegistry.register({
+    type: "cluster",
+    displayName: "Content Cluster",
+    visibilityRules: [
+        minRadiusRule(5),
+        // Clusters are visible at lower zoom levels
+        (node, zoomLevel) => {
+            const cluster = node as ClusterNode;
+            if (cluster.clusterLevel === "galaxy-cluster") {
+                return zoomLevel === "galaxy";
+            }
+            if (cluster.clusterLevel === "domain-cluster") {
+                return zoomLevel === "galaxy" || zoomLevel === "solar";
+            }
+            if (cluster.clusterLevel === "topic-cluster") {
+                return zoomLevel === "solar" || zoomLevel === "constellation";
+            }
+            return true;
+        },
+    ],
+    preRenderStrategy: nebulaClusterStrategy,
+    postRenderStrategy: (context) => {
+        clusterMetricsStrategy(context);
+        clusterDiveAffordanceStrategy(context);
+        clusterExpansionStrategy(context);
+        nodeLabelStrategy(context);
+    },
+    interaction: {
+        clickable: true,
+        showTooltip: true,
+        hitRadiusMultiplier: 1.2,
+        getTooltipContent: (node) => {
+            const cluster = node as ClusterNode;
+            const levelNames: Record<ClusterLevel, string> = {
+                "galaxy-cluster": "Galaxy Cluster",
+                "domain-cluster": "Learning Domain",
+                "topic-cluster": "Topic Cluster",
+                "skill-cluster": "Skill Cluster",
+            };
+            return {
+                title: node.name,
+                subtitle: levelNames[cluster.clusterLevel],
+                extra: `${cluster.metrics.nodeCount} items · ${cluster.metrics.totalHours}h · ${Math.round(cluster.metrics.completionPercent)}% complete`,
+            };
+        },
+    },
+    renderPriority: 0, // Render clusters first (behind other nodes)
 });

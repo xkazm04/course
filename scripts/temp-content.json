@@ -1,0 +1,109 @@
+{
+  "introduction": "**Grid Alignment** gives you precise control over how items are positioned within their grid cells and how the entire grid is positioned within its container. CSS Grid provides alignment properties for both axes, letting you center, stretch, or distribute items exactly where you want them.\n\nUnderstanding grid alignment is essential for creating polished layouts. While grid-template-columns and grid-template-rows define the structure, alignment properties control how content sits within that structure. This separation of concerns makes CSS Grid incredibly flexible.\n\nThis lesson covers justify-items, align-items, and place-items for cell alignment, as well as justify-content, align-content, and place-content for grid track alignment. You'll learn to center items perfectly, distribute space evenly, and handle common alignment scenarios.",
+  "content_markdown": ":::definition[title=\"Grid Alignment\"]\nCSS properties that control the positioning of grid items within their cells (items) and the positioning of the grid tracks within the container (content).\n:::\n\n## Two Types of Alignment\n\n:::comparison[title=\"Items vs Content Alignment\" left=\"Items (Cell Alignment)\" right=\"Content (Track Alignment)\"]\nLEFT:\n```css\n/* Position items WITHIN their cells */\n.grid {\n  justify-items: center; /* horizontal */\n  align-items: center;   /* vertical */\n}\n\n/* Affects where each item sits\n   inside its grid cell */\n```\n\nRIGHT:\n```css\n/* Position tracks WITHIN container */\n.grid {\n  justify-content: center; /* horizontal */\n  align-content: center;   /* vertical */\n}\n\n/* Affects where the entire grid\n   sits within the container */\n```\n\nVERDICT:\nUse `*-items` when you want to align items within their cells. Use `*-content` when your grid is smaller than its container and you want to position the entire grid.\n:::\n\n:::keypoints\n- `justify-*` controls inline (horizontal) axis\n- `align-*` controls block (vertical) axis\n- `place-*` is shorthand for both axes\n- Items: alignment within cells\n- Content: alignment of tracks within container\n:::",
+  "metadata": {
+    "estimated_minutes": 30,
+    "difficulty": "intermediate",
+    "key_takeaways": [
+      "justify-items and align-items position items within their grid cells",
+      "justify-content and align-content position the grid within its container",
+      "place-items and place-content are shorthand for both axes",
+      "justify-self and align-self override alignment for individual items",
+      "stretch is the default value for items alignment",
+      "content alignment only applies when the grid is smaller than its container"
+    ],
+    "key_references": [
+      {
+        "title": "MDN: CSS Grid Layout - Box Alignment",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Box_alignment_in_grid_layout",
+        "type": "docs"
+      },
+      {
+        "title": "CSS-Tricks: Complete Guide to Grid",
+        "url": "https://css-tricks.com/snippets/css/complete-guide-grid/",
+        "type": "article"
+      },
+      {
+        "title": "Grid by Example",
+        "url": "https://gridbyexample.com/",
+        "type": "tool"
+      }
+    ],
+    "video_variants": [
+      {
+        "id": "grid-align-basics",
+        "title": "CSS Grid Alignment Deep Dive",
+        "search_query": "css grid alignment justify items align items tutorial",
+        "instructor": "Kevin Powell",
+        "style": "tutorial",
+        "duration": "15:00"
+      },
+      {
+        "id": "grid-centering",
+        "title": "Centering with CSS Grid",
+        "search_query": "css grid centering place items tutorial",
+        "style": "tutorial",
+        "duration": "8:00"
+      }
+    ],
+    "tags": ["css", "grid", "alignment", "layout", "justify-items", "align-items", "intermediate"]
+  },
+  "sections": [
+    {
+      "title": "justify-items and align-items",
+      "section_type": "lesson",
+      "duration_minutes": 8,
+      "content_markdown": "These properties control how items are positioned within their individual grid cells.\n\n:::code[language=\"css\" title=\"Items Alignment Properties\"]\n.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 200px);\n  grid-template-rows: repeat(2, 150px);\n  gap: 10px;\n  \n  /* Horizontal alignment within cells */\n  justify-items: start | end | center | stretch;\n  \n  /* Vertical alignment within cells */\n  align-items: start | end | center | stretch;\n}\n:::\n\n:::definition[title=\"Alignment Values\"]\n- `start` - Align to the start edge of the cell\n- `end` - Align to the end edge of the cell\n- `center` - Center within the cell\n- `stretch` - Fill the entire cell (default)\n:::\n\n:::code[language=\"html\" title=\"Visual Examples\"]\n<style>\n.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 150px);\n  grid-template-rows: repeat(2, 100px);\n  gap: 10px;\n  background: #f0f0f0;\n}\n\n.item {\n  background: #3b82f6;\n  padding: 10px;\n  color: white;\n}\n\n/* Items shrink to content size and align */\n.grid-start {\n  justify-items: start;\n  align-items: start;\n}\n\n.grid-center {\n  justify-items: center;\n  align-items: center;\n}\n\n.grid-end {\n  justify-items: end;\n  align-items: end;\n}\n</style>\n\n<div class=\"grid grid-center\">\n  <div class=\"item\">Centered</div>\n  <div class=\"item\">In Cell</div>\n  <div class=\"item\">Content</div>\n</div>\n:::\n\n:::pitfall[title=\"stretch vs Fixed Dimensions\"]\nWRONG expectation:\n```css\n.grid {\n  justify-items: stretch; /* Default */\n  align-items: stretch;   /* Default */\n}\n\n.item {\n  width: 50px;  /* These override stretch! */\n  height: 30px;\n}\n```\n\nRIGHT understanding:\n```css\n/* stretch only works when items don't have \n   explicit width/height set */\n.item {\n  /* No width/height = stretches to fill cell */\n}\n```\n\nWHY:\nWhen items have explicit dimensions, they can't stretch. The item uses its specified size and alignment positions it within the cell.\n:::",
+      "code_snippet": ".grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  justify-items: center;\n  align-items: center;\n}",
+      "code_language": "css",
+      "key_points": [
+        "justify-items aligns horizontally within cells",
+        "align-items aligns vertically within cells",
+        "Default is stretch (items fill their cells)",
+        "Explicit dimensions override stretch behavior"
+      ]
+    },
+    {
+      "title": "place-items Shorthand",
+      "section_type": "lesson",
+      "duration_minutes": 6,
+      "content_markdown": "The `place-items` property combines `align-items` and `justify-items` into one declaration.\n\n:::code[language=\"css\" title=\"place-items Syntax\"]\n.grid {\n  /* Shorthand: align-items / justify-items */\n  place-items: center end;\n  \n  /* Equivalent to: */\n  align-items: center;\n  justify-items: end;\n}\n\n/* Single value applies to both */\n.grid-centered {\n  place-items: center;\n  \n  /* Equivalent to: */\n  align-items: center;\n  justify-items: center;\n}\n:::\n\n:::realworld[title=\"Perfect Centering with Grid\"]\nThe easiest way to center anything:\n\n```css\n.container {\n  display: grid;\n  place-items: center;\n  min-height: 100vh;\n}\n```\n\n```html\n<div class=\"container\">\n  <div class=\"card\">\n    Perfectly centered card!\n  </div>\n</div>\n```\n\nThis is often simpler than flexbox centering because you don't need to set both `justify-content` and `align-items`—`place-items: center` handles both axes.\n:::\n\n:::tabs\n## Cards Grid [css]\n```css\n/* Cards centered in their cells */\n.card-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));\n  gap: 24px;\n  place-items: center stretch;\n}\n```\n\n## Icon Grid [css]\n```css\n/* Icons centered both ways */\n.icon-grid {\n  display: grid;\n  grid-template-columns: repeat(4, 60px);\n  grid-template-rows: repeat(4, 60px);\n  gap: 8px;\n  place-items: center;\n}\n\n.icon {\n  width: 32px;\n  height: 32px;\n}\n```\n:::\n\n:::checkpoint[question=\"What does place-items: end center do?\" hint=\"First value is align-items, second is justify-items\"]\nIt sets `align-items: end` (vertical - items at bottom of cells) and `justify-items: center` (horizontal - items centered in cells).\n:::",
+      "code_snippet": "/* Center everything perfectly */\n.grid {\n  display: grid;\n  place-items: center;\n  min-height: 100vh;\n}",
+      "code_language": "css",
+      "key_points": [
+        "place-items combines align-items and justify-items",
+        "Single value applies to both axes",
+        "Two values: align-items first, justify-items second",
+        "place-items: center is the easiest way to center"
+      ]
+    },
+    {
+      "title": "justify-content and align-content",
+      "section_type": "lesson",
+      "duration_minutes": 8,
+      "content_markdown": "These properties position the entire grid tracks within the container—useful when the grid is smaller than its container.\n\n:::code[language=\"css\" title=\"Content Alignment\"]\n.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 100px); /* 300px total */\n  width: 600px; /* Container is larger than grid */\n  \n  /* Position the grid horizontally */\n  justify-content: start | end | center | \n                   space-between | space-around | space-evenly;\n  \n  /* Position the grid vertically */\n  align-content: start | end | center | \n                 space-between | space-around | space-evenly;\n}\n:::\n\n:::definition[title=\"Content Alignment Values\"]\n- `start` - Pack tracks at the start\n- `end` - Pack tracks at the end\n- `center` - Center the tracks\n- `space-between` - Even space between tracks, none at edges\n- `space-around` - Even space around each track\n- `space-evenly` - Equal space between tracks and edges\n:::\n\n:::code[language=\"css\" title=\"Visual Example\"]\n.container {\n  display: grid;\n  grid-template-columns: repeat(3, 100px);\n  grid-template-rows: repeat(2, 80px);\n  width: 500px;\n  height: 300px;\n  background: #e5e7eb;\n  \n  /* Center the 300px grid in 500px container */\n  justify-content: center;\n  \n  /* Distribute rows in 300px height container */\n  align-content: space-between;\n}\n:::\n\n:::pitfall[title=\"Content Alignment Has No Effect\"]\nWRONG:\n```css\n.grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr; /* Takes full width! */\n  justify-content: center; /* No effect */\n}\n```\n\nRIGHT:\n```css\n.grid {\n  display: grid;\n  grid-template-columns: 100px 100px 100px; /* Fixed widths */\n  justify-content: center; /* Now works! */\n}\n```\n\nWHY:\n`justify-content` only works when there's extra space. If columns use `fr` units or percentages that fill the container, there's no space to distribute.\n:::\n\n:::realworld[title=\"Footer with Spaced Sections\"]\n```css\n.footer {\n  display: grid;\n  grid-template-columns: repeat(4, max-content);\n  justify-content: space-between;\n  padding: 40px;\n}\n\n.footer-section {\n  /* Each section sizes to its content */\n  /* space-between distributes them evenly */\n}\n```\n:::",
+      "code_snippet": ".grid {\n  display: grid;\n  grid-template-columns: repeat(3, 150px);\n  justify-content: space-between;\n  align-content: center;\n  height: 400px;\n}",
+      "code_language": "css",
+      "key_points": [
+        "justify-content positions grid tracks horizontally",
+        "align-content positions grid tracks vertically",
+        "Only works when grid is smaller than container",
+        "space-between, space-around, space-evenly for distribution"
+      ]
+    },
+    {
+      "title": "Individual Item Alignment",
+      "section_type": "lesson",
+      "duration_minutes": 8,
+      "content_markdown": "Override container alignment for specific items using `justify-self`, `align-self`, and `place-self`.\n\n:::code[language=\"css\" title=\"Self Alignment Properties\"]\n.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 150px);\n  place-items: center; /* Default for all items */\n}\n\n.special-item {\n  /* Override for this item only */\n  justify-self: end;\n  align-self: start;\n  \n  /* Or use shorthand */\n  place-self: start end; /* align / justify */\n}\n:::\n\n:::code[language=\"html\" title=\"Mixed Alignment Example\"]\n<style>\n.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-template-rows: repeat(2, 100px);\n  gap: 10px;\n  place-items: center; /* Default centering */\n}\n\n.item-1 { place-self: start; }      /* Top-left */\n.item-2 { /* Uses default center */ }\n.item-3 { place-self: start end; }  /* Top-right */\n.item-4 { place-self: end start; }  /* Bottom-left */\n.item-5 { place-self: stretch; }    /* Fill cell */\n.item-6 { place-self: end; }        /* Bottom-right */\n</style>\n\n<div class=\"grid\">\n  <div class=\"item item-1\">1</div>\n  <div class=\"item item-2\">2</div>\n  <div class=\"item item-3\">3</div>\n  <div class=\"item item-4\">4</div>\n  <div class=\"item item-5\">5</div>\n  <div class=\"item item-6\">6</div>\n</div>\n:::\n\n:::steps[title=\"Creating Asymmetric Layouts\"]\n## Step 1: Set default alignment\n```css\n.grid {\n  display: grid;\n  grid-template-columns: 1fr 2fr 1fr;\n  place-items: start;\n}\n```\n\n## Step 2: Override specific items\n```css\n.hero-image {\n  place-self: center;\n}\n\n.sidebar {\n  align-self: stretch;\n}\n\n.call-to-action {\n  place-self: end center;\n}\n```\n:::\n\n:::realworld[title=\"Dashboard Card Layout\"]\n```html\n<div class=\"dashboard-grid\">\n  <div class=\"stat-card\">Revenue</div>\n  <div class=\"stat-card\">Users</div>\n  <div class=\"chart-card\">Big Chart</div>\n  <div class=\"list-card\">Recent Activity</div>\n</div>\n\n<style>\n.dashboard-grid {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  grid-template-rows: auto 1fr;\n  gap: 16px;\n  place-items: stretch; /* Cards fill their cells */\n}\n\n.chart-card {\n  grid-column: span 2;\n  grid-row: span 2;\n}\n\n.list-card {\n  grid-column: span 2;\n  align-self: start; /* Don't stretch vertically */\n}\n</style>\n```\n:::",
+      "code_snippet": "/* Grid default */\n.grid {\n  place-items: center;\n}\n\n/* Override for specific item */\n.featured {\n  place-self: stretch;\n}",
+      "code_language": "css",
+      "key_points": [
+        "justify-self overrides horizontal alignment for one item",
+        "align-self overrides vertical alignment for one item",
+        "place-self is shorthand for both",
+        "Self properties take same values as items properties"
+      ]
+    }
+  ]
+}

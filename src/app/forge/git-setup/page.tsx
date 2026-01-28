@@ -2,6 +2,7 @@
 
 import React, { useState, Suspense, lazy } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     GitBranch,
     Check,
@@ -12,9 +13,12 @@ import {
     Key,
     FolderGit,
     GitPullRequest,
+    Loader2,
+    type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { Skeleton } from "../components/LazySection";
+import { forgeEasing, staggerDelay } from "../lib/animations";
 
 // ============================================================================
 // Lazy load step components for better initial load
@@ -35,7 +39,7 @@ interface Step {
     id: string;
     title: string;
     description: string;
-    icon: React.ElementType;
+    icon: LucideIcon;
     Component: React.LazyExoticComponent<React.ComponentType>;
 }
 
@@ -45,16 +49,8 @@ interface Step {
 
 function StepSkeleton() {
     return (
-        <div className="space-y-6 animate-pulse">
-            <Skeleton className="h-5 w-3/4" />
-            <Skeleton className="h-10 w-64 rounded-lg" />
-            <div className="space-y-4">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-24 w-full rounded-lg" />
-                <Skeleton className="h-4 w-2/3" />
-                <Skeleton className="h-24 w-full rounded-lg" />
-            </div>
-            <Skeleton className="h-32 w-full rounded-lg" />
+        <div className="flex items-center justify-center py-12">
+            <Loader2 size={32} className="animate-spin text-[var(--ember)]" />
         </div>
     );
 }
@@ -120,46 +116,89 @@ function StepNavigation({
     onStepChange: (index: number) => void;
 }) {
     return (
-        <nav className="sticky top-8 space-y-1">
-            {steps.map((step, index) => {
-                const Icon = step.icon;
-                const isActive = activeStep === index;
-                const isCompleted = index < activeStep;
+        <nav className="sticky top-8 space-y-2">
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ ease: forgeEasing }}
+                className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] p-2 shadow-sm"
+            >
+                {steps.map((step, index) => {
+                    const Icon = step.icon;
+                    const isActive = activeStep === index;
+                    const isCompleted = index < activeStep;
 
-                return (
-                    <button
-                        key={step.id}
-                        onClick={() => onStepChange(index)}
-                        className={cn(
-                            "w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all",
-                            isActive
-                                ? "bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]"
-                                : "hover:bg-[var(--surface-elevated)] text-[var(--text-secondary)]"
-                        )}
-                    >
-                        <div
+                    return (
+                        <motion.button
+                            key={step.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: staggerDelay(index, 0.05), ease: forgeEasing }}
+                            onClick={() => onStepChange(index)}
                             className={cn(
-                                "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
+                                "relative w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all",
                                 isActive
-                                    ? "bg-[var(--accent-primary)] text-white"
-                                    : isCompleted
-                                      ? "bg-[var(--forge-success)] text-white"
-                                      : "bg-[var(--surface-overlay)]"
+                                    ? "text-[var(--ember)]"
+                                    : "hover:bg-[var(--forge-bg-elevated)]/50 text-[var(--forge-text-secondary)]"
                             )}
                         >
-                            {isCompleted ? <Check size={16} /> : <Icon size={16} />}
-                        </div>
-                        <div className="min-w-0">
-                            <p className={cn("font-medium truncate", isActive && "text-[var(--text-primary)]")}>
-                                {step.title}
-                            </p>
-                            <p className="text-xs text-[var(--text-muted)] truncate">
-                                {step.description}
-                            </p>
-                        </div>
-                    </button>
-                );
-            })}
+                            {isActive && (
+                                <motion.div
+                                    layoutId="step-indicator"
+                                    className="absolute inset-0 bg-[var(--ember)]/10 rounded-lg border border-[var(--ember)]/30"
+                                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                />
+                            )}
+                            <div
+                                className={cn(
+                                    "relative w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all",
+                                    isActive
+                                        ? "bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)] text-white shadow-lg shadow-[var(--ember)]/30"
+                                        : isCompleted
+                                          ? "bg-[var(--forge-success)] text-white"
+                                          : "bg-[var(--forge-bg-elevated)] text-[var(--forge-text-muted)]"
+                                )}
+                            >
+                                {isCompleted ? <Check size={16} /> : <Icon size={16} />}
+                            </div>
+                            <div className="relative min-w-0 flex-1">
+                                <p className={cn(
+                                    "font-medium truncate text-sm",
+                                    isActive ? "text-[var(--forge-text-primary)]" : ""
+                                )}>
+                                    {step.title}
+                                </p>
+                                <p className="text-xs text-[var(--forge-text-muted)] truncate">
+                                    {step.description}
+                                </p>
+                            </div>
+                        </motion.button>
+                    );
+                })}
+            </motion.div>
+
+            {/* Progress indicator */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, ease: forgeEasing }}
+                className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] p-3 shadow-sm"
+            >
+                <div className="flex items-center justify-between text-xs mb-2">
+                    <span className="text-[var(--forge-text-muted)]">Progress</span>
+                    <span className="text-[var(--ember)] font-medium">
+                        {activeStep + 1} / {steps.length}
+                    </span>
+                </div>
+                <div className="h-1.5 bg-[var(--forge-bg-elevated)] rounded-full overflow-hidden">
+                    <motion.div
+                        className="h-full bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)]"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
+                        transition={{ duration: 0.5, ease: forgeEasing }}
+                    />
+                </div>
+            </motion.div>
         </nav>
     );
 }
@@ -174,101 +213,182 @@ export default function GitSetupPage() {
     const StepComponent = currentStep.Component;
 
     return (
-        <div className="min-h-screen bg-[var(--surface-base)]">
+        <div className="min-h-screen">
             {/* Header */}
-            <div className="border-b border-[var(--border-default)] bg-[var(--surface-elevated)]">
-                <div className="max-w-4xl mx-auto px-4 py-6">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] mb-4"
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ ease: forgeEasing }}
+                className="border-b border-[var(--forge-border-subtle)] bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl"
+            >
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1, ease: forgeEasing }}
                     >
-                        <ArrowLeft size={16} />
-                        Back to Forge
-                    </Link>
+                        <Link
+                            href="/forge"
+                            className="inline-flex items-center gap-2 text-sm text-[var(--forge-text-muted)] hover:text-[var(--ember)] transition-colors mb-4"
+                        >
+                            <ArrowLeft size={16} />
+                            Back to Forge
+                        </Link>
+                    </motion.div>
                     <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
-                            <GitBranch size={28} className="text-white" />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.15, ease: forgeEasing }}
+                            className="relative"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-[var(--ember)] to-[var(--gold)] rounded-xl blur-md opacity-50" />
+                            <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--ember)] to-[var(--gold)] flex items-center justify-center shadow-lg">
+                                <GitBranch size={28} className="text-white" />
+                            </div>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2, ease: forgeEasing }}
+                        >
+                            <h1 className="text-2xl font-bold text-[var(--forge-text-primary)]">
                                 Git Setup Guide
                             </h1>
-                            <p className="text-[var(--text-secondary)]">
+                            <p className="text-[var(--forge-text-secondary)]">
                                 Set up Git and GitHub to start contributing to projects
                             </p>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Content */}
-            <div className="max-w-4xl mx-auto px-4 py-8">
-                <div className="flex gap-8">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+                <div className="flex gap-6 lg:gap-8">
                     {/* Sidebar Navigation */}
-                    <div className="w-64 flex-shrink-0">
+                    <div className="hidden md:block w-64 flex-shrink-0">
                         <StepNavigation activeStep={activeStep} onStepChange={setActiveStep} />
                     </div>
 
-                    {/* Main Content */}
-                    <div className="flex-1 min-w-0">
-                        <div className="bg-[var(--surface-elevated)] rounded-xl border border-[var(--border-default)] p-6">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 rounded-lg bg-[var(--accent-primary)] flex items-center justify-center">
-                                    {React.createElement(currentStep.icon, {
-                                        size: 20,
-                                        className: "text-white",
-                                    })}
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-bold text-[var(--text-primary)]">
-                                        {currentStep.title}
-                                    </h2>
-                                    <p className="text-sm text-[var(--text-muted)]">
-                                        Step {activeStep + 1} of {steps.length}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Lazy loaded step content */}
-                            <Suspense fallback={<StepSkeleton />}>
-                                <StepComponent />
-                            </Suspense>
-
-                            {/* Navigation buttons */}
-                            <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border-default)]">
-                                <button
-                                    onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
-                                    disabled={activeStep === 0}
-                                    className={cn(
-                                        "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
-                                        activeStep === 0
-                                            ? "text-[var(--text-muted)] cursor-not-allowed"
-                                            : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-overlay)]"
-                                    )}
-                                >
-                                    <ArrowLeft size={16} />
-                                    Previous
-                                </button>
-
-                                {activeStep < steps.length - 1 ? (
-                                    <button
-                                        onClick={() => setActiveStep(Math.min(steps.length - 1, activeStep + 1))}
-                                        className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:opacity-90 transition-opacity"
-                                    >
-                                        Next Step
-                                        <ChevronRight size={16} />
-                                    </button>
-                                ) : (
-                                    <Link
-                                        href="/forge/dashboard"
-                                        className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:opacity-90 transition-opacity"
-                                    >
-                                        Start Learning
-                                        <ChevronRight size={16} />
-                                    </Link>
+                    {/* Mobile Step Indicator */}
+                    <div className="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-[var(--forge-bg-daylight)]/95 backdrop-blur-xl border-t border-[var(--forge-border-subtle)] p-4">
+                        <div className="flex items-center justify-between gap-4">
+                            <button
+                                onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
+                                disabled={activeStep === 0}
+                                className={cn(
+                                    "flex items-center gap-2 px-3 py-2 rounded-lg transition-colors",
+                                    activeStep === 0
+                                        ? "text-[var(--forge-text-muted)] cursor-not-allowed"
+                                        : "text-[var(--forge-text-secondary)] hover:bg-[var(--forge-bg-elevated)]"
                                 )}
+                            >
+                                <ArrowLeft size={16} />
+                            </button>
+                            <div className="flex-1 text-center">
+                                <span className="text-sm font-medium text-[var(--forge-text-primary)]">
+                                    {currentStep.title}
+                                </span>
+                                <span className="text-xs text-[var(--forge-text-muted)] ml-2">
+                                    ({activeStep + 1}/{steps.length})
+                                </span>
                             </div>
+                            {activeStep < steps.length - 1 ? (
+                                <button
+                                    onClick={() => setActiveStep(Math.min(steps.length - 1, activeStep + 1))}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white font-medium"
+                                >
+                                    Next
+                                    <ChevronRight size={16} />
+                                </button>
+                            ) : (
+                                <Link
+                                    href="/forge/dashboard"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white font-medium"
+                                >
+                                    Done
+                                </Link>
+                            )}
                         </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="flex-1 min-w-0 pb-24 md:pb-0">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeStep}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3, ease: forgeEasing }}
+                                className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] shadow-lg overflow-hidden"
+                            >
+                                {/* Step Header */}
+                                <div className="flex items-center gap-3 p-5 border-b border-[var(--forge-border-subtle)]">
+                                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--ember)] to-[var(--ember-glow)] flex items-center justify-center shadow-md">
+                                        {React.createElement(currentStep.icon, {
+                                            size: 20,
+                                            className: "text-white",
+                                        })}
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-[var(--forge-text-primary)]">
+                                            {currentStep.title}
+                                        </h2>
+                                        <p className="text-sm text-[var(--forge-text-muted)]">
+                                            Step {activeStep + 1} of {steps.length}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Step Content */}
+                                <div className="p-5">
+                                    <Suspense fallback={<StepSkeleton />}>
+                                        <StepComponent />
+                                    </Suspense>
+                                </div>
+
+                                {/* Desktop Navigation buttons */}
+                                <div className="hidden md:flex items-center justify-between p-5 border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)]/30">
+                                    <button
+                                        onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
+                                        disabled={activeStep === 0}
+                                        className={cn(
+                                            "flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all",
+                                            activeStep === 0
+                                                ? "text-[var(--forge-text-muted)] cursor-not-allowed"
+                                                : "text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] hover:bg-[var(--forge-bg-elevated)]"
+                                        )}
+                                    >
+                                        <ArrowLeft size={16} />
+                                        Previous
+                                    </button>
+
+                                    {activeStep < steps.length - 1 ? (
+                                        <motion.button
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            onClick={() => setActiveStep(Math.min(steps.length - 1, activeStep + 1))}
+                                            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white font-medium shadow-lg shadow-[var(--ember)]/20 hover:shadow-xl hover:shadow-[var(--ember)]/30 transition-shadow"
+                                        >
+                                            Next Step
+                                            <ChevronRight size={16} />
+                                        </motion.button>
+                                    ) : (
+                                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                                            <Link
+                                                href="/forge/dashboard"
+                                                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-[var(--forge-success)] to-emerald-500 text-white font-medium shadow-lg shadow-[var(--forge-success)]/20 hover:shadow-xl hover:shadow-[var(--forge-success)]/30 transition-shadow"
+                                            >
+                                                Start Learning
+                                                <ChevronRight size={16} />
+                                            </Link>
+                                        </motion.div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                 </div>
             </div>

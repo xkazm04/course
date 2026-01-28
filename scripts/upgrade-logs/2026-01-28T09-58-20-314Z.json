@@ -1,0 +1,338 @@
+{
+  "options": {
+    "maxLessons": 30,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "493520c1-cd2c-46fa-b706-eb47cbe73c26",
+      "name": "Margin Collapsing",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "4e09c100-61b9-4ce7-b6fe-5b5c1b3b3fa3",
+      "name": "Readonly Properties",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "ae6a24c7-35f5-4b93-8acc-ee3088c13264",
+      "name": "Modifying Attributes",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, realworld, tip, warning"
+      ]
+    },
+    {
+      "nodeId": "892eef0e-2d0e-474a-99b2-62159e5c4c6f",
+      "name": "Function Type Expressions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "cf14c94f-6e9a-47ef-b36b-e2b4ad54d42a",
+      "name": "Default Type Parameters",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "70da51dd-3136-4e03-9560-881257b7b87f",
+      "name": "Object Spread Operator",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "b75090d5-5c5d-4dab-b36d-7be0da60d2d5",
+      "name": "Actions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "1ca93597-c2d1-4eba-8f6e-4a2dce308054",
+      "name": "useState Hook",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "006c64bb-4b93-4e35-b7db-f3453339cee6",
+      "name": "Mapped Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, animated, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "65803f41-b350-4767-8e96-53b7c7746c98",
+      "name": "Object Methods",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "52512603-e5a0-40a8-9e47-974926e45874",
+      "name": "Animation Fill Mode",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "480d26eb-92df-4515-8fde-56ef542e6ca9",
+      "name": "useEffect Cleanup",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "16183d22-05f6-4bb9-9955-fb033c6bf059",
+      "name": "Main, Article, and Section",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "b7adea93-52d8-4995-8361-ad81a0659c84",
+      "name": "Object Static Methods",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, warning"
+      ]
+    },
+    {
+      "nodeId": "d5879371-2212-4855-9641-71432f7c488f",
+      "name": "CI Integration",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "d19c4310-ccda-4346-b0a5-e580432827d1",
+      "name": "Function Overloads",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "e715a94d-374c-44e1-bd74-ea0aef6ce73e",
+      "name": "Setup and Teardown",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "db45bd8c-9b26-43b4-a42f-988317e027b5",
+      "name": "State Updates",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tabs, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "e845012d-99e2-400a-be98-cdeef369dc4d",
+      "name": "Assertions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "8f2bf639-c0a6-4e88-8f8c-184f578c832f",
+      "name": "Context with useReducer",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, warning"
+      ]
+    },
+    {
+      "nodeId": "6e7ee65e-66a7-4b05-ac1d-0a60a2e8b8bf",
+      "name": "The this Keyword",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "ab0d6ea5-a48a-420a-a7d3-8613dbe15f37",
+      "name": "Aside, Figure, and Figcaption",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "932c130a-3dc3-4102-8a9f-3e7308c30f7f",
+      "name": "Template Literals",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "fe090206-666a-4444-bb2e-ade39ed6f04d",
+      "name": "Promise.all() and Promise.race()",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "e56dfe24-bc55-448d-93eb-9d399d335211",
+      "name": "Parallel Execution with async/await",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8b7dc599-4c38-4483-bba1-5688a6f79104",
+      "name": "Break and Continue",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "67cac64d-8f69-46cd-a503-0dd7c94a54da",
+      "name": "Common Animation Patterns",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "6246d5c7-ac23-44fc-a896-def2bf8e3a7c",
+      "name": "Responsive Images",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, animated, warning"
+      ]
+    },
+    {
+      "nodeId": "af1dd0de-e1ca-4ee9-8ecd-672294f8ba55",
+      "name": "Switch Statements",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "ac1b8cd9-01f5-4751-9e8c-c9ed250849dd",
+      "name": "Not Found Handling",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, tip, realworld"
+      ]
+    }
+  ]
+}

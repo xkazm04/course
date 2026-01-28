@@ -1,6 +1,16 @@
 export { PlaybackSpeedControl } from "./PlaybackSpeedControl";
 export { SpeedIndicator, SpeedChangeToast } from "./SpeedIndicator";
 
+// Base Warning Component (shared primitive)
+export { BaseWarning, WarningItem, WarningSkipButton } from "./BaseWarning";
+export type {
+    BaseWarningProps,
+    WarningVariant,
+    WarningType,
+    WarningItemProps,
+    WarningSkipButtonProps,
+} from "./BaseWarning";
+
 // Chapter Graph Components
 export {
     PrerequisiteWarning,

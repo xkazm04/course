@@ -13,11 +13,12 @@ import * as KnowledgeMap from "./knowledge-map";
 import * as KnowledgeUniverse from "./knowledge-universe";
 import * as UserVelocity from "./user-velocity";
 import * as UserLearningGraph from "./user-learning-graph";
-import * as SocialProof from "./social-proof";
 import * as SignalPipeline from "./signal-pipeline";
 import * as StateMachine from "./state-machine";
 import * as LearningDNA from "./learning-dna";
 import * as HomeworkV2 from "./homework-v2";
+import * as LessonContent from "./lesson-content";
+import * as Experimentation from "./experimentation";
 
 export {
     Overview,
@@ -34,11 +35,12 @@ export {
     KnowledgeUniverse,
     UserVelocity,
     UserLearningGraph,
-    SocialProof,
     SignalPipeline,
     StateMachine,
     LearningDNA,
     HomeworkV2,
+    LessonContent,
+    Experimentation,
 };
 
 // Module definitions are centralized in @/app/shared/lib/modules.ts

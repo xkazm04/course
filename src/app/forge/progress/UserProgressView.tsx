@@ -6,9 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
     TrendingUp,
     BookOpen,
-    Clock,
     ChevronRight,
-    ChevronDown,
     Sparkles,
     Play,
     CheckCircle,
@@ -16,9 +14,14 @@ import {
     Flame,
     Trophy,
     LogIn,
+    Zap,
+    Route,
+    Loader2,
 } from "lucide-react";
 import { useForge, type UserLearningPath } from "../components/ForgeProvider";
 import { cn } from "@/app/shared/lib/utils";
+import { forgeEasing, staggerDelay } from "../lib/animations";
+import { useAnimatedCounter } from "../lib/useAnimatedCounter";
 
 // ============================================================================
 // Progress Card Component
@@ -50,7 +53,9 @@ function ProgressCard({ path }: ProgressCardProps) {
     return (
         <motion.div
             layout
-            className="bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)] overflow-hidden"
+            whileHover={{ y: -2 }}
+            transition={{ ease: forgeEasing }}
+            className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl border border-[var(--forge-border-subtle)] overflow-hidden shadow-sm hover:shadow-lg hover:border-[var(--ember)]/30 transition-shadow"
         >
             {/* Header - Clickable */}
             <button
@@ -193,6 +198,47 @@ function ProgressCard({ path }: ProgressCardProps) {
 }
 
 // ============================================================================
+// Animated Stat Card Component
+// ============================================================================
+
+interface StatCardProps {
+    icon: typeof Zap;
+    label: string;
+    value: number;
+    color: string;
+    bgColor: string;
+    index: number;
+}
+
+function StatCard({ icon: Icon, label, value, color, bgColor, index }: StatCardProps) {
+    const { count } = useAnimatedCounter({ target: value, duration: 1500, delay: index * 100 });
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: staggerDelay(index, 0.08), ease: forgeEasing }}
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-xl p-4 border border-[var(--forge-border-subtle)] shadow-sm hover:shadow-lg transition-shadow"
+        >
+            <div className="flex items-center gap-3">
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", bgColor)}>
+                    <Icon size={18} className={color} />
+                </div>
+                <div>
+                    <div className={cn("text-2xl font-bold", color)}>
+                        {count.toLocaleString()}
+                    </div>
+                    <div className="text-xs text-[var(--forge-text-muted)] uppercase tracking-wider">
+                        {label}
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+}
+
+// ============================================================================
 // Empty State Component
 // ============================================================================
 
@@ -201,43 +247,82 @@ function EmptyState({ isAuthenticated }: { isAuthenticated: boolean }) {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16 px-4"
+            transition={{ ease: forgeEasing }}
+            className="text-center py-16 px-4 bg-[var(--forge-bg-daylight)]/60 backdrop-blur-xl rounded-2xl border border-[var(--forge-border-subtle)]"
         >
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] flex items-center justify-center">
-                <Target size={32} className="text-[var(--forge-text-muted)]" />
-            </div>
+            <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1, ease: forgeEasing }}
+                className="relative w-20 h-20 mx-auto mb-6"
+            >
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--ember)]/30 to-[var(--gold)]/30 rounded-2xl blur-md" />
+                <div className="relative w-full h-full rounded-2xl bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] flex items-center justify-center">
+                    <Target size={32} className="text-[var(--forge-text-muted)]" />
+                </div>
+            </motion.div>
 
             {isAuthenticated ? (
                 <>
-                    <h3 className="text-xl font-semibold text-[var(--forge-text-primary)] mb-2">
+                    <motion.h3
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, ease: forgeEasing }}
+                        className="text-xl font-semibold text-[var(--forge-text-primary)] mb-2"
+                    >
                         No learning paths yet
-                    </h3>
-                    <p className="text-[var(--forge-text-secondary)] mb-6 max-w-md mx-auto">
+                    </motion.h3>
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25, ease: forgeEasing }}
+                        className="text-[var(--forge-text-secondary)] mb-6 max-w-md mx-auto"
+                    >
                         Start your journey by exploring the knowledge map and letting the Oracle
                         craft a personalized learning path for you.
-                    </p>
-                    <Link
-                        href="/forge/map"
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--ember)] text-[var(--oracle-text-on-ember)] font-medium hover:bg-[var(--ember)]/90 transition-colors shadow-lg shadow-[var(--ember)]/20"
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, ease: forgeEasing }}
                     >
-                        <Sparkles size={18} />
-                        Explore the Map
-                    </Link>
+                        <Link
+                            href="/forge/map"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white font-medium hover:shadow-lg hover:shadow-[var(--ember)]/30 transition-all"
+                        >
+                            <Sparkles size={18} />
+                            Explore the Map
+                        </Link>
+                    </motion.div>
                 </>
             ) : (
                 <>
-                    <h3 className="text-xl font-semibold text-[var(--forge-text-primary)] mb-2">
-                        Sign in to track progress
-                    </h3>
-                    <p className="text-[var(--forge-text-secondary)] mb-6 max-w-md mx-auto">
-                        Create an account or sign in to save your progress, earn XP, and unlock achievements.
-                    </p>
-                    <button
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--ember)] text-[var(--oracle-text-on-ember)] font-medium hover:bg-[var(--ember)]/90 transition-colors shadow-lg shadow-[var(--ember)]/20"
+                    <motion.h3
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, ease: forgeEasing }}
+                        className="text-xl font-semibold text-[var(--forge-text-primary)] mb-2"
                     >
-                        <LogIn size={18} />
-                        Sign In
-                    </button>
+                        Sign in to track progress
+                    </motion.h3>
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25, ease: forgeEasing }}
+                        className="text-[var(--forge-text-secondary)] mb-6 max-w-md mx-auto"
+                    >
+                        Create an account or sign in to save your progress, earn XP, and unlock achievements.
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, ease: forgeEasing }}
+                    >
+                        <button className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white font-medium hover:shadow-lg hover:shadow-[var(--ember)]/30 transition-all">
+                            <LogIn size={18} />
+                            Sign In
+                        </button>
+                    </motion.div>
                 </>
             )}
         </motion.div>
@@ -249,7 +334,7 @@ function EmptyState({ isAuthenticated }: { isAuthenticated: boolean }) {
 // ============================================================================
 
 export function UserProgressView() {
-    const { user, isAuthenticated } = useForge();
+    const { user, isAuthenticated, isLoading } = useForge();
     const learningPaths = user?.learningPaths || [];
 
     // Stats
@@ -258,66 +343,80 @@ export function UserProgressView() {
     const inProgressPaths = learningPaths.filter(p => p.status === "in_progress").length;
     const totalXP = user?.xp ?? 0;
 
+    // Stats config with icons and colors
+    const statsConfig = [
+        { icon: Route, label: "Total Paths", value: totalPaths, color: "text-[var(--forge-text-primary)]", bgColor: "bg-[var(--forge-bg-elevated)]" },
+        { icon: Flame, label: "In Progress", value: inProgressPaths, color: "text-[var(--ember)]", bgColor: "bg-[var(--ember)]/10" },
+        { icon: CheckCircle, label: "Completed", value: completedPaths, color: "text-[var(--forge-success)]", bgColor: "bg-[var(--forge-success)]/10" },
+        { icon: Zap, label: "Total XP", value: totalXP, color: "text-[var(--gold)]", bgColor: "bg-[var(--gold)]/10" },
+    ];
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Loader2 size={32} className="animate-spin text-[var(--ember)]" />
+            </div>
+        );
+    }
+
     return (
-        <section className="py-12 pb-24">
+        <section className="py-8 pb-24">
             <div className="max-w-4xl mx-auto px-4 sm:px-6">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center mb-10"
+                    transition={{ ease: forgeEasing }}
+                    className="text-center mb-8"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--ember)]/10 border border-[var(--ember)]/20 mb-6">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1, ease: forgeEasing }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--ember)]/10 border border-[var(--ember)]/20 mb-5"
+                    >
                         <TrendingUp size={16} className="text-[var(--ember)]" />
                         <span className="text-sm text-[var(--forge-text-secondary)]">
                             Your Learning Journey
                         </span>
-                    </div>
+                    </motion.div>
 
-                    <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15, ease: forgeEasing }}
+                        className="text-3xl sm:text-4xl font-bold text-[var(--forge-text-primary)] mb-3"
+                    >
                         My{" "}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--ember)] via-[var(--gold)] to-[var(--ember-glow)]">
                             Progress
                         </span>
-                    </h1>
-                    <p className="text-lg text-[var(--forge-text-secondary)] max-w-2xl mx-auto">
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, ease: forgeEasing }}
+                        className="text-base text-[var(--forge-text-secondary)] max-w-2xl mx-auto"
+                    >
                         Track your learning paths, earned XP, and achievements.
-                    </p>
+                    </motion.p>
                 </motion.div>
 
                 {/* Stats Cards (only show if has paths) */}
                 {totalPaths > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8"
-                    >
-                        <div className="bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl p-4 border border-[var(--forge-border-subtle)] text-center">
-                            <div className="text-3xl font-bold text-[var(--forge-text-primary)]">
-                                {totalPaths}
-                            </div>
-                            <div className="text-sm text-[var(--forge-text-muted)]">Total Paths</div>
-                        </div>
-                        <div className="bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl p-4 border border-[var(--forge-border-subtle)] text-center">
-                            <div className="text-3xl font-bold text-[var(--ember)]">
-                                {inProgressPaths}
-                            </div>
-                            <div className="text-sm text-[var(--forge-text-muted)]">In Progress</div>
-                        </div>
-                        <div className="bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl p-4 border border-[var(--forge-border-subtle)] text-center">
-                            <div className="text-3xl font-bold text-[var(--forge-success)]">
-                                {completedPaths}
-                            </div>
-                            <div className="text-sm text-[var(--forge-text-muted)]">Completed</div>
-                        </div>
-                        <div className="bg-[var(--forge-bg-elevated)]/60 backdrop-blur-sm rounded-xl p-4 border border-[var(--forge-border-subtle)] text-center">
-                            <div className="text-3xl font-bold text-[var(--gold)]">
-                                {totalXP.toLocaleString()}
-                            </div>
-                            <div className="text-sm text-[var(--forge-text-muted)]">Total XP</div>
-                        </div>
-                    </motion.div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                        {statsConfig.map((stat, index) => (
+                            <StatCard
+                                key={stat.label}
+                                icon={stat.icon}
+                                label={stat.label}
+                                value={stat.value}
+                                color={stat.color}
+                                bgColor={stat.bgColor}
+                                index={index}
+                            />
+                        ))}
+                    </div>
                 )}
 
                 {/* Learning Paths List */}
@@ -325,18 +424,21 @@ export function UserProgressView() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
+                        transition={{ delay: 0.3, ease: forgeEasing }}
                         className="space-y-4"
                     >
-                        <h2 className="text-lg font-semibold text-[var(--forge-text-primary)] mb-4">
-                            Your Learning Paths
-                        </h2>
+                        <div className="flex items-center gap-2 mb-4">
+                            <BookOpen size={18} className="text-[var(--ember)]" />
+                            <h2 className="text-lg font-semibold text-[var(--forge-text-primary)]">
+                                Your Learning Paths
+                            </h2>
+                        </div>
                         {learningPaths.map((path, index) => (
                             <motion.div
                                 key={path.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 * index }}
+                                transition={{ delay: staggerDelay(index, 0.08) + 0.35, ease: forgeEasing }}
                             >
                                 <ProgressCard path={path} />
                             </motion.div>
@@ -351,13 +453,14 @@ export function UserProgressView() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
+                        transition={{ delay: 0.5, ease: forgeEasing }}
                         className="mt-8 text-center"
                     >
                         <Link
                             href="/forge/community"
-                            className="inline-flex items-center gap-2 text-[var(--forge-text-secondary)] hover:text-[var(--ember)] transition-colors"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[var(--forge-text-secondary)] hover:text-[var(--ember)] hover:bg-[var(--forge-bg-elevated)]/50 transition-all"
                         >
+                            <Sparkles size={16} />
                             Explore more community paths
                             <ChevronRight size={16} />
                         </Link>

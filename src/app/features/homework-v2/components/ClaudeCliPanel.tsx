@@ -3,30 +3,38 @@
 /**
  * ClaudeCliPanel - Claude Code CLI Terminal Interface
  *
- * A terminal-style component that displays Claude Code CLI output with
- * streaming simulation, thinking blocks, and tool call visualization.
+ * A modern terminal interface inspired by OpenCode's layout:
+ * - Two-column layout: Main conversation + Right sidebar
+ * - Main area: Messages with code outputs and diffs
+ * - Sidebar: Session info, context, tool progress, modified files
+ * - High readability with proper spacing and visual hierarchy
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Terminal,
-  Play,
-  Pause,
   ChevronDown,
   ChevronRight,
   Sparkles,
-  Wrench,
-  MessageSquare,
-  AlertCircle,
-  User,
-  Bot,
+  FileText,
+  FolderOpen,
+  Search,
+  Globe,
+  Check,
+  X,
+  Loader2,
   Send,
+  Zap,
+  Edit3,
+  Clock,
+  Cpu,
+  FileCode,
+  ChevronUp,
+  Minus,
+  Plus,
 } from 'lucide-react';
-import type {
-  ClaudeSession,
-  ClaudeMessage,
-} from '../lib/types';
+import type { ClaudeSession, ClaudeMessage } from '../lib/types';
 
 export interface ClaudeCliPanelProps {
   session: ClaudeSession;
@@ -38,79 +46,82 @@ export interface ClaudeCliPanelProps {
   className?: string;
 }
 
-// Message type icons
-const MESSAGE_ICONS: Record<string, React.ReactNode> = {
-  system: <Terminal className="w-3.5 h-3.5" />,
-  user: <User className="w-3.5 h-3.5" />,
-  assistant: <Bot className="w-3.5 h-3.5" />,
-  thinking: <Sparkles className="w-3.5 h-3.5" />,
-  tool_use: <Wrench className="w-3.5 h-3.5" />,
-  tool_result: <MessageSquare className="w-3.5 h-3.5" />,
-  error: <AlertCircle className="w-3.5 h-3.5" />,
+// ============================================================================
+// Tool Configuration
+// ============================================================================
+
+const TOOL_CONFIG: Record<
+  string,
+  { icon: React.ReactNode; prefix: string; color: string }
+> = {
+  Read: { icon: <FileText className="w-3.5 h-3.5" />, prefix: '→', color: 'text-blue-400' },
+  Write: { icon: <Edit3 className="w-3.5 h-3.5" />, prefix: '←', color: 'text-emerald-400' },
+  Edit: { icon: <Edit3 className="w-3.5 h-3.5" />, prefix: '←', color: 'text-amber-400' },
+  Bash: { icon: <Terminal className="w-3.5 h-3.5" />, prefix: '$', color: 'text-purple-400' },
+  Glob: { icon: <FolderOpen className="w-3.5 h-3.5" />, prefix: '✱', color: 'text-cyan-400' },
+  Grep: { icon: <Search className="w-3.5 h-3.5" />, prefix: '✱', color: 'text-orange-400' },
+  WebFetch: { icon: <Globe className="w-3.5 h-3.5" />, prefix: '%', color: 'text-pink-400' },
+  WebSearch: { icon: <Globe className="w-3.5 h-3.5" />, prefix: '◈', color: 'text-indigo-400' },
+  Task: { icon: <Zap className="w-3.5 h-3.5" />, prefix: '◉', color: 'text-yellow-400' },
+  default: { icon: <Cpu className="w-3.5 h-3.5" />, prefix: '⚙', color: 'text-[var(--forge-text-muted)]' },
 };
 
-// Message type colors
-const MESSAGE_COLORS: Record<string, string> = {
-  system: 'text-[var(--forge-text-muted)]',
-  user: 'text-blue-400',
-  assistant: 'text-emerald-400',
-  thinking: 'text-purple-400',
-  tool_use: 'text-amber-400',
-  tool_result: 'text-cyan-400',
-  error: 'text-red-400',
-};
+// ============================================================================
+// Main Component
+// ============================================================================
 
 export function ClaudeCliPanel({
   session,
   onPromptSubmit,
-  onPause,
-  onResume,
   showThinkingBlocks = true,
   showToolCalls = true,
   className = '',
 }: ClaudeCliPanelProps) {
   const [inputValue, setInputValue] = useState('');
-  const [streamingText, setStreamingText] = useState('');
-  const [isStreaming, setIsStreaming] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Filter messages based on settings
-  const visibleMessages = session.messages.filter((msg) => {
-    if (msg.type === 'thinking' && !showThinkingBlocks) return false;
-    if ((msg.type === 'tool_use' || msg.type === 'tool_result') && !showToolCalls)
-      return false;
-    return true;
-  });
+  const visibleMessages = useMemo(() => {
+    return session.messages.filter((msg) => {
+      if (msg.type === 'thinking' && !showThinkingBlocks) return false;
+      if ((msg.type === 'tool_use' || msg.type === 'tool_result') && !showToolCalls) return false;
+      return true;
+    });
+  }, [session.messages, showThinkingBlocks, showToolCalls]);
+
+  // Extract metadata for sidebar
+  const metadata = useMemo(() => {
+    const tools = session.messages.filter(m => m.type === 'tool_use' || m.type === 'tool_result');
+    const completedTools = tools.filter(m => m.type === 'tool_result').length;
+    const pendingTools = tools.filter(m => m.type === 'tool_use').length - completedTools;
+
+    // Extract modified files from tool results
+    const modifiedFiles: { path: string; additions: number; deletions: number }[] = [];
+    session.messages.forEach(msg => {
+      if (msg.type === 'tool_result' && msg.toolName && ['Write', 'Edit'].includes(msg.toolName)) {
+        const pathMatch = msg.content.match(/(?:wrote to|edited|created)\s+([^\s]+)/i);
+        if (pathMatch) {
+          modifiedFiles.push({ path: pathMatch[1], additions: 5, deletions: 2 });
+        }
+      }
+    });
+
+    return {
+      tokensUsed: 12500,
+      tokensLimit: 200000,
+      costSpent: 0.024,
+      completedTools,
+      pendingTools,
+      modifiedFiles,
+    };
+  }, [session.messages]);
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [visibleMessages, streamingText]);
-
-  // Typewriter effect simulation
-  useEffect(() => {
-    if (session.status !== 'running') return;
-
-    const lastMessage = visibleMessages[visibleMessages.length - 1];
-    if (!lastMessage || lastMessage.type === 'user') return;
-
-    setIsStreaming(true);
-    let charIndex = 0;
-    const content = lastMessage.content;
-
-    const interval = setInterval(() => {
-      if (charIndex < content.length) {
-        setStreamingText(content.slice(0, charIndex + 1));
-        charIndex++;
-      } else {
-        setIsStreaming(false);
-        clearInterval(interval);
-      }
-    }, 15);
-
-    return () => clearInterval(interval);
-  }, [session.status, visibleMessages]);
+  }, [visibleMessages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,230 +131,665 @@ export function ClaudeCliPanel({
     }
   };
 
-  const isPaused = session.status === 'paused';
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   const isRunning = session.status === 'running';
 
   return (
-    <div
-      className={`flex flex-col h-full bg-[var(--forge-bg-elevated)]/80 backdrop-blur-sm rounded-xl border border-[var(--forge-border-subtle)] overflow-hidden ${className}`}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--forge-border-subtle)]">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-            <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+    <div className={`flex flex-col h-full bg-[var(--forge-bg-elevated)]/90 backdrop-blur-md rounded-xl border border-[var(--forge-border-subtle)] overflow-hidden ${className}`}>
+      {/* Two-column layout */}
+      <div className="flex-1 flex min-h-0">
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Header - shown when sidebar is collapsed */}
+          {sidebarCollapsed && (
+            <header className="flex items-center justify-between px-4 py-2 border-b border-[var(--forge-border-subtle)]">
+              <SessionTitle />
+              <ContextBadge tokens={metadata.tokensUsed} limit={metadata.tokensLimit} cost={metadata.costSpent} />
+            </header>
+          )}
+
+          {/* Messages Scroll Area */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="py-4">
+              {visibleMessages.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <div className="space-y-1">
+                  {visibleMessages.map((message, index) => (
+                    <MessageRow
+                      key={message.id}
+                      message={message}
+                      isLast={index === visibleMessages.length - 1}
+                      isRunning={isRunning}
+                    />
+                  ))}
+
+                  {/* Active indicator */}
+                  {isRunning && (
+                    <div className="flex items-center gap-2 px-4 py-2">
+                      <div className="w-0.5 h-4 bg-[var(--ember)] animate-pulse" />
+                      <Loader2 className="w-3.5 h-3.5 text-[var(--ember)] animate-spin" />
+                      <span className="text-xs text-[var(--forge-text-muted)]">Claude is working...</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-[var(--ember)]" />
-            <span className="text-sm font-medium text-[var(--forge-text-primary)]">
-              Claude Code
-            </span>
-          </div>
-          <StatusBadge status={session.status} />
+
+          {/* Input Area */}
+          <PromptInput
+            value={inputValue}
+            onChange={setInputValue}
+            onSubmit={handleSubmit}
+            onKeyDown={handleKeyDown}
+            inputRef={inputRef}
+            disabled={isRunning}
+            status={session.status}
+          />
+
+          {/* Footer */}
+          <footer className="flex items-center justify-between px-4 py-2 border-t border-[var(--forge-border-subtle)] text-[10px] text-[var(--forge-text-muted)]">
+            <span>/homework/dark-mode-toggle</span>
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                Claude Sonnet
+              </span>
+              <span>• OpenForge v1.0</span>
+            </div>
+          </footer>
         </div>
 
-        <div className="flex items-center gap-2">
-          {isRunning && onPause && (
-            <button
-              onClick={onPause}
-              className="p-1.5 rounded-lg hover:bg-[var(--forge-bg-bench)]/60 text-[var(--forge-text-secondary)] transition-colors"
-              title="Pause execution"
+        {/* Right Sidebar */}
+        <AnimatePresence>
+          {!sidebarCollapsed && (
+            <motion.aside
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 280, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="border-l border-[var(--forge-border-subtle)] bg-[var(--forge-bg-bench)]/30 overflow-hidden"
             >
-              <Pause className="w-4 h-4" />
-            </button>
+              <StatusSidebar
+                session={session}
+                metadata={metadata}
+                onCollapse={() => setSidebarCollapsed(true)}
+              />
+            </motion.aside>
           )}
-          {isPaused && onResume && (
-            <button
-              onClick={onResume}
-              className="p-1.5 rounded-lg hover:bg-[var(--forge-bg-bench)]/60 text-[var(--ember)] transition-colors"
-              title="Resume execution"
-            >
-              <Play className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 font-mono text-sm">
-        <AnimatePresence mode="popLayout">
-          {visibleMessages.map((message, index) => (
-            <MessageBlock
-              key={message.id}
-              message={message}
-              isLast={index === visibleMessages.length - 1}
-              streamingText={
-                index === visibleMessages.length - 1 && isStreaming
-                  ? streamingText
-                  : undefined
-              }
-            />
-          ))}
         </AnimatePresence>
 
-        {/* Cursor */}
-        {isRunning && (
-          <motion.span
-            animate={{ opacity: [1, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity }}
-            className="inline-block w-2 h-4 bg-[var(--ember)]"
-          />
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input */}
-      <form
-        onSubmit={handleSubmit}
-        className="border-t border-[var(--forge-border-subtle)] bg-[var(--forge-bg-bench)]/30"
-      >
-        <div className="flex items-center px-4 py-3 gap-3">
-          <span className="text-[var(--ember)] font-mono text-sm">$</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask Claude a question..."
-            disabled={isRunning}
-            className="flex-1 bg-transparent text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)] font-mono text-sm outline-none disabled:opacity-50"
-          />
+        {/* Sidebar toggle when collapsed */}
+        {sidebarCollapsed && (
           <button
-            type="submit"
-            disabled={!inputValue.trim() || isRunning}
-            className="p-2 rounded-lg bg-[var(--ember)] text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--ember)]/90 transition-colors"
+            onClick={() => setSidebarCollapsed(false)}
+            className="absolute right-4 top-4 p-1.5 rounded-lg bg-[var(--forge-bg-bench)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] transition-colors"
           >
-            <Send className="w-4 h-4" />
+            <ChevronDown className="w-4 h-4 -rotate-90" />
           </button>
-        </div>
-      </form>
+        )}
+      </div>
     </div>
   );
 }
 
 // ============================================================================
-// Sub-components
+// Session Title
 // ============================================================================
 
-interface StatusBadgeProps {
-  status: ClaudeSession['status'];
-}
-
-function StatusBadge({ status }: StatusBadgeProps) {
-  const statusConfig: Record<
-    ClaudeSession['status'],
-    { color: string; bgColor: string; label: string }
-  > = {
-    idle: { color: 'text-[var(--forge-text-muted)]', bgColor: 'bg-[var(--forge-bg-bench)]', label: 'Idle' },
-    running: { color: 'text-emerald-400', bgColor: 'bg-emerald-500/10', label: 'Running' },
-    paused: { color: 'text-amber-400', bgColor: 'bg-amber-500/10', label: 'Paused' },
-    completed: { color: 'text-blue-400', bgColor: 'bg-blue-500/10', label: 'Completed' },
-    error: { color: 'text-red-400', bgColor: 'bg-red-500/10', label: 'Error' },
-  };
-
-  const config = statusConfig[status];
-
+function SessionTitle() {
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${config.bgColor} ${config.color}`}>
-      <span
-        className={`w-1.5 h-1.5 rounded-full ${
-          status === 'running' ? 'bg-emerald-400 animate-pulse' :
-          status === 'paused' ? 'bg-amber-400' :
-          status === 'error' ? 'bg-red-400' :
-          'bg-current'
-        }`}
-      />
-      {config.label}
-    </span>
+    <div className="flex items-center gap-2">
+      <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--ember)] to-orange-600 flex items-center justify-center">
+        <Terminal className="w-3 h-3 text-white" />
+      </div>
+      <span className="text-sm font-medium text-[var(--forge-text-primary)]">Dark Mode Toggle</span>
+    </div>
   );
 }
 
-interface MessageBlockProps {
-  message: ClaudeMessage;
-  isLast?: boolean;
-  streamingText?: string;
+// ============================================================================
+// Context Badge
+// ============================================================================
+
+function ContextBadge({ tokens, limit, cost }: { tokens: number; limit: number; cost: number }) {
+  const percentage = Math.round((tokens / limit) * 100);
+  return (
+    <div className="flex items-center gap-3 text-xs text-[var(--forge-text-muted)]">
+      <span>{(tokens / 1000).toFixed(1)}k tokens ({percentage}%)</span>
+      <span>${cost.toFixed(3)}</span>
+    </div>
+  );
 }
 
-function MessageBlock({ message, isLast, streamingText }: MessageBlockProps) {
-  const [isExpanded, setIsExpanded] = useState(message.type !== 'thinking');
+// ============================================================================
+// Empty State
+// ============================================================================
 
-  const icon = MESSAGE_ICONS[message.type];
-  const color = MESSAGE_COLORS[message.type];
-  const content = streamingText || message.content;
-
-  // Tool use special rendering
-  if (message.type === 'tool_use') {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-start gap-3 text-amber-400"
-      >
-        <span className="mt-0.5">{icon}</span>
-        <div className="flex-1">
-          <span className="text-amber-300 font-medium">{message.toolName}</span>
-          <span className="text-[var(--forge-text-muted)] mx-2">→</span>
-          <span className="text-[var(--forge-text-secondary)]">{content}</span>
-        </div>
-      </motion.div>
-    );
-  }
-
-  // Thinking block - collapsible
-  if (message.type === 'thinking') {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="border border-purple-500/20 rounded-lg bg-purple-500/5 overflow-hidden"
-      >
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center gap-2 px-3 py-2.5 text-purple-400 hover:bg-purple-500/10 transition-colors"
-        >
-          {isExpanded ? (
-            <ChevronDown className="w-3.5 h-3.5" />
-          ) : (
-            <ChevronRight className="w-3.5 h-3.5" />
-          )}
-          <Sparkles className="w-3.5 h-3.5" />
-          <span className="text-xs font-medium">Claude is thinking...</span>
-        </button>
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="px-4 pb-3"
-            >
-              <pre className="text-xs text-purple-200/80 whitespace-pre-wrap leading-relaxed">
-                {content}
-              </pre>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-    );
-  }
-
-  // Standard message
+function EmptyState() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`flex items-start gap-3 ${color}`}
-    >
-      <span className="mt-0.5">{icon}</span>
-      <div className="flex-1">
-        <pre className="whitespace-pre-wrap text-[var(--forge-text-primary)] leading-relaxed">
-          {content}
-        </pre>
+    <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
+      <div className="w-12 h-12 rounded-xl bg-[var(--forge-bg-bench)] flex items-center justify-center mb-4">
+        <Sparkles className="w-6 h-6 text-[var(--ember)]/60" />
       </div>
-    </motion.div>
+      <h3 className="text-sm font-medium text-[var(--forge-text-primary)] mb-1">Ready to assist</h3>
+      <p className="text-xs text-[var(--forge-text-muted)] max-w-[280px]">
+        Ask Claude to help with your coding task. It can read files, write code, run commands, and more.
+      </p>
+    </div>
+  );
+}
+
+// ============================================================================
+// Message Row
+// ============================================================================
+
+interface MessageRowProps {
+  message: ClaudeMessage;
+  isLast: boolean;
+  isRunning: boolean;
+}
+
+function MessageRow({ message, isLast, isRunning }: MessageRowProps) {
+  const isStreaming = isLast && isRunning && message.type === 'assistant';
+
+  switch (message.type) {
+    case 'user':
+      return <UserMessage content={message.content} timestamp={message.timestamp} />;
+    case 'assistant':
+      return <AssistantMessage content={message.content} isStreaming={isStreaming} />;
+    case 'thinking':
+      return <ThinkingBlock content={message.content} />;
+    case 'tool_use':
+      return <ToolUseMessage toolName={message.toolName || 'Tool'} content={message.content} />;
+    case 'tool_result':
+      return <ToolResultMessage toolName={message.toolName || 'Tool'} content={message.content} />;
+    case 'error':
+      return <ErrorMessage content={message.content} />;
+    case 'system':
+      return <SystemMessage content={message.content} />;
+    default:
+      return null;
+  }
+}
+
+// ============================================================================
+// User Message
+// ============================================================================
+
+function UserMessage({ content, timestamp }: { content: string; timestamp?: Date }) {
+  return (
+    <div className="px-4 py-3">
+      <div className="flex items-start gap-3">
+        {/* Left border accent */}
+        <div className="w-0.5 self-stretch bg-blue-400/50 rounded-full" />
+
+        <div className="flex-1 min-w-0">
+          {/* Header */}
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-medium text-blue-400">You</span>
+            {timestamp && (
+              <span className="text-[10px] text-[var(--forge-text-muted)]">
+                {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+          </div>
+
+          {/* Content */}
+          <p className="text-sm text-[var(--forge-text-primary)] leading-relaxed whitespace-pre-wrap">
+            {content}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Assistant Message
+// ============================================================================
+
+function AssistantMessage({ content, isStreaming }: { content: string; isStreaming?: boolean }) {
+  return (
+    <div className="px-4 py-3">
+      <div className="flex items-start gap-3">
+        {/* Left border accent */}
+        <div className="w-0.5 self-stretch bg-[var(--ember)]/50 rounded-full" />
+
+        <div className="flex-1 min-w-0">
+          {/* Header */}
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-medium text-[var(--ember)]">Claude</span>
+          </div>
+
+          {/* Content */}
+          <div className="text-sm text-[var(--forge-text-primary)] leading-relaxed whitespace-pre-wrap">
+            {content}
+            {isStreaming && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="inline-block w-2 h-4 ml-0.5 bg-[var(--ember)] align-middle"
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Thinking Block
+// ============================================================================
+
+function ThinkingBlock({ content }: { content: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="px-4 py-2">
+      <div className="flex items-start gap-3">
+        {/* Left border */}
+        <div className="w-0.5 self-stretch bg-purple-400/30 rounded-full" />
+
+        <div className="flex-1 min-w-0">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center gap-1.5 text-purple-400/80 hover:text-purple-400 transition-colors"
+          >
+            {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+            <Sparkles className="w-3 h-3" />
+            <span className="text-xs italic">Thinking...</span>
+          </button>
+
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <p className="mt-2 text-xs text-purple-300/50 leading-relaxed whitespace-pre-wrap pl-5 border-l border-purple-500/20">
+                  {content}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Tool Use Message (Inline - Running)
+// ============================================================================
+
+function ToolUseMessage({ toolName, content }: { toolName: string; content: string }) {
+  const config = TOOL_CONFIG[toolName] || TOOL_CONFIG.default;
+
+  return (
+    <div className="px-4 py-1.5">
+      <div className="flex items-center gap-3">
+        <div className="w-0.5 h-4 bg-[var(--forge-border-subtle)]" />
+        <div className={`flex items-center gap-2 ${config.color}`}>
+          <span className="text-xs opacity-60">~</span>
+          <span className="text-xs font-mono">{config.prefix} {toolName}</span>
+          <span className="text-xs text-[var(--forge-text-muted)] truncate max-w-[300px]">{content}</span>
+          <Loader2 className="w-3 h-3 animate-spin opacity-60" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Tool Result Message (Block - Completed)
+// ============================================================================
+
+function ToolResultMessage({ toolName, content }: { toolName: string; content: string }) {
+  const config = TOOL_CONFIG[toolName] || TOOL_CONFIG.default;
+  const [isExpanded, setIsExpanded] = useState(true);
+  const isSuccess = !content.toLowerCase().includes('error');
+  const isCodeOutput = toolName === 'Read' || toolName === 'Write' || toolName === 'Edit';
+
+  return (
+    <div className="px-4 py-2">
+      <div className="flex items-start gap-3">
+        {/* Left border with status color */}
+        <div className={`w-0.5 self-stretch rounded-full ${isSuccess ? 'bg-emerald-400/50' : 'bg-red-400/50'}`} />
+
+        <div className="flex-1 min-w-0">
+          {/* Header */}
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center gap-2 w-full text-left group"
+          >
+            <span className={`text-xs ${config.color}`}>{config.prefix}</span>
+            <span className={`text-xs font-medium ${config.color}`}>{toolName}</span>
+            {toolName === 'Glob' || toolName === 'Grep' ? (
+              <span className="text-[10px] text-[var(--forge-text-muted)]">
+                ({content.split('\n').length} matches)
+              </span>
+            ) : null}
+            <span className="ml-auto text-[var(--forge-text-muted)]">
+              {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+            </span>
+          </button>
+
+          {/* Content */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                {isCodeOutput ? (
+                  <CodeBlock content={content} />
+                ) : (
+                  <pre className="mt-2 text-xs text-[var(--forge-text-secondary)] font-mono whitespace-pre-wrap leading-relaxed bg-[var(--forge-bg-bench)]/30 rounded-lg p-3 border border-[var(--forge-border-subtle)]">
+                    {content}
+                  </pre>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Code Block with Line Numbers
+// ============================================================================
+
+function CodeBlock({ content }: { content: string }) {
+  const lines = content.split('\n');
+
+  return (
+    <div className="mt-2 rounded-lg overflow-hidden border border-[var(--forge-border-subtle)] bg-[var(--forge-bg-bench)]/50">
+      <div className="flex text-xs font-mono">
+        {/* Line numbers */}
+        <div className="flex-shrink-0 py-2 px-2 bg-[var(--forge-bg-bench)]/50 text-right select-none border-r border-[var(--forge-border-subtle)]">
+          {lines.map((_, i) => (
+            <div key={i} className="text-[var(--forge-text-muted)] leading-5">
+              {i + 1}
+            </div>
+          ))}
+        </div>
+
+        {/* Code content */}
+        <div className="flex-1 py-2 px-3 overflow-x-auto">
+          <pre className="text-[var(--forge-text-primary)] leading-5 whitespace-pre">
+            {content}
+          </pre>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Error Message
+// ============================================================================
+
+function ErrorMessage({ content }: { content: string }) {
+  return (
+    <div className="px-4 py-2">
+      <div className="flex items-start gap-3">
+        <div className="w-0.5 self-stretch bg-red-400/50 rounded-full" />
+        <div className="flex-1 flex items-start gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+          <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-red-400 leading-relaxed">{content}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// System Message
+// ============================================================================
+
+function SystemMessage({ content }: { content: string }) {
+  return (
+    <div className="px-4 py-2 text-center">
+      <span className="text-[10px] text-[var(--forge-text-muted)] italic">{content}</span>
+    </div>
+  );
+}
+
+// ============================================================================
+// Prompt Input
+// ============================================================================
+
+interface PromptInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  onKeyDown: (e: React.KeyboardEvent) => void;
+  inputRef: React.RefObject<HTMLTextAreaElement | null>;
+  disabled?: boolean;
+  status: ClaudeSession['status'];
+}
+
+function PromptInput({ value, onChange, onSubmit, onKeyDown, inputRef, disabled, status }: PromptInputProps) {
+  return (
+    <form onSubmit={onSubmit} className="border-t border-[var(--forge-border-subtle)]">
+      <div className="p-3">
+        <div className="flex items-start gap-3">
+          {/* Left border matching message style */}
+          <div className="w-0.5 self-stretch bg-[var(--forge-border-subtle)] rounded-full" />
+
+          <div className="flex-1 flex items-end gap-2">
+            <textarea
+              ref={inputRef}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onKeyDown={onKeyDown}
+              placeholder={disabled ? 'Claude is working...' : 'Enter your message...'}
+              disabled={disabled}
+              rows={1}
+              className="flex-1 bg-transparent text-sm text-[var(--forge-text-primary)] placeholder:text-[var(--forge-text-muted)] outline-none resize-none disabled:opacity-50 min-h-[24px] max-h-[120px] leading-relaxed"
+              style={{ height: 'auto', overflow: 'hidden' }}
+              onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = 'auto';
+                target.style.height = `${Math.min(target.scrollHeight, 120)}px`;
+              }}
+            />
+
+            <button
+              type="submit"
+              disabled={!value.trim() || disabled}
+              className="p-2 rounded-lg bg-[var(--ember)] text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--ember)]/90 transition-all"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  );
+}
+
+// ============================================================================
+// Status Sidebar
+// ============================================================================
+
+interface StatusSidebarProps {
+  session: ClaudeSession;
+  metadata: {
+    tokensUsed: number;
+    tokensLimit: number;
+    costSpent: number;
+    completedTools: number;
+    pendingTools: number;
+    modifiedFiles: { path: string; additions: number; deletions: number }[];
+  };
+  onCollapse: () => void;
+}
+
+function StatusSidebar({ session, metadata, onCollapse }: StatusSidebarProps) {
+  return (
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-[var(--forge-border-subtle)]">
+        <div className="flex items-center justify-between">
+          <SessionTitle />
+          <button
+            onClick={onCollapse}
+            className="p-1 rounded hover:bg-[var(--forge-bg-bench)] text-[var(--forge-text-muted)] hover:text-[var(--forge-text-primary)] transition-colors"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto py-2">
+        {/* Context Section */}
+        <SidebarSection title="Context" defaultOpen>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-[var(--forge-text-muted)]">Tokens</span>
+              <span className="text-[var(--forge-text-primary)]">
+                {(metadata.tokensUsed / 1000).toFixed(1)}k / {(metadata.tokensLimit / 1000).toFixed(0)}k
+              </span>
+            </div>
+            <div className="h-1.5 bg-[var(--forge-bg-bench)] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[var(--ember)] rounded-full"
+                style={{ width: `${(metadata.tokensUsed / metadata.tokensLimit) * 100}%` }}
+              />
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-[var(--forge-text-muted)]">Cost</span>
+              <span className="text-emerald-400">${metadata.costSpent.toFixed(3)}</span>
+            </div>
+          </div>
+        </SidebarSection>
+
+        {/* Tools Progress */}
+        <SidebarSection title="Tools" badge={metadata.completedTools + metadata.pendingTools} defaultOpen>
+          <div className="space-y-1.5">
+            {metadata.completedTools > 0 && (
+              <div className="flex items-center gap-2 text-xs">
+                <Check className="w-3 h-3 text-emerald-400" />
+                <span className="text-[var(--forge-text-muted)]">{metadata.completedTools} completed</span>
+              </div>
+            )}
+            {metadata.pendingTools > 0 && (
+              <div className="flex items-center gap-2 text-xs">
+                <Loader2 className="w-3 h-3 text-amber-400 animate-spin" />
+                <span className="text-[var(--forge-text-muted)]">{metadata.pendingTools} running</span>
+              </div>
+            )}
+          </div>
+        </SidebarSection>
+
+        {/* Modified Files */}
+        {metadata.modifiedFiles.length > 0 && (
+          <SidebarSection title="Modified Files" badge={metadata.modifiedFiles.length}>
+            <div className="space-y-1">
+              {metadata.modifiedFiles.map((file, i) => (
+                <div key={i} className="flex items-center justify-between text-xs">
+                  <span className="text-[var(--forge-text-secondary)] truncate font-mono">
+                    {file.path.split('/').pop()}
+                  </span>
+                  <div className="flex items-center gap-1.5 text-[10px]">
+                    <span className="text-emerald-400">+{file.additions}</span>
+                    <span className="text-red-400">-{file.deletions}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SidebarSection>
+        )}
+
+        {/* Status */}
+        <SidebarSection title="Status">
+          <div className="flex items-center gap-2 text-xs">
+            <span className={`w-2 h-2 rounded-full ${
+              session.status === 'running' ? 'bg-emerald-400 animate-pulse' :
+              session.status === 'completed' ? 'bg-blue-400' :
+              session.status === 'error' ? 'bg-red-400' :
+              'bg-[var(--forge-text-muted)]'
+            }`} />
+            <span className="text-[var(--forge-text-secondary)] capitalize">{session.status}</span>
+          </div>
+        </SidebarSection>
+      </div>
+
+      {/* Footer */}
+      <div className="px-4 py-3 border-t border-[var(--forge-border-subtle)]">
+        <div className="flex items-center justify-between text-[10px] text-[var(--forge-text-muted)]">
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            Started {session.startedAt?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Sidebar Section
+// ============================================================================
+
+interface SidebarSectionProps {
+  title: string;
+  badge?: number;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}
+
+function SidebarSection({ title, badge, defaultOpen = false, children }: SidebarSectionProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className="px-4 py-2">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between w-full text-left mb-2"
+      >
+        <span className="text-xs font-medium text-[var(--forge-text-primary)]">{title}</span>
+        <div className="flex items-center gap-2">
+          {badge !== undefined && (
+            <span className="text-[10px] text-[var(--forge-text-muted)]">{badge}</span>
+          )}
+          <span className="text-[var(--forge-text-muted)]">
+            {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          </span>
+        </div>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

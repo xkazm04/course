@@ -73,6 +73,14 @@ export {
     mergeWithStaticPrerequisites,
 } from "./curriculumGenerator";
 
+// Cycle detection utilities
+export {
+    CircularPrerequisiteError,
+    detectPrerequisiteCycles,
+    validateNoPrerequisiteCycles,
+    type CycleDetectionResult,
+} from "./curriculumGenerator";
+
 // React hook
 export {
     useCollectiveIntelligence,

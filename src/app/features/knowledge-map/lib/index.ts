@@ -136,3 +136,58 @@ export {
     hypotheticalNodeToCurriculumEntity,
     mapNodeToCurriculumEntity,
 } from "./oracleNodeMapping";
+
+// Similarity Calculator - Node relationship computation
+export {
+    SimilarityCalculator,
+    createSimilarityCalculator,
+    type SimilarityScore,
+    type SimilarNode,
+    type PrerequisiteGap,
+    type NodeRelationship,
+    type SimilarityWeights,
+} from "./similarityCalculator";
+
+// Path Analyzer - Learning path analysis
+export {
+    PathAnalyzer,
+    createPathAnalyzer,
+    type PathSegment,
+    type PathSuggestion,
+    type HiddenGem,
+    type NodePathData,
+    type LearnerJourney,
+} from "./pathAnalyzer";
+
+// Recommendation Engine - Smart suggestions
+export {
+    RecommendationEngine,
+    createRecommendationEngine,
+    type Recommendation,
+    type RecommendationType,
+    type RecommendationBatch,
+    type RecommendationOptions,
+    type RecommendationMetadata,
+    type PrerequisiteWarning,
+    type LearnerProfile,
+    type RecommendationEngineContextValue,
+} from "./recommendationEngine";
+
+// Path History Manager - Navigation history tracking
+export {
+    PathHistoryManager,
+    createPathHistoryManager,
+    getPathHistoryManager,
+    usePathHistory,
+    type HistoryEntry,
+    type PathHistoryState,
+    type PathHistoryConfig,
+} from "./pathHistoryManager";
+
+// Scene Graph with History - Extended scene graph with navigation history
+export {
+    useSceneGraphWithHistory,
+    getKeyboardShortcuts,
+    type UseSceneGraphWithHistoryOptions,
+    type UseSceneGraphWithHistoryReturn,
+} from "./useSceneGraphWithHistory";

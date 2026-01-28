@@ -59,7 +59,10 @@ export function layoutHexPuzzle(
     height: number,
     _scale: number // Not used for positioning - zoom via SVG transform
 ): HexLayoutNode[] {
-    if (!nodes.length || !width || !height) return [];
+    // Defensive check: ensure we have valid dimensions
+    if (!nodes.length || !width || !height || !Number.isFinite(width) || !Number.isFinite(height)) {
+        return [];
+    }
 
     const cx = width / 2;
     const cy = height / 2;

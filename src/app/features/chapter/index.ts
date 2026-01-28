@@ -90,6 +90,8 @@ export type {
     ModeConfig,
     CourseInfo,
     ChapterSection,
+    ContentMetadata,
+    VideoVariant,
     // Content Slot types
     ContentSlot,
     VideoSlot,

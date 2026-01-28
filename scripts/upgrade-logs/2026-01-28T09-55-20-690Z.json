@@ -1,0 +1,19 @@
+{
+  "options": {
+    "maxLessons": 1,
+    "dryRun": true
+  },
+  "results": [
+    {
+      "nodeId": "ece8820c-9875-4758-a9c9-e0e046ea7c43",
+      "name": "Global and Local Scope",
+      "status": "success",
+      "message": "Dry run",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Restructured"
+      ]
+    }
+  ]
+}

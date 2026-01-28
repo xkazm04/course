@@ -1,0 +1,4568 @@
+{
+  "summary": {
+    "total": 265,
+    "published": 265,
+    "draft": 0,
+    "withSections": 0,
+    "avgContentLength": 1202,
+    "directivesUsed": {
+      "callout": 1,
+      "code": 124,
+      "keypoints": 245,
+      "definition": 264,
+      "warning": 30,
+      "realworld": 30,
+      "comparison": 53,
+      "pitfall": 8,
+      "deepdive": 2,
+      "protip": 4,
+      "tabs": 2,
+      "steps": 2,
+      "checkpoint": 1,
+      "animated": 1,
+      "tip": 1
+    },
+    "byDomain": {
+      "frontend": 265
+    },
+    "needsEnrichment": [
+      "debdebe9-24dc-4f31-af16-18198a148e9e",
+      "fd40db3a-0b05-4cdd-ab21-7265e8116f34",
+      "1a270052-4da1-49df-9cee-140ef6d1a2fc",
+      "ab2b83e0-e51d-42c5-9a0f-4e2e4e1debb5",
+      "f71a585f-260c-4593-948f-8424310b23b1",
+      "9fd852f1-2fcf-4aa4-aafc-95072ae63728",
+      "9f423709-b112-4d64-a917-de9f2e55f573",
+      "5c88e4a5-f560-4ff4-8b9d-7127457351e3",
+      "52634014-61e1-42ce-9c07-40e6a54e6086",
+      "36a939a6-e548-4bda-b98a-342d1ef8aa61",
+      "4c29f5b4-c48c-40c7-87e7-d5812d34ef65",
+      "f819bb48-9e55-4da3-b149-12fb890909a7",
+      "355612a1-6c20-4eef-a7ef-3f61739a2e73",
+      "36204faa-6801-4046-b9f3-9c50cbbc6fc5",
+      "8bfe4e88-4a98-4eaf-baff-6416f681cb99",
+      "4e0ea829-3a4e-4ff3-9c63-34e0effebbab",
+      "2a99c6fa-9019-4b26-b6dd-8ea4c020b3b9",
+      "28ef9024-3fff-4e86-aaf8-c40df89300cb",
+      "7fd1e112-654f-4ed6-ad74-59a894fc3569",
+      "b2a103ec-2008-4d05-8a61-1e1d4febd470",
+      "4917bfeb-05cd-4917-a961-0ca7c6557adc",
+      "49691e9a-9305-4169-959d-2908c2248727",
+      "1e78ccf5-4f26-44d9-816c-6c351075f457",
+      "ca0508f3-e6da-433e-9d39-65b46c7446a3",
+      "ae556916-b9af-4456-a715-74b46191485a",
+      "34903c39-e0fd-4486-917c-b9304ef05dc7",
+      "8061c56e-3456-43f1-a39e-f88e7fde782c",
+      "ebb97882-a065-4f98-a6e3-50c1ffdd2310",
+      "aa0d6161-a35b-45b1-8c36-10875c252502",
+      "04b36425-d398-463a-bb76-ffc24856b0d1",
+      "ae4b2662-dcc2-4a51-9fa8-4dc0ac5fbb34",
+      "245f7103-653a-4753-8621-62e6b8696b6b",
+      "04ebab47-76d1-4a00-9ede-851c4bdfef4d",
+      "300f37fd-50cc-4a2a-b6eb-fdb0d287e854",
+      "69e341e1-b07a-4349-a3c3-d79a06f293d9",
+      "3dbb2341-6b95-4cca-a9c4-f40b9ed9a6e6",
+      "a53e1cc4-f576-4004-8110-9f06012dd058",
+      "69113890-0d88-44d6-838d-f5a34d3b5a39",
+      "2b4bcb38-863e-4bd5-9aa7-e2b06582384c",
+      "7454f819-1a4c-4c7c-86ce-482bd2c1805d",
+      "3c241db1-96ea-4220-9657-d8eaefa3c7b8",
+      "2f969950-104a-4c80-97ab-faf7176e4520",
+      "d9a8a1d8-f85c-4add-9857-009d494aa255",
+      "d2c8dc8b-e0eb-4198-bedd-ff6327733c33",
+      "49b5660a-1c4b-4fa7-8853-d30473276036",
+      "2c244587-cfe2-47c4-8b84-b5727befb0c6",
+      "445444d6-ad42-4148-bd94-232f9722d6a5",
+      "2e024268-4b89-44ae-b4a0-f3e901b819f7",
+      "933240f0-ec8a-4b3a-869d-eb09b42ef84b",
+      "3babf543-50f0-4d95-8063-c2fc14b0ae7a",
+      "f5bcf356-44ca-4427-b90d-e0f45e5f9218",
+      "db787ffd-82db-4efb-876d-64edc21cbcf3",
+      "493520c1-cd2c-46fa-b706-eb47cbe73c26",
+      "4e09c100-61b9-4ce7-b6fe-5b5c1b3b3fa3",
+      "ae6a24c7-35f5-4b93-8acc-ee3088c13264",
+      "892eef0e-2d0e-474a-99b2-62159e5c4c6f",
+      "cf14c94f-6e9a-47ef-b36b-e2b4ad54d42a",
+      "70da51dd-3136-4e03-9560-881257b7b87f",
+      "b75090d5-5c5d-4dab-b36d-7be0da60d2d5",
+      "1ca93597-c2d1-4eba-8f6e-4a2dce308054",
+      "006c64bb-4b93-4e35-b7db-f3453339cee6",
+      "65803f41-b350-4767-8e96-53b7c7746c98",
+      "52512603-e5a0-40a8-9e47-974926e45874",
+      "480d26eb-92df-4515-8fde-56ef542e6ca9",
+      "16183d22-05f6-4bb9-9955-fb033c6bf059",
+      "d5879371-2212-4855-9641-71432f7c488f",
+      "db45bd8c-9b26-43b4-a42f-988317e027b5",
+      "e845012d-99e2-400a-be98-cdeef369dc4d",
+      "8f2bf639-c0a6-4e88-8f8c-184f578c832f",
+      "6e7ee65e-66a7-4b05-ac1d-0a60a2e8b8bf",
+      "ab0d6ea5-a48a-420a-a7d3-8613dbe15f37",
+      "fe090206-666a-4444-bb2e-ade39ed6f04d",
+      "8b7dc599-4c38-4483-bba1-5688a6f79104",
+      "67cac64d-8f69-46cd-a503-0dd7c94a54da",
+      "6246d5c7-ac23-44fc-a896-def2bf8e3a7c",
+      "af1dd0de-e1ca-4ee9-8ecd-672294f8ba55",
+      "ac1b8cd9-01f5-4751-9e8c-c9ed250849dd",
+      "b4f5b5a6-e091-446f-8c3a-65f5029d3260",
+      "2d9b57c8-cbc4-40df-bfb1-a0b91824da19",
+      "69c73245-0bcb-4e2f-bf93-0369e720df96",
+      "e3b782b5-b3a8-4ae1-a3c4-d83279dad58e",
+      "1dce508d-d434-4431-b681-15d17612203c",
+      "29037053-aeab-4edb-b126-08a2a203e3f8",
+      "91990511-edb6-4cfc-9f5b-ca448047b1af",
+      "deb61a69-6411-4622-ab4e-f4598ffb4349",
+      "a5cff862-696c-4136-97b0-4a63932bc7c9",
+      "fd586f15-814f-451f-8a70-f7e90f0dbf30",
+      "7cbca1b0-4c77-4b7a-8bef-6fd83ae65b96",
+      "ab46ef6e-ec3c-487b-88cc-b67cd4f3382a",
+      "470411dc-8fe1-43c4-a2a0-1fd4cbe5ecea",
+      "60771fb1-8e94-4d65-90f3-2d0d03c1bfb9",
+      "0e03750f-a07f-452c-b279-d81d987241e7",
+      "0d99d0cf-a855-481e-8da1-893341202efa",
+      "94f00931-e84a-4cf5-80cb-2b00ea2365ae",
+      "f927ec54-75b4-4333-b556-66ab522ad8dc",
+      "e4435b11-4553-40c0-bdd4-46a54660b16c",
+      "1ae39e07-df10-46f5-908b-9873dfb60542",
+      "f0bcbd4f-3ed1-40d8-9763-7ac32c1e2771",
+      "01a291b5-16d0-4ee9-a780-24d6d7390b01",
+      "68823460-05c4-4713-9670-3f29f5247da3",
+      "e346d163-0926-49f3-be69-621a15d2711e",
+      "8ed88240-404d-4640-9cac-095ca61797b2",
+      "0aaa9d1e-4b1f-49da-9778-7dd00739f8e5",
+      "6eb9b1e6-aa10-45fc-8b34-1d20a1918dd1",
+      "f71f24d6-6294-44dd-a1d2-50f5494ffbd9",
+      "fff9d705-094d-4380-8b96-82a94befded8",
+      "b4ed069a-6c5f-4616-bff2-f39ddd229373",
+      "1e9ecbac-bcd4-4935-bebc-e842c647784d",
+      "6b03c0e0-838c-46bb-ad8e-3f24bd693b71",
+      "a32cfdb7-8dc2-41ef-83cd-c052e23c8869",
+      "d76f1b7d-a300-41b5-bbc8-45f366a4cb1d",
+      "abdb0ca2-c510-48de-9f44-c98fb42ae1e8",
+      "19c62b5e-8835-4092-bd1f-d0e94d06847a",
+      "094bf013-5c8a-4a04-b626-f8466a275294",
+      "08bc5b9f-26e3-4787-b675-122a717bfe5d",
+      "32aa9ed3-f730-4803-8335-cc0a678fa999",
+      "6609d109-e425-4317-bcce-949e524cda80",
+      "3c98e04b-7121-4cc5-bd60-1fa9badb3911",
+      "1815ab37-70d7-47b1-a095-dc6d48357fce",
+      "ebbd1c54-aeb2-4921-ae47-4c97061ba330",
+      "921d9abc-8b58-4ff2-876a-af30570691f9",
+      "cbfc099b-488e-40d9-bb29-953b36b5c14e",
+      "58834cd1-a6f2-4288-aad2-5920d1eb796e",
+      "b3008e92-9845-42ff-a9ae-b1c6eb8c8661",
+      "f31fb50c-8883-44e3-b8ab-eec855a1f42d",
+      "69486301-9ef5-493a-9d78-7a5ed87d7a55",
+      "49fa7f8f-30e3-422f-886d-814b46f05a5c",
+      "86ef9cfb-da97-45cf-8b97-f23cdf2e0867",
+      "19c4c1bc-657c-4b04-8925-60a6c1051cf3",
+      "ad14aeec-1991-406c-938a-ade97fb4bfe0",
+      "6df78b46-a7e9-4fde-892d-d6a1a65a649a",
+      "8d2783b7-dc6a-4bc7-80b5-1bb8d433688b",
+      "43159197-90e0-4765-8a97-8b939de02684",
+      "e3453ca9-6e32-486f-bdd8-72f1229912cc",
+      "8f0d8acf-2be3-4883-9c05-6c17ed2ebe21",
+      "f0969449-ab99-4a37-a0c3-642fea7bd02e",
+      "37249f6c-1744-42b9-897e-ad2e24a9f0bf",
+      "612c5401-d51a-4e50-a18c-8654b8d6d2d6",
+      "7971c646-7497-49ed-a43f-ceded0b78ff7",
+      "ef95d08b-841b-4050-a8f7-4b221dca9b2c",
+      "0277f4e5-b617-4667-918a-27d7e253add5",
+      "c3386ef0-0754-492e-bf22-59d1d5081a71",
+      "377d4ccd-d1a0-48da-8375-fc1be8e9f934",
+      "c408fb44-94df-4f0e-bf61-5c6332a929c8",
+      "331d50ce-19a4-4395-a70e-6bc13a0be8cd",
+      "c98c6c88-0624-47ac-8ba9-a423c119a635",
+      "b4066d34-ccac-4574-bcef-2847b6e4a168",
+      "a69382f6-69db-4a32-b407-fdfc0c0c64dd",
+      "3036f696-198a-4841-94ef-cfa7ef3ca77c",
+      "05267fa6-69a9-4b37-bbcc-965bc7a31569",
+      "e73557d9-6e99-4822-8f15-f7ef0db63984",
+      "97263d80-3a17-4248-b9dc-3c4baf1fb99d",
+      "e03e06f0-1941-43e9-8881-193b9cdff087",
+      "0d06ab18-cd96-46f1-851f-5df924c85275",
+      "f1e547e9-42f4-43c5-bfe8-2dba34212eae",
+      "7239acc2-fe1b-42cf-a1d0-d8d63bc103f9",
+      "ec0f8504-f8e1-40be-ab7b-496d97159873",
+      "905cc631-9beb-41d6-8c84-ca97b2a3bb37",
+      "69c1e496-efd0-46bf-84c4-e0d642ea0976",
+      "7bc2f687-3b4d-4c4e-98e3-19a3304b83e7",
+      "a0c32e18-7699-4c31-85be-a2fcb53385d0",
+      "cad1192e-1120-49d9-a29c-51dabaa484ce",
+      "3909bdff-7fcd-4c0e-9a93-66b29252bf64",
+      "cd3a0e81-2f56-4133-bc1a-844ef9a6ce43",
+      "8d1b1e5d-7a3d-4b81-9fc0-b39827f4b0f3",
+      "637691b9-a58a-4fd9-83b9-6d8599984301",
+      "f494c239-d148-445d-894f-da97d52a3b6c",
+      "84310dfa-368a-4855-a6c1-08a9523a5e09",
+      "267d3589-5407-486a-9da8-2586274aa870",
+      "8b79b5d7-97d4-4b5e-90a8-67e8f5640f82",
+      "67c31cf4-ae17-4d6a-8d1e-33db06074a1d",
+      "7de30262-687d-4c45-9d75-f4fe2cb75294",
+      "6d5f4bfc-a49e-4f42-b771-62817e0d9e4a",
+      "ce501ada-edd2-4686-a9bb-a4ef428dca00",
+      "526e99fa-4e88-4be7-93ac-f8dc8ebed4e8",
+      "a79f83b6-1fe4-4175-a833-224989c83737",
+      "3315837f-6e6e-4f6c-b2ea-b8993772c97b",
+      "afa13689-82ac-42c7-a239-17e59306667e",
+      "45a7060a-2d4a-4cb3-86b9-e7aea3b6f590",
+      "8b97fa93-4f08-49b1-b541-cf9b7eb3928c",
+      "c6100e20-9fc8-42cb-99e2-33f34a68e0cd",
+      "d8236ab2-da3c-4042-a393-d021038f1b6f",
+      "f524ac2a-5283-4242-a927-ddc1da95532d",
+      "7ed218be-f2cb-430d-bfd0-d2abdaa43c01",
+      "1c29025d-37a3-46b5-b0a7-6e47850e13b5",
+      "724c0c2c-897e-49e9-b70e-419de8061d3c",
+      "942d1b19-50f6-44bf-bfea-c4b058bc1025",
+      "8fbe29bd-9f70-4ec5-a5bf-c4954296cad0",
+      "dd803fc1-0ee5-4304-b6af-8b58e550bea1",
+      "bce6b3b4-ae91-4892-af68-58dabf805c6c",
+      "ab156ebe-15e5-42c8-9557-49277891de40",
+      "f75ae9ef-9979-4af6-b033-53b6ff98e154",
+      "ad2fe93f-ca13-4e4a-9b40-c45ed5a0e1ce",
+      "911ca053-3274-4e33-9cb6-385f29ed11c8",
+      "2a086a5d-0f98-483e-8611-2c856bb46c93",
+      "9c725066-d6cc-4408-9f9e-33f57e7ec857",
+      "40b63ace-2e0e-4e80-8204-273248e7430f",
+      "e5019d5e-da73-4081-94b5-7024ba99620e",
+      "d541d83f-6465-4248-967f-3f51bfe3e944",
+      "5aa6cc74-3742-4910-8dc0-5b0f070d49bb",
+      "3fa3dab5-5b0c-4ab7-ba91-891bdf3beeae",
+      "d46ed762-b876-4fcf-945f-637034da6c37",
+      "1e5dac05-0b56-4ace-bef9-f18b056881b7"
+    ]
+  },
+  "lessons": [
+    {
+      "id": "debdebe9-24dc-4f31-af16-18198a148e9e",
+      "name": "Closures Explained",
+      "slug": "closures-explained",
+      "status": "published",
+      "contentLength": 3787,
+      "quality": "medium",
+      "directives": [
+        "callout",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could benefit from :::definition for key terms",
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "fd40db3a-0b05-4cdd-ab21-7265e8116f34",
+      "name": "Interface Basics",
+      "slug": "interface-basics",
+      "status": "published",
+      "contentLength": 1517,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1a270052-4da1-49df-9cee-140ef6d1a2fc",
+      "name": "useMemo Hook",
+      "slug": "usememo-hook",
+      "status": "published",
+      "contentLength": 2101,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "ab2b83e0-e51d-42c5-9a0f-4e2e4e1debb5",
+      "name": "Generic Functions",
+      "slug": "generic-functions",
+      "status": "published",
+      "contentLength": 961,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ece8820c-9875-4758-a9c9-e0e046ea7c43",
+      "name": "Global and Local Scope",
+      "slug": "global-local-scope",
+      "status": "published",
+      "contentLength": 4725,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "realworld",
+        "warning",
+        "comparison",
+        "pitfall",
+        "deepdive",
+        "protip"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation"
+      ]
+    },
+    {
+      "id": "f71a585f-260c-4593-948f-8424310b23b1",
+      "name": "Union Types",
+      "slug": "union-types",
+      "status": "published",
+      "contentLength": 1234,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "realworld"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "9fd852f1-2fcf-4aa4-aafc-95072ae63728",
+      "name": "Form Element Basics",
+      "slug": "form-element-basics",
+      "status": "published",
+      "contentLength": 778,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d4e26cd5-45e1-4e93-b75c-570db45ec40f",
+      "name": "Async Functions",
+      "slug": "async-functions",
+      "status": "published",
+      "contentLength": 1408,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "9f423709-b112-4d64-a917-de9f2e55f573",
+      "name": "The Event Loop Explained",
+      "slug": "event-loop-explained",
+      "status": "published",
+      "contentLength": 1392,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "5c88e4a5-f560-4ff4-8b9d-7127457351e3",
+      "name": "Conditional Types",
+      "slug": "conditional-types",
+      "status": "published",
+      "contentLength": 1204,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "52634014-61e1-42ce-9c07-40e6a54e6086",
+      "name": "Basic CSS Selectors",
+      "slug": "basic-css-selectors",
+      "status": "published",
+      "contentLength": 1161,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "36a939a6-e548-4bda-b98a-342d1ef8aa61",
+      "name": "Vitest Setup",
+      "slug": "vitest-setup",
+      "status": "published",
+      "contentLength": 458,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "4c29f5b4-c48c-40c7-87e7-d5812d34ef65",
+      "name": "Motion Component",
+      "slug": "motion-component",
+      "status": "published",
+      "contentLength": 1724,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f819bb48-9e55-4da3-b149-12fb890909a7",
+      "name": "HTML Document Anatomy",
+      "slug": "html-document-anatomy",
+      "status": "published",
+      "contentLength": 1159,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "3632e446-e7a0-4d6a-ad8a-d026179b0f29",
+      "name": "Server Components Introduction",
+      "slug": "server-components-intro",
+      "status": "published",
+      "contentLength": 1484,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison",
+        "warning"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "355612a1-6c20-4eef-a7ef-3f61739a2e73",
+      "name": "Transition Property",
+      "slug": "transition-property",
+      "status": "published",
+      "contentLength": 1241,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "36204faa-6801-4046-b9f3-9c50cbbc6fc5",
+      "name": "Tailwind Setup",
+      "slug": "tailwind-setup",
+      "status": "published",
+      "contentLength": 751,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8bfe4e88-4a98-4eaf-baff-6416f681cb99",
+      "name": "Link Component",
+      "slug": "link-component",
+      "status": "published",
+      "contentLength": 1153,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "4e0ea829-3a4e-4ff3-9c63-34e0effebbab",
+      "name": "Route Handler Basics",
+      "slug": "route-handler-basics",
+      "status": "published",
+      "contentLength": 1195,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "2a99c6fa-9019-4b26-b6dd-8ea4c020b3b9",
+      "name": "Object Literals",
+      "slug": "object-literals",
+      "status": "published",
+      "contentLength": 678,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a49472a1-4015-4042-a50e-c7f704833a78",
+      "name": "Flexbox Container Basics",
+      "slug": "flexbox-container-basics",
+      "status": "published",
+      "contentLength": 3245,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "comparison",
+        "realworld",
+        "pitfall",
+        "warning"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation"
+      ]
+    },
+    {
+      "id": "28ef9024-3fff-4e86-aaf8-c40df89300cb",
+      "name": "Arithmetic and Comparison Operators",
+      "slug": "arithmetic-comparison-operators",
+      "status": "published",
+      "contentLength": 1002,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "68b715e5-0a58-495d-9e92-2f2785f9ffab",
+      "name": "Introduction to Semantic Elements",
+      "slug": "semantic-elements-intro",
+      "status": "published",
+      "contentLength": 1530,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison",
+        "warning"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "7fd1e112-654f-4ed6-ad74-59a894fc3569",
+      "name": "Error Responses",
+      "slug": "api-error-responses",
+      "status": "published",
+      "contentLength": 595,
+      "quality": "medium",
+      "directives": [
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d1e02efb-950e-49ea-99c9-72f2c4049bac",
+      "name": "React Hook Form Setup",
+      "slug": "rhf-setup",
+      "status": "published",
+      "contentLength": 1198,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "b2a103ec-2008-4d05-8a61-1e1d4febd470",
+      "name": "Image Optimization",
+      "slug": "image-optimization",
+      "status": "published",
+      "contentLength": 617,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "4917bfeb-05cd-4917-a961-0ca7c6557adc",
+      "name": "JSX Syntax",
+      "slug": "jsx-syntax",
+      "status": "published",
+      "contentLength": 910,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "49691e9a-9305-4169-959d-2908c2248727",
+      "name": "Promise Basics",
+      "slug": "promise-basics",
+      "status": "published",
+      "contentLength": 1209,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1e78ccf5-4f26-44d9-816c-6c351075f457",
+      "name": "Responsive Design",
+      "slug": "responsive-design-tailwind",
+      "status": "published",
+      "contentLength": 1171,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d61e5113-4044-4598-8098-fec4763065e3",
+      "name": "Class Properties",
+      "slug": "class-properties",
+      "status": "published",
+      "contentLength": 1525,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "ca0508f3-e6da-433e-9d39-65b46c7446a3",
+      "name": "Function Declarations",
+      "slug": "function-declarations",
+      "status": "published",
+      "contentLength": 1258,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "ae556916-b9af-4456-a715-74b46191485a",
+      "name": "CSS Color Formats",
+      "slug": "css-color-formats",
+      "status": "published",
+      "contentLength": 807,
+      "quality": "medium",
+      "directives": [
+        "keypoints",
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "34903c39-e0fd-4486-917c-b9304ef05dc7",
+      "name": "Justify and Align",
+      "slug": "justify-content-align-items",
+      "status": "published",
+      "contentLength": 850,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a79f9aa1-51fa-48dd-9a54-3b4b2c1d4937",
+      "name": "Timing Functions",
+      "slug": "timing-functions",
+      "status": "published",
+      "contentLength": 1180,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "2d298a95-0679-483f-8750-63230a6f199c",
+      "name": "Grid Template Areas",
+      "slug": "grid-template-areas",
+      "status": "published",
+      "contentLength": 1143,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "8061c56e-3456-43f1-a39e-f88e7fde782c",
+      "name": "Logical Operators",
+      "slug": "logical-operators",
+      "status": "published",
+      "contentLength": 965,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "ebb97882-a065-4f98-a6e3-50c1ffdd2310",
+      "name": "Computed Property Names",
+      "slug": "computed-properties",
+      "status": "published",
+      "contentLength": 771,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "aa0d6161-a35b-45b1-8c36-10875c252502",
+      "name": "Array Method: map()",
+      "slug": "array-methods-map",
+      "status": "published",
+      "contentLength": 737,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e67fce35-46eb-4103-a118-06485dd2d1e3",
+      "name": "Box-sizing Property",
+      "slug": "box-sizing-property",
+      "status": "published",
+      "contentLength": 1560,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "realworld",
+        "pitfall"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "04b36425-d398-463a-bb76-ffc24856b0d1",
+      "name": "Promise Chaining",
+      "slug": "promise-chaining",
+      "status": "published",
+      "contentLength": 1107,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d50edac0-9c9b-4a40-aeac-1579115786eb",
+      "name": "Function Expressions",
+      "slug": "function-expressions",
+      "status": "published",
+      "contentLength": 2105,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "code",
+        "keypoints",
+        "protip",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "ae4b2662-dcc2-4a51-9fa8-4dc0ac5fbb34",
+      "name": "Literal Types",
+      "slug": "literal-types",
+      "status": "published",
+      "contentLength": 988,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "245f7103-653a-4753-8621-62e6b8696b6b",
+      "name": "Primitive Types",
+      "slug": "primitive-types",
+      "status": "published",
+      "contentLength": 1511,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6fd00261-cd66-442d-a394-003a1b2e1ee1",
+      "name": "While and Do-While Loops",
+      "slug": "while-do-while",
+      "status": "published",
+      "contentLength": 1525,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "04ebab47-76d1-4a00-9ede-851c4bdfef4d",
+      "name": "The Event Object",
+      "slug": "event-object",
+      "status": "published",
+      "contentLength": 1232,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "300f37fd-50cc-4a2a-b6eb-fdb0d287e854",
+      "name": "The infer Keyword",
+      "slug": "infer-keyword",
+      "status": "published",
+      "contentLength": 1198,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "69e341e1-b07a-4349-a3c3-d79a06f293d9",
+      "name": "useEffect Dependencies",
+      "slug": "useeffect-dependencies",
+      "status": "published",
+      "contentLength": 1770,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "3dbb2341-6b95-4cca-a9c4-f40b9ed9a6e6",
+      "name": "Handling Form Submission",
+      "slug": "handling-form-submission",
+      "status": "published",
+      "contentLength": 1005,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "a53e1cc4-f576-4004-8110-9f06012dd058",
+      "name": "The 'use client' Directive",
+      "slug": "use-client-directive",
+      "status": "published",
+      "contentLength": 864,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "69113890-0d88-44d6-838d-f5a34d3b5a39",
+      "name": "HTTP Methods",
+      "slug": "http-methods",
+      "status": "published",
+      "contentLength": 1337,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "2b4bcb38-863e-4bd5-9aa7-e2b06582384c",
+      "name": "Page and Layout Components",
+      "slug": "page-layout-components",
+      "status": "published",
+      "contentLength": 1198,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "0175653a-107e-479a-9e9f-45f884aee352",
+      "name": "useRouter Hook",
+      "slug": "userouter-hook",
+      "status": "published",
+      "contentLength": 1483,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "ff87dc38-bd42-488c-a9b0-832cf4462318",
+      "name": "test, describe, and it",
+      "slug": "test-describe-it",
+      "status": "published",
+      "contentLength": 3945,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "comparison",
+        "realworld",
+        "pitfall"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "7454f819-1a4c-4c7c-86ce-482bd2c1805d",
+      "name": "Module Mocking",
+      "slug": "module-mocking",
+      "status": "published",
+      "contentLength": 1325,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3c241db1-96ea-4220-9657-d8eaefa3c7b8",
+      "name": "Suspense and Streaming",
+      "slug": "suspense-streaming",
+      "status": "published",
+      "contentLength": 1302,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "2f969950-104a-4c80-97ab-faf7176e4520",
+      "name": "Middleware Matching",
+      "slug": "middleware-matching",
+      "status": "published",
+      "contentLength": 646,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "d9a8a1d8-f85c-4add-9857-009d494aa255",
+      "name": "State Variants",
+      "slug": "state-variants",
+      "status": "published",
+      "contentLength": 725,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "4e101bc0-5728-42c2-a6f2-a789664d1aa8",
+      "name": "Page and Locators",
+      "slug": "page-locators",
+      "status": "published",
+      "contentLength": 6263,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "tabs",
+        "comparison",
+        "pitfall",
+        "steps",
+        "realworld",
+        "protip",
+        "warning",
+        "checkpoint",
+        "deepdive"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation"
+      ]
+    },
+    {
+      "id": "d2c8dc8b-e0eb-4198-bedd-ff6327733c33",
+      "name": "Animation Properties",
+      "slug": "animation-properties",
+      "status": "published",
+      "contentLength": 870,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "49b5660a-1c4b-4fa7-8853-d30473276036",
+      "name": "render and screen",
+      "slug": "render-screen",
+      "status": "published",
+      "contentLength": 1349,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "2c244587-cfe2-47c4-8b84-b5727befb0c6",
+      "name": "Font Optimization",
+      "slug": "font-optimization",
+      "status": "published",
+      "contentLength": 869,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "445444d6-ad42-4148-bd94-232f9722d6a5",
+      "name": "Card Layouts",
+      "slug": "tailwind-cards",
+      "status": "published",
+      "contentLength": 619,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "279916b7-f3df-4a5b-968c-44bf08799bce",
+      "name": "Interface vs Type Alias",
+      "slug": "interface-vs-type",
+      "status": "published",
+      "contentLength": 1762,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "10d7c047-0c2e-4639-aed9-d64e96fb0401",
+      "name": "Arrow Functions",
+      "slug": "arrow-functions",
+      "status": "published",
+      "contentLength": 1556,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "2e024268-4b89-44ae-b4a0-f3e901b819f7",
+      "name": "useState vs useReducer",
+      "slug": "usestate-vs-usereducer",
+      "status": "published",
+      "contentLength": 855,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f42b4068-c163-4594-8e54-fa7d6f3bc2c4",
+      "name": "Parameter Properties",
+      "slug": "parameter-properties",
+      "status": "published",
+      "contentLength": 1188,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "933240f0-ec8a-4b3a-869d-eb09b42ef84b",
+      "name": "Dark Mode",
+      "slug": "dark-mode-tailwind",
+      "status": "published",
+      "contentLength": 1315,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3babf543-50f0-4d95-8063-c2fc14b0ae7a",
+      "name": "Component Composition",
+      "slug": "component-composition",
+      "status": "published",
+      "contentLength": 798,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f5bcf356-44ca-4427-b90d-e0f45e5f9218",
+      "name": "Array Methods: filter() and find()",
+      "slug": "array-methods-filter-find",
+      "status": "published",
+      "contentLength": 982,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "db787ffd-82db-4efb-876d-64edc21cbcf3",
+      "name": "useFormStatus and useFormState",
+      "slug": "useformstatus-useformstate",
+      "status": "published",
+      "contentLength": 1318,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "493520c1-cd2c-46fa-b706-eb47cbe73c26",
+      "name": "Margin Collapsing",
+      "slug": "margin-collapsing",
+      "status": "published",
+      "contentLength": 999,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "4e09c100-61b9-4ce7-b6fe-5b5c1b3b3fa3",
+      "name": "Readonly Properties",
+      "slug": "readonly-properties",
+      "status": "published",
+      "contentLength": 531,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ae6a24c7-35f5-4b93-8acc-ee3088c13264",
+      "name": "Modifying Attributes",
+      "slug": "modifying-attributes",
+      "status": "published",
+      "contentLength": 803,
+      "quality": "medium",
+      "directives": [
+        "keypoints",
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "892eef0e-2d0e-474a-99b2-62159e5c4c6f",
+      "name": "Function Type Expressions",
+      "slug": "function-type-expressions",
+      "status": "published",
+      "contentLength": 1410,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "cf14c94f-6e9a-47ef-b36b-e2b4ad54d42a",
+      "name": "Default Type Parameters",
+      "slug": "default-type-parameters",
+      "status": "published",
+      "contentLength": 986,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "70da51dd-3136-4e03-9560-881257b7b87f",
+      "name": "Object Spread Operator",
+      "slug": "object-spread",
+      "status": "published",
+      "contentLength": 823,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "b75090d5-5c5d-4dab-b36d-7be0da60d2d5",
+      "name": "Actions",
+      "slug": "playwright-actions",
+      "status": "published",
+      "contentLength": 902,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1ca93597-c2d1-4eba-8f6e-4a2dce308054",
+      "name": "useState Hook",
+      "slug": "usestate-hook",
+      "status": "published",
+      "contentLength": 996,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "006c64bb-4b93-4e35-b7db-f3453339cee6",
+      "name": "Mapped Types",
+      "slug": "mapped-types",
+      "status": "published",
+      "contentLength": 856,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "65803f41-b350-4767-8e96-53b7c7746c98",
+      "name": "Object Methods",
+      "slug": "object-methods",
+      "status": "published",
+      "contentLength": 1133,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "52512603-e5a0-40a8-9e47-974926e45874",
+      "name": "Animation Fill Mode",
+      "slug": "animation-fill-mode",
+      "status": "published",
+      "contentLength": 794,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "480d26eb-92df-4515-8fde-56ef542e6ca9",
+      "name": "useEffect Cleanup",
+      "slug": "useeffect-cleanup",
+      "status": "published",
+      "contentLength": 862,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "16183d22-05f6-4bb9-9955-fb033c6bf059",
+      "name": "Main, Article, and Section",
+      "slug": "main-article-section",
+      "status": "published",
+      "contentLength": 1089,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "b7adea93-52d8-4995-8361-ad81a0659c84",
+      "name": "Object Static Methods",
+      "slug": "object-static-methods",
+      "status": "published",
+      "contentLength": 1499,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "d5879371-2212-4855-9641-71432f7c488f",
+      "name": "CI Integration",
+      "slug": "ci-integration",
+      "status": "published",
+      "contentLength": 760,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d19c4310-ccda-4346-b0a5-e580432827d1",
+      "name": "Function Overloads",
+      "slug": "function-overloads",
+      "status": "published",
+      "contentLength": 1969,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "realworld",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "e715a94d-374c-44e1-bd74-ea0aef6ce73e",
+      "name": "Setup and Teardown",
+      "slug": "setup-teardown",
+      "status": "published",
+      "contentLength": 1376,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "db45bd8c-9b26-43b4-a42f-988317e027b5",
+      "name": "State Updates",
+      "slug": "state-updates",
+      "status": "published",
+      "contentLength": 830,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "e845012d-99e2-400a-be98-cdeef369dc4d",
+      "name": "Assertions",
+      "slug": "playwright-assertions",
+      "status": "published",
+      "contentLength": 1416,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "8f2bf639-c0a6-4e88-8f8c-184f578c832f",
+      "name": "Context with useReducer",
+      "slug": "context-with-reducer",
+      "status": "published",
+      "contentLength": 1061,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6e7ee65e-66a7-4b05-ac1d-0a60a2e8b8bf",
+      "name": "The this Keyword",
+      "slug": "this-keyword",
+      "status": "published",
+      "contentLength": 980,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ab0d6ea5-a48a-420a-a7d3-8613dbe15f37",
+      "name": "Aside, Figure, and Figcaption",
+      "slug": "aside-figure-figcaption",
+      "status": "published",
+      "contentLength": 1172,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "932c130a-3dc3-4102-8a9f-3e7308c30f7f",
+      "name": "Template Literals",
+      "slug": "template-literals",
+      "status": "published",
+      "contentLength": 1156,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "fe090206-666a-4444-bb2e-ade39ed6f04d",
+      "name": "Promise.all() and Promise.race()",
+      "slug": "promise-all-race",
+      "status": "published",
+      "contentLength": 1324,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e56dfe24-bc55-448d-93eb-9d399d335211",
+      "name": "Parallel Execution with async/await",
+      "slug": "parallel-async-await",
+      "status": "published",
+      "contentLength": 1360,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "8b7dc599-4c38-4483-bba1-5688a6f79104",
+      "name": "Break and Continue",
+      "slug": "break-continue",
+      "status": "published",
+      "contentLength": 1223,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "67cac64d-8f69-46cd-a503-0dd7c94a54da",
+      "name": "Common Animation Patterns",
+      "slug": "common-animation-patterns",
+      "status": "published",
+      "contentLength": 828,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6246d5c7-ac23-44fc-a896-def2bf8e3a7c",
+      "name": "Responsive Images",
+      "slug": "responsive-images",
+      "status": "published",
+      "contentLength": 1111,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "af1dd0de-e1ca-4ee9-8ecd-672294f8ba55",
+      "name": "Switch Statements",
+      "slug": "switch-statements",
+      "status": "published",
+      "contentLength": 985,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ac1b8cd9-01f5-4751-9e8c-c9ed250849dd",
+      "name": "Not Found Handling",
+      "slug": "not-found-handling",
+      "status": "published",
+      "contentLength": 1058,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "2e9b74c1-b60d-46e4-965b-8108aba382d6",
+      "name": "Extending Interfaces",
+      "slug": "extending-interfaces",
+      "status": "published",
+      "contentLength": 1730,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "b4f5b5a6-e091-446f-8c3a-65f5029d3260",
+      "name": "Practical Closure Patterns",
+      "slug": "practical-closure-patterns",
+      "status": "published",
+      "contentLength": 988,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "2d9b57c8-cbc4-40df-bfb1-a0b91824da19",
+      "name": "User Events",
+      "slug": "user-events",
+      "status": "published",
+      "contentLength": 915,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "69c73245-0bcb-4e2f-bf93-0369e720df96",
+      "name": "Dynamic API Routes",
+      "slug": "dynamic-api-routes",
+      "status": "published",
+      "contentLength": 946,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e3b782b5-b3a8-4ae1-a3c4-d83279dad58e",
+      "name": "Grid Item Placement",
+      "slug": "grid-item-placement",
+      "status": "published",
+      "contentLength": 1007,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1dce508d-d434-4431-b681-15d17612203c",
+      "name": "Event Delegation",
+      "slug": "event-delegation",
+      "status": "published",
+      "contentLength": 902,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "29037053-aeab-4edb-b126-08a2a203e3f8",
+      "name": "Route Groups",
+      "slug": "route-groups",
+      "status": "published",
+      "contentLength": 876,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "realworld"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "c1ff0d5b-091d-4093-8de2-53b4d599dff7",
+      "name": "Sequential Data Fetching",
+      "slug": "sequential-data-fetching",
+      "status": "published",
+      "contentLength": 1000,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "91990511-edb6-4cfc-9f5b-ca448047b1af",
+      "name": "Flex Item Properties",
+      "slug": "flex-item-properties",
+      "status": "published",
+      "contentLength": 1290,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "deb61a69-6411-4622-ab4e-f4598ffb4349",
+      "name": "HTML Comments Best Practices",
+      "slug": "html-comments-best-practices",
+      "status": "published",
+      "contentLength": 971,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a5cff862-696c-4136-97b0-4a63932bc7c9",
+      "name": "Array Method: reduce()",
+      "slug": "array-methods-reduce",
+      "status": "published",
+      "contentLength": 1446,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "realworld",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "fd586f15-814f-451f-8a70-f7e90f0dbf30",
+      "name": "HTML5 Form Validation",
+      "slug": "form-validation-html5",
+      "status": "published",
+      "contentLength": 923,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "7cbca1b0-4c77-4b7a-8bef-6fd83ae65b96",
+      "name": "Parameters and Arguments",
+      "slug": "parameters-arguments",
+      "status": "published",
+      "contentLength": 1212,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ae9f737a-89c6-4bf3-a57b-80747f042c54",
+      "name": "The children Prop",
+      "slug": "children-prop",
+      "status": "published",
+      "contentLength": 1352,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "realworld"
+      ],
+      "opportunities": [
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "ab46ef6e-ec3c-487b-88cc-b67cd4f3382a",
+      "name": "any, unknown, and never",
+      "slug": "any-unknown-never",
+      "status": "published",
+      "contentLength": 879,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "470411dc-8fe1-43c4-a2a0-1fd4cbe5ecea",
+      "name": "Server Action Validation",
+      "slug": "server-action-validation",
+      "status": "published",
+      "contentLength": 1518,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "60771fb1-8e94-4d65-90f3-2d0d03c1bfb9",
+      "name": "Web Fonts and Google Fonts",
+      "slug": "web-fonts-google-fonts",
+      "status": "published",
+      "contentLength": 677,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "43c32583-9836-4e7e-b0e2-0fba3bf640bb",
+      "name": "Removing Elements",
+      "slug": "removing-elements",
+      "status": "published",
+      "contentLength": 1347,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison",
+        "warning"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "0e03750f-a07f-452c-b279-d81d987241e7",
+      "name": "getElementById",
+      "slug": "getelementbyid",
+      "status": "published",
+      "contentLength": 886,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "0d99d0cf-a855-481e-8da1-893341202efa",
+      "name": "Discriminated Unions",
+      "slug": "discriminated-unions",
+      "status": "published",
+      "contentLength": 1546,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "94f00931-e84a-4cf5-80cb-2b00ea2365ae",
+      "name": "Index Signatures",
+      "slug": "index-signatures",
+      "status": "published",
+      "contentLength": 1157,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "f927ec54-75b4-4333-b556-66ab522ad8dc",
+      "name": "Pseudo-elements",
+      "slug": "pseudo-elements",
+      "status": "published",
+      "contentLength": 1000,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "warning"
+      ],
+      "opportunities": []
+    },
+    {
+      "id": "e4435b11-4553-40c0-bdd4-46a54660b16c",
+      "name": "Gesture Animations",
+      "slug": "gesture-animations",
+      "status": "published",
+      "contentLength": 1178,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1ae39e07-df10-46f5-908b-9873dfb60542",
+      "name": "Type Annotations",
+      "slug": "type-annotations",
+      "status": "published",
+      "contentLength": 916,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f0bcbd4f-3ed1-40d8-9763-7ac32c1e2771",
+      "name": "Viewport Meta Tag",
+      "slug": "viewport-meta-tag",
+      "status": "published",
+      "contentLength": 792,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "01a291b5-16d0-4ee9-a780-24d6d7390b01",
+      "name": "Button Components",
+      "slug": "tailwind-buttons",
+      "status": "published",
+      "contentLength": 788,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "68823460-05c4-4713-9670-3f29f5247da3",
+      "name": "Array Creation",
+      "slug": "array-creation",
+      "status": "published",
+      "contentLength": 784,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e346d163-0926-49f3-be69-621a15d2711e",
+      "name": "Event Listeners",
+      "slug": "event-listeners",
+      "status": "published",
+      "contentLength": 820,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8ed88240-404d-4640-9cac-095ca61797b2",
+      "name": "For Loops",
+      "slug": "for-loops",
+      "status": "published",
+      "contentLength": 842,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "0aaa9d1e-4b1f-49da-9778-7dd00739f8e5",
+      "name": "var, let, and const",
+      "slug": "var-let-const",
+      "status": "published",
+      "contentLength": 923,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6eb9b1e6-aa10-45fc-8b34-1d20a1918dd1",
+      "name": "Loading UI",
+      "slug": "loading-ui",
+      "status": "published",
+      "contentLength": 956,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f71f24d6-6294-44dd-a1d2-50f5494ffbd9",
+      "name": "Middleware Basics",
+      "slug": "middleware-basics",
+      "status": "published",
+      "contentLength": 1064,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "fff9d705-094d-4380-8b96-82a94befded8",
+      "name": "vi.fn() for Mocking",
+      "slug": "vi-fn-mocking",
+      "status": "published",
+      "contentLength": 961,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "b4ed069a-6c5f-4616-bff2-f39ddd229373",
+      "name": "Building a CRUD API",
+      "slug": "crud-api",
+      "status": "published",
+      "contentLength": 1008,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1e9ecbac-bcd4-4935-bebc-e842c647784d",
+      "name": "Grid Container Setup",
+      "slug": "grid-container-setup",
+      "status": "published",
+      "contentLength": 862,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6b03c0e0-838c-46bb-ad8e-3f24bd693b71",
+      "name": "File-Based Routing",
+      "slug": "file-based-routing",
+      "status": "published",
+      "contentLength": 770,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a32cfdb7-8dc2-41ef-83cd-c052e23c8869",
+      "name": "Controlled Inputs",
+      "slug": "controlled-inputs",
+      "status": "published",
+      "contentLength": 938,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d76f1b7d-a300-41b5-bbc8-45f366a4cb1d",
+      "name": "Custom Hook Basics",
+      "slug": "custom-hook-basics",
+      "status": "published",
+      "contentLength": 1156,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "abdb0ca2-c510-48de-9f44-c98fb42ae1e8",
+      "name": "useEffect Basics",
+      "slug": "useeffect-basics",
+      "status": "published",
+      "contentLength": 1107,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "19c62b5e-8835-4092-bd1f-d0e94d06847a",
+      "name": "Fetch in Server Components",
+      "slug": "fetch-in-server-components",
+      "status": "published",
+      "contentLength": 1045,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "094bf013-5c8a-4a04-b626-f8466a275294",
+      "name": "innerHTML vs textContent",
+      "slug": "innerhtml-textcontent",
+      "status": "published",
+      "contentLength": 1080,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "08bc5b9f-26e3-4787-b675-122a717bfe5d",
+      "name": "Creating Context",
+      "slug": "creating-context",
+      "status": "published",
+      "contentLength": 1256,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "32aa9ed3-f730-4803-8335-cc0a678fa999",
+      "name": "Shorthand Properties",
+      "slug": "shorthand-properties",
+      "status": "published",
+      "contentLength": 830,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6609d109-e425-4317-bcce-949e524cda80",
+      "name": "Passing Props",
+      "slug": "passing-props",
+      "status": "published",
+      "contentLength": 942,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3c98e04b-7121-4cc5-bd60-1fa9badb3911",
+      "name": "Test Fixtures",
+      "slug": "test-fixtures",
+      "status": "published",
+      "contentLength": 1699,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1815ab37-70d7-47b1-a095-dc6d48357fce",
+      "name": "Function Parameter Types",
+      "slug": "function-parameter-types",
+      "status": "published",
+      "contentLength": 1271,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ebbd1c54-aeb2-4921-ae47-4c97061ba330",
+      "name": "Testing Library Setup",
+      "slug": "testing-library-setup",
+      "status": "published",
+      "contentLength": 1010,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3467b8c1-47dd-4954-8841-ff96b3ec6e8e",
+      "name": "Zustand Setup",
+      "slug": "zustand-setup",
+      "status": "published",
+      "contentLength": 1596,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "921d9abc-8b58-4ff2-876a-af30570691f9",
+      "name": "Object Type Annotations",
+      "slug": "object-type-annotations",
+      "status": "published",
+      "contentLength": 1110,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "cbfc099b-488e-40d9-bb29-953b36b5c14e",
+      "name": "Introduction to Callbacks",
+      "slug": "callbacks-intro",
+      "status": "published",
+      "contentLength": 976,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "58834cd1-a6f2-4288-aad2-5920d1eb796e",
+      "name": "@keyframes Rule",
+      "slug": "keyframes-rule",
+      "status": "published",
+      "contentLength": 878,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d6848bb5-fdc2-4849-bb23-76092b49169a",
+      "name": "Meta Tags Essentials",
+      "slug": "meta-tags-essentials",
+      "status": "published",
+      "contentLength": 3920,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "pitfall",
+        "comparison",
+        "warning",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation"
+      ]
+    },
+    {
+      "id": "b3008e92-9845-42ff-a9ae-b1c6eb8c8661",
+      "name": "Content, Padding, Border, Margin",
+      "slug": "content-padding-border-margin",
+      "status": "published",
+      "contentLength": 1018,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f31fb50c-8883-44e3-b8ab-eec855a1f42d",
+      "name": "Playwright Setup",
+      "slug": "playwright-setup",
+      "status": "published",
+      "contentLength": 860,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "c2bd776e-f9ac-4b46-990d-06b0f0e5847b",
+      "name": "Server Actions Introduction",
+      "slug": "server-actions-intro",
+      "status": "published",
+      "contentLength": 6137,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints",
+        "code",
+        "warning",
+        "steps",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "a64d6aaa-2836-4ee7-87e6-08cccd218d95",
+      "name": "useReducer Basics",
+      "slug": "usereducer-basics",
+      "status": "published",
+      "contentLength": 4552,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "comparison",
+        "keypoints",
+        "pitfall",
+        "protip"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f6b26b24-42d9-4534-b786-e7ba23fd7976",
+      "name": "Property Access",
+      "slug": "property-access",
+      "status": "published",
+      "contentLength": 4074,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "comparison",
+        "pitfall"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8067b773-d210-41c3-9b09-88cec2377db7",
+      "name": "Combinator Selectors",
+      "slug": "combinator-selectors",
+      "status": "published",
+      "contentLength": 4114,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "comparison",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "2f886918-5b99-4650-82e9-1c5423401d94",
+      "name": "Header, Nav, and Footer",
+      "slug": "header-nav-footer",
+      "status": "published",
+      "contentLength": 3879,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "6083d7a6-013f-42ac-9a41-ce22c3579c8f",
+      "name": "Text Input Types",
+      "slug": "text-input-types",
+      "status": "published",
+      "contentLength": 4458,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "comparison",
+        "realworld",
+        "warning"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "e0d8c93c-93b4-453a-97d6-d4564cb58b5d",
+      "name": "Font Properties",
+      "slug": "font-properties",
+      "status": "published",
+      "contentLength": 3805,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints",
+        "comparison",
+        "warning",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "bede04d8-b93a-4b55-86b5-6311f898dcf7",
+      "name": "Creating Elements",
+      "slug": "creating-elements",
+      "status": "published",
+      "contentLength": 4647,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "comparison",
+        "realworld"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "01359d54-a518-4d3f-82a6-c93872d7d330",
+      "name": "Media Queries Basics",
+      "slug": "media-queries-basics",
+      "status": "published",
+      "contentLength": 1413,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "8acee8bc-8819-4fce-a567-eecf0ece91c4",
+      "name": "Array Access and Modification",
+      "slug": "array-access-modification",
+      "status": "published",
+      "contentLength": 1102,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "b5be9af9-cecf-4649-bd3f-378d95a902ac",
+      "name": "querySelector and querySelectorAll",
+      "slug": "queryselector-queryselectorall",
+      "status": "published",
+      "contentLength": 1549,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "766d8171-45d1-4821-b208-15285154283a",
+      "name": "Primitive Types in TypeScript",
+      "slug": "primitive-types-ts",
+      "status": "published",
+      "contentLength": 1221,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "6fff3f62-4fad-428c-909d-b4eb7d6e43ef",
+      "name": "Callback Pattern",
+      "slug": "callback-pattern",
+      "status": "published",
+      "contentLength": 1373,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "f4137712-3c67-4c14-b036-8e70671cdf65",
+      "name": "The await Keyword",
+      "slug": "await-keyword",
+      "status": "published",
+      "contentLength": 1710,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "98ed4ec4-3249-4be8-be09-1ffe9d59c305",
+      "name": "Block Scope",
+      "slug": "block-scope",
+      "status": "published",
+      "contentLength": 1359,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "7f08e1ed-61b0-4ee7-be69-6e9e877efb40",
+      "name": "Type Alias Basics",
+      "slug": "type-alias-basics",
+      "status": "published",
+      "contentLength": 1284,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "b374224d-90ae-4743-8c40-89806e98c549",
+      "name": "Generic Interfaces",
+      "slug": "generic-interfaces",
+      "status": "published",
+      "contentLength": 1311,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "fd149d41-9882-4b01-bbd0-281a04ded2b7",
+      "name": "useCallback Hook",
+      "slug": "usecallback-hook",
+      "status": "published",
+      "contentLength": 1499,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "6e2da131-a04f-45cb-a153-0d6a17bc1ea8",
+      "name": "Reducer Patterns",
+      "slug": "reducer-patterns",
+      "status": "published",
+      "contentLength": 1763,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "6081ce62-bd9d-4f82-bc33-19891ed29c8a",
+      "name": "Access Modifiers",
+      "slug": "access-modifiers",
+      "status": "published",
+      "contentLength": 1491,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "7d84f459-fd0f-4c8f-8d12-c77582b187d4",
+      "name": "Functional Components",
+      "slug": "functional-components",
+      "status": "published",
+      "contentLength": 1298,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "c2674930-6036-45b0-a69e-2e934da5e909",
+      "name": "Forms with Server Actions",
+      "slug": "form-server-actions",
+      "status": "published",
+      "contentLength": 1972,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "ce5c070d-d941-40d7-8cf2-98e69bf0ada6",
+      "name": "Optional Properties",
+      "slug": "optional-properties",
+      "status": "published",
+      "contentLength": 1475,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "f8d2c22d-9b61-4aa1-a48f-0d0d8c204bab",
+      "name": "Zustand Selectors",
+      "slug": "zustand-selectors",
+      "status": "published",
+      "contentLength": 1586,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "keypoints",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "03b37d5e-4f8c-4f71-935a-b90c512ac2bb",
+      "name": "Return Type Annotations",
+      "slug": "return-type-annotations",
+      "status": "published",
+      "contentLength": 1754,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "69486301-9ef5-493a-9d78-7a5ed87d7a55",
+      "name": "Prop Types Validation",
+      "slug": "prop-types-validation",
+      "status": "published",
+      "contentLength": 1477,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "d10cb0fd-2bef-4e3d-a1f1-68efa96af325",
+      "name": "Context Provider",
+      "slug": "context-provider",
+      "status": "published",
+      "contentLength": 2049,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "code",
+        "comparison"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "2080f404-fc7b-401b-b1e0-c457efad203b",
+      "name": "Caching Strategies",
+      "slug": "caching-strategies",
+      "status": "published",
+      "contentLength": 1488,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "49fa7f8f-30e3-422f-886d-814b46f05a5c",
+      "name": "Mobile-First Design",
+      "slug": "mobile-first-design",
+      "status": "published",
+      "contentLength": 451,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "86ef9cfb-da97-45cf-8b97-f23cdf2e0867",
+      "name": "Hook Composition",
+      "slug": "hook-composition",
+      "status": "published",
+      "contentLength": 1685,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "19c4c1bc-657c-4b04-8925-60a6c1051cf3",
+      "name": "Built-in Validation",
+      "slug": "rhf-validation",
+      "status": "published",
+      "contentLength": 1114,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ad14aeec-1991-406c-938a-ade97fb4bfe0",
+      "name": "Animate Prop",
+      "slug": "animate-prop",
+      "status": "published",
+      "contentLength": 872,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6df78b46-a7e9-4fde-892d-d6a1a65a649a",
+      "name": "Spacing and Sizing",
+      "slug": "spacing-sizing-utilities",
+      "status": "published",
+      "contentLength": 1006,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8d2783b7-dc6a-4bc7-80b5-1bb8d433688b",
+      "name": "Page Object Model",
+      "slug": "page-object-model",
+      "status": "published",
+      "contentLength": 1232,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "43159197-90e0-4765-8a97-8b939de02684",
+      "name": "Promise Error Handling",
+      "slug": "promise-error-handling",
+      "status": "published",
+      "contentLength": 853,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e3453ca9-6e32-486f-bdd8-72f1229912cc",
+      "name": "Zustand Middleware",
+      "slug": "zustand-middleware",
+      "status": "published",
+      "contentLength": 1044,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8f0d8acf-2be3-4883-9c05-6c17ed2ebe21",
+      "name": "Visual Regression Testing",
+      "slug": "visual-regression",
+      "status": "published",
+      "contentLength": 1111,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f0969449-ab99-4a37-a0c3-642fea7bd02e",
+      "name": "Multiple Inputs",
+      "slug": "multiple-inputs",
+      "status": "published",
+      "contentLength": 603,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "37249f6c-1744-42b9-897e-ad2e24a9f0bf",
+      "name": "Context Best Practices",
+      "slug": "context-best-practices",
+      "status": "published",
+      "contentLength": 935,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "612c5401-d51a-4e50-a18c-8654b8d6d2d6",
+      "name": "Form Styling",
+      "slug": "tailwind-forms",
+      "status": "published",
+      "contentLength": 609,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "7971c646-7497-49ed-a43f-ceded0b78ff7",
+      "name": "Building useFetch",
+      "slug": "usefetch-hook",
+      "status": "published",
+      "contentLength": 635,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ef95d08b-841b-4050-a8f7-4b221dca9b2c",
+      "name": "Error Handling",
+      "slug": "rhf-errors",
+      "status": "published",
+      "contentLength": 563,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "0277f4e5-b617-4667-918a-27d7e253add5",
+      "name": "If-Else Statements",
+      "slug": "if-else-statements",
+      "status": "published",
+      "contentLength": 572,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "c3386ef0-0754-492e-bf22-59d1d5081a71",
+      "name": "Query Methods",
+      "slug": "query-methods",
+      "status": "published",
+      "contentLength": 669,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "377d4ccd-d1a0-48da-8375-fc1be8e9f934",
+      "name": "Mixing Server and Client",
+      "slug": "component-composition-nextjs",
+      "status": "published",
+      "contentLength": 587,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "c408fb44-94df-4f0e-bf61-5c6332a929c8",
+      "name": "Request and Response Objects",
+      "slug": "request-response-objects",
+      "status": "published",
+      "contentLength": 755,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "331d50ce-19a4-4395-a70e-6bc13a0be8cd",
+      "name": "Dynamic Routes",
+      "slug": "dynamic-routes",
+      "status": "published",
+      "contentLength": 766,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "c98c6c88-0624-47ac-8ba9-a423c119a635",
+      "name": "Grid Gap and Spacing",
+      "slug": "grid-gap-spacing",
+      "status": "published",
+      "contentLength": 651,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "b4066d34-ccac-4574-bcef-2847b6e4a168",
+      "name": "Linking External Resources",
+      "slug": "linking-external-resources",
+      "status": "published",
+      "contentLength": 710,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a69382f6-69db-4a32-b407-fdfc0c0c64dd",
+      "name": "usePathname and useSearchParams",
+      "slug": "usepathname-usesearchparams",
+      "status": "published",
+      "contentLength": 725,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3036f696-198a-4841-94ef-cfa7ef3ca77c",
+      "name": "Flex Wrap and Flow",
+      "slug": "flex-wrap-flow",
+      "status": "published",
+      "contentLength": 639,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "05267fa6-69a9-4b37-bbcc-965bc7a31569",
+      "name": "Bundle Analysis",
+      "slug": "bundle-analysis",
+      "status": "published",
+      "contentLength": 743,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e73557d9-6e99-4822-8f15-f7ef0db63984",
+      "name": "Rate Limiting",
+      "slug": "api-rate-limiting",
+      "status": "published",
+      "contentLength": 686,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "97263d80-3a17-4248-b9dc-3c4baf1fb99d",
+      "name": "Duration and Delay",
+      "slug": "transition-duration-delay",
+      "status": "published",
+      "contentLength": 693,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e03e06f0-1941-43e9-8881-193b9cdff087",
+      "name": "Pseudo-classes",
+      "slug": "pseudo-classes",
+      "status": "published",
+      "contentLength": 704,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "0d06ab18-cd96-46f1-851f-5df924c85275",
+      "name": "Variants Pattern",
+      "slug": "variants-pattern",
+      "status": "published",
+      "contentLength": 604,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f1e547e9-42f4-43c5-bfe8-2dba34212eae",
+      "name": "Text Styling",
+      "slug": "text-styling",
+      "status": "published",
+      "contentLength": 568,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "7239acc2-fe1b-42cf-a1d0-d8d63bc103f9",
+      "name": "Expect and Matchers",
+      "slug": "expect-matchers",
+      "status": "published",
+      "contentLength": 512,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ec0f8504-f8e1-40be-ab7b-496d97159873",
+      "name": "Type Coercion",
+      "slug": "type-coercion",
+      "status": "published",
+      "contentLength": 571,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "905cc631-9beb-41d6-8c84-ca97b2a3bb37",
+      "name": "Color Utilities",
+      "slug": "color-utilities",
+      "status": "published",
+      "contentLength": 456,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "69c1e496-efd0-46bf-84c4-e0d642ea0976",
+      "name": "For...of and For...in",
+      "slug": "for-of-for-in",
+      "status": "published",
+      "contentLength": 564,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "7bc2f687-3b4d-4c4e-98e3-19a3304b83e7",
+      "name": "Mocking API Calls",
+      "slug": "mocking-api-calls",
+      "status": "published",
+      "contentLength": 487,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a0c32e18-7699-4c31-85be-a2fcb53385d0",
+      "name": "Event Bubbling and Capturing",
+      "slug": "event-bubbling-capturing",
+      "status": "published",
+      "contentLength": 476,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "cad1192e-1120-49d9-a29c-51dabaa484ce",
+      "name": "Parallel Data Fetching",
+      "slug": "parallel-data-fetching",
+      "status": "published",
+      "contentLength": 474,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3909bdff-7fcd-4c0e-9a93-66b29252bf64",
+      "name": "Mutating Array Methods",
+      "slug": "array-methods-mutating",
+      "status": "published",
+      "contentLength": 495,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "cd3a0e81-2f56-4133-bc1a-844ef9a6ce43",
+      "name": "Traversing the DOM",
+      "slug": "traversing-dom",
+      "status": "published",
+      "contentLength": 919,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8d1b1e5d-7a3d-4b81-9fc0-b39827f4b0f3",
+      "name": "Arrays and Tuples",
+      "slug": "arrays-tuples",
+      "status": "published",
+      "contentLength": 616,
+      "quality": "medium",
+      "directives": [
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "637691b9-a58a-4fd9-83b9-6d8599984301",
+      "name": "Callback Hell and Solutions",
+      "slug": "callback-hell",
+      "status": "published",
+      "contentLength": 1169,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f494c239-d148-445d-894f-da97d52a3b6c",
+      "name": "Type Narrowing",
+      "slug": "type-narrowing",
+      "status": "published",
+      "contentLength": 980,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "84310dfa-368a-4855-a6c1-08a9523a5e09",
+      "name": "Error Handling",
+      "slug": "error-handling-nextjs",
+      "status": "published",
+      "contentLength": 532,
+      "quality": "medium",
+      "directives": [
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "267d3589-5407-486a-9da8-2586274aa870",
+      "name": "Error Handling with try/catch",
+      "slug": "async-error-handling",
+      "status": "published",
+      "contentLength": 657,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8b79b5d7-97d4-4b5e-90a8-67e8f5640f82",
+      "name": "Selection Inputs",
+      "slug": "selection-inputs",
+      "status": "published",
+      "contentLength": 520,
+      "quality": "medium",
+      "directives": [
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "67c31cf4-ae17-4d6a-8d1e-33db06074a1d",
+      "name": "When to Memoize",
+      "slug": "when-to-memoize",
+      "status": "published",
+      "contentLength": 652,
+      "quality": "medium",
+      "directives": [
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "7de30262-687d-4c45-9d75-f4fe2cb75294",
+      "name": "Authentication Middleware",
+      "slug": "auth-middleware",
+      "status": "published",
+      "contentLength": 543,
+      "quality": "medium",
+      "directives": [
+        "definition"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "6d5f4bfc-a49e-4f42-b771-62817e0d9e4a",
+      "name": "Template Literal Types",
+      "slug": "template-literal-types",
+      "status": "published",
+      "contentLength": 841,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "code"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "83120ba6-9506-4fdd-a3d3-3332783478c9",
+      "name": "Non-Mutating Array Methods",
+      "slug": "array-methods-non-mutating",
+      "status": "published",
+      "contentLength": 1337,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "ce501ada-edd2-4686-a9bb-a4ef428dca00",
+      "name": "Serialization Boundaries",
+      "slug": "serialization-boundaries",
+      "status": "published",
+      "contentLength": 643,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "526e99fa-4e88-4be7-93ac-f8dc8ebed4e8",
+      "name": "useContext Hook",
+      "slug": "usecontext-hook",
+      "status": "published",
+      "contentLength": 525,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "a79f83b6-1fe4-4175-a833-224989c83737",
+      "name": "Building useLocalStorage",
+      "slug": "uselocalstorage-hook",
+      "status": "published",
+      "contentLength": 484,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3315837f-6e6e-4f6c-b2ea-b8993772c97b",
+      "name": "React.memo",
+      "slug": "react-memo",
+      "status": "published",
+      "contentLength": 530,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "afa13689-82ac-42c7-a239-17e59306667e",
+      "name": "Navigation Patterns",
+      "slug": "tailwind-navigation",
+      "status": "published",
+      "contentLength": 557,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "45a7060a-2d4a-4cb3-86b9-e7aea3b6f590",
+      "name": "Zod Schema Validation",
+      "slug": "rhf-zod-integration",
+      "status": "published",
+      "contentLength": 541,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8b97fa93-4f08-49b1-b541-cf9b7eb3928c",
+      "name": "Abstract Classes",
+      "slug": "abstract-classes",
+      "status": "published",
+      "contentLength": 582,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "c6100e20-9fc8-42cb-99e2-33f34a68e0cd",
+      "name": "Static vs Dynamic Rendering",
+      "slug": "static-dynamic-rendering",
+      "status": "published",
+      "contentLength": 706,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d8236ab2-da3c-4042-a393-d021038f1b6f",
+      "name": "Custom Configuration",
+      "slug": "custom-configuration",
+      "status": "published",
+      "contentLength": 708,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f524ac2a-5283-4242-a927-ddc1da95532d",
+      "name": "Typography Utilities",
+      "slug": "typography-utilities",
+      "status": "published",
+      "contentLength": 498,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "7ed218be-f2cb-430d-bfd0-d2abdaa43c01",
+      "name": "Generics in Custom Hooks",
+      "slug": "generics-custom-hooks",
+      "status": "published",
+      "contentLength": 790,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1c29025d-37a3-46b5-b0a7-6e47850e13b5",
+      "name": "Auto-fit and Auto-fill",
+      "slug": "auto-fit-auto-fill",
+      "status": "published",
+      "contentLength": 586,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "724c0c2c-897e-49e9-b70e-419de8061d3c",
+      "name": "Array Destructuring",
+      "slug": "array-destructuring",
+      "status": "published",
+      "contentLength": 494,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "942d1b19-50f6-44bf-bfea-c4b058bc1025",
+      "name": "Promise.allSettled()",
+      "slug": "promise-allsettled",
+      "status": "published",
+      "contentLength": 700,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "8fbe29bd-9f70-4ec5-a5bf-c4954296cad0",
+      "name": "useRef Hook",
+      "slug": "useref-hook",
+      "status": "published",
+      "contentLength": 690,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "dd803fc1-0ee5-4304-b6af-8b58e550bea1",
+      "name": "Built-in Utility Types",
+      "slug": "generic-utility-types",
+      "status": "published",
+      "contentLength": 509,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "bce6b3b4-ae91-4892-af68-58dabf805c6c",
+      "name": "Testing Async Components",
+      "slug": "testing-async-components",
+      "status": "published",
+      "contentLength": 691,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ab156ebe-15e5-42c8-9557-49277891de40",
+      "name": "Revalidation After Mutation",
+      "slug": "revalidation-after-mutation",
+      "status": "published",
+      "contentLength": 647,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "f75ae9ef-9979-4af6-b033-53b6ff98e154",
+      "name": "Fluid Typography",
+      "slug": "fluid-typography",
+      "status": "published",
+      "contentLength": 701,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "ad2fe93f-ca13-4e4a-9b40-c45ed5a0e1ce",
+      "name": "Parallel Routes",
+      "slug": "parallel-routes",
+      "status": "published",
+      "contentLength": 675,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "911ca053-3274-4e33-9cb6-385f29ed11c8",
+      "name": "Flexbox Alignment Tricks",
+      "slug": "flexbox-alignment-tricks",
+      "status": "published",
+      "contentLength": 655,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "2a086a5d-0f98-483e-8611-2c856bb46c93",
+      "name": "Intersection Types",
+      "slug": "intersection-types",
+      "status": "published",
+      "contentLength": 602,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "9c725066-d6cc-4408-9f9e-33f57e7ec857",
+      "name": "Exhaustiveness Checking",
+      "slug": "exhaustiveness-checking",
+      "status": "published",
+      "contentLength": 682,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "40b63ace-2e0e-4e80-8204-273248e7430f",
+      "name": "Specificity Calculation",
+      "slug": "specificity-calculation",
+      "status": "published",
+      "contentLength": 683,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "e5019d5e-da73-4081-94b5-7024ba99620e",
+      "name": "Labels and Accessibility",
+      "slug": "labels-accessibility",
+      "status": "published",
+      "contentLength": 584,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d541d83f-6465-4248-967f-3f51bfe3e944",
+      "name": "Arbitrary Values",
+      "slug": "arbitrary-values",
+      "status": "published",
+      "contentLength": 619,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "5aa6cc74-3742-4910-8dc0-5b0f070d49bb",
+      "name": "Ternary Operator",
+      "slug": "ternary-operator",
+      "status": "published",
+      "contentLength": 409,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "3fa3dab5-5b0c-4ab7-ba91-891bdf3beeae",
+      "name": "Type Inference",
+      "slug": "type-inference",
+      "status": "published",
+      "contentLength": 668,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "d46ed762-b876-4fcf-945f-637034da6c37",
+      "name": "Lifting State Up",
+      "slug": "lifting-state-up",
+      "status": "published",
+      "contentLength": 645,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1e5dac05-0b56-4ace-bef9-f18b056881b7",
+      "name": "Implementing Interfaces",
+      "slug": "implements-keyword",
+      "status": "published",
+      "contentLength": 628,
+      "quality": "medium",
+      "directives": [
+        "definition",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Could add :::tip or :::warning callouts"
+      ]
+    },
+    {
+      "id": "1ef603fe-d90f-4078-991d-2f4d0e42018f",
+      "name": "Object Destructuring",
+      "slug": "object-destructuring",
+      "status": "published",
+      "contentLength": 1107,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "c9b226cf-7f29-4deb-b181-d82e3ec75ce1",
+      "name": "Flexbox and Grid in Tailwind",
+      "slug": "flexbox-grid-tailwind",
+      "status": "published",
+      "contentLength": 1240,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "b80e6b59-0b6a-41ee-b766-aef5e967275c",
+      "name": "Return Values",
+      "slug": "return-values",
+      "status": "published",
+      "contentLength": 1099,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "525f4c26-62d0-4c02-bc24-9b449b73f869",
+      "name": "Grid Alignment",
+      "slug": "grid-alignment",
+      "status": "published",
+      "contentLength": 1176,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "comparison",
+        "keypoints"
+      ],
+      "opportunities": [
+        "Multiple code blocks could use :::tabs for comparison",
+        "Code blocks could use :::animated for step-by-step explanation",
+        "Could add :::tip or :::warning callouts",
+        "Could add :::pitfall for common mistakes"
+      ]
+    },
+    {
+      "id": "37f63160-cfdc-43de-afd4-7568be14698e",
+      "name": "Generic Constraints",
+      "slug": "generic-constraints",
+      "status": "published",
+      "contentLength": 4553,
+      "quality": "high",
+      "directives": [
+        "definition",
+        "animated",
+        "tabs",
+        "code",
+        "tip"
+      ],
+      "opportunities": [
+        "Could add :::pitfall for common mistakes"
+      ]
+    }
+  ]
+}

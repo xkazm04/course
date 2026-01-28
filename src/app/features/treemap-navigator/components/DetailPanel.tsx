@@ -35,7 +35,7 @@ function getIconComponent(iconName: string | null): React.ComponentType<{ size?:
     .split(/[-_]/)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
     .join("");
-  return (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[pascalName] || null;
+  return (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[pascalName] || null;
 }
 
 export interface DetailPanelProps {

@@ -11,6 +11,11 @@ export {
   ModeSelector,
   ClaudeCliPanel,
   GitHubIssueCard,
+  AgentPanel,
+  AgentWorkspace,
+  FileExplorer,
+  CodeViewer,
+  MonacoEditor,
 } from './components';
 
 export type {
@@ -18,7 +23,21 @@ export type {
   ModeSelectorProps,
   ClaudeCliPanelProps,
   GitHubIssueCardProps,
+  AgentWorkspaceProps,
+  FileExplorerProps,
+  FileNode,
+  CodeViewerProps,
+  MonacoEditorProps,
 } from './components';
+
+// Hooks
+export { useAgentChat } from './lib/useAgentChat';
+export type {
+  ChatMessage,
+  ToolCallDisplay,
+  UseAgentChatOptions,
+  UseAgentChatReturn,
+} from './lib/useAgentChat';
 
 // Types
 export type {

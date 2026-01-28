@@ -308,20 +308,127 @@ const EXPERT_EDUCATOR_PROMPT = `You are an expert technical educator with 15+ ye
 
 ## Required Markdown Formatting
 
-Use these specific formats that our renderer supports:
+Use these ADVANCED directives to create rich, interactive content. ALWAYS use at least 5-7 different directive types per lesson.
 
-### Code Blocks
-\`\`\`typescript
-// Always include language identifier
-const example = "well-formatted code";
+### 1. Code Block Directive (REQUIRED)
+\`\`\`markdown
+:::code[language="typescript" title="Example Function"]
+function greet(name: string): string {
+  return \\\`Hello, \\\${name}!\\\`;
+}
+:::
 \`\`\`
 
-### Callouts (IMPORTANT - use exact syntax)
-:::tip
+### 2. Tabbed Code Directive (USE OFTEN - great for showing alternatives)
+\`\`\`markdown
+:::tabs[title="Implementation Approaches"]
+TAB: JavaScript
+\\\`\\\`\\\`javascript
+function add(a, b) {
+  return a + b;
+}
+\\\`\\\`\\\`
+TAB: TypeScript
+\\\`\\\`\\\`typescript
+function add(a: number, b: number): number {
+  return a + b;
+}
+\\\`\\\`\\\`
+:::
+\`\`\`
+Use tabs for: JS vs TS, imperative vs declarative, different frameworks, before/after refactoring.
+
+### 3. Pitfall Directive (REQUIRED - show common mistakes)
+\`\`\`markdown
+:::pitfall[title="Array Mutation in React State"]
+WRONG:
+\\\`\\\`\\\`javascript
+const [items, setItems] = useState([1, 2, 3]);
+items.push(4); // Direct mutation!
+setItems(items);
+\\\`\\\`\\\`
+
+RIGHT:
+\\\`\\\`\\\`javascript
+const [items, setItems] = useState([1, 2, 3]);
+setItems([...items, 4]); // Creates new array
+\\\`\\\`\\\`
+
+WHY:
+React uses reference equality to detect changes. Mutating the existing array keeps the same reference, so React won't re-render.
+:::
+\`\`\`
+
+### 4. Comparison Directive (for contrasting approaches)
+\`\`\`markdown
+:::comparison[title="Mutable vs Immutable" left="Mutable" right="Immutable"]
+LEFT:
+\\\`\\\`\\\`javascript
+const arr = [1, 2, 3];
+arr.push(4); // Mutates original
+\\\`\\\`\\\`
+
+RIGHT:
+\\\`\\\`\\\`javascript
+const arr = [1, 2, 3];
+const newArr = [...arr, 4]; // Creates new array
+\\\`\\\`\\\`
+
+VERDICT:
+Prefer immutable operations for predictable state management.
+:::
+\`\`\`
+
+### 5. Real-World Directive (REQUIRED - practical context)
+\`\`\`markdown
+:::realworld[title="E-commerce Search"]
+Search functionality in online stores uses debouncing to prevent excessive API calls. As users type "running shoes", each keystroke would trigger a search without debouncing. With a 300ms debounce, the search only fires after the user pauses typing, reducing server load by 80% while maintaining responsive UX.
+:::
+\`\`\`
+
+### 6. Steps Directive (for tutorials and processes)
+\`\`\`markdown
+:::steps[title="Setting Up Your Project"]
+Step 1: Install Dependencies
+Run \\\`npm install\\\` to install all required packages.
+
+Step 2: Configure Environment
+Create a \\\`.env\\\` file with your API keys.
+
+Step 3: Start Development Server
+Run \\\`npm run dev\\\` to start the local server.
+:::
+\`\`\`
+
+### 7. Deep Dive Directive (for advanced optional content)
+\`\`\`markdown
+:::deepdive[title="How V8 Optimizes This Pattern"]
+V8's TurboFan compiler recognizes common patterns like array spreading and optimizes them at runtime. The spread operator [...arr] compiles to efficient native code when the array length is known at compile time.
+:::
+\`\`\`
+
+### 8. Key Points Directive (for summaries)
+\`\`\`markdown
+:::keypoints[title="Key Concepts"]
+- First important point
+- Second important point
+- Third important point
+:::
+\`\`\`
+
+### 9. Definition Directive (for key terms)
+\`\`\`markdown
+:::definition[title="Generic Constraint"]
+A constraint limits what types can be used with a generic parameter.
+:::
+\`\`\`
+
+### 10. Standard Callouts
+:::tip[title="Pro Tip"]
 Pro tips and best practices go here
 :::
 
-:::warning
+:::warning[title="Be Careful"]
 Common pitfalls and things to avoid
 :::
 
@@ -336,11 +443,23 @@ Additional context and background information
 - Numbered lists for sequential steps
 - Bullet lists for non-sequential items
 
-## Content Quality Standards
+## Content Quality Standards (CRITICAL)
 
-- Each section should have 300+ words of substantive content
-- Include 2-3 code examples per technical section
-- At least one :::tip and one :::warning per section
+### Required Directives Per Section
+EVERY section MUST include:
+- At least 1 :::tabs block showing different approaches/languages
+- At least 1 :::pitfall block showing wrong vs right code
+- At least 1 :::realworld block with practical context
+- At least 1 :::tip with pro advice
+
+### Additional Guidelines
+- Each section should have 400+ words of substantive content
+- Include 3-4 code examples per technical section
+- Use :::comparison when contrasting two approaches
+- Use :::steps for any multi-step process
+- Use :::deepdive for advanced topics (collapsed by default)
+- Use :::keypoints to summarize key takeaways
+- Use :::definition for important terms
 - Use headers (##, ###) to organize content
 - End sections with a brief transition to the next topic`;
 
@@ -381,7 +500,7 @@ Return a valid JSON object with this exact structure:
     "sections": [
         {
             "title": "Section Title",
-            "content": "Full markdown content with code blocks, callouts (:::tip, :::warning, :::info), lists, etc. Minimum 300 words.",
+            "content": "Full markdown content using RICH DIRECTIVES (see below). Minimum 400 words.",
             "type": "text"
         }
     ],
@@ -401,14 +520,34 @@ Return a valid JSON object with this exact structure:
     "difficulty": "${difficulty}"
 }
 
+## CRITICAL: Rich Directive Requirements
+
+EVERY section MUST use these advanced directives (not just basic :::tip/:::warning):
+
+1. **:::tabs** - Show code in multiple languages/approaches (JS vs TS, before/after, etc.)
+2. **:::pitfall** - Show WRONG code, RIGHT code, and WHY explanation
+3. **:::realworld** - Provide practical real-world context and examples
+4. **:::comparison** - Compare two approaches with LEFT, RIGHT, VERDICT sections
+5. **:::steps** - Use for any multi-step process (Step 1:, Step 2:, etc.)
+6. **:::deepdive** - Collapsible advanced content
+7. **:::keypoints** - Summarize key takeaways as bullet list
+8. **:::definition** - Define important terms
+9. **:::tip** and **:::warning** - Pro tips and cautions
+
+Each section should include AT LEAST:
+- 1 :::tabs block
+- 1 :::pitfall block (with WRONG:, RIGHT:, WHY: sections)
+- 1 :::realworld block
+- 1-2 :::tip blocks
+
 ## Section Requirements
 
 Generate 4-6 sections following this structure:
-1. **Fundamentals** - Core concepts with real-world analogies
-2. **How It Works** - Deep dive with diagrams described in text, code examples
-3. **Implementation** - Step-by-step guide with complete code examples
-4. **Best Practices** - Production tips, patterns, anti-patterns
-5. **Common Pitfalls** - Mistakes to avoid with solutions
+1. **Fundamentals** - Core concepts with :::definition, :::realworld, analogies
+2. **How It Works** - Deep dive with :::tabs (different approaches), :::comparison
+3. **Implementation** - :::steps directive for step-by-step, :::tabs for code variants
+4. **Best Practices** - :::tip blocks, :::comparison (good vs bad patterns)
+5. **Common Pitfalls** - MULTIPLE :::pitfall blocks showing mistakes to avoid
 6. **Practice Exercises** - Hands-on challenges (optional)
 
 ## Video Variants
@@ -491,18 +630,25 @@ function generateFallbackContent(chapter: any, userContext?: any): any {
     const courseTitle = chapter.courses?.title || "Course";
     const difficulty = chapter.courses?.difficulty || userContext?.experience_level || "beginner";
 
-    // Generate rich placeholder content with proper markdown
+    // Generate rich placeholder content with advanced directives
     const introductionContent = `Understanding **${chapterTitle}** is a crucial step in mastering ${courseTitle}. This isn't just about memorizing syntax or patterns—it's about developing the intuition to know *when* and *why* to apply these concepts in real-world projects.
 
 Think of this like learning to drive: anyone can memorize traffic rules, but becoming a good driver means understanding *why* those rules exist and developing the judgment to handle unexpected situations. By the end of this chapter, you'll have that same level of intuition for ${chapterTitle}.
 
-:::info
-This chapter is designed for ${difficulty} learners. We'll start with foundational concepts and progressively build toward more advanced applications.
+:::keypoints[title="What You'll Learn"]
+- Core concepts and principles behind ${chapterTitle}
+- Practical implementation patterns
+- Common mistakes and how to avoid them
+- Real-world applications and use cases
 :::`;
 
     const fundamentalsContent = `## Why ${chapterTitle} Matters
 
 Before diving into the *how*, let's understand the *why*. ${chapterTitle} solves a fundamental challenge that developers face constantly: managing complexity while maintaining code that's readable, testable, and maintainable.
+
+:::definition[title="${chapterTitle}"]
+A structured approach to software design that addresses common challenges in code organization, testability, and maintainability through well-established patterns and principles.
+:::
 
 ### The Problem We're Solving
 
@@ -512,12 +658,15 @@ In traditional approaches, you might encounter:
 - Logic that's scattered across multiple files
 - State that's hard to track and debug
 
+:::realworld[title="Enterprise Applications"]
+Large-scale applications like Slack, Netflix, and Stripe all use these patterns extensively. Netflix's microservices architecture relies heavily on dependency injection and clean separation of concerns to manage over 1,000 services. When a team can work on one service without affecting others, that's ${chapterTitle} in action.
+:::
+
 ### The Solution
 
-${chapterTitle} provides a structured approach that addresses these issues through well-established patterns.
-
+:::tabs[title="Before vs After"]
+TAB: Before (Tightly Coupled)
 \`\`\`typescript
-// Before: Tightly coupled, hard to test
 class UserService {
     private db = new DatabaseConnection();
 
@@ -525,8 +674,9 @@ class UserService {
         return this.db.query(\`SELECT * FROM users WHERE id = \${id}\`);
     }
 }
-
-// After: Loosely coupled, easily testable
+\`\`\`
+TAB: After (Loosely Coupled)
+\`\`\`typescript
 class UserService {
     constructor(private db: IDatabase) {}
 
@@ -535,25 +685,52 @@ class UserService {
     }
 }
 \`\`\`
-
-:::tip
-When learning new concepts, always ask yourself: "What problem does this solve?" Understanding the motivation makes the solution much easier to remember and apply correctly.
 :::
 
-:::warning
-Avoid the temptation to apply every new pattern you learn to existing code. Start with new features or projects where you can experiment without risk.
+:::pitfall[title="Hardcoded Dependencies"]
+WRONG:
+\`\`\`typescript
+class UserService {
+    private db = new DatabaseConnection(); // Hardcoded!
+}
+\`\`\`
+
+RIGHT:
+\`\`\`typescript
+class UserService {
+    constructor(private db: IDatabase) {} // Injected!
+}
+\`\`\`
+
+WHY:
+Hardcoded dependencies make testing impossible without hitting real databases. Injected dependencies allow you to swap in mocks for isolated unit tests.
+:::
+
+:::tip[title="Understanding Before Implementing"]
+When learning new concepts, always ask yourself: "What problem does this solve?" Understanding the motivation makes the solution much easier to remember and apply correctly.
 :::`;
 
     const implementationContent = `## Implementing ${chapterTitle} Step by Step
 
 Now let's walk through a practical implementation. We'll build something real that demonstrates the core concepts.
 
+:::steps[title="Implementation Process"]
+Step 1: Define Your Interfaces
+Start by defining clear contracts for your dependencies. This enables loose coupling and testability.
+
+Step 2: Create the Core Implementation
+Build your main logic depending only on interfaces, not concrete implementations.
+
+Step 3: Wire Up Dependencies
+Connect everything together at the application entry point.
+
+Step 4: Write Tests
+Verify your implementation works correctly by testing with mock dependencies.
+:::
+
 ### Step 1: Setting Up the Foundation
 
-First, we need to establish our base structure:
-
-\`\`\`typescript
-// types.ts - Define clear interfaces
+:::code[language="typescript" title="types.ts - Define Clear Interfaces"]
 interface Config {
     apiUrl: string;
     timeout: number;
@@ -565,72 +742,97 @@ interface Logger {
     error(message: string, error?: Error): void;
     debug(message: string, data?: unknown): void;
 }
-\`\`\`
+:::
 
 ### Step 2: Creating the Core Implementation
 
+:::tabs[title="Implementation Approaches"]
+TAB: Functional
 \`\`\`typescript
-// implementation.ts
 export function createService(config: Config, logger: Logger) {
     const { apiUrl, timeout, retryAttempts } = config;
 
     async function fetchWithRetry<T>(endpoint: string): Promise<T> {
-        let lastError: Error | null = null;
-
         for (let attempt = 1; attempt <= retryAttempts; attempt++) {
             try {
                 logger.debug(\`Attempt \${attempt} for \${endpoint}\`);
                 const response = await fetch(\`\${apiUrl}\${endpoint}\`, {
                     signal: AbortSignal.timeout(timeout)
                 });
-
-                if (!response.ok) {
-                    throw new Error(\`HTTP \${response.status}\`);
-                }
-
+                if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
                 return await response.json();
             } catch (error) {
-                lastError = error as Error;
-                logger.error(\`Attempt \${attempt} failed\`, lastError);
+                logger.error(\`Attempt \${attempt} failed\`, error as Error);
+                if (attempt === retryAttempts) throw error;
             }
         }
-
-        throw lastError;
+        throw new Error('All attempts failed');
     }
 
     return { fetchWithRetry };
 }
 \`\`\`
-
-### Step 3: Using the Implementation
-
+TAB: Class-Based
 \`\`\`typescript
-// usage.ts
-const config: Config = {
-    apiUrl: 'https://api.example.com',
-    timeout: 5000,
-    retryAttempts: 3
-};
+export class ApiService {
+    constructor(
+        private config: Config,
+        private logger: Logger
+    ) {}
 
-const logger: Logger = {
-    info: (msg) => console.log(\`[INFO] \${msg}\`),
-    error: (msg, err) => console.error(\`[ERROR] \${msg}\`, err),
-    debug: (msg, data) => console.debug(\`[DEBUG] \${msg}\`, data)
-};
-
-const service = createService(config, logger);
-const userData = await service.fetchWithRetry('/users/123');
+    async fetchWithRetry<T>(endpoint: string): Promise<T> {
+        const { apiUrl, timeout, retryAttempts } = this.config;
+        for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+            try {
+                this.logger.debug(\`Attempt \${attempt} for \${endpoint}\`);
+                const response = await fetch(\`\${apiUrl}\${endpoint}\`, {
+                    signal: AbortSignal.timeout(timeout)
+                });
+                if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+                return await response.json();
+            } catch (error) {
+                this.logger.error(\`Attempt \${attempt} failed\`, error as Error);
+                if (attempt === retryAttempts) throw error;
+            }
+        }
+        throw new Error('All attempts failed');
+    }
+}
 \`\`\`
+:::
 
-:::tip
+:::realworld[title="Production Retry Patterns"]
+Companies like AWS and Stripe implement exponential backoff in their SDKs. The first retry happens after 100ms, the second after 200ms, then 400ms, and so on. This prevents overwhelming a recovering service with immediate retries.
+:::
+
+:::tip[title="Testing Made Easy"]
 Notice how we can easily swap out the logger for testing. In unit tests, you'd use a mock logger that captures calls for assertions.
 :::`;
 
     const bestPracticesContent = `## Best Practices and Production Tips
 
-After years of applying these concepts in production systems, here are the patterns that consistently lead to success:
+After years of applying these concepts in production systems, here are the patterns that consistently lead to success.
 
-### 1. Keep It Simple
+:::comparison[title="Simple vs Complex Solutions" left="Over-Engineered" right="Just Right"]
+LEFT:
+\`\`\`typescript
+// Too many abstractions
+const factory = new ServiceFactoryBuilderImpl();
+const builder = factory.createBuilder();
+const service = builder.build();
+\`\`\`
+
+RIGHT:
+\`\`\`typescript
+// Simple and clear
+const service = new UserService(db);
+\`\`\`
+
+VERDICT:
+Start simple. Only add abstractions when you have a clear, immediate need for them.
+:::
+
+### When to Use Each Approach
 
 | Approach | When to Use | When to Avoid |
 |----------|-------------|---------------|
@@ -638,71 +840,108 @@ After years of applying these concepts in production systems, here are the patte
 | Class with DI | Stateful operations, multiple methods | Simple utilities |
 | Factory pattern | Dynamic configuration, multiple variants | Single implementation |
 
-### 2. Write Tests First
-
-Before implementing, write the test that describes what you want:
-
+:::pitfall[title="Premature Abstraction"]
+WRONG:
 \`\`\`typescript
-describe('UserService', () => {
-    it('should fetch user by id', async () => {
-        const mockDb = { query: jest.fn().mockResolvedValue({ id: '123', name: 'Test' }) };
-        const service = new UserService(mockDb);
-
-        const user = await service.getUser('123');
-
-        expect(user.name).toBe('Test');
-        expect(mockDb.query).toHaveBeenCalledWith(
-            'SELECT * FROM users WHERE id = ?',
-            ['123']
-        );
-    });
-});
+// Creating interfaces for everything
+interface IStringFormatter { format(s: string): string; }
+class UpperCaseFormatter implements IStringFormatter {
+    format(s: string) { return s.toUpperCase(); }
+}
 \`\`\`
 
-### 3. Document Intent, Not Implementation
-
+RIGHT:
 \`\`\`typescript
-// ❌ Bad: Describes what the code does (obvious)
-// Loops through users and filters by active status
-const activeUsers = users.filter(u => u.isActive);
-
-// ✅ Good: Describes why and business context
-// Only active users should receive promotional emails per GDPR compliance
-const eligibleRecipients = users.filter(u => u.isActive);
+// Just use the built-in method
+const formatted = input.toUpperCase();
 \`\`\`
 
-:::warning
-Premature optimization is the root of all evil. Profile your code before optimizing, and always measure the impact of your changes.
+WHY:
+Abstractions have a cost. Only create them when you need to swap implementations or when you have multiple consumers.
 :::
 
-:::tip
+:::deepdive[title="SOLID Principles Applied"]
+The patterns we've discussed directly implement several SOLID principles:
+
+**Single Responsibility**: Each class/function does one thing well.
+**Open/Closed**: Extend behavior through composition, not modification.
+**Liskov Substitution**: Any implementation of an interface should work interchangeably.
+**Interface Segregation**: Keep interfaces small and focused.
+**Dependency Inversion**: Depend on abstractions, not concretions.
+:::
+
+:::tip[title="Simplicity First"]
 When in doubt, choose the simpler solution. You can always add complexity later, but removing it is much harder.
+:::
+
+:::warning[title="Avoid Premature Optimization"]
+Profile your code before optimizing, and always measure the impact of your changes. Premature optimization is the root of all evil.
 :::`;
 
     const exercisesContent = `## Practice Exercises
 
-Apply what you've learned with these hands-on challenges:
+Apply what you've learned with these hands-on challenges.
+
+:::steps[title="Exercise Progression"]
+Step 1: Basic Implementation
+Create a simple implementation following the patterns discussed. Focus on clear separation of concerns and testable code structure.
+
+Step 2: Add Logging
+Extend your implementation with a logging layer that tracks all operations, timing, and errors.
+
+Step 3: Production Hardening
+Make your implementation production-ready with input validation, retry logic, and circuit breaker pattern.
+:::
 
 ### Exercise 1: Basic Implementation
-Create a simple implementation following the patterns discussed. Focus on:
-- Clear separation of concerns
-- Testable code structure
-- Proper error handling
 
-### Exercise 2: Add Logging
-Extend your implementation with a logging layer that tracks:
-- All operations performed
-- Time taken for each operation
-- Any errors encountered
+Create a service that fetches user data from an API. Requirements:
+- Accept configuration via constructor/factory
+- Return typed user objects
+- Handle errors gracefully
 
-### Exercise 3: Production Hardening
-Make your implementation production-ready:
-- Add input validation
-- Implement retry logic
-- Add circuit breaker pattern for external calls
+:::pitfall[title="Exercise Common Mistake"]
+WRONG:
+\`\`\`typescript
+async function getUser(id: string) {
+    const response = await fetch('/api/users/' + id);
+    return response.json(); // No error handling!
+}
+\`\`\`
 
-:::info
+RIGHT:
+\`\`\`typescript
+async function getUser(id: string): Promise<User> {
+    const response = await fetch('/api/users/' + id);
+    if (!response.ok) {
+        throw new ApiError(response.status, await response.text());
+    }
+    return response.json() as Promise<User>;
+}
+\`\`\`
+
+WHY:
+Always check response.ok before parsing JSON. A 404 or 500 response will still have a body, but it won't be the data you expect.
+:::
+
+:::realworld[title="Interview Question"]
+"Design a caching layer for user data" is a common system design interview question. The patterns you've learned here—dependency injection, interface contracts, and error handling—are exactly what interviewers look for.
+:::
+
+:::tip[title="Practice Approach"]
 Don't worry about getting everything perfect on the first try. The goal is to practice applying these concepts and learn from the experience.
+:::`;
+
+    const keypointsContent = `## Summary
+
+:::keypoints[title="Key Takeaways"]
+- Understand the core principles behind ${chapterTitle} and when to apply them
+- Always start by understanding the problem before jumping to solutions
+- Write testable code by depending on abstractions, not concrete implementations
+- Keep implementations simple—complexity can be added later if needed
+- Document the 'why' not the 'what' in your code comments
+- Practice with small projects before applying to production code
+- Measure before optimizing—premature optimization causes more harm than good
 :::`;
 
     return {
@@ -729,6 +968,11 @@ Don't worry about getting everything perfect on the first try. The goal is to pr
                     title: "Practice Exercises",
                     content: exercisesContent,
                     type: "exercise",
+                },
+                {
+                    title: "Summary",
+                    content: keypointsContent,
+                    type: "text",
                 },
             ],
             key_takeaways: [

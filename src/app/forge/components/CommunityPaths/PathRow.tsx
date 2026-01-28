@@ -3,16 +3,20 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Sparkles, Target, Zap, BookOpen, Eye } from "lucide-react";
+import { ChevronRight, Sparkles, Target, Zap, BookOpen, Eye, Square, CheckSquare } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { EnrollButton } from "./EnrollButton";
 import { DOMAIN_CONFIG, DIFFICULTY_CONFIG, type CommunityPath } from "../../lib/communityPathsTypes";
+import { forgeEasing, staggerDelay } from "../../lib/animations";
 
 interface PathRowProps {
     path: CommunityPath;
     isExpanded: boolean;
     onToggle: () => void;
     index: number;
+    isSelected?: boolean;
+    onSelectToggle?: () => void;
+    canSelect?: boolean;
 }
 
 // Icon mapping for path types
@@ -23,10 +27,19 @@ const PATH_TYPE_ICONS: Record<string, typeof Target> = {
     ai_generated: Sparkles,
 };
 
-export function PathRow({ path, isExpanded, onToggle, index }: PathRowProps) {
+export function PathRow({
+    path,
+    isExpanded,
+    onToggle,
+    index,
+    isSelected = false,
+    onSelectToggle,
+    canSelect = true,
+}: PathRowProps) {
     const domainConfig = DOMAIN_CONFIG[path.domain];
     const difficultyConfig = DIFFICULTY_CONFIG[path.difficulty];
     const PathIcon = PATH_TYPE_ICONS[path.pathType] || BookOpen;
+    const showCheckbox = !!onSelectToggle;
 
     return (
         <Fragment>
@@ -34,15 +47,45 @@ export function PathRow({ path, isExpanded, onToggle, index }: PathRowProps) {
             <motion.tr
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ delay: staggerDelay(index, 0.04), ease: forgeEasing }}
                 onClick={onToggle}
                 className={cn(
-                    "cursor-pointer transition-colors",
+                    "cursor-pointer transition-all",
                     isExpanded
                         ? "bg-[var(--forge-bg-elevated)]/30"
-                        : "hover:bg-[var(--forge-bg-elevated)]/40"
+                        : "hover:bg-[var(--forge-bg-elevated)]/40",
+                    isSelected && "bg-[var(--ember)]/5 border-l-2 border-l-[var(--ember)]"
                 )}
             >
+                {/* Selection checkbox */}
+                {showCheckbox && (
+                    <td
+                        className="px-3 py-4 text-center"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (canSelect) onSelectToggle();
+                        }}
+                    >
+                        <button
+                            className={cn(
+                                "p-1 rounded transition-colors",
+                                canSelect
+                                    ? "hover:bg-[var(--forge-bg-elevated)]"
+                                    : "opacity-50 cursor-not-allowed"
+                            )}
+                            disabled={!canSelect}
+                            title={canSelect ? (isSelected ? "Deselect path" : "Select for comparison") : "Max paths selected"}
+                        >
+                            {isSelected ? (
+                                <CheckSquare size={18} className="text-[var(--ember)]" />
+                            ) : (
+                                <Square size={18} className="text-[var(--forge-text-muted)]" />
+                            )}
+                        </button>
+                    </td>
+                )}
+
                 {/* Path Info - Always visible */}
                 <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
@@ -148,15 +191,15 @@ export function PathRow({ path, isExpanded, onToggle, index }: PathRowProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.25, ease: forgeEasing }}
                     >
-                        <td colSpan={7} className="p-0">
+                        <td colSpan={showCheckbox ? 8 : 7} className="p-0">
                             <motion.div
-                                initial={{ height: 0 }}
-                                animate={{ height: "auto" }}
-                                exit={{ height: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="overflow-hidden bg-[var(--forge-bg-elevated)]/20"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.35, ease: forgeEasing }}
+                                className="overflow-hidden bg-gradient-to-b from-[var(--forge-bg-elevated)]/30 to-transparent"
                             >
                                 <div className="px-4 py-4 pl-14">
                                     <div className="rounded-xl bg-[var(--forge-bg-forge)]/50 border border-[var(--forge-border-subtle)] overflow-hidden">

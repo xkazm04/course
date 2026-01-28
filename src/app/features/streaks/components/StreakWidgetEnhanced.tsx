@@ -275,7 +275,7 @@ function generateWeekData(streakData: StreakData) {
 
     // Determine completion status based on streak
     let completed = false
-    let frozenUsed = false
+    const frozenUsed = false
 
     if (isToday) {
       completed = streakData.todayMinutes >= streakData.dailyGoalMinutes

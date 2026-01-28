@@ -3,7 +3,22 @@ import type { LucideIcon } from "lucide-react";
 
 // Re-export for convenience
 export type { MapNode, NodeStatus };
-export type { NodeGenerationStatus } from "./contentApi";
+
+// ============================================================================
+// GENERATION STATUS TYPES (Canonical definition)
+// ============================================================================
+
+/**
+ * Status of content generation for a map node.
+ * This is the canonical definition - import from this file, not contentApi.ts
+ *
+ * - pending: Generation job created but not yet started
+ * - generating: Content generation in progress
+ * - ready: Content generation completed successfully
+ * - completed: Node fully processed (used in path sync store)
+ * - failed: Content generation failed
+ */
+export type NodeGenerationStatus = "pending" | "generating" | "ready" | "completed" | "failed";
 
 // ============================================================================
 // VIEW & NAVIGATION TYPES
@@ -27,23 +42,18 @@ export interface Point {
     y: number;
 }
 
-export interface HexLayoutNode {
-    // Core properties from MapNode (explicit for TypeScript)
-    id: string;
-    level: "domain" | "course" | "chapter" | "section" | "concept";
-    name: string;
-    description: string;
-    status: NodeStatus;
-    progress: number;
-    parentId: string | null;
-    childIds: string[];
-    estimatedHours?: number;
-    // HexLayoutNode specific
+/**
+ * HexLayoutNode - MapNode with hex grid positioning
+ *
+ * Uses intersection type to preserve all MapNode properties with full type checking
+ * while adding hex-specific fields for grid layout.
+ */
+export type HexLayoutNode = MapNode & {
+    /** Hex grid coordinates (axial) */
     hex: HexCoord;
+    /** Pixel position for rendering */
     pixel: Point;
-    // Allow other properties from MapNode variants
-    [key: string]: unknown;
-}
+};
 
 // ============================================================================
 // ORACLE TYPES
@@ -86,36 +96,15 @@ export interface DomainCard {
 }
 
 // ============================================================================
-// STYLE CONSTANTS
+// STYLE CONSTANTS (Re-exported from theme module)
 // ============================================================================
 
-// Domain colors with light and dark theme backgrounds
-export const DOMAIN_COLORS: Record<string, { base: string; light: string; dark: string; darkBg: string }> = {
-    frontend: { base: "#6366f1", light: "#eef2ff", dark: "#4338ca", darkBg: "#312e81" },
-    backend: { base: "#10b981", light: "#ecfdf5", dark: "#047857", darkBg: "#064e3b" },
-    fullstack: { base: "#a855f7", light: "#faf5ff", dark: "#7c3aed", darkBg: "#4c1d95" },
-    databases: { base: "#06b6d4", light: "#ecfeff", dark: "#0891b2", darkBg: "#164e63" },
-    mobile: { base: "#ec4899", light: "#fdf2f8", dark: "#be185d", darkBg: "#831843" },
-    games: { base: "#f97316", light: "#fff7ed", dark: "#c2410c", darkBg: "#7c2d12" },
-};
-
-// Status styles with theme-aware backgrounds
-// Light theme uses light backgrounds, dark theme uses darker tinted backgrounds
-export const STATUS_STYLES: Record<NodeStatus, { fill: string; bg: string; darkBg: string }> = {
-    completed: { fill: "#10b981", bg: "#d1fae5", darkBg: "#064e3b" },
-    in_progress: { fill: "#6366f1", bg: "#e0e7ff", darkBg: "#312e81" },
-    available: { fill: "#64748b", bg: "#f1f5f9", darkBg: "#1e293b" },
-    locked: { fill: "#94a3b8", bg: "#e2e8f0", darkBg: "#0f172a" },
-};
-
-// Helper to get theme-aware background
-export const getStatusBg = (status: NodeStatus, isDark: boolean): string => {
-    const style = STATUS_STYLES[status];
-    return isDark ? style.darkBg : style.bg;
-};
-
-export const getDomainBg = (domainId: string, isDark: boolean): string => {
-    const colors = DOMAIN_COLORS[domainId];
-    if (!colors) return isDark ? "#1e293b" : "#f1f5f9";
-    return isDark ? colors.darkBg : colors.light;
-};
+export {
+    DOMAIN_COLORS,
+    STATUS_STYLES,
+    getDomainColors,
+    getStatusColors,
+    getDomainBg,
+    getStatusBg,
+} from "@/app/features/theme";
+export type { DomainColorConfig, StatusStyleConfig, ThemeMode } from "@/app/features/theme";

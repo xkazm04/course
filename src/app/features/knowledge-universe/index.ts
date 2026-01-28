@@ -18,12 +18,21 @@
  * - Data fetching granularity (lazy-load lesson details only at star level)
  * - Interaction affordances (hover shows different info per level)
  * - Learning context ("you are here" breadcrumbs)
+ *
+ * HIERARCHICAL CLUSTERING (LOD):
+ * For handling 1000+ nodes efficiently, the ClusteredKnowledgeUniverse
+ * uses Level-of-Detail (LOD) rendering with hierarchical clusters:
+ * - Galaxy clusters: Aggregated domains (scale < 0.15)
+ * - Domain clusters: Single domains with metrics (scale < 0.25)
+ * - Topic clusters: Aggregated skills/lessons (scale < 0.5)
+ * - Full detail: Individual nodes (scale >= 0.7)
  */
 
 // Components
 export {
     KnowledgeUniverse,
     KnowledgeUniversePreview,
+    ClusteredKnowledgeUniverse, // NEW: LOD-enabled version for 1000+ nodes
     UniverseCanvas,
     NodeTooltip,
     UniverseControls,
@@ -92,4 +101,32 @@ export {
     type LearningContext,
     type UseSemanticZoomOptions,
     type UseSemanticZoomReturn,
+
+    // Hierarchical Clustering (LOD)
+    generateClusteredData,
+    getNodesForScale,
+    getLODLevel,
+    getLODTransitionState,
+    getClusterExpansionPositions,
+    interpolateExpansionPosition,
+    useLODCoordinator,
+    getNodeOpacity,
+    shouldShowExpansionAffordance,
+    type ClusterNode,
+    type ClusterLevel,
+    type ClusterMetrics,
+    type LODConfig,
+    DEFAULT_LOD_CONFIG,
+    type ClusteredUniverseData,
+    type ClusteringOptions,
+    type LODTransitionState,
+    type LODCoordinatorState,
+    type LODCoordinatorOptions,
+    type LODCoordinatorResult,
+
+    // Cluster rendering strategies
+    nebulaClusterStrategy,
+    clusterMetricsStrategy,
+    clusterDiveAffordanceStrategy,
+    clusterExpansionStrategy,
 } from "./lib";

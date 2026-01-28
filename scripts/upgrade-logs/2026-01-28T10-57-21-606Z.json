@@ -1,0 +1,19 @@
+{
+  "options": {
+    "startFrom": "b5be9af9-cecf-4649-bd3f-378d95a902ac",
+    "maxLessons": 1
+  },
+  "results": [
+    {
+      "nodeId": "b5be9af9-cecf-4649-bd3f-378d95a902ac",
+      "name": "querySelector and querySelectorAll",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "high",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    }
+  ]
+}

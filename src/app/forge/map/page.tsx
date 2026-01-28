@@ -26,7 +26,10 @@ import {
     useMapNotification,
     AcceptedPathSidebar,
     GenerationProgressOverlay,
+    MapSearch,
 } from "./components";
+import { useMapSearch } from "./lib/useMapSearch";
+import type { MapNode } from "@/app/features/knowledge-map/lib/types";
 
 export default function MapPage() {
     const router = useRouter();
@@ -105,6 +108,12 @@ export default function MapPage() {
 
     // Node generation status tracking
     const nodeStatus = useNodeStatus(visibleNodeIds);
+
+    // Get all nodes as array for search
+    const allNodesArray = useMemo(() => Array.from(mapData.nodes.values()), [mapData.nodes]);
+
+    // Map search functionality
+    const mapSearch = useMapSearch(allNodesArray);
 
     // Detect if we're at root level
     const isRootLevel = navigation.currentParentId === null;
@@ -392,6 +401,19 @@ export default function MapPage() {
         }
     }, [isAuthenticated, user, mapNotification, nodeStatus, refreshMapData]);
 
+    // Handle navigation from search results
+    const handleSearchNavigate = useCallback((node: MapNode | undefined) => {
+        if (!node) return;
+
+        // Deactivate search
+        mapSearch.deactivate();
+        mapSearch.clearSearch();
+
+        // Navigate to show this node on the map
+        setTransitionDirection("in");
+        navigateToNodeParent(node.id);
+    }, [mapSearch, navigateToNodeParent]);
+
     // Build breadcrumb path for tree navigation
     const treePath = useMemo(() => {
         return breadcrumbItems.map(item => ({
@@ -450,6 +472,14 @@ export default function MapPage() {
                             onGenerateContent={handleGenerateContent}
                             onRegenerateContent={handleRegenerateContent}
                             canGoBack={breadcrumbItems.length > 2}
+                            highlightedNodeIds={mapSearch.highlightedNodeIds}
+                        />
+
+                        {/* Map search (top center) */}
+                        <MapSearch
+                            search={mapSearch}
+                            onNavigateToNode={handleSearchNavigate}
+                            totalNodes={allNodesArray.length}
                         />
 
                         {/* Tree navigation (left sidebar) */}

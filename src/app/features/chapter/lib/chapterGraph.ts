@@ -13,9 +13,16 @@
  *
  * By leveraging the LearningNode base type from knowledge-map, chapter progress
  * integrates naturally with the broader curriculum graph system.
+ *
+ * Includes cycle detection to prevent infinite loops when traversing
+ * prerequisite relationships.
  */
 
 import type { LearningDomainId } from "@/app/shared/lib/learningDomains";
+import {
+    CircularPrerequisiteError,
+    detectPrerequisiteCycles,
+} from "./collectiveIntelligence/curriculumGenerator";
 import type {
     SpatialPosition,
     HierarchyLevel,
@@ -534,7 +541,12 @@ export function getReachableChapters(
 }
 
 /**
- * Find the optimal learning path through chapters (topological sort)
+ * Find the optimal learning path through chapters (topological sort).
+ *
+ * Detects cycles in the prerequisite graph and throws CircularPrerequisiteError
+ * if circular dependencies are found.
+ *
+ * @throws CircularPrerequisiteError if the prerequisite graph contains cycles
  */
 export function getOptimalLearningPath(
     nodes: ChapterNode[],
@@ -542,6 +554,12 @@ export function getOptimalLearningPath(
 ): ChapterNode[] {
     // Filter to only cross-chapter prerequisite edges
     const prereqEdges = edges.filter((e) => e.type === "prerequisite" && !e.isIntraChapter);
+
+    // Detect cycles before attempting topological sort
+    const cycleResult = detectPrerequisiteCycles(prereqEdges);
+    if (cycleResult.hasCycle && cycleResult.cyclePath) {
+        throw new CircularPrerequisiteError(cycleResult.cyclePath);
+    }
 
     // Build adjacency list and in-degree count
     const inDegree = new Map<ChapterNodeId, number>();
@@ -597,6 +615,14 @@ export function getOptimalLearningPath(
                 queue.push(neighbor);
             }
         }
+    }
+
+    // Additional safety check: if not all nodes were processed, we may have a cycle
+    // that wasn't caught (e.g., disconnected cycle components)
+    if (result.length < nodes.length) {
+        const processedIds = new Set(result.map((n) => n.id));
+        const unprocessed = nodes.filter((n) => !processedIds.has(n.id)).map((n) => n.id);
+        throw new CircularPrerequisiteError([...unprocessed, unprocessed[0] ?? "unknown"]);
     }
 
     return result;

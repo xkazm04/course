@@ -1,0 +1,283 @@
+{
+  "options": {
+    "maxLessons": 25,
+    "skipHighQuality": true
+  },
+  "results": [
+    {
+      "nodeId": "a0c32e18-7699-4c31-85be-a2fcb53385d0",
+      "name": "Event Bubbling and Capturing",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "cad1192e-1120-49d9-a29c-51dabaa484ce",
+      "name": "Parallel Data Fetching",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "3909bdff-7fcd-4c0e-9a93-66b29252bf64",
+      "name": "Mutating Array Methods",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "cd3a0e81-2f56-4133-bc1a-844ef9a6ce43",
+      "name": "Traversing the DOM",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8d1b1e5d-7a3d-4b81-9fc0-b39827f4b0f3",
+      "name": "Arrays and Tuples",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "637691b9-a58a-4fd9-83b9-6d8599984301",
+      "name": "Callback Hell and Solutions",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: pitfall, tabs, realworld, warning, tip"
+      ]
+    },
+    {
+      "nodeId": "f494c239-d148-445d-894f-da97d52a3b6c",
+      "name": "Type Narrowing",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "84310dfa-368a-4855-a6c1-08a9523a5e09",
+      "name": "Error Handling",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "267d3589-5407-486a-9da8-2586274aa870",
+      "name": "Error Handling with try/catch",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "8b79b5d7-97d4-4b5e-90a8-67e8f5640f82",
+      "name": "Selection Inputs",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "67c31cf4-ae17-4d6a-8d1e-33db06074a1d",
+      "name": "When to Memoize",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: warning, code, pitfall, tabs, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "7de30262-687d-4c45-9d75-f4fe2cb75294",
+      "name": "Authentication Middleware",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "6d5f4bfc-a49e-4f42-b771-62817e0d9e4a",
+      "name": "Template Literal Types",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "83120ba6-9506-4fdd-a3d3-3332783478c9",
+      "name": "Non-Mutating Array Methods",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, realworld, warning"
+      ]
+    },
+    {
+      "nodeId": "ce501ada-edd2-4686-a9bb-a4ef428dca00",
+      "name": "Serialization Boundaries",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "526e99fa-4e88-4be7-93ac-f8dc8ebed4e8",
+      "name": "useContext Hook",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "a79f83b6-1fe4-4175-a833-224989c83737",
+      "name": "Building useLocalStorage",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "3315837f-6e6e-4f6c-b2ea-b8993772c97b",
+      "name": "React.memo",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "afa13689-82ac-42c7-a239-17e59306667e",
+      "name": "Navigation Patterns",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "45a7060a-2d4a-4cb3-86b9-e7aea3b6f590",
+      "name": "Zod Schema Validation",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "8b97fa93-4f08-49b1-b541-cf9b7eb3928c",
+      "name": "Abstract Classes",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, pitfall, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "c6100e20-9fc8-42cb-99e2-33f34a68e0cd",
+      "name": "Static vs Dynamic Rendering",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: tabs, code, pitfall, warning, realworld"
+      ]
+    },
+    {
+      "nodeId": "d8236ab2-da3c-4042-a393-d021038f1b6f",
+      "name": "Custom Configuration",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, warning, realworld, tip"
+      ]
+    },
+    {
+      "nodeId": "f524ac2a-5283-4242-a927-ddc1da95532d",
+      "name": "Typography Utilities",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "low",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    },
+    {
+      "nodeId": "7ed218be-f2cb-430d-bfd0-d2abdaa43c01",
+      "name": "Generics in Custom Hooks",
+      "status": "success",
+      "message": "Saved",
+      "previousQuality": "medium",
+      "newQuality": "high",
+      "changesApplied": [
+        "Added: code, tabs, pitfall, tip, realworld"
+      ]
+    }
+  ]
+}

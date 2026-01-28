@@ -32,4 +32,36 @@ export {
     PathEffectivenessScore,
 } from "./PathPreviewSidebar";
 
+// Recommendation Components
+export { RecommendationPanel } from "./RecommendationPanel";
+export {
+    PrerequisiteAlert,
+    PrerequisiteAlertBanner,
+} from "./PrerequisiteAlert";
+export {
+    UpNextCard,
+    UpNextMinimal,
+    UpNextFloating,
+} from "./UpNextCard";
+
+// Breadcrumb Navigation
+export {
+    BreadcrumbTrail,
+} from "./BreadcrumbTrail";
+export {
+    BreadcrumbItem,
+    type BreadcrumbItemData,
+    type BreadcrumbItemProps,
+} from "./BreadcrumbItem";
+export {
+    TruncatedBreadcrumbs,
+    MobileBreadcrumbs,
+} from "./TruncatedBreadcrumbs";
+export {
+    TransitionAnimator,
+    TransitionOverlay,
+    DepthIndicator,
+    useTransitionAnimation,
+} from "./TransitionAnimator";
+
 

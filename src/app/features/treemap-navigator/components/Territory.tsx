@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useState, useCallback } from "react";
+import Image from "next/image";
 import * as LucideIcons from "lucide-react";
 import type { TreemapNode } from "../lib/types";
 import { canShowLabel, calculateFontSize } from "../lib/layoutEngine";
@@ -10,6 +11,8 @@ export interface TerritoryProps {
   node: TreemapNode;
   onClick: (node: TreemapNode) => void;
   onKeyDown?: (e: React.KeyboardEvent, node: TreemapNode) => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   isFocused?: boolean;
 }
 
@@ -34,7 +37,7 @@ function getIconComponent(iconName: string | null): React.ComponentType<{ size?:
     .split(/[-_]/)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
     .join("");
-  return (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[pascalName] || null;
+  return (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[pascalName] || null;
 }
 
 /**
@@ -51,9 +54,23 @@ export const Territory = memo(function Territory({
   node,
   onClick,
   onKeyDown,
+  onMouseEnter,
+  onMouseLeave,
   isFocused = false,
 }: TerritoryProps) {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Handle mouse enter with prefetch callback
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    onMouseEnter?.();
+  }, [onMouseEnter]);
+
+  // Handle mouse leave with prefetch cancel
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    onMouseLeave?.();
+  }, [onMouseLeave]);
 
   const handleClick = useCallback(() => {
     onClick(node);
@@ -97,8 +114,8 @@ export const Territory = memo(function Territory({
       }
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="absolute cursor-pointer transition-all duration-150 ease-out"
       style={{
         left: node.x,
@@ -121,6 +138,24 @@ export const Territory = memo(function Territory({
         zIndex: isActive ? 10 : 1,
       }}
     >
+      {/* Cover image background - very low opacity for subtle texture, doubles on hover */}
+      {node.coverImageUrl && (
+        <div className="absolute inset-0 overflow-hidden rounded-[5px]">
+          <Image
+            src={node.coverImageUrl}
+            alt=""
+            fill
+            sizes={`${Math.max(node.width, node.height)}px`}
+            className="object-cover"
+            style={{
+              opacity: isActive ? 0.12 : 0.06,
+              transition: "opacity 200ms linear"
+            }}
+            unoptimized={node.coverImageUrl.startsWith("http")}
+          />
+        </div>
+      )}
+
       {/* Child count badge - positioned relative to Territory, not affected by flex centering */}
       <ChildCountBadge count={node.childCount} nodeWidth={node.width} />
 

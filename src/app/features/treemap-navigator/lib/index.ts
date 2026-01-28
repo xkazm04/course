@@ -14,7 +14,13 @@ export { useNavigationStore } from "./navigationStore";
 export { computeLayout, canShowLabel, calculateFontSize } from "./layoutEngine";
 
 // Data adapter for API integration
-export { fetchRootNodes, fetchChildren } from "./dataAdapter";
+export { fetchRootNodes, fetchChildren, isChildrenCached, isRootCached } from "./dataAdapter";
+
+// Node cache for instant back-navigation
+export { nodeCache, ROOT_CACHE_KEY } from "./nodeCache";
+
+// Prefetch hook for hover optimization
+export { usePrefetch } from "./usePrefetch";
 
 // Animation configuration
 export {

@@ -2,21 +2,42 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { BookOpen, Users, Clock, Layers, Inbox } from "lucide-react";
+import { BookOpen, Users, Clock, Layers, Inbox, Square, CheckSquare } from "lucide-react";
 import { PathRow } from "./PathRow";
 import type { CommunityPath } from "../../lib/communityPathsTypes";
 
 interface PathsTableProps {
     paths: CommunityPath[];
     isLoading?: boolean;
+    selectedIds?: string[];
+    onSelectionChange?: (ids: string[]) => void;
+    maxSelections?: number;
 }
 
-export function PathsTable({ paths, isLoading }: PathsTableProps) {
+export function PathsTable({
+    paths,
+    isLoading,
+    selectedIds = [],
+    onSelectionChange,
+    maxSelections = 4,
+}: PathsTableProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
 
     const toggleExpand = (id: string) => {
         setExpandedId((prev) => (prev === id ? null : id));
     };
+
+    const toggleSelection = (id: string) => {
+        if (!onSelectionChange) return;
+
+        if (selectedIds.includes(id)) {
+            onSelectionChange(selectedIds.filter((sid) => sid !== id));
+        } else if (selectedIds.length < maxSelections) {
+            onSelectionChange([...selectedIds, id]);
+        }
+    };
+
+    const isSelectionEnabled = !!onSelectionChange;
 
     if (isLoading) {
         return <PathsTableSkeleton />;
@@ -33,6 +54,11 @@ export function PathsTable({ paths, isLoading }: PathsTableProps) {
                 {/* Header */}
                 <thead className="hidden md:table-header-group">
                     <tr className="border-b border-[var(--forge-border-subtle)] bg-[var(--forge-bg-elevated)]/60">
+                        {isSelectionEnabled && (
+                            <th className="px-3 py-3 text-center text-xs font-medium text-[var(--forge-text-muted)] uppercase tracking-wider w-[50px]">
+                                <span className="sr-only">Select</span>
+                            </th>
+                        )}
                         <th className="px-4 py-3 text-left text-xs font-medium text-[var(--forge-text-muted)] uppercase tracking-wider">
                             Path
                         </th>
@@ -79,6 +105,9 @@ export function PathsTable({ paths, isLoading }: PathsTableProps) {
                                 isExpanded={expandedId === path.id}
                                 onToggle={() => toggleExpand(path.id)}
                                 index={index}
+                                isSelected={selectedIds.includes(path.id)}
+                                onSelectToggle={isSelectionEnabled ? () => toggleSelection(path.id) : undefined}
+                                canSelect={selectedIds.length < maxSelections || selectedIds.includes(path.id)}
                             />
                         ))}
                     </AnimatePresence>

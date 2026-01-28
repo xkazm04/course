@@ -1,13 +1,15 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, Loader2, AlertTriangle, Eye } from "lucide-react";
+import { ArrowLeft, Loader2, AlertTriangle, Eye, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useCallback, useEffect } from "react";
+import Link from "next/link";
 import { useChapterData } from "../lib/useChapterData";
 import { ForgeChapterView } from "../components/ForgeChapterView";
 import { useRealtimeChapterStatus } from "@/lib/supabase/useRealtimeChapter";
 import { useRealtimeJobProgressByChapter } from "@/lib/supabase/useRealtimeJobProgress";
+import { forgeEasing } from "../../lib/animations";
 
 export default function ChapterPage() {
     const params = useParams();
@@ -64,13 +66,17 @@ export default function ChapterPage() {
     // Loading state
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[var(--forge-bg-void)] flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
+                    transition={{ ease: forgeEasing }}
                     className="flex flex-col items-center gap-4"
                 >
-                    <Loader2 className="w-8 h-8 text-[var(--ember)] animate-spin" />
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-[var(--ember)]/20 rounded-full blur-xl" />
+                        <Loader2 className="relative w-10 h-10 text-[var(--ember)] animate-spin" />
+                    </div>
                     <p className="text-[var(--forge-text-secondary)]">Loading chapter...</p>
                 </motion.div>
             </div>
@@ -80,51 +86,101 @@ export default function ChapterPage() {
     // Error state
     if (error || !data) {
         return (
-            <div className="min-h-screen bg-[var(--forge-bg-void)] flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center p-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center gap-4 p-8 bg-[var(--forge-bg-elevated)] rounded-xl border border-[var(--forge-border-subtle)] max-w-md"
+                    transition={{ ease: forgeEasing }}
+                    className="flex flex-col items-center gap-4 p-8 bg-[var(--forge-bg-daylight)]/80 backdrop-blur-xl rounded-2xl border border-[var(--forge-border-subtle)] shadow-xl max-w-md text-center"
                 >
-                    <AlertTriangle className="w-12 h-12 text-[var(--forge-error)]" />
-                    <h2 className="text-xl font-semibold text-[var(--forge-text-primary)]">
-                        Chapter Not Found
-                    </h2>
-                    <p className="text-center text-[var(--forge-text-secondary)]">
-                        {error || "The chapter you're looking for doesn't exist or hasn't been generated yet."}
-                    </p>
-                    <button
-                        onClick={handleBack}
-                        className="flex items-center gap-2 px-4 py-2 bg-[var(--ember)] hover:bg-[var(--ember-glow)] text-white rounded-lg transition-colors"
+                    <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.1, ease: forgeEasing }}
+                        className="relative"
                     >
-                        <ArrowLeft className="w-4 h-4" />
-                        Go Back
-                    </button>
+                        <div className="absolute inset-0 bg-[var(--forge-error)]/20 rounded-2xl blur-lg" />
+                        <div className="relative w-16 h-16 rounded-2xl bg-[var(--forge-error)]/10 flex items-center justify-center">
+                            <AlertTriangle className="w-8 h-8 text-[var(--forge-error)]" />
+                        </div>
+                    </motion.div>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15, ease: forgeEasing }}
+                        className="text-xl font-semibold text-[var(--forge-text-primary)]"
+                    >
+                        Chapter Not Found
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, ease: forgeEasing }}
+                        className="text-[var(--forge-text-secondary)]"
+                    >
+                        {error || "The chapter you're looking for doesn't exist or hasn't been generated yet."}
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25, ease: forgeEasing }}
+                        className="flex gap-3"
+                    >
+                        <button
+                            onClick={handleBack}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-[var(--forge-bg-elevated)] border border-[var(--forge-border-subtle)] text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] rounded-xl transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Go Back
+                        </button>
+                        <Link
+                            href="/forge"
+                            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[var(--ember)] to-[var(--ember-glow)] text-white rounded-xl shadow-lg shadow-[var(--ember)]/20 hover:shadow-xl hover:shadow-[var(--ember)]/30 transition-shadow"
+                        >
+                            <Home className="w-4 h-4" />
+                            Forge Home
+                        </Link>
+                    </motion.div>
                 </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[var(--forge-bg-void)]">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ease: forgeEasing }}
+            className="min-h-screen"
+        >
             {/* Preview mode banner */}
             {isPreviewMode && (
-                <div className="bg-[var(--forge-info)]/10 border-b border-[var(--forge-info)]/20">
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ ease: forgeEasing }}
+                    className="bg-[var(--forge-info)]/10 border-b border-[var(--forge-info)]/20"
+                >
                     <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center gap-2">
                         <Eye className="w-4 h-4 text-[var(--forge-info)]" />
                         <span className="text-sm text-[var(--forge-info)]">
                             Preview Mode - Enroll in this path to track progress and earn XP
                         </span>
                     </div>
-                </div>
+                </motion.div>
             )}
 
             {/* Back navigation - full width */}
-            <div className="sticky top-0 z-50 bg-[var(--forge-bg-void)]/95 backdrop-blur-sm border-b border-[var(--forge-border-subtle)]">
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, ease: forgeEasing }}
+                className="sticky top-0 z-50 bg-[var(--forge-bg-daylight)]/95 backdrop-blur-xl border-b border-[var(--forge-border-subtle)]"
+            >
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
                     <button
                         onClick={handleBack}
-                        className="flex items-center gap-2 text-[var(--forge-text-secondary)] hover:text-[var(--forge-text-primary)] transition-colors"
+                        className="flex items-center gap-2 text-[var(--forge-text-secondary)] hover:text-[var(--ember)] transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         {isPreviewMode ? "Back to Community" : "Back to Map"}
@@ -147,7 +203,7 @@ export default function ChapterPage() {
                         </>
                     )}
                 </div>
-            </div>
+            </motion.div>
 
             {/* Main content - Full width, TOC sidebar integrated */}
             <ForgeChapterView
@@ -162,6 +218,6 @@ export default function ChapterPage() {
                     message: jobProgress.progress_message || "Processing...",
                 } : null}
             />
-        </div>
+        </motion.div>
     );
 }

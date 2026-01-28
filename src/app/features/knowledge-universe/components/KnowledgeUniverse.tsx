@@ -228,8 +228,8 @@ export function KnowledgeUniverse({
 
                 case "zoom-to-children":
                 default:
-                    // Zoom in to focus on the node
-                    world.focusOn(node.x, node.y, world.scale * 1.5);
+                    // Zoom to node with intelligent scale calculation
+                    world.zoomToNode(node);
                     break;
             }
         },
